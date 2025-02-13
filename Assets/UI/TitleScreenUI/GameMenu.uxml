@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="TitleScreen" src="project://database/Assets/UI/TitleScreenUI/TitleScreen.uxml?fileID=9197481963319205126&amp;guid=4d5b9fd91c7664848b0f56323e88db1c&amp;type=3#TitleScreen" />
+    <engine:Template name="NumOfPlayerScreen" src="project://database/Assets/UI/TitleScreenUI/NumOfPlayerScreen.uxml?fileID=9197481963319205126&amp;guid=e434c8090a6b14ca3aa56b2487df3f10&amp;type=3#NumOfPlayerScreen" />
+    <engine:Template name="CharacterSelectScreen" src="project://database/Assets/UI/TitleScreenUI/CharacterSelectScreen.uxml?fileID=9197481963319205126&amp;guid=0b284d8348eab45798adacf6f221b2f0&amp;type=3#CharacterSelectScreen" />
+    <engine:Template name="NumOfRoundsScreen" src="project://database/Assets/UI/TitleScreenUI/NumOfRoundsScreen.uxml?fileID=9197481963319205126&amp;guid=23f39128688e44fce8dfb5100d5ef694&amp;type=3#NumOfRoundsScreen" />
+    <engine:VisualElement name="game-menu-root" style="flex-grow: 1;">
+        <engine:Instance template="TitleScreen" name="TitleScreen" />
+        <engine:Instance template="NumOfPlayerScreen" name="NumOfPlayerScreen" />
+        <engine:Instance template="CharacterSelectScreen" name="CharacterSelectScreen" />
+        <engine:Instance template="NumOfRoundsScreen" name="NumOfRoundsScreen" />
+    </engine:VisualElement>
+</engine:UXML>
