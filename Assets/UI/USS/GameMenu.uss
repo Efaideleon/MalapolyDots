@@ -1,0 +1,20 @@
+.button {
+    background-color: #d32f2f; /* Monopoly red */
+    color: white;
+    border-radius: 10px;
+    border: 3px solid white;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.button:hover {
+    background-color: #b71c1c; /* Darker red on hover */
+}
+
+.button:active {
+    background-color: #ff5252; /* Lighter red when pressed */
+    transform: scale(0.95);
+}
