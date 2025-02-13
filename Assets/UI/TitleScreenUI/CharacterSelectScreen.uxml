@@ -1,9 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
-    
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/GameMenu.uss?fileID=7433441132597879392&amp;guid=6125d87360e995e42bfbe6acbcb8c146&amp;type=3#GameMenu" />
+    <engine:VisualElement style="flex-grow: 1; justify-content: center; align-items: center;">
+        <engine:VisualElement name="VisualElement" style="flex-direction: row; justify-content: center; align-self: center; font-size: 70px; -unity-font-style: bold;">
+            <engine:Label text="Player" />
+            <engine:Label text="0" />
+            <engine:Label text="Choose Your Character" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:VisualElement style="flex-grow: 1; justify-content: center; align-items: center; flex-direction: column; font-size: 40px;">
+        <engine:VisualElement name="VisualElement" class="medium-panel" style="height: 600px; width: 600px; background-color: rgb(119, 47, 243); flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; align-self: auto; align-content: center;">
+            <engine:Button text="Avocado" name="Button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+            <engine:Button text="Bird" name="Button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+            <engine:Button text="Coin" name="Button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+            <engine:Button text="Lira" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+            <engine:Button text="Mug" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+            <engine:Button text="TucTuc" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+        </engine:VisualElement>
+    </engine:VisualElement>
 </engine:UXML>
