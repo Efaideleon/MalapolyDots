@@ -1,9 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
-    
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/NumOfPlayersScreen.uss?fileID=7433441132597879392&amp;guid=894d526194f2f4c559cdd2bcdf3aacdc&amp;type=3#NumOfPlayersScreen" />
+    <engine:VisualElement name="num-of-players-screen_container" style="flex-grow: 1; justify-content: space-around; align-items: center;">
+        <engine:VisualElement name="num-of-players_title-container" class="num-of-players_title-container">
+            <engine:Label text="Num of Players" name="num-of-players_title-label" class="num-of-players_label-font-size" style="font-size: 100%; -unity-text-align: middle-center;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="num-of-players_2-container" class="num-of-players_small-container">
+            <engine:Button text="2" name="num-of-players_2-button" class="num-of-players_num-button" style="font-size: 100%;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="num-of-players_3-container" class="num-of-players_small-container">
+            <engine:Button text="3" name="num-of-players_3-button" class="num-of-players_num-button" style="font-size: 100%;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="num-of-players_4-container" class="num-of-players_small-container">
+            <engine:Button text="4" name="num-of-players_4-button" class="num-of-players_num-button" style="font-size: 100%;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="num-of-players_5-container" class="num-of-players_small-container">
+            <engine:Button text="5" name="num-of-players_5-button" class="num-of-players_num-button" style="font-size: 100%;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="num-of-players_6-container" class="num-of-players_small-container">
+            <engine:Button text="6" name="num-of-players_6-button" class="num-of-players_num-button" style="font-size: 100%;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="num-of-players_confirm-button-container" class="num-of-players_confirm-buttom-container">
+            <engine:Button text="Confirm" name="num-of-players_confirm-button" class="num-of-players_confim-button" style="font-size: 100%;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
 </engine:UXML>
