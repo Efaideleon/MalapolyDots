@@ -8,8 +8,6 @@ using UnityEngine.UIElements;
 
 class CharacterSelectionScreen
 {
-    public class NumberOfPlayersScreen
-    {
         private readonly VisualElement _root;
         private readonly Button _avocado;
         private readonly Button _bird;
@@ -20,7 +18,7 @@ class CharacterSelectionScreen
         public Button ConfirmButton { get; private set; }
         private readonly GameData _gameData;
 
-        public NumberOfPlayersScreen(VisualElement root, GameData gameData)
+        public CharacterSelectionScreen(VisualElement root, GameData gameData)
         {
             _root = root.Q<VisualElement>("CharacterSelectScreen");
             _avocado = _root.Q<Button>("character-one-button");
@@ -67,5 +65,5 @@ class CharacterSelectionScreen
 
         public void Hide() => _root.style.display = DisplayStyle.None;
         public void Show() => _root.style.display = DisplayStyle.Flex;
-    }
+
 }
