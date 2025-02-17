@@ -10,4 +10,7 @@ public class TitleScreen
         _root = root.Q<VisualElement>("TitleScreen");
         StartButton = _root.Q<Button>("start-button");
     }
+    
+    public void Hide() => _root.style.display = DisplayStyle.None;
+    public void Show() => _root.style.display = DisplayStyle.Flex;
 }
