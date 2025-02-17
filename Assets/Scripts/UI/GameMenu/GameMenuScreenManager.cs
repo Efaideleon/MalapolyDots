@@ -10,10 +10,10 @@ public class GameMenuScreenManager : MonoBehaviour
     private VisualElement _root;
 
     private NumberOfPlayersScreen _numOfPlayersScreen;
+    private CharacterSelectionScreen _characterSelectionScreen;
+    private TitleScreen _titleScreen;
     
-    private VisualElement _titleScreen;
     private VisualElement _numOfRoundsScreen;
-    private VisualElement _characterSelectScreen;
 
     private Button _titleScreenPlayButton;
     private Button _numOfRoundsScreenConfirmButton;
