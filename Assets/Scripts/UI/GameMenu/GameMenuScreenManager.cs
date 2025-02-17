@@ -1,13 +1,18 @@
+using UI.GameMenu;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GameMenuScreenManager : MonoBehaviour
 {
-    [SerializeField] private UIDocument _uiDocument;
+    [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private SceneLoadersSystem sceneLoaderSystem;
+    [SerializeField] private GameData gameData;
     private VisualElement _root;
+
+    private NumberOfPlayersScreen _numOfPlayersScreen;
+    
     private VisualElement _titleScreen;
     private VisualElement _numOfRoundsScreen;
-    private VisualElement _numOfPlayersScreen;
     private VisualElement _characterSelectScreen;
 
     private Button _titleScreenPlayButton;
@@ -17,22 +22,22 @@ public class GameMenuScreenManager : MonoBehaviour
 
     void Start()
     {
-        _root = _uiDocument.rootVisualElement.Q<VisualElement>("game-menu-root");
+        _root = uiDocument.rootVisualElement.Q<VisualElement>("game-menu-root");
+        _numOfPlayersScreen = new NumberOfPlayersScreen(_root, gameData);
+        
         _titleScreen = _root.Q<VisualElement>("TitleScreen");
         _numOfRoundsScreen = _root.Q<VisualElement>("NumOfRoundsScreen");
-        _numOfPlayersScreen = _root.Q<VisualElement>("NumOfPlayerScreen");
         _characterSelectScreen = _root.Q<VisualElement>("CharacterSelectScreen");
 
         _titleScreenPlayButton = _titleScreen.Q<Button>("start-button");
         _numOfRoundsScreenConfirmButton = _numOfRoundsScreen.Q<Button>("rounds-button-confirm");
-        _numOfPlayersScreenConfirmButton = _numOfPlayersScreen.Q<Button>("num-of-players_confirm-button");
         _characterSelectConfirmButton = _characterSelectScreen.Q<Button>("character-confirm");
 
         // Registering to button click events that change the screen
         _titleScreenPlayButton.clicked += EnableNumOfPlayersScreen;
-        _numOfPlayersScreenConfirmButton.clicked += EnableCharacterSelectScreen;
+        _numOfPlayersScreen.ConfirmButton.clicked += EnableCharacterSelectScreen;
         _characterSelectConfirmButton.clicked += EnableNumOfRoundsScreen;
-
+        _numOfRoundsScreenConfirmButton.clicked += GoToGameScene;
         EnableTitleScreen();
     }
 
@@ -40,7 +45,7 @@ public class GameMenuScreenManager : MonoBehaviour
     {
         _titleScreen.style.display = DisplayStyle.Flex;
         _numOfRoundsScreen.style.display = DisplayStyle.None;
-        _numOfPlayersScreen.style.display = DisplayStyle.None;
+        _numOfPlayersScreen.Hide();
         _characterSelectScreen.style.display = DisplayStyle.None;
     }
 
@@ -48,7 +53,7 @@ public class GameMenuScreenManager : MonoBehaviour
     {
         _titleScreen.style.display = DisplayStyle.None;
         _numOfRoundsScreen.style.display = DisplayStyle.Flex;
-        _numOfPlayersScreen.style.display = DisplayStyle.None;
+        _numOfPlayersScreen.Hide();
         _characterSelectScreen.style.display = DisplayStyle.None;
     }
 
@@ -56,7 +61,7 @@ public class GameMenuScreenManager : MonoBehaviour
     {
         _titleScreen.style.display = DisplayStyle.None;
         _numOfRoundsScreen.style.display = DisplayStyle.None;
-        _numOfPlayersScreen.style.display = DisplayStyle.Flex;
+        _numOfPlayersScreen.Show();
         _characterSelectScreen.style.display = DisplayStyle.None;
     }
 
@@ -64,14 +69,20 @@ public class GameMenuScreenManager : MonoBehaviour
     {
         _titleScreen.style.display = DisplayStyle.None;
         _numOfRoundsScreen.style.display = DisplayStyle.None;
-        _numOfPlayersScreen.style.display = DisplayStyle.None;
+        _numOfPlayersScreen.Hide();
         _characterSelectScreen.style.display = DisplayStyle.Flex;
+    }
+
+    private void GoToGameScene()
+    {
+        sceneLoaderSystem.LoadSceneBySceneIDEnum(SceneID.Game);
     }
 
     void OnDisable()
     {
         _titleScreenPlayButton.clicked -= EnableNumOfPlayersScreen;
-        _numOfPlayersScreenConfirmButton.clicked -= EnableCharacterSelectScreen;
+        _numOfPlayersScreen.ConfirmButton.clicked -= EnableNumOfRoundsScreen;
         _characterSelectConfirmButton.clicked -= EnableNumOfRoundsScreen;
+        _numOfPlayersScreen.OnDispose();
     }
 }
