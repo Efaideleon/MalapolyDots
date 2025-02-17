@@ -8,37 +8,42 @@ public class GameMenuScreenManager : MonoBehaviour
     [SerializeField] private SceneLoadersSystem sceneLoaderSystem;
     [SerializeField] private GameData gameData;
     private VisualElement _root;
+    private const string GameMenuRoot = "game-menu-root";
 
     private NumberOfPlayersScreen _numOfPlayersScreen;
     private CharacterSelectionScreen _characterSelectionScreen;
     private TitleScreen _titleScreen;
-    
-    private VisualElement _numOfRoundsScreen;
-    private Button _numOfRoundsScreenConfirmButton;
+    private NumOfRoundsScreen _numOfRoundsScreen;
 
     void Start()
     {
-        _root = uiDocument.rootVisualElement.Q<VisualElement>("game-menu-root");
-        _numOfPlayersScreen = new NumberOfPlayersScreen(_root, gameData);
-        _titleScreen = new TitleScreen(_root); 
-        _characterSelectionScreen = new CharacterSelectionScreen(_root, gameData);
-        
-        _numOfRoundsScreen = _root.Q<VisualElement>("NumOfRoundsScreen");
-        _numOfRoundsScreenConfirmButton = _numOfRoundsScreen.Q<Button>("rounds-button-confirm");
+        gameData.Reset();
+        _root = uiDocument.rootVisualElement.Q<VisualElement>(GameMenuRoot);
+        InitializeScreens(_root);
+        SubscribeToEvents();
+        EnableTitleScreen();
+    }
 
-        // Registering to button click events that change the screen
+    private void SubscribeToEvents()
+    {
         _titleScreen.StartButton.clicked += EnableNumOfPlayersScreen;
         _numOfPlayersScreen.ConfirmButton.clicked += EnableCharacterSelectScreen;
         _characterSelectionScreen.ConfirmButton.clicked += EnableNumOfRoundsScreen;
-        
-        _numOfRoundsScreenConfirmButton.clicked += GoToGameScene;
-        EnableTitleScreen();
+        _numOfRoundsScreen.ConfirmButton.clicked += GoToGameScene;
+    }
+
+    private void InitializeScreens(VisualElement root)
+    {
+        _titleScreen = new TitleScreen(root); 
+        _numOfRoundsScreen = new NumOfRoundsScreen(root, gameData);
+        _numOfPlayersScreen = new NumberOfPlayersScreen(root, gameData);
+        _characterSelectionScreen = new CharacterSelectionScreen(root, gameData);
     }
 
     private void EnableTitleScreen()
     {
         _titleScreen.Show();
-        _numOfRoundsScreen.style.display = DisplayStyle.None;
+        _numOfRoundsScreen.Hide();
         _numOfPlayersScreen.Hide();
         _characterSelectionScreen.Hide();
     }
@@ -46,7 +51,7 @@ public class GameMenuScreenManager : MonoBehaviour
     private void EnableNumOfRoundsScreen()
     {
         _titleScreen.Hide();
-        _numOfRoundsScreen.style.display = DisplayStyle.Flex;
+        _numOfRoundsScreen.Show();
         _numOfPlayersScreen.Hide();
         _characterSelectionScreen.Hide();
     }
@@ -54,7 +59,7 @@ public class GameMenuScreenManager : MonoBehaviour
     private void EnableNumOfPlayersScreen()
     {
         _titleScreen.Hide();
-        _numOfRoundsScreen.style.display = DisplayStyle.None;
+        _numOfRoundsScreen.Hide();
         _numOfPlayersScreen.Show();
         _characterSelectionScreen.Hide();
     }
@@ -62,7 +67,7 @@ public class GameMenuScreenManager : MonoBehaviour
     private void EnableCharacterSelectScreen()
     {
         _titleScreen.Hide();
-        _numOfRoundsScreen.style.display = DisplayStyle.None;
+        _numOfRoundsScreen.Hide();
         _numOfPlayersScreen.Hide();
         _characterSelectionScreen.Show();
     }

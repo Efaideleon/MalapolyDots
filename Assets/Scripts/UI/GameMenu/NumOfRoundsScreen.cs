@@ -28,12 +28,12 @@ class NumOfRoundsScreen
         _button16Rounds.clicked += OnButton4Clicked;
     }
 
-    private void OnButton2Clicked() => SetNumberOfRounds(2);
-    private void OnButton3Clicked() => SetNumberOfRounds(3);
-    private void OnButton4Clicked() => SetNumberOfRounds(4);
+    private void OnButton2Clicked() => SetNumberOfRounds(8);
+    private void OnButton3Clicked() => SetNumberOfRounds(12);
+    private void OnButton4Clicked() => SetNumberOfRounds(16);
     private void SetNumberOfRounds(int numOfRounds)
     {
-        _gameData.numberOfPlayers = numOfRounds;
+        _gameData.numberOfRounds = numOfRounds;
     }
 
     public void OnDispose()
