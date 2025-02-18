@@ -10,7 +10,7 @@ public class LiraAuthoring : MonoBehaviour
         public override void Bake(LiraAuthoring authoring)
         {
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new LiraDataComponent { Name = authoring.Name});
+            AddComponent(entity, new NameDataComponent { Name = authoring.Name});
         }
     }
 }

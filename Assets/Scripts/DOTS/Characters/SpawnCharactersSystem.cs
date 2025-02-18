@@ -1,5 +1,6 @@
 using Unity.Entities;
 using DOTS;
+using Unity.Collections;
 
 public partial struct SpawnCharactersSystem : ISystem
 {
@@ -20,7 +21,16 @@ public partial struct SpawnCharactersSystem : ISystem
             for (int i = 0; i < gameDataBlob.CharactersSelected.Length; i++)
             {
                 ref BlobString characterName = ref gameDataBlob.CharactersSelected[i];
+                FixedString64Bytes characterNameFixed = default;
+                characterName.CopyTo(ref characterNameFixed);
+
+                foreach (var (charName, entity) in SystemAPI.Query<RefRO<NameDataComponent>>().WithEntityAccess())
+                {
+                    if (charName.ValueRO.Name == characterNameFixed)
+                    {}
+                }
             }
+
         }
 
         state.EntityManager.Instantiate(charactersComponent.avocado);

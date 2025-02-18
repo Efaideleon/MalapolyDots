@@ -10,7 +10,7 @@ public class AvocadoAuthoring : MonoBehaviour
         public override void Bake(AvocadoAuthoring authoring)
         {
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new AvocadoDataComponent { Name = authoring.Name});
+            AddComponent(entity, new NameDataComponent { Name = authoring.Name});
         }
     }
 }

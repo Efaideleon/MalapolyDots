@@ -10,7 +10,7 @@ public class BirdAuthoring : MonoBehaviour
         public override void Bake(BirdAuthoring authoring)
         {
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new BirdDataComponent { Name = authoring.Name});
+            AddComponent(entity, new NameDataComponent { Name = authoring.Name});
         }
     }
 }

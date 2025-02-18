@@ -10,7 +10,7 @@ public class TucTucAuthoring : MonoBehaviour
         public override void Bake(TucTucAuthoring authoring)
         {
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new TucTucDataComponent { Name = authoring.Name});
+            AddComponent(entity, new NameDataComponent { Name = authoring.Name});
         }
     }
 }

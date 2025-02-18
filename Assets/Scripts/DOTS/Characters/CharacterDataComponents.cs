@@ -1,6 +1,10 @@
 using Unity.Entities;
 using Unity.Collections;
 
+public struct NameDataComponent : IComponentData
+{
+    public FixedString64Bytes Name;
+}
 
 public struct AvocadoDataComponent : IComponentData
 {

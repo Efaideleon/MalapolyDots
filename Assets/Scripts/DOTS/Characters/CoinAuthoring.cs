@@ -10,7 +10,7 @@ public class CoinAuthoring : MonoBehaviour
         public override void Bake(CoinAuthoring authoring)
         {
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new CoinDataComponent { Name = authoring.Name});
+            AddComponent(entity, new NameDataComponent { Name = authoring.Name});
         }
     }
 }
