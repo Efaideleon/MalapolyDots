@@ -34,7 +34,7 @@ public class GameMenuScreenManager : MonoBehaviour
 
     private void InitializeScreens(VisualElement root)
     {
-        _titleScreen = new TitleScreen(root); 
+        _titleScreen = new TitleScreen(root);
         _numOfRoundsScreen = new NumOfRoundsScreen(root, gameData);
         _numOfPlayersScreen = new NumberOfPlayersScreen(root, gameData);
         _characterSelectionScreen = new CharacterSelectionScreen(root, gameData);
