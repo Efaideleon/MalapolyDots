@@ -6,16 +6,21 @@ public partial struct SpawnCharactersSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<CharactersComponent>();
+        state.RequireForUpdate<GameDataBlobComponent>();
     }
 
     public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
         var charactersComponent = SystemAPI.GetSingleton<CharactersComponent>();
-        foreach (var (gameDataBlobComponent, entity) in SystemAPI.Query<GameDataBlobComponent>().WithEntityAccess())
+        foreach (var gameDataComponent in SystemAPI.Query<RefRO<GameDataBlobComponent>>())
         {
-            ref var gameDataBlob = ref gameDataBlobComponent.gameDataBlob.Value;
-            int numOfPlayers = gameDataBlob.Values[0];
+            ref var gameDataBlob = ref gameDataComponent.ValueRO.gameDataBlob.Value;
+
+            for (int i = 0; i < gameDataBlob.CharactersSelected.Length; i++)
+            {
+                ref BlobString characterName = ref gameDataBlob.CharactersSelected[i];
+            }
         }
 
         state.EntityManager.Instantiate(charactersComponent.avocado);
