@@ -1,6 +1,7 @@
 using Unity.Entities;
 using DOTS;
 using Unity.Collections;
+using UnityEngine.Timeline;
 
 public partial struct SpawnCharactersSystem : ISystem
 {
@@ -13,21 +14,25 @@ public partial struct SpawnCharactersSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
-        var charactersComponent = SystemAPI.GetSingleton<CharactersComponent>();
+        // Get all the entities with a prefab component
+        NativeArray<Entity> characterEntities = SystemAPI.Query<RefRO<PrefabComponent>>().WithEntityAccess().ToEntityArray(Allocator.Temp);
         foreach (var gameDataComponent in SystemAPI.Query<RefRO<GameDataBlobComponent>>())
         {
             ref var gameDataBlob = ref gameDataComponent.ValueRO.gameDataBlob.Value;
 
             for (int i = 0; i < gameDataBlob.CharactersSelected.Length; i++)
             {
-                ref BlobString characterName = ref gameDataBlob.CharactersSelected[i];
-                FixedString64Bytes characterNameFixed = default;
-                characterName.CopyTo(ref characterNameFixed);
+                ref BlobString characterSelectedName = ref gameDataBlob.CharactersSelected[i];
+                FixedString64Bytes charSelectedNameFixed = default;
+                characterSelectedName.CopyTo(ref charSelectedNameFixed);
 
-                foreach (var (charName, entity) in SystemAPI.Query<RefRO<NameDataComponent>>().WithEntityAccess())
+                foreach (var characterEntity in characterEntities)
                 {
-                    if (charName.ValueRO.Name == characterNameFixed)
-                    {}
+                    // Get the name component from the entity
+                    if (characterEntity.ValueRO.Name == charSelectedNameFixed)
+                    {
+
+                    }
                 }
             }
 

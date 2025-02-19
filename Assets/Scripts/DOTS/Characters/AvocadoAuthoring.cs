@@ -3,6 +3,7 @@ using Unity.Entities;
 
 public class AvocadoAuthoring : MonoBehaviour
 {
+    [SerializeField] public GameObject prefab;
     [SerializeField] public string Name;
 
     public class AvocadoBaker : Baker<AvocadoAuthoring>
@@ -10,7 +11,8 @@ public class AvocadoAuthoring : MonoBehaviour
         public override void Bake(AvocadoAuthoring authoring)
         {
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new NameDataComponent { Name = authoring.Name});
+            AddComponent(entity, new PrefabComponent { prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic)});
+            AddComponent(entity, new NameDataComponent { Name = authoring.Name });
         }
     }
 }

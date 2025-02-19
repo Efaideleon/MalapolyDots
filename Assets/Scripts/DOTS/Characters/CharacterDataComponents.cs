@@ -6,6 +6,11 @@ public struct NameDataComponent : IComponentData
     public FixedString64Bytes Name;
 }
 
+public struct PrefabComponent : IComponentData
+{
+    public Entity prefab;
+}
+
 public struct AvocadoDataComponent : IComponentData
 {
     public FixedString64Bytes Name;
