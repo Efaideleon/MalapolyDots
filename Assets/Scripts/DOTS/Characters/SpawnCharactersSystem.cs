@@ -1,43 +1,44 @@
 using Unity.Entities;
+using UnityEngine;
 using DOTS;
 using Unity.Collections;
-using UnityEngine.Timeline;
+using Unity.Burst;
+using System.Linq;
 
 public partial struct SpawnCharactersSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<CharactersComponent>();
         state.RequireForUpdate<GameDataBlobComponent>();
+        //state.RequireForUpdate<PrefabComponent>();
+        //state.RequireForUpdate<NameDataComponent>();
+        Debug.Log("Testing");
     }
 
     public void OnUpdate(ref SystemState state)
     {
+        UnityEngine.Debug.Log("Something");
         state.Enabled = false;
-        // Get all the entities with a prefab component
-        NativeArray<Entity> characterEntities = SystemAPI.Query<RefRO<PrefabComponent>>().WithEntityAccess().ToEntityArray(Allocator.Temp);
-        foreach (var gameDataComponent in SystemAPI.Query<RefRO<GameDataBlobComponent>>())
+        EntityCommandBuffer entityCommandBuffer = new(Allocator.Temp);
+        var gameDataComponent = SystemAPI.GetSingleton<GameDataComponent>();
+        for (int i = 0; i < gameDataComponent.CharactersSelected.Length; i++)
         {
-            ref var gameDataBlob = ref gameDataComponent.ValueRO.gameDataBlob.Value;
+            var charSelectedNameFixed = gameDataComponent.CharactersSelected[i];
 
-            for (int i = 0; i < gameDataBlob.CharactersSelected.Length; i++)
+            foreach (var (prefabComp, nameComp) in SystemAPI.Query<RefRO<PrefabComponent>, RefRO<NameDataComponent>>())
             {
-                ref BlobString characterSelectedName = ref gameDataBlob.CharactersSelected[i];
-                FixedString64Bytes charSelectedNameFixed = default;
-                characterSelectedName.CopyTo(ref charSelectedNameFixed);
-
-                foreach (var characterEntity in characterEntities)
+                if (nameComp.ValueRO.Name == charSelectedNameFixed)
                 {
-                    // Get the name component from the entity
-                    if (characterEntity.ValueRO.Name == charSelectedNameFixed)
-                    {
-
-                    }
+                    entityCommandBuffer.Instantiate(prefabComp.ValueRO.prefab);
                 }
             }
-
         }
+        entityCommandBuffer.Playback(state.EntityManager);
+    }
 
-        state.EntityManager.Instantiate(charactersComponent.avocado);
+    [BurstDiscard]
+    static void DebugLog(string message)
+    {
+        Debug.Log(message);
     }
 }
