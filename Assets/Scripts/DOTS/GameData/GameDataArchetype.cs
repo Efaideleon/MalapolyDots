@@ -5,5 +5,12 @@ public struct GameDataComponent : IComponentData
 {
     public int NumberOfRounds;
     public int NumberOfPlayers;
-    public NativeArray<FixedString32Bytes> CharactersSelected;
 }
+
+public struct CharacterSelectedBuffer : IBufferElementData
+{
+    public FixedString32Bytes Value;
+}
+
+public struct PrefabTag : IComponentData
+{}

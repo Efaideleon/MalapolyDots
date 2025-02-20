@@ -1,39 +1,38 @@
 using Unity.Entities;
 using UnityEngine;
 using DOTS;
-using Unity.Collections;
 using Unity.Burst;
-using System.Linq;
 
 public partial struct SpawnCharactersSystem : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<GameDataBlobComponent>();
-        //state.RequireForUpdate<PrefabComponent>();
-        //state.RequireForUpdate<NameDataComponent>();
+        state.RequireForUpdate<GameDataComponent>();
         Debug.Log("Testing");
     }
 
+    //[BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        UnityEngine.Debug.Log("Something");
         state.Enabled = false;
-        EntityCommandBuffer entityCommandBuffer = new(Allocator.Temp);
-        var gameDataComponent = SystemAPI.GetSingleton<GameDataComponent>();
-        for (int i = 0; i < gameDataComponent.CharactersSelected.Length; i++)
+        foreach (var (gameDataComponent, entity) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
         {
-            var charSelectedNameFixed = gameDataComponent.CharactersSelected[i];
-
-            foreach (var (prefabComp, nameComp) in SystemAPI.Query<RefRO<PrefabComponent>, RefRO<NameDataComponent>>())
+            var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entity);
+            foreach (var characterNameElement in charactersbuffer)
             {
-                if (nameComp.ValueRO.Name == charSelectedNameFixed)
+                Debug.Log($"character: {characterNameElement.Value}");
+                foreach (var (prefabTag, NameComponent, prefabEntity) in SystemAPI.Query<RefRO<PrefabTag>, RefRO<NameDataComponent>>().WithEntityAccess())
                 {
-                    entityCommandBuffer.Instantiate(prefabComp.ValueRO.prefab);
+                    if (NameComponent.ValueRO.Name == characterNameElement.Value)
+                    {
+                        Debug.Log($"Instantiating prefab: {NameComponent.ValueRO.Name}");
+                        state.EntityManager.Instantiate(prefabEntity);
+                    }
                 }
             }
+            Debug.Log($"{gameDataComponent.ValueRO.NumberOfPlayers}");
         }
-        entityCommandBuffer.Playback(state.EntityManager);
     }
 
     [BurstDiscard]

@@ -1,38 +1,38 @@
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using System.Collections.Generic;
+using Unity.Transforms;
 
 namespace DOTS
 {
     public class GameDataSOAuthoring : MonoBehaviour
     {
-        [SerializeField] GameData gameData;
+        [SerializeField] GameData gameDataSO;
 
-        public class GameDataBlobBaker : Baker<GameDataSOAuthoring>
+        void Start()
         {
-            public override void Bake(GameDataSOAuthoring authoring)
+            Debug.Log("Start in GameDataSOAuthoring");
+            EntityManager entityManger = World.DefaultGameObjectInjectionWorld.EntityManager;
+            var entity = entityManger.CreateEntity();
+
+            var gameDataComponent = new GameDataComponent
             {
-                var entity = GetEntity(TransformUsageFlags.None);
+                NumberOfRounds = gameDataSO.numberOfRounds,
+                NumberOfPlayers = gameDataSO.numberOfPlayers,
+            };
 
-                NativeArray<FixedString32Bytes> charactersSelectedNativeArr = new (
-                    authoring.gameData.charactersSelected.Count,
-                    Allocator.Persistent
-                );
-
-                for (int i = 0; i < authoring.gameData.charactersSelected.Count; i++)
+            var buffer = entityManger.AddBuffer<CharacterSelectedBuffer>(entity);
+            foreach (var characterSelected in gameDataSO.charactersSelected)
+            {
+                buffer.Add(new CharacterSelectedBuffer
                 {
-                    FixedString32Bytes fixedString = default;
-                    fixedString.CopyFrom(authoring.gameData.charactersSelected[i]);
-                    charactersSelectedNativeArr[i] = fixedString;
-                }
-
-                AddComponent(entity, new GameDataComponent
-                {
-                    NumberOfRounds = authoring.gameData.numberOfRounds,
-                    NumberOfPlayers = authoring.gameData.numberOfPlayers,
-                    CharactersSelected = charactersSelectedNativeArr
+                    Value = characterSelected, // Bogus: assigning a string to a FixedString.
                 });
             }
+
+            entityManger.AddComponent<GameDataComponent>(entity);
+            entityManger.SetComponentData(entity, gameDataComponent);
         }
     }
 }

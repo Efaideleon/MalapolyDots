@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1221294027
+--- !u!1 &1593813897
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,43 +127,56 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1221294029}
-  - component: {fileID: 1221294028}
+  - component: {fileID: 1593813898}
+  - component: {fileID: 1593813899}
   m_Layer: 0
-  m_Name: GameDataAuthoring
+  m_Name: ChractersAuthoring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1221294028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1221294027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6398cb7da5e5497c91b5266ff9b92e5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameData: {fileID: 11400000, guid: 271a00751e9d64180a1eb096204a0f89, type: 2}
---- !u!4 &1221294029
+--- !u!4 &1593813898
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1221294027}
+  m_GameObject: {fileID: 1593813897}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -24.642038, y: 10.788338, z: -27.07661}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1593813899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593813897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2333a106ba875442a9bc92cb082e9581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterNames:
+  - Avocado
+  - Bird
+  - Mug
+  - Coin
+  - Lira
+  - TucTuc
+  characterPrefabs:
+  - {fileID: 1437527305868509317, guid: 243fbc57cf7d0455f826edfdcae79ab0, type: 3}
+  - {fileID: 2932102344676010416, guid: a164add103ab9404c8b60963809142cd, type: 3}
+  - {fileID: 2335879554087428046, guid: ac99846991266456387fa9f6e228ff32, type: 3}
+  - {fileID: 834787314817034854, guid: c4bd09c0e2b10425292c6669f9307719, type: 3}
+  - {fileID: 4072373378481227395, guid: 9479c2c325bd2420aa3cd23b8f0181ab, type: 3}
+  - {fileID: 269774476757490099, guid: 9c2702a1cc0a94861ab482cb7a8b1b50, type: 3}
 --- !u!33 &46896125807742379
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7276,7 +7289,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1593813898}
   - {fileID: 6559166738311306388}
   - {fileID: 8198769930151593775}
   - {fileID: 5126086911272447453}
-  - {fileID: 1221294029}
