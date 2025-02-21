@@ -1,38 +1,26 @@
-using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
 public class CharactersAuthoring : MonoBehaviour
 {
-    [Header("Characters Names")] 
-    [SerializeField] public string[] characterNames;
-    
-    [Header("Character Prefabs")]
-    [SerializeField] public GameObject[] characterPrefabs;
+    [SerializeField] public string charName;
+    [SerializeField] public GameObject prefab;
 
     class CharactersBaker : Baker<CharactersAuthoring>
     {
         public override void Bake(CharactersAuthoring authoring)
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.None);
-            for (int i = 0; i < authoring.characterNames.Length; i++)
-            {
-                var characterPrefab = authoring.characterPrefabs[i];
-                var characterName = authoring.characterNames[i];
-                var charEntity = GetEntity(characterPrefab, TransformUsageFlags.Dynamic);
-                AddComponent(entity, new NameDataComponent { Name = characterName });
-                AddComponent(entity, new PrefabTag());
-            }
+            var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
+            var prefabEntity = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic);
+
+            AddComponent(authoringEntity, new PrefabReferenceComponent { Value = prefabEntity });
+            AddComponent(authoringEntity, new NameDataComponent{ Name = authoring.charName });
+            AddComponent(authoringEntity, new PrefabTag());
         }
     }
 }
 
-public struct CharactersEntities : IComponentData
+public struct PrefabReferenceComponent : IComponentData
 {
-    public Entity AvocadoEntity;
-    public Entity LiraEntity;
-    public Entity CoinEntity;
-    public Entity MugEntity;
-    public Entity BirdEntity;
-    public Entity TucTucEntity;
+    public Entity Value;
 }
