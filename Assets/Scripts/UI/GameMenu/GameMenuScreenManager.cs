@@ -28,7 +28,7 @@ public class GameMenuScreenManager : MonoBehaviour
     {
         _titleScreen.StartButton.clicked += EnableNumOfPlayersScreen;
         _numOfPlayersScreen.ConfirmButton.clicked += EnableCharacterSelectScreen;
-        _characterSelectionScreen.ConfirmButton.clicked += EnableNumOfRoundsScreen;
+        _characterSelectionScreen.OnAllCharactersSelected += EnableNumOfRoundsScreen;
         _numOfRoundsScreen.ConfirmButton.clicked += GoToGameScene;
     }
 
@@ -81,7 +81,7 @@ public class GameMenuScreenManager : MonoBehaviour
     {
         _titleScreen.StartButton.clicked -= EnableNumOfPlayersScreen;
         _numOfPlayersScreen.ConfirmButton.clicked -= EnableNumOfRoundsScreen;
-        _characterSelectionScreen.ConfirmButton.clicked -= EnableNumOfRoundsScreen;
+        _characterSelectionScreen.OnAllCharactersSelected -= EnableNumOfRoundsScreen;
         _numOfPlayersScreen.OnDispose();
     }
 }

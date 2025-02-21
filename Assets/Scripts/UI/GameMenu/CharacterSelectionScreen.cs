@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine.UIElements;
-
 
 class CharacterSelectionScreen
 {
@@ -14,7 +10,7 @@ class CharacterSelectionScreen
         private const string LiraName = "Lira";
         private const string MugName = "Mug";
         private const string TucTucName = "TucTuc";
-        
+
         private readonly VisualElement _root;
         private readonly Button _avocado;
         private readonly Button _bird;
@@ -26,9 +22,14 @@ class CharacterSelectionScreen
         private readonly GameData _gameData;
         private string _selectedCharacter;
 
+        private int _numOfCharactersSelected = 0;
+
+        public Action OnAllCharactersSelected;
+
         public CharacterSelectionScreen(VisualElement root, GameData gameData)
         {
             _gameData = gameData;
+
             _root = root.Q<VisualElement>("CharacterSelectScreen");
             _avocado = _root.Q<Button>("character-one-button");
             _bird = _root.Q<Button>("character-two-button");
@@ -58,10 +59,17 @@ class CharacterSelectionScreen
         {
             _selectedCharacter = characterName;
         }
-        
+
+        // if there is more than 1 player then move to the next player.
+        // otherwise move the next screen
         private void OnConfirmClicked()
         {
             _gameData.charactersSelected.Add(_selectedCharacter);
+            _numOfCharactersSelected++;
+            if (_numOfCharactersSelected >= _gameData.numberOfPlayers)
+            {
+                OnAllCharactersSelected?.Invoke();
+            }
         }
 
         public void OnDispose()
