@@ -21,7 +21,7 @@ public partial struct SpawnCharactersSystem : ISystem
     {
         state.Enabled = false;
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
-        float3 spawnPosition = new (0f, 0f, 0f);
+        float3 spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
         foreach (var (gameDataComponent, entity) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
         {
             var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entity);
