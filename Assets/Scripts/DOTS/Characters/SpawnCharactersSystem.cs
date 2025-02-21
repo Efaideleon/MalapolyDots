@@ -3,6 +3,8 @@ using Unity.Collections;
 using UnityEngine;
 using DOTS;
 using Unity.Burst;
+using Unity.Transforms;
+using Unity.Mathematics;
 
 public partial struct SpawnCharactersSystem : ISystem
 {
@@ -19,6 +21,7 @@ public partial struct SpawnCharactersSystem : ISystem
     {
         state.Enabled = false;
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
+        float3 spawnPosition = new (0f, 0f, 0f);
         foreach (var (gameDataComponent, entity) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
         {
             var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entity);
@@ -29,7 +32,13 @@ public partial struct SpawnCharactersSystem : ISystem
                 {
                     if (NameComponent.ValueRO.Name == characterNameElement.Value)
                     {
-                        ecb.Instantiate(prefabReference.ValueRW.Value);
+                        var instance = ecb.Instantiate(prefabReference.ValueRW.Value);
+                        ecb.SetComponent(instance, new LocalTransform
+                        {
+                            Position = spawnPosition,
+                            Rotation = quaternion.identity,
+                            Scale = 1f
+                        });
                     }
                 }
             }
