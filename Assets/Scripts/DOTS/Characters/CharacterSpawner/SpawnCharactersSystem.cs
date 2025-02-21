@@ -22,11 +22,16 @@ public partial struct SpawnCharactersSystem : ISystem
         state.Enabled = false;
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
         float3 spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
+
         foreach (var (gameDataComponent, entity) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
         {
             var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entity);
-            foreach (var characterNameElement in charactersbuffer)
+            NativeArray<float3> positions = new(charactersbuffer.Length, Allocator.Temp);
+            CalculatePositions(positions, spawnPosition, 4);
+
+            for (int i = 0; i < charactersbuffer.Length; i++)
             {
+                var characterNameElement = charactersbuffer[i];
                 foreach (var (prefabReference, NameComponent) in
                         SystemAPI.Query<RefRW<PrefabReferenceComponent>, RefRW<NameDataComponent>>())
                 {
@@ -35,7 +40,7 @@ public partial struct SpawnCharactersSystem : ISystem
                         var instance = ecb.Instantiate(prefabReference.ValueRW.Value);
                         ecb.SetComponent(instance, new LocalTransform
                         {
-                            Position = spawnPosition,
+                            Position = positions[i],
                             Rotation = quaternion.identity,
                             Scale = 1f
                         });
@@ -47,9 +52,18 @@ public partial struct SpawnCharactersSystem : ISystem
         ecb.Dispose();
     }
 
-    [BurstDiscard]
-    static void DebugLog(string message)
+    private readonly void CalculatePositions(NativeArray<float3> positions, float3 spawnPosition, float radius)
     {
-        Debug.Log(message);
+        for (int i = 0; i < positions.Length; i++)
+        {
+            float angle = i * Mathf.PI * 2f / positions.Length;
+
+            // following cartesian plane
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+
+            // following unity plane
+            positions[i] = new float3(x, 0f, y) + spawnPosition;
+        }
     }
 }
