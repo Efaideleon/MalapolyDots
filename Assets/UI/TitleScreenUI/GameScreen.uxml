@@ -8,7 +8,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="player-overview_right-container" style="flex-grow: 1; align-self: auto; justify-content: center; align-items: flex-end; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
             <ui:VisualElement name="player-overview_money-label-container" style="flex-grow: 1; align-items: center; justify-content: center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-color: rgb(250, 237, 237);">
-                <ui:Label name="player-money-label" data-source="project://database/Assets/ScriptableObjects/UI/GameScreenUIData.asset?fileID=11400000&amp;guid=a1402f66bc8aa49a1b35d9611468ec13&amp;type=2#GameScreenUIData" data-source-path="PlayerName" class="player-overview_player-name-label" />
+                <ui:Label name="player-money-label" class="player-overview_player-name-label" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
