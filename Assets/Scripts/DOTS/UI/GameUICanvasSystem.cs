@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,7 +22,14 @@ public partial struct GameUICanvasSystem : ISystem
 
         Label playerNameLabel = gameScreenTopRoot.Q<Label>("player-name-label");
 
-        playerNameLabel.text = "ABEL";
-
+        VisualElement rollContainer = gameScreenBotRoot.Q<VisualElement>("roll-display-container");
+        VisualElement youBoughtContainer = gameScreenBotRoot.Q<VisualElement>("you-bought-display-container");
+        VisualElement taxContainer = gameScreenBotRoot.Q<VisualElement>("tax-display-container");
+        VisualElement jailContainer = gameScreenBotRoot.Q<VisualElement>("jail-display-container");
+        VisualElement goToJailContainer = gameScreenBotRoot.Q<VisualElement>("go-to-jail-display-container");
+        VisualElement chanceContainer = gameScreenBotRoot.Q<VisualElement>("chance-display-container");
+        VisualElement goContainer = gameScreenBotRoot.Q<VisualElement>("go-display-container");
+        VisualElement parkingContainer = gameScreenBotRoot.Q<VisualElement>("parking-display-container");
+        VisualElement treasureContainer = gameScreenBotRoot.Q<VisualElement>("treasure-display-container");
     }
 }
