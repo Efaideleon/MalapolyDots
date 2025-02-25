@@ -13,7 +13,7 @@ public class SpawnerAuthoring : MonoBehaviour
         {
             var entity = GetEntity(authoring, TransformUsageFlags.None);
             float3 spawnPosition = authoring.spawnPoint.transform.position;
-            AddComponent(entity, new SpawnPointComponent { Position = spawnPosition});
+            AddComponent(entity, new SpawnPointComponent { Position = spawnPosition });
         }
     }
 }

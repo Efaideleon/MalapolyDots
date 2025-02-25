@@ -1,3 +1,4 @@
+using System.IO.Pipes;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -31,5 +32,23 @@ public partial struct GameUICanvasSystem : ISystem
         VisualElement goContainer = gameScreenBotRoot.Q<VisualElement>("go-display-container");
         VisualElement parkingContainer = gameScreenBotRoot.Q<VisualElement>("parking-display-container");
         VisualElement treasureContainer = gameScreenBotRoot.Q<VisualElement>("treasure-display-container");
+
+        rollContainer.style.display = DisplayStyle.None;
+        youBoughtContainer.style.display = DisplayStyle.None;
+        taxContainer.style.display = DisplayStyle.None;
+        jailContainer.style.display = DisplayStyle.None;
+        goToJailContainer.style.display = DisplayStyle.None;
+        chanceContainer.style.display = DisplayStyle.None;
+        goContainer.style.display = DisplayStyle.None;
+        parkingContainer.style.display = DisplayStyle.None;
+        treasureContainer.style.display = DisplayStyle.None;
+
+        foreach (var (turnComponent, nameComponent) in SystemAPI.Query<RefRO<TurnComponent>, RefRO<NameDataComponent>>())
+        {
+            if (turnComponent.ValueRO.IsCurrentActivePlayer)
+            {
+                playerNameLabel.text = nameComponent.ValueRO.Name.ToString();
+            }
+        }
     }
 }

@@ -23,17 +23,19 @@ public partial struct SpawnCharactersSystem : ISystem
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
         float3 spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
 
-        foreach (var (gameDataComponent, entity) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
+        // Entity for the Scriptable Object.
+        foreach (var (gameDataComponent, entityDataSO) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
         {
-            var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entity);
+            var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entityDataSO);
             NativeArray<float3> positions = new(charactersbuffer.Length, Allocator.Temp);
             CalculatePositions(positions, spawnPosition, 4);
 
             for (int i = 0; i < charactersbuffer.Length; i++)
             {
                 var characterNameElement = charactersbuffer[i];
-                foreach (var (prefabReference, NameComponent) in
-                        SystemAPI.Query<RefRW<PrefabReferenceComponent>, RefRW<NameDataComponent>>())
+                // Getting components for character entity
+                foreach (var (prefabReference, NameComponent, turnComponent, characterEntity) in
+                        SystemAPI.Query<RefRW<PrefabReferenceComponent>, RefRW<NameDataComponent>, RefRW<TurnComponent>>().WithEntityAccess())
                 {
                     if (NameComponent.ValueRO.Name == characterNameElement.Value)
                     {
@@ -44,6 +46,13 @@ public partial struct SpawnCharactersSystem : ISystem
                             Rotation = quaternion.identity,
                             Scale = 1f
                         });
+
+                        // The first player in the list has the first turn.
+                        if (i == 0)
+                        {
+                            ecb.SetComponent(characterEntity, new TurnComponent { IsCurrentActivePlayer = true });
+                        }
+
                     }
                 }
             }
