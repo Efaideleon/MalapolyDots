@@ -31,6 +31,5 @@ public partial struct GamePlaySystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-
     }
 }

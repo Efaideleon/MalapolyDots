@@ -23,6 +23,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<CanvasReferenceComponent>();
+        state.RequireForUpdate<GameStateComponent>();
     }
 
     public void OnStartRunning(ref SystemState state)
@@ -70,6 +71,17 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             if (turnComponent.ValueRO.IsCurrentActivePlayer)
             {
                 playerNameLabel.text = nameComponent.ValueRO.Name.ToString();
+            }
+        }
+
+        foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
+        {
+            switch (gameState.ValueRO.State)
+            {
+                case GameState.Rolling:
+                   canvasVisualElements.rollContainer.style.display = DisplayStyle.Flex;
+                   Debug.Log("showing roll button");
+                   break;
             }
         }
     }
