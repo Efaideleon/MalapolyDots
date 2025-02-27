@@ -1,6 +1,7 @@
 using Unity.Collections;
 using Unity.Entities;
 
+// Blob Asset?
 public struct GameDataComponent : IComponentData
 {
     public int NumberOfRounds;
