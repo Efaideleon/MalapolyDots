@@ -1,21 +1,30 @@
 using Unity.Entities;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GameUIVisualElementComponent : IComponentData
+public struct RollAmountComponent : IComponentData
 {
-    public VisualElement gameScreenTopRoot;
-    public VisualElement gameScreenBotRoot;
-    public VisualElement rollContainer;
-    public VisualElement youBoughtContainer;
-    public VisualElement taxContainer;
-    public VisualElement jailContainer;
-    public VisualElement goToJailContainer;
-    public VisualElement chanceContainer;
-    public VisualElement goContainer;
-    public VisualElement parkingContainer;
-    public VisualElement treasureContainer;
-    public Label playerNameLabel;
+    public int amount;
+}
+
+public class GameUIElementsComponent : IComponentData
+{
+    public VisualElement TopPanelRoot;
+    public VisualElement BotPanelRoot;
+    public VisualElement RollPanel;
+    public VisualElement YouBoughtPanel;
+    public VisualElement TaxPanel;
+    public VisualElement JailPanel;
+    public VisualElement GoToJailPanel;
+    public VisualElement ChancePanel;
+    public VisualElement GoPanel;
+    public VisualElement ParkingPanel;
+    public VisualElement TreasurePanel;
+    public Label PlayerNameLabel;
+    public Button RollButton;
+    public Action OnRollButton;
+    public Label RollLabel;
 }
 
 public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
@@ -28,43 +37,56 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
     public void OnStartRunning(ref SystemState state)
     {
-        var canvasReference = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
-        var uiDocument = Object.Instantiate(canvasReference.uiDocumentGO).GetComponent<UIDocument>();
+        var canvasRef = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
+        var uiDocument = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO).GetComponent<UIDocument>();
 
-        var gameUIVisualElementComponent = new GameUIVisualElementComponent
+        var gameUIElementsComponent = new GameUIElementsComponent
         {
-            gameScreenTopRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container"),
-            gameScreenBotRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container"),
+            TopPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container"),
+            BotPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container"),
         };
 
-        state.EntityManager.AddComponentObject(state.SystemHandle, gameUIVisualElementComponent);
+        state.EntityManager.AddComponentObject(state.SystemHandle, gameUIElementsComponent);
 
-        gameUIVisualElementComponent.rollContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("roll-display-container");
-        gameUIVisualElementComponent.youBoughtContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("you-bought-display-container");
-        gameUIVisualElementComponent.taxContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("tax-display-container");
-        gameUIVisualElementComponent.jailContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("jail-display-container");
-        gameUIVisualElementComponent.goToJailContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("go-to-jail-display-container");
-        gameUIVisualElementComponent.chanceContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("chance-display-container");
-        gameUIVisualElementComponent.goContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("go-display-container");
-        gameUIVisualElementComponent.parkingContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("parking-display-container");
-        gameUIVisualElementComponent.treasureContainer = gameUIVisualElementComponent.gameScreenBotRoot.Q<VisualElement>("treasure-display-container");
+        gameUIElementsComponent.RollPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("roll-display-container");
+        gameUIElementsComponent.YouBoughtPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("you-bought-display-container");
+        gameUIElementsComponent.TaxPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("tax-display-container");
+        gameUIElementsComponent.JailPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("jail-display-container");
+        gameUIElementsComponent.GoToJailPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("go-to-jail-display-container");
+        gameUIElementsComponent.ChancePanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("chance-display-container");
+        gameUIElementsComponent.GoPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("go-display-container");
+        gameUIElementsComponent.ParkingPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("parking-display-container");
+        gameUIElementsComponent.TreasurePanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("treasure-display-container");
+        gameUIElementsComponent.RollLabel = gameUIElementsComponent.BotPanelRoot.Q<Label>("roll-amount-label");
+        gameUIElementsComponent.RollButton = gameUIElementsComponent.RollPanel.Q<Button>("roll-button");
 
-        gameUIVisualElementComponent.rollContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.youBoughtContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.taxContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.jailContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.goToJailContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.chanceContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.goContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.parkingContainer.style.display = DisplayStyle.None;
-        gameUIVisualElementComponent.treasureContainer.style.display = DisplayStyle.None;
+        gameUIElementsComponent.RollPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.YouBoughtPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.TaxPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.JailPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.GoToJailPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.ChancePanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.GoPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.ParkingPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.TreasurePanel.style.display = DisplayStyle.None;
+
+        var rollAmountEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
+        {
+            ComponentType.ReadOnly<RollAmountComponent>(),
+        });
+
+        gameUIElementsComponent.OnRollButton = () =>
+        {
+            gameUIElementsComponent.RollLabel.text = "5";
+            gameUIElementsComponent.RollButton.style.display = DisplayStyle.None;
+        };
+        gameUIElementsComponent.RollButton.clickable.clicked += gameUIElementsComponent.OnRollButton;
     }
-
 
     public void OnUpdate(ref SystemState state)
     {
-        var canvasVisualElements = SystemAPI.ManagedAPI.GetComponent<GameUIVisualElementComponent>(state.SystemHandle);
-        Label playerNameLabel = canvasVisualElements.gameScreenTopRoot.Query<Label>("player-name-label");
+        var canvasVisualElements = SystemAPI.ManagedAPI.GetComponent<GameUIElementsComponent>(state.SystemHandle);
+        Label playerNameLabel = canvasVisualElements.TopPanelRoot.Query<Label>("player-name-label");
 
         foreach (var (turnComponent, nameComponent) in SystemAPI.Query<RefRO<TurnComponent>, RefRO<NameDataComponent>>())
         {
@@ -79,12 +101,17 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             switch (gameState.ValueRO.State)
             {
                 case GameState.Rolling:
-                   canvasVisualElements.rollContainer.style.display = DisplayStyle.Flex;
-                   Debug.Log("showing roll button");
-                   break;
+                    canvasVisualElements.RollPanel.style.display = DisplayStyle.Flex;
+                    Debug.Log("showing roll button");
+                    break;
             }
         }
     }
 
-    public void OnStopRunning(ref SystemState state) { }
+    public void OnStopRunning(ref SystemState state)
+    {
+        var canvasVisualElements = SystemAPI.ManagedAPI.GetComponent<GameUIElementsComponent>(state.SystemHandle);
+        canvasVisualElements.RollButton.clickable.clicked -= canvasVisualElements.OnRollButton;
+    }
 }
+
