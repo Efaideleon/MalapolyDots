@@ -19,6 +19,7 @@ public class CharactersAuthoring : MonoBehaviour
             AddComponent(authoringEntity, new NameDataComponent{ Name = authoring.charName });
             AddComponent(authoringEntity, new TurnComponent{ IsActive = false });
             AddComponent(authoringEntity, new PrefabTag());
+            AddComponent(authoringEntity, new WayPointsBufferIndex{ Index = 0 } );
         }
     }
 }
@@ -41,5 +42,10 @@ public struct PrefabComponent : IComponentData
 public struct TurnComponent : IComponentData
 {
     public bool IsActive;
+}
+
+public struct WayPointsBufferIndex : IComponentData
+{
+    public int Index;
 }
 

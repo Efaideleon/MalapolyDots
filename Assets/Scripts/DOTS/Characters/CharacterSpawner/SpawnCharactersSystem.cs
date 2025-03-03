@@ -1,7 +1,6 @@
 using Unity.Entities;
 using Unity.Collections;
 using UnityEngine;
-using DOTS;
 using Unity.Burst;
 using Unity.Transforms;
 using Unity.Mathematics;
@@ -13,13 +12,14 @@ public partial struct SpawnCharactersSystem : ISystem
     {
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<PrefabReferenceComponent>();
-        Debug.Log("Testing");
+        state.RequireForUpdate<WayPointsTag>();
     }
 
-    [BurstCompile]
+    //[BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
+        Debug.Log("Spawning...");
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
         float3 spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
 

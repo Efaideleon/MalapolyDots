@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public struct RollAmountComponent : IComponentData
 {
-    public int amount;
+    public int Amount;
 }
 
 public class GameUIElementsComponent : IComponentData
@@ -77,15 +77,15 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         var rollAmountComponent = new RollAmountComponent
         {
-            amount = 0,
+            Amount = 0,
         };
 
         SystemAPI.SetComponent(rollAmountEntity, rollAmountComponent);
 
         gameUIElementsComponent.OnRollButton = () =>
         {
-            rollAmountComponent.amount = UnityEngine.Random.Range(1, 6);
-            gameUIElementsComponent.RollLabel.text = rollAmountComponent.amount.ToString();
+            rollAmountComponent.Amount = UnityEngine.Random.Range(1, 6);
+            gameUIElementsComponent.RollLabel.text = rollAmountComponent.Amount.ToString();
             gameUIElementsComponent.RollButton.style.display = DisplayStyle.None;
         };
         gameUIElementsComponent.RollButton.clickable.clicked += gameUIElementsComponent.OnRollButton;
