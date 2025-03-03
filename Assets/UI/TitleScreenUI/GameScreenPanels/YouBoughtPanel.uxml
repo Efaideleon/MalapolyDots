@@ -1,0 +1,8 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="you-bought-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
+        <engine:VisualElement name="you-bought-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
+            <engine:Label text="lorem ipsum" name="you-bought-label" style="font-size: 30%;" />
+            <engine:Button text="OK" name="you-bought-ok-button" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

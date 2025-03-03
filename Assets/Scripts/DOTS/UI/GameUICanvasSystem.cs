@@ -48,15 +48,16 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         state.EntityManager.AddComponentObject(state.SystemHandle, gameUIElementsComponent);
 
-        gameUIElementsComponent.RollPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("roll-display-container");
-        gameUIElementsComponent.YouBoughtPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("you-bought-display-container");
-        gameUIElementsComponent.TaxPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("tax-display-container");
-        gameUIElementsComponent.JailPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("jail-display-container");
-        gameUIElementsComponent.GoToJailPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("go-to-jail-display-container");
-        gameUIElementsComponent.ChancePanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("chance-display-container");
-        gameUIElementsComponent.GoPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("go-display-container");
-        gameUIElementsComponent.ParkingPanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("parking-display-container");
-        gameUIElementsComponent.TreasurePanel = gameUIElementsComponent.BotPanelRoot.Q<VisualElement>("treasure-display-container");
+        gameUIElementsComponent.RollPanel = gameUIElementsComponent.BotPanelRoot.Q("RollPanel");
+        gameUIElementsComponent.YouBoughtPanel = gameUIElementsComponent.BotPanelRoot.Q("PopupMenuPanel");
+        gameUIElementsComponent.TaxPanel = gameUIElementsComponent.BotPanelRoot.Q("TaxPanel");
+        gameUIElementsComponent.JailPanel = gameUIElementsComponent.BotPanelRoot.Q("JailPanel");
+        gameUIElementsComponent.GoToJailPanel = gameUIElementsComponent.BotPanelRoot.Q("GoToJailPanel");
+        gameUIElementsComponent.ChancePanel = gameUIElementsComponent.BotPanelRoot.Q("ChancePanel");
+        gameUIElementsComponent.GoPanel = gameUIElementsComponent.BotPanelRoot.Q("GoPanel");
+        gameUIElementsComponent.ParkingPanel = gameUIElementsComponent.BotPanelRoot.Q("ParkingPanel");
+        gameUIElementsComponent.TreasurePanel = gameUIElementsComponent.BotPanelRoot.Q("TreasurePanel");
+
         gameUIElementsComponent.RollLabel = gameUIElementsComponent.BotPanelRoot.Q<Label>("roll-amount-label");
         gameUIElementsComponent.RollButton = gameUIElementsComponent.RollPanel.Q<Button>("roll-button");
 

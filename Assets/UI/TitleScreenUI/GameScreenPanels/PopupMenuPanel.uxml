@@ -1,0 +1,13 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="popup-menu-container" enabled="true" style="flex-grow: 1; height: 100%; width: 50%; background-color: rgba(255, 70, 6, 0); align-items: center; justify-content: center; visibility: visible; display: none; overflow: visible; position: absolute;">
+        <engine:VisualElement name="popup-menu" style="height: 20%; width: 40%; background-color: rgb(255, 255, 255); flex-shrink: 1; flex-grow: 0;">
+            <engine:VisualElement name="popup-menu-label-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; height: 60%;">
+                <engine:Label text="Sample Text?" name="buy-popup-menu-label" style="font-size: 25%;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="popup-menu-buttons-container" style="flex-grow: 1; flex-direction: row; justify-content: space-around; align-self: auto; height: 40%; font-size: 15px; align-content: stretch;">
+                <engine:Button text="Decline" name="popup-menu-decline-button" style="min-width: 20%; max-width: 80%; max-height: 50%; min-height: 20%;" />
+                <engine:Button text="Accept" name="popup-menu-accept-button" style="max-width: 80%; min-width: 20%; max-height: 50%; min-height: 20%;" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
