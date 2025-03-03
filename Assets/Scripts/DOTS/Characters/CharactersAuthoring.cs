@@ -17,7 +17,7 @@ public class CharactersAuthoring : MonoBehaviour
 
             AddComponent(authoringEntity, new PrefabReferenceComponent { Value = prefabEntity });
             AddComponent(authoringEntity, new NameDataComponent{ Name = authoring.charName });
-            AddComponent(authoringEntity, new TurnComponent{ IsCurrentActivePlayer = false });
+            AddComponent(authoringEntity, new TurnComponent{ IsActive = false });
             AddComponent(authoringEntity, new PrefabTag());
         }
     }
@@ -40,6 +40,6 @@ public struct PrefabComponent : IComponentData
 
 public struct TurnComponent : IComponentData
 {
-    public bool IsCurrentActivePlayer;
+    public bool IsActive;
 }
 

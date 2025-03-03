@@ -32,49 +32,49 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="you-bought-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="you-bought-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="you-bought-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="you-bought-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="you-bought-ok-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="tax-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="tax-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="tax-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="tax-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="tax-panel-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="jail-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="jail-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="jail-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="jail-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="jail-panel-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="go-to-jail-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="go-to-jail-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="go-to-jail-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="go-to-jail-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="go-to-jail-panel-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="chance-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="chance-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="chance-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="chance-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="chance-panel-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="go-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="go-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="go-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="go-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="go-panel-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="parking-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="parking-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="parking-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="parking-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="parking-panel-button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="treasure-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: flex;">
+        <ui:VisualElement name="treasure-display-container" style="flex-grow: 1; position: absolute; width: 50%; height: 50%; align-items: center; justify-content: center; display: none;">
             <ui:VisualElement name="treasure-display-panel" style="height: 50%; width: 50%; background-color: rgb(255, 255, 255); align-self: auto; justify-content: space-around; align-items: center;">
                 <ui:Label text="lorem ipsum" name="treasure-panel-label" style="font-size: 30%;" />
                 <ui:Button text="OK" name="treasure-panel-button" />

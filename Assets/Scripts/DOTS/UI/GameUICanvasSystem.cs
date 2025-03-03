@@ -75,9 +75,17 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             ComponentType.ReadOnly<RollAmountComponent>(),
         });
 
+        var rollAmountComponent = new RollAmountComponent
+        {
+            amount = 0,
+        };
+
+        SystemAPI.SetComponent(rollAmountEntity, rollAmountComponent);
+
         gameUIElementsComponent.OnRollButton = () =>
         {
-            gameUIElementsComponent.RollLabel.text = "5";
+            rollAmountComponent.amount = UnityEngine.Random.Range(1, 6);
+            gameUIElementsComponent.RollLabel.text = rollAmountComponent.amount.ToString();
             gameUIElementsComponent.RollButton.style.display = DisplayStyle.None;
         };
         gameUIElementsComponent.RollButton.clickable.clicked += gameUIElementsComponent.OnRollButton;
@@ -90,7 +98,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         foreach (var (turnComponent, nameComponent) in SystemAPI.Query<RefRO<TurnComponent>, RefRO<NameDataComponent>>())
         {
-            if (turnComponent.ValueRO.IsCurrentActivePlayer)
+            if (turnComponent.ValueRO.IsActive)
             {
                 playerNameLabel.text = nameComponent.ValueRO.Name.ToString();
             }

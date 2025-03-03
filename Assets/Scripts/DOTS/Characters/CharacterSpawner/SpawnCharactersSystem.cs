@@ -50,7 +50,7 @@ public partial struct SpawnCharactersSystem : ISystem
                         // The first player in the list has the first turn.
                         if (i == 0)
                         {
-                            ecb.SetComponent(characterEntity, new TurnComponent { IsCurrentActivePlayer = true });
+                            ecb.SetComponent(characterEntity, new TurnComponent { IsActive = true });
                         }
 
                     }
