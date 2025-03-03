@@ -76,17 +76,18 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             ComponentType.ReadOnly<RollAmountComponent>(),
         });
 
-        var rollAmountComponent = new RollAmountComponent
+        SystemAPI.SetComponent(rollAmountEntity, new RollAmountComponent
         {
             Amount = 0,
-        };
+        });
 
-        SystemAPI.SetComponent(rollAmountEntity, rollAmountComponent);
+        var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
 
         gameUIElementsComponent.OnRollButton = () =>
         {
-            rollAmountComponent.Amount = UnityEngine.Random.Range(1, 6);
-            gameUIElementsComponent.RollLabel.text = rollAmountComponent.Amount.ToString();
+            var numRolled = UnityEngine.Random.Range(1, 6);
+            rollAmountComponent.GetSingletonRW<RollAmountComponent>().ValueRW.Amount = numRolled;
+            gameUIElementsComponent.RollLabel.text = numRolled.ToString();
             gameUIElementsComponent.RollButton.style.display = DisplayStyle.None;
         };
         gameUIElementsComponent.RollButton.clickable.clicked += gameUIElementsComponent.OnRollButton;
