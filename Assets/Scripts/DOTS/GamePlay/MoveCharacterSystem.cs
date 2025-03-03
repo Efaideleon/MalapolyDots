@@ -37,12 +37,14 @@ public partial struct MoveCharacterSystem : ISystem
 
                     UnityEngine.Debug.Log($"new index: {newWayPointIndex}");
 
-                    UnityEngine.Debug.Log("Moving...");
                     // moving the entity prefab
                     var localTransform = SystemAPI.GetComponent<LocalTransform>(prefabComponent.ValueRW.Value);
                     localTransform.Position = wayPointsBuffer[newWayPointIndex].WayPoint;
                     localTransform.Rotation = quaternion.identity;
                     localTransform.Scale = 1f;
+                    SystemAPI.SetComponent(prefabComponent.ValueRW.Value, localTransform);
+                    var newPosition = SystemAPI.GetComponent<LocalTransform>(prefabComponent.ValueRO.Value).Position;
+                    UnityEngine.Debug.Log($"position: { newPosition } ");
                 }
             }
         }
