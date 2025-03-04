@@ -11,54 +11,52 @@ public partial struct SpawnCharactersSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<GameDataComponent>();
-        state.RequireForUpdate<PrefabReferenceComponent>();
+        state.RequireForUpdate<CharactersBufferTag>();
         state.RequireForUpdate<WayPointsTag>();
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
-        Debug.Log("Spawning...");
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
-        float3 spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
+        var characterSelectedBuffer = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
+        var charactersPrefabBuffer = SystemAPI.GetSingletonBuffer<CharacterEntityBuffer>();
+        var spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
+        var positions = new NativeArray<float3>(characterSelectedBuffer.Length, Allocator.Temp);
+        CalculatePositions(positions, spawnPosition, 4);
 
-        // Entity for the Scriptable Object.
-        foreach (var (gameDataComponent, entityDataSO) in SystemAPI.Query<RefRO<GameDataComponent>>().WithEntityAccess())
+        for (int i = 0; i < characterSelectedBuffer.Length; i++)
         {
-            var charactersbuffer = SystemAPI.GetBuffer<CharacterSelectedBuffer>(entityDataSO);
-            NativeArray<float3> positions = new(charactersbuffer.Length, Allocator.Temp);
-            CalculatePositions(positions, spawnPosition, 4);
-
-            for (int i = 0; i < charactersbuffer.Length; i++)
+            var characterSelectedName = characterSelectedBuffer[i].Value;
+            foreach (var character in charactersPrefabBuffer)
             {
-                var characterNameElement = charactersbuffer[i];
-                // Getting components for character entity
-                foreach (var (prefabReference, NameComponent, turnComponent, characterEntity) in
-                        SystemAPI.Query<RefRW<PrefabReferenceComponent>, RefRW<NameDataComponent>, RefRW<TurnComponent>>().WithEntityAccess())
+                var prefabName = SystemAPI.GetComponent<NameDataComponent>(character.Prefab).Value;
+                if (characterSelectedName == prefabName)
                 {
-                    if (NameComponent.ValueRO.Name == characterNameElement.Value)
-                    {
-                        var instance = ecb.Instantiate(prefabReference.ValueRW.Value);
-                        ecb.SetComponent(instance, new LocalTransform
-                        {
-                            Position = positions[i],
-                            Rotation = quaternion.identity,
-                            Scale = 1f
-                        });
-
-                        // The first player in the list has the first turn.
-                        if (i == 0)
-                        {
-                            ecb.SetComponent(characterEntity, new TurnComponent { IsActive = true });
-                        }
-
-                    }
+                    InstantiatePrefab(ecb, character.Prefab, positions[i], i);
                 }
             }
         }
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
+    }
+
+    private void InstantiatePrefab(EntityCommandBuffer ecb, Entity prefab, float3 position, int i)
+    {
+        var instance = ecb.Instantiate(prefab);
+        ecb.SetComponent(instance, new LocalTransform
+        {
+            Position = position,
+            Rotation = quaternion.identity,
+            Scale = 1f
+        });
+
+        // The first player in the list has the first turn.
+        if (i == 0)
+        {
+            ecb.SetComponent(prefab, new TurnComponent { IsActive = true });
+        }
     }
 
     private readonly void CalculatePositions(NativeArray<float3> positions, float3 spawnPosition, float radius)

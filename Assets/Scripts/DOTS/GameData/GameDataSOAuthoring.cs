@@ -27,8 +27,9 @@ namespace DOTS
             {
                 buffer.Add(new CharacterSelectedBuffer
                 {
-                    Value = characterSelected, // Bogus: assigning a string to a FixedString.
+                    Value = characterSelected,
                 });
+
             }
 
             entityManger.AddComponent<GameDataComponent>(entity);

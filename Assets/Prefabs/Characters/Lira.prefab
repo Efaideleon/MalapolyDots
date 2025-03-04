@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2440919382370490559}
   - component: {fileID: 4682544758865473188}
   - component: {fileID: 8904741439335193093}
+  - component: {fileID: 1516431840431417465}
   m_Layer: 0
   m_Name: Lira
   m_TagString: Untagged
@@ -86,3 +87,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1516431840431417465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072373378481227395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2333a106ba875442a9bc92cb082e9581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charName: Lira

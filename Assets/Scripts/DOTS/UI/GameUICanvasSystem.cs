@@ -102,7 +102,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         {
             if (turnComponent.ValueRO.IsActive)
             {
-                playerNameLabel.text = nameComponent.ValueRO.Name.ToString();
+                playerNameLabel.text = nameComponent.ValueRO.Value.ToString();
             }
         }
 

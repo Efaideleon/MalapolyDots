@@ -1,51 +1,45 @@
 using Unity.Entities;
-using Unity.Collections;
 using UnityEngine;
 
 public class CharactersAuthoring : MonoBehaviour
 {
-    [SerializeField] public string charName;
-    [SerializeField] public GameObject prefab;
+    [SerializeField] public GameObject avocadoPrefab;
+    [SerializeField] public GameObject birdPrefab;
+    [SerializeField] public GameObject coinPrefab;
+    [SerializeField] public GameObject coffeePrefab;
+    [SerializeField] public GameObject liraPrefab;
+    [SerializeField] public GameObject tuctucPrefab;
 
     class CharactersBaker : Baker<CharactersAuthoring>
     {
         public override void Bake(CharactersAuthoring authoring)
         {
-            // character entity
-            var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
-            var prefabEntity = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic);
+            var entity = GetEntity(authoring, TransformUsageFlags.None);
 
-            AddComponent(authoringEntity, new PrefabReferenceComponent { Value = prefabEntity });
-            AddComponent(authoringEntity, new NameDataComponent{ Name = authoring.charName });
-            AddComponent(authoringEntity, new TurnComponent{ IsActive = false });
-            AddComponent(authoringEntity, new PrefabTag());
-            AddComponent(authoringEntity, new WayPointsBufferIndex{ Index = 0 } );
+            var avocadoEntity = GetEntity(authoring.avocadoPrefab, TransformUsageFlags.Dynamic);
+            var birdEntity = GetEntity(authoring.birdPrefab, TransformUsageFlags.Dynamic);
+            var coinEntity = GetEntity(authoring.coinPrefab, TransformUsageFlags.Dynamic);
+            var coffeeEntity = GetEntity(authoring.coffeePrefab, TransformUsageFlags.Dynamic);
+            var liraEntity = GetEntity(authoring.liraPrefab, TransformUsageFlags.Dynamic);
+            var tuctucEntity = GetEntity(authoring.tuctucPrefab, TransformUsageFlags.Dynamic);
+
+            var buffer = AddBuffer<CharacterEntityBuffer>(entity);
+            buffer.Add(new CharacterEntityBuffer { Prefab = avocadoEntity});
+            buffer.Add(new CharacterEntityBuffer { Prefab = birdEntity});
+            buffer.Add(new CharacterEntityBuffer { Prefab = coinEntity});
+            buffer.Add(new CharacterEntityBuffer { Prefab = coffeeEntity});
+            buffer.Add(new CharacterEntityBuffer { Prefab = liraEntity});
+            buffer.Add(new CharacterEntityBuffer { Prefab = tuctucEntity});
+
+            AddComponent(entity, new CharactersBufferTag{});
         }
     }
 }
 
-public struct PrefabReferenceComponent : IComponentData
+public struct CharacterEntityBuffer : IBufferElementData
 {
-    public Entity Value;
+    public Entity Prefab;
 }
 
-public struct NameDataComponent : IComponentData
-{
-    public FixedString64Bytes Name;
-}
-
-public struct PrefabComponent : IComponentData
-{
-    public Entity prefab;
-}
-
-public struct TurnComponent : IComponentData
-{
-    public bool IsActive;
-}
-
-public struct WayPointsBufferIndex : IComponentData
-{
-    public int Index;
-}
-
+public struct CharactersBufferTag : IComponentData
+{}
