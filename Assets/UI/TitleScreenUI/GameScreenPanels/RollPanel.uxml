@@ -1,10 +1,11 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement name="roll-display-container" enabled="true" style="width: 50%; position: absolute; height: auto;">
-        <engine:VisualElement name="roll-text-button-container" style="height: 348px; align-items: center; justify-content: center; align-content: auto; flex-wrap: nowrap;">
-            <engine:VisualElement name="roll-amount-container" style="width: 20%; height: 25%; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.42);">
+    <Style src="project://database/Assets/UI/USS/RollPanel.uss?fileID=7433441132597879392&amp;guid=3bfa1e53af8c30b43a76b40829aadb25&amp;type=3#RollPanel" />
+    <engine:VisualElement name="roll-display-container" enabled="true" style="width: 100%; position: relative; height: 100%; align-items: center; justify-content: center;">
+        <engine:VisualElement name="roll-text-button-container" class="container" style="height: 250px; align-items: center; justify-content: center; align-content: auto; flex-wrap: nowrap; width: 200px;">
+            <engine:VisualElement name="roll-amount-container" class="number-display" style="width: 100%; height: 100%; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.42);">
                 <engine:Label name="roll-amount-label" />
             </engine:VisualElement>
-            <engine:Button text="Roll" name="roll-button" style="align-content: center; align-self: auto; justify-content: center; align-items: auto; height: 10%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 20%; font-size: 45%; -unity-font-style: normal; -unity-font-definition: url(&quot;project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Fonts/PerfectDOSVGA437.ttf?fileID=12800000&amp;guid=74a5091d8707f334b9a5c31ef71a64ba&amp;type=3#PerfectDOSVGA437&quot;); -unity-text-outline-width: 0; -unity-text-outline-color: rgb(255, 0, 0); background-color: rgb(255, 152, 0);" />
+            <engine:Button text="Roll" name="roll-button" class="roll-button" style="align-content: center; align-self: auto; justify-content: center; align-items: auto; height: 30%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; font-size: 45%; -unity-font-style: normal; -unity-font-definition: url(&quot;project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Fonts/PerfectDOSVGA437.ttf?fileID=12800000&amp;guid=74a5091d8707f334b9a5c31ef71a64ba&amp;type=3#PerfectDOSVGA437&quot;); -unity-text-outline-width: 0; -unity-text-outline-color: rgb(255, 0, 0); background-color: rgb(255, 152, 0);" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
