@@ -1,4 +1,5 @@
 using Unity.Entities;
+using UnityEngine;
 
 public enum GameState
 {
@@ -16,6 +17,9 @@ public partial struct GamePlaySystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
+        state.RequireForUpdate<TurnComponent>();
+        state.RequireForUpdate<RollAmountComponent>();
+
         var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
             ComponentType.ReadOnly<GameStateComponent>(),
@@ -31,5 +35,18 @@ public partial struct GamePlaySystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
+        foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+        {
+            foreach (var _ in SystemAPI.Query<RefRO<TurnComponent>>().WithChangeFilter<TurnComponent>())
+            {
+                gameState.ValueRW.State = GameState.Rolling;
+                Debug.Log($"State: {gameState.ValueRW.State}");
+            }
+            foreach (var _ in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
+            {
+                gameState.ValueRW.State = GameState.Walking;
+                Debug.Log($"State: {gameState.ValueRW.State}");
+            }
+        }
     }
 }
