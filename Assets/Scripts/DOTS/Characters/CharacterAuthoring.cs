@@ -17,6 +17,7 @@ public class CharacterAuthoring : MonoBehaviour
             AddComponent(authoringEntity, new TurnComponent{ IsActive = false });
             AddComponent(authoringEntity, new PrefabTag());
             AddComponent(authoringEntity, new WayPointsBufferIndex{ Index = 0 } );
+            AddComponent(authoringEntity, new CharacterFlag{});
         }
     }
 }
@@ -36,3 +37,5 @@ public struct WayPointsBufferIndex : IComponentData
     public int Index;
 }
 
+public struct CharacterFlag : IComponentData
+{}

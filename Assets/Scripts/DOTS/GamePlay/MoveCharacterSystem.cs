@@ -1,9 +1,7 @@
-using System;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 public partial struct MoveCharacterSystem : ISystem
 {
@@ -12,6 +10,7 @@ public partial struct MoveCharacterSystem : ISystem
     {
         state.RequireForUpdate<TurnComponent>();
         state.RequireForUpdate<RollAmountComponent>();
+        state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<WayPointsTag>();
     }
 
@@ -21,24 +20,19 @@ public partial struct MoveCharacterSystem : ISystem
         var dt = SystemAPI.Time.DeltaTime;
         var moveSpeed = dt * 5f;
 
-        foreach (
-                var (
-                    turnComponent,
-                    characterWaypoint,
-                    localTransform
-                ) in
-                SystemAPI.Query<
+        var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
+        if (currGameState.State == GameState.Walking)
+        {
+            foreach (
+                    var (turnComponent, characterWaypoint, localTransform) in
+                    SystemAPI.Query<
                     RefRW<TurnComponent>,
                     RefRW<WayPointsBufferIndex>,
                     RefRW<LocalTransform>
                     >())
-        {
-            if (turnComponent.ValueRO.IsActive)
             {
-                var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
-                if (currGameState.State == GameState.Walking)
+                if (turnComponent.ValueRO.IsActive)
                 {
-                    // Only move when the roll amount has changed.
                     var rollData = SystemAPI.GetSingleton<RollAmountComponent>();
                     var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
                     int numOfWayPoints = wayPointsBuffer.Length;
@@ -48,12 +42,14 @@ public partial struct MoveCharacterSystem : ISystem
                     if (MoveToTarget(ref localTransform.ValueRW, targetPosition, moveSpeed))
                     {
                         characterWaypoint.ValueRW.Index = newWayPointIndex;
-                        turnComponent.ValueRW.IsActive = false;
+                      turnComponent.ValueRW.IsActive = false;
+                        foreach (var flag in SystemAPI.Query<RefRW<TurnChangedFlag>>()){}
                     }
                 }
             }
         }
     }
+
     private bool MoveToTarget(ref LocalTransform characterTransform, float3 targetPosition, float moveSpeed)
     {
         var pos = characterTransform.Position;
