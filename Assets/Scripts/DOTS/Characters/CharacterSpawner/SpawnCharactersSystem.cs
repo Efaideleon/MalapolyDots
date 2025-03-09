@@ -1,6 +1,5 @@
 using Unity.Entities;
 using Unity.Collections;
-using UnityEngine;
 using Unity.Burst;
 using Unity.Transforms;
 using Unity.Mathematics;
@@ -17,9 +16,7 @@ public partial struct SpawnParallelJob : IJobParallelFor
     [ReadOnly]
     public DynamicBuffer<CharacterSelectedBuffer> charactersSelected;
     [ReadOnly]
-    public DynamicBuffer<CharacterEntityBuffer> characterPrefabs;
-    [ReadOnly]
-    public NativeArray<FixedString64Bytes> allCharacterNames;
+    public NativeHashMap<FixedString64Bytes, Entity> prefabLookUp;
     [ReadOnly]
     public NativeArray<float3> Positions;
     public EntityCommandBuffer.ParallelWriter ecbParallel;
@@ -27,12 +24,9 @@ public partial struct SpawnParallelJob : IJobParallelFor
     [BurstCompile]
     public void Execute(int index)
     {
-        for (int i = 0; i < characterPrefabs.Length; i++)
+        if (prefabLookUp.TryGetValue(charactersSelected[index].Value, out var prefab))
         {
-            if (allCharacterNames[i] == charactersSelected[index].Value)
-            {
-                InstantiatePrefab(ecbParallel, characterPrefabs[i].Prefab, Positions[i], index);
-            }
+            InstantiatePrefab(ecbParallel, prefab, Positions[index], index);
         }
     }
 
@@ -81,28 +75,29 @@ public partial struct SpawnCharactersSystem : ISystem
         var charactersPrefabBuffer = SystemAPI.GetSingletonBuffer<CharacterEntityBuffer>();
         var spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
         var positions = new NativeArray<float3>(characterSelectedBuffer.Length, Allocator.TempJob);
-        CalculatePositions(positions, spawnPosition, 4);
+        var spawnRadius = 4;
+        CalculatePositions(positions, spawnPosition, spawnRadius);
 
-        var characterNames = new NativeArray<FixedString64Bytes>(charactersPrefabBuffer.Length, Allocator.TempJob);
-
+        var prefabLookUp = new NativeHashMap<FixedString64Bytes, Entity>(charactersPrefabBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < charactersPrefabBuffer.Length; i++)
         {
-            characterNames[i] = SystemAPI.GetComponent<NameDataComponent>(charactersPrefabBuffer[i].Prefab).Value;
+            var prefabName = SystemAPI.GetComponent<NameDataComponent>(charactersPrefabBuffer[i].Prefab).Value;
+            prefabLookUp.Add(prefabName, charactersPrefabBuffer[i].Prefab);
         }
 
         var job = new SpawnParallelJob
         {
             charactersSelected = characterSelectedBuffer,
-            characterPrefabs = charactersPrefabBuffer,
-            allCharacterNames = characterNames,
+            prefabLookUp = prefabLookUp,
             Positions = positions,
             ecbParallel = GetEntityCommandBuffer(ref state).AsParallelWriter(),
         };
-        var spawnJobHandle = job.Schedule(characterSelectedBuffer.Length, 1);
-        spawnJobHandle.Complete();
-        state.Dependency.Complete();
-        positions.Dispose();
-        characterNames.Dispose();
+
+        var jobHandle = job.Schedule(characterSelectedBuffer.Length, 1);
+        jobHandle = positions.Dispose(jobHandle);
+        jobHandle = prefabLookUp.Dispose(jobHandle);
+
+        state.Dependency = jobHandle;
         foreach (var spawnFlag in SystemAPI.Query<RefRW<SpawnFlag>>())
         {
             spawnFlag.ValueRW.Value = true;
@@ -121,11 +116,11 @@ public partial struct SpawnCharactersSystem : ISystem
     {
         for (int i = 0; i < positions.Length; i++)
         {
-            float angle = i * Mathf.PI * 2f / positions.Length;
+            float angle = i * math.PI * 2f / positions.Length;
 
             // following cartesian plane
-            float x = Mathf.Cos(angle) * radius;
-            float y = Mathf.Sin(angle) * radius;
+            float x = math.cos(angle) * radius;
+            float y = math.sin(angle) * radius;
 
             // following unity plane
             positions[i] = new float3(x, 0f, y) + spawnPosition;

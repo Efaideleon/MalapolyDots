@@ -23,20 +23,13 @@ namespace DOTS
             };
 
             var buffer = entityManger.AddBuffer<CharacterSelectedBuffer>(entity);
-            for (int i = 0; i < 6; i++)
+            foreach (var characterSelected in gameDataSO.charactersSelected)
             {
                 buffer.Add(new CharacterSelectedBuffer
                 {
-                    Value = "Avocado",
+                    Value = characterSelected,
                 });
             }
-            /*foreach (var characterSelected in gameDataSO.charactersSelected)*/
-            /*{*/
-            /*    buffer.Add(new CharacterSelectedBuffer*/
-            /*    {*/
-            /*        Value = characterSelected,*/
-            /*    });*/
-            /*}*/
 
             entityManger.AddComponent<GameDataComponent>(entity);
             entityManger.SetComponentData(entity, gameDataComponent);
