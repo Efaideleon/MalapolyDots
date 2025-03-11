@@ -3,6 +3,12 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+public struct ArrivedFlag : IComponentData
+{
+    public bool Arrived;
+}
+
+[BurstCompile]
 public partial struct MoveCharacterSystem : ISystem
 {
     [BurstCompile]
@@ -12,9 +18,19 @@ public partial struct MoveCharacterSystem : ISystem
         state.RequireForUpdate<RollAmountComponent>();
         state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<WayPointsTag>();
+
+        var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
+        {
+            ComponentType.ReadOnly<ArrivedFlag>()
+        });
+
+        SystemAPI.SetComponent(entity, new ArrivedFlag
+        {
+            Arrived = false
+        });
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var dt = SystemAPI.Time.DeltaTime;
@@ -26,7 +42,7 @@ public partial struct MoveCharacterSystem : ISystem
             foreach (
                     var (turnComponent, characterWaypoint, localTransform) in
                     SystemAPI.Query<
-                    RefRW<TurnComponent>,
+                    RefRO<TurnComponent>,
                     RefRW<WayPointsBufferIndex>,
                     RefRW<LocalTransform>
                     >())
@@ -42,15 +58,18 @@ public partial struct MoveCharacterSystem : ISystem
                     if (MoveToTarget(ref localTransform.ValueRW, targetPosition, moveSpeed))
                     {
                         characterWaypoint.ValueRW.Index = newWayPointIndex;
-                      turnComponent.ValueRW.IsActive = false;
-                        foreach (var flag in SystemAPI.Query<RefRW<TurnChangedFlag>>()){}
+                        foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>())
+                        {
+                            arrivedFlag.ValueRW.Arrived = true;
+                        }
                     }
                 }
             }
         }
     }
 
-    private bool MoveToTarget(ref LocalTransform characterTransform, float3 targetPosition, float moveSpeed)
+    [BurstCompile]
+    private readonly bool MoveToTarget(ref LocalTransform characterTransform, float3 targetPosition, float moveSpeed)
     {
         var pos = characterTransform.Position;
         var dir = targetPosition - pos;

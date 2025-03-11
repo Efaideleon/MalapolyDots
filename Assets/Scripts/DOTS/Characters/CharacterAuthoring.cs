@@ -14,7 +14,7 @@ public class CharacterAuthoring : MonoBehaviour
             var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
 
             AddComponent(authoringEntity, new NameDataComponent{ Value = authoring.charName });
-            AddComponent(authoringEntity, new TurnComponent{ IsActive = false });
+            AddComponent(authoringEntity, new PlayerTurnComponent{ IsActive = false });
             AddComponent(authoringEntity, new PrefabTag());
             AddComponent(authoringEntity, new WayPointsBufferIndex{ Index = 0 } );
             AddComponent(authoringEntity, new CharacterFlag{});
@@ -27,7 +27,7 @@ public struct NameDataComponent : IComponentData
     public FixedString64Bytes Value;
 }
 
-public struct TurnComponent : IComponentData
+public struct PlayerTurnComponent : IComponentData
 {
     public bool IsActive;
 }

@@ -1,3 +1,4 @@
+using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
 
@@ -18,8 +19,10 @@ public struct GameStateComponent : IComponentData
     public GameState State;
 }
 
+[BurstCompile]
 public partial struct GamePlaySystem : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<TurnComponent>();
@@ -39,14 +42,17 @@ public partial struct GamePlaySystem : ISystem
         state.RequireForUpdate<GameStateComponent>();
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var turnComponent in SystemAPI.Query<RefRO<SpawnFlag>>().WithChangeFilter<SpawnFlag>())
+        foreach (var turnComponent in SystemAPI.Query<RefRO<TurnComponent>>().WithChangeFilter<TurnComponent>())
         {
-            foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+            if (turnComponent.ValueRO.IsActive == true)
             {
-                gameState.ValueRW.State = GameState.Rolling;
-                Debug.Log($"State: {gameState.ValueRW.State}");
+                foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+                {
+                    gameState.ValueRW.State = GameState.Rolling;
+                }
             }
         }
 
@@ -57,7 +63,18 @@ public partial struct GamePlaySystem : ISystem
                 foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                 {
                     gameState.ValueRW.State = GameState.Walking;
-                    Debug.Log($"State: {gameState.ValueRW.State}");
+                }
+            }
+        }
+
+        foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>().WithChangeFilter<ArrivedFlag>())
+        {
+            if (arrivedFlag.ValueRO.Arrived == true)
+            {
+                foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+                {
+                    gameState.ValueRW.State = GameState.Transaction;
+                    arrivedFlag.ValueRW.Arrived = false;
                 }
             }
         }

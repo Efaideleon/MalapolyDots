@@ -16,7 +16,7 @@ public partial struct SpawnParallelJob : IJobParallelFor
     [ReadOnly]
     public DynamicBuffer<CharacterSelectedBuffer> charactersSelected;
     [ReadOnly]
-    public NativeHashMap<FixedString64Bytes, Entity> prefabLookUp;
+    public NativeParallelHashMap<FixedString64Bytes, Entity> prefabLookUp;
     [ReadOnly]
     public NativeArray<float3> Positions;
     public EntityCommandBuffer.ParallelWriter ecbParallel;
@@ -49,6 +49,7 @@ public partial struct SpawnParallelJob : IJobParallelFor
     }
 }
 
+[BurstCompile]
 public partial struct SpawnCharactersSystem : ISystem
 {
     [BurstCompile]
@@ -69,8 +70,6 @@ public partial struct SpawnCharactersSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        state.Enabled = false;
-
         var characterSelectedBuffer = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
         var charactersPrefabBuffer = SystemAPI.GetSingletonBuffer<CharacterEntityBuffer>();
         var spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
@@ -78,7 +77,7 @@ public partial struct SpawnCharactersSystem : ISystem
         var spawnRadius = 4;
         CalculatePositions(positions, spawnPosition, spawnRadius);
 
-        var prefabLookUp = new NativeHashMap<FixedString64Bytes, Entity>(charactersPrefabBuffer.Length, Allocator.TempJob);
+        var prefabLookUp = new NativeParallelHashMap<FixedString64Bytes, Entity>(charactersPrefabBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < charactersPrefabBuffer.Length; i++)
         {
             var prefabName = SystemAPI.GetComponent<NameDataComponent>(charactersPrefabBuffer[i].Prefab).Value;
@@ -93,7 +92,7 @@ public partial struct SpawnCharactersSystem : ISystem
             ecbParallel = GetEntityCommandBuffer(ref state).AsParallelWriter(),
         };
 
-        var jobHandle = job.Schedule(characterSelectedBuffer.Length, 1);
+        var jobHandle = job.Schedule(characterSelectedBuffer.Length, 5);
         jobHandle = positions.Dispose(jobHandle);
         jobHandle = prefabLookUp.Dispose(jobHandle);
 
@@ -102,6 +101,8 @@ public partial struct SpawnCharactersSystem : ISystem
         {
             spawnFlag.ValueRW.Value = true;
         }
+
+        state.Enabled = false;
     }
 
     [BurstCompile]
@@ -114,10 +115,11 @@ public partial struct SpawnCharactersSystem : ISystem
     [BurstCompile]
     private readonly void CalculatePositions(NativeArray<float3> positions, float3 spawnPosition, float radius)
     {
+        float angleStep = math.PI * 2f / positions.Length;
+
         for (int i = 0; i < positions.Length; i++)
         {
-            float angle = i * math.PI * 2f / positions.Length;
-
+            float angle = i * angleStep;
             // following cartesian plane
             float x = math.cos(angle) * radius;
             float y = math.sin(angle) * radius;

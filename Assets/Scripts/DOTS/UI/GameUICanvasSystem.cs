@@ -14,6 +14,7 @@ public class GameUIElementsComponent : IComponentData
     public VisualElement BotPanelRoot;
     public VisualElement RollPanel;
     public VisualElement YouBoughtPanel;
+    public VisualElement BuyQuestionPanel;
     public VisualElement TaxPanel;
     public VisualElement JailPanel;
     public VisualElement GoToJailPanel;
@@ -25,6 +26,9 @@ public class GameUIElementsComponent : IComponentData
     public Button RollButton;
     public Action OnRollButton;
     public Label RollLabel;
+    public Button BuyQuestionAcceptButton;
+    public Action OnBuyAcceptButton;
+    public Action ShowRollPanel;
 }
 
 public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
@@ -49,7 +53,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.EntityManager.AddComponentObject(state.SystemHandle, gameUIElementsComponent);
 
         gameUIElementsComponent.RollPanel = gameUIElementsComponent.BotPanelRoot.Q("RollPanel");
-        gameUIElementsComponent.YouBoughtPanel = gameUIElementsComponent.BotPanelRoot.Q("PopupMenuPanel");
+        gameUIElementsComponent.YouBoughtPanel = gameUIElementsComponent.BotPanelRoot.Q("YouBoughtPanel");
+        gameUIElementsComponent.BuyQuestionPanel = gameUIElementsComponent.BotPanelRoot.Q("PopupMenuPanel");
         gameUIElementsComponent.TaxPanel = gameUIElementsComponent.BotPanelRoot.Q("TaxPanel");
         gameUIElementsComponent.JailPanel = gameUIElementsComponent.BotPanelRoot.Q("JailPanel");
         gameUIElementsComponent.GoToJailPanel = gameUIElementsComponent.BotPanelRoot.Q("GoToJailPanel");
@@ -60,9 +65,11 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         gameUIElementsComponent.RollLabel = gameUIElementsComponent.BotPanelRoot.Q<Label>("roll-amount-label");
         gameUIElementsComponent.RollButton = gameUIElementsComponent.RollPanel.Q<Button>("roll-button");
+        gameUIElementsComponent.BuyQuestionAcceptButton = gameUIElementsComponent.BuyQuestionPanel.Q<Button>("popup-menu-accept-button");
 
         gameUIElementsComponent.RollPanel.style.display = DisplayStyle.None;
         gameUIElementsComponent.YouBoughtPanel.style.display = DisplayStyle.None;
+        gameUIElementsComponent.BuyQuestionPanel.style.display = DisplayStyle.None;
         gameUIElementsComponent.TaxPanel.style.display = DisplayStyle.None;
         gameUIElementsComponent.JailPanel.style.display = DisplayStyle.None;
         gameUIElementsComponent.GoToJailPanel.style.display = DisplayStyle.None;
@@ -82,7 +89,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         });
 
         var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
-
         gameUIElementsComponent.OnRollButton = () =>
         {
             var numRolled = UnityEngine.Random.Range(1, 6);
@@ -91,6 +97,22 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             gameUIElementsComponent.RollButton.style.display = DisplayStyle.None;
         };
         gameUIElementsComponent.RollButton.clickable.clicked += gameUIElementsComponent.OnRollButton;
+
+        var turnEvents = SystemAPI.QueryBuilder().WithAllRW<TurnEvents>().Build();
+        gameUIElementsComponent.OnBuyAcceptButton = () =>
+        {
+            turnEvents.GetSingletonRW<TurnEvents>().ValueRW.EventQueue.Enqueue(new TurnRequestEvent());
+            gameUIElementsComponent.BuyQuestionPanel.style.display = DisplayStyle.None;
+        };
+        gameUIElementsComponent.BuyQuestionAcceptButton.clickable.clicked += gameUIElementsComponent.OnBuyAcceptButton;
+
+        gameUIElementsComponent.ShowRollPanel = () =>
+        {
+            var numRolled = 0;
+            gameUIElementsComponent.RollLabel.text = numRolled.ToString();
+            gameUIElementsComponent.RollButton.style.display = DisplayStyle.Flex;
+            gameUIElementsComponent.RollPanel.style.display = DisplayStyle.Flex;
+        };
     }
 
     public void OnUpdate(ref SystemState state)
@@ -111,8 +133,11 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             switch (gameState.ValueRO.State)
             {
                 case GameState.Rolling:
-                    canvasVisualElements.RollPanel.style.display = DisplayStyle.Flex;
-                    Debug.Log("showing roll button");
+                    canvasVisualElements.ShowRollPanel();
+                    break;
+                case GameState.Transaction:
+                    canvasVisualElements.RollPanel.style.display = DisplayStyle.None;
+                    canvasVisualElements.BuyQuestionPanel.style.display = DisplayStyle.Flex;
                     break;
             }
         }

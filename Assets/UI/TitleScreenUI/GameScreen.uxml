@@ -24,7 +24,7 @@
     </ui:VisualElement>
     <ui:VisualElement name="game-screen-bottom-container" enabled="true" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto;">
         <ui:Instance template="RollPanel" name="RollPanel" class="roll_template-container" style="position: relative; display: flex; width: 100%; height: 100%;" />
-        <ui:Instance template="PopupMenuPanel" name="PopupMenuPanel" style="position: absolute;" />
+        <ui:Instance template="PopupMenuPanel" name="PopupMenuPanel" style="position: absolute; display: flex; height: 100%; width: 100%;" />
         <ui:Instance template="YouBoughtPanel" name="YouBoughtPanel" style="position: absolute;" />
         <ui:Instance template="TaxPanel" name="TaxPanel" style="position: absolute;" />
         <ui:Instance template="JailPanel" name="JailPanel" style="position: absolute;" />
