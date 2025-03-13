@@ -14,12 +14,17 @@ public class CharacterAuthoring : MonoBehaviour
             var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
 
             AddComponent(authoringEntity, new NameDataComponent{ Value = authoring.charName });
-            AddComponent(authoringEntity, new PlayerTurnComponent{ IsActive = false });
             AddComponent(authoringEntity, new PrefabTag());
             AddComponent(authoringEntity, new WayPointsBufferIndex{ Index = 0 } );
             AddComponent(authoringEntity, new CharacterFlag{});
+            AddComponent(authoringEntity, new PlayerID { Value = 0 });
         }
     }
+}
+
+public struct PlayerID : IComponentData
+{
+    public int Value;
 }
 
 public struct NameDataComponent : IComponentData

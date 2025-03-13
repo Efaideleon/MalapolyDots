@@ -14,10 +14,10 @@ public partial struct MoveCharacterSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<TurnComponent>();
         state.RequireForUpdate<RollAmountComponent>();
         state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<WayPointsTag>();
+        state.RequireForUpdate<CurrentPlayerID>();
 
         var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
@@ -39,15 +39,17 @@ public partial struct MoveCharacterSystem : ISystem
         var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
         if (currGameState.State == GameState.Walking)
         {
+            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
+
             foreach (
-                    var (turnComponent, characterWaypoint, localTransform) in
+                    var (playerID, characterWaypoint, localTransform) in
                     SystemAPI.Query<
-                    RefRO<TurnComponent>,
+                    RefRO<PlayerID>,
                     RefRW<WayPointsBufferIndex>,
                     RefRW<LocalTransform>
                     >())
             {
-                if (turnComponent.ValueRO.IsActive)
+                if (playerID.ValueRO.Value == currentPlayerID)
                 {
                     var rollData = SystemAPI.GetSingleton<RollAmountComponent>();
                     var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();

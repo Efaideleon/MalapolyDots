@@ -4,6 +4,7 @@ using Unity.Burst;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Jobs;
+using System.Linq;
 
 public struct SpawnFlag : IComponentData
 {
@@ -41,11 +42,7 @@ public partial struct SpawnParallelJob : IJobParallelFor
             Scale = 1f
         });
 
-        // The first player in the list has the first turn.
-        if (sort_key == 0)
-        {
-            ecbParallel.SetComponent(sort_key, instance, new TurnComponent { IsActive = true });
-        }
+        ecbParallel.SetComponent(sort_key, instance, new PlayerID { Value = sort_key });
     }
 }
 

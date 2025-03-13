@@ -1,6 +1,5 @@
 using Unity.Burst;
 using Unity.Entities;
-using UnityEngine;
 
 public enum GameState
 {
@@ -25,7 +24,6 @@ public partial struct GamePlaySystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<TurnComponent>();
         state.RequireForUpdate<RollAmountComponent>();
         state.RequireForUpdate<SpawnFlag>();
 
@@ -45,14 +43,11 @@ public partial struct GamePlaySystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var turnComponent in SystemAPI.Query<RefRO<TurnComponent>>().WithChangeFilter<TurnComponent>())
+        foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
         {
-            if (turnComponent.ValueRO.IsActive == true)
+            foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
             {
-                foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
-                {
-                    gameState.ValueRW.State = GameState.Rolling;
-                }
+                gameState.ValueRW.State = GameState.Rolling;
             }
         }
 

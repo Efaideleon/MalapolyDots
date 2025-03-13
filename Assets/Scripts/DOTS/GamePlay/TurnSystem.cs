@@ -6,18 +6,19 @@ using UnityEngine;
 using UnityEngine.Profiling;
 
 public struct TurnRequestEvent
-{}
+{ }
 
 public struct TurnEvents : IComponentData
 {
     public NativeQueue<TurnRequestEvent> EventQueue;
 }
 
-public struct CurrentPlayerIndex : IComponentData
+public struct CharacterSelectedNameIndex : IComponentData
 {
     public int Index;
 }
 
+// Should run after spawning
 [BurstCompile]
 public partial struct TurnSystem : ISystem
 {
@@ -38,54 +39,48 @@ public partial struct TurnSystem : ISystem
         }
         var currentPlayerIndexEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
-            ComponentType.ReadOnly<CurrentPlayerIndex>()
+            ComponentType.ReadOnly<CharacterSelectedNameIndex>()
         });
 
-        SystemAPI.SetComponent(currentPlayerIndexEntity, new CurrentPlayerIndex
+        SystemAPI.SetComponent(currentPlayerIndexEntity, new CharacterSelectedNameIndex
         {
             Index = 0
         });
 
         state.RequireForUpdate<GameDataComponent>();
+        state.RequireForUpdate<CurrentPlayerID>();
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach(var turnManager in SystemAPI.Query<RefRW<TurnEvents>>().WithChangeFilter<TurnEvents>())
+        foreach (var turnManager in SystemAPI.Query<RefRW<TurnEvents>>().WithChangeFilter<TurnEvents>())
         {
             var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
-            while(turnManager.ValueRW.EventQueue.TryDequeue(out var _))
+            // Handle each change turn request
+            while (turnManager.ValueRW.EventQueue.TryDequeue(out var _))
             {
-                Profiler.BeginSample("Profile for Setting next character turn");
-                // Find the player with the current turn and set it to false
-                foreach (var turnComponent in SystemAPI.Query<RefRW<PlayerTurnComponent>>())
-                {
-                    if (turnComponent.ValueRO.IsActive == true)
-                        turnComponent.ValueRW.IsActive = false;
-                }
                 // Find the player with the next turn and set it to true
-                foreach (var currentPlayerIndex in SystemAPI.Query<RefRW<CurrentPlayerIndex>>())
+                var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterSelectedNameIndex>();
+                var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
+                currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
+
+                foreach (var (nameComponent, playerID) in SystemAPI.Query<RefRO<NameDataComponent>, RefRO<PlayerID>>())
                 {
-                    currentPlayerIndex.ValueRW.Index = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
-                    foreach(var(nameComponent, turnComponent) in SystemAPI.Query<RefRO<NameDataComponent>, RefRW<PlayerTurnComponent>>())
+                    if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
                     {
-                        if (characterSelectedNames[currentPlayerIndex.ValueRW.Index].Value == nameComponent.ValueRO.Value)
-                        {
-                            turnComponent.ValueRW.IsActive = true;
-                        }
+                        var currentPlayerID = SystemAPI.GetSingletonRW<CurrentPlayerID>();
+                        currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
                     }
                 }
-                Profiler.EndSample();
-                Debug.Break();
-            }
+           }
         }
     }
 
     [BurstCompile]
     public void OnDestroy(ref SystemState state)
     {
-        foreach(var turnManager in SystemAPI.Query<RefRW<TurnEvents>>())
+        foreach (var turnManager in SystemAPI.Query<RefRW<TurnEvents>>())
         {
             turnManager.ValueRW.EventQueue.Clear();
             turnManager.ValueRW.EventQueue.Dispose();

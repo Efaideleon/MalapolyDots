@@ -37,6 +37,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     {
         state.RequireForUpdate<CanvasReferenceComponent>();
         state.RequireForUpdate<GameStateComponent>();
+        state.RequireForUpdate<CurrentPlayerID>();
     }
 
     public void OnStartRunning(ref SystemState state)
@@ -120,9 +121,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var canvasVisualElements = SystemAPI.ManagedAPI.GetComponent<GameUIElementsComponent>(state.SystemHandle);
         Label playerNameLabel = canvasVisualElements.TopPanelRoot.Query<Label>("player-name-label");
 
-        foreach (var (turnComponent, nameComponent) in SystemAPI.Query<RefRO<TurnComponent>, RefRO<NameDataComponent>>())
+        foreach (var (playerID, nameComponent) in SystemAPI.Query<RefRO<PlayerID>, RefRO<NameDataComponent>>())
         {
-            if (turnComponent.ValueRO.IsActive)
+            if (playerID.ValueRO.Value == SystemAPI.GetSingleton<CurrentPlayerID>().Value)
             {
                 playerNameLabel.text = nameComponent.ValueRO.Value.ToString();
             }
