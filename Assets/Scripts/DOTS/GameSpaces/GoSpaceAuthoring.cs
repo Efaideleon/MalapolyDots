@@ -14,7 +14,7 @@ public class GoSpaceAuthoring : MonoBehaviour
             var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
             AddComponent(entity, new NameComponent { Value = authoring.Name });
             AddComponent(entity, new SpaceIDComponent { Value = authoring.ID });
-            AddComponent(entity, new SpaceIndexComponent { Value = authoring.BoardIndex });
+            AddComponent(entity, new BoardIndexComponent { Value = authoring.BoardIndex });
         }
     }
 }
