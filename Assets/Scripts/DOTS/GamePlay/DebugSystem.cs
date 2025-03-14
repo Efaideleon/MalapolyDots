@@ -5,7 +5,7 @@ public partial struct DebugSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<CurrentPlayerID>();
+        state.RequireForUpdate<CurrPlayerID>();
     }
 
     public void OnUpdate(ref SystemState state)

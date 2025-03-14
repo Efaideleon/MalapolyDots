@@ -77,7 +77,7 @@ public partial struct SpawnCharactersSystem : ISystem
         var prefabLookUp = new NativeParallelHashMap<FixedString64Bytes, Entity>(charactersPrefabBuffer.Length, Allocator.TempJob);
         for (int i = 0; i < charactersPrefabBuffer.Length; i++)
         {
-            var prefabName = SystemAPI.GetComponent<NameDataComponent>(charactersPrefabBuffer[i].Prefab).Value;
+            var prefabName = SystemAPI.GetComponent<NameComponent>(charactersPrefabBuffer[i].Prefab).Value;
             prefabLookUp.Add(prefabName, charactersPrefabBuffer[i].Prefab);
         }
 

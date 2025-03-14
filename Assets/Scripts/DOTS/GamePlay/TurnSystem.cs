@@ -45,7 +45,7 @@ public partial struct TurnSystem : ISystem
         });
 
         state.RequireForUpdate<GameDataComponent>();
-        state.RequireForUpdate<CurrentPlayerID>();
+        state.RequireForUpdate<CurrPlayerID>();
     }
 
     [BurstCompile]
@@ -63,11 +63,11 @@ public partial struct TurnSystem : ISystem
                 var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
                 currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
 
-                foreach (var (nameComponent, playerID) in SystemAPI.Query<RefRO<NameDataComponent>, RefRO<PlayerID>>())
+                foreach (var (nameComponent, playerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>>())
                 {
                     if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
                     {
-                        var currentPlayerID = SystemAPI.GetSingletonRW<CurrentPlayerID>();
+                        var currentPlayerID = SystemAPI.GetSingletonRW<CurrPlayerID>();
 
                         currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
                     }

@@ -43,7 +43,7 @@ public partial struct GamePlaySystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
+        foreach (var playerID in SystemAPI.Query<RefRO<CurrPlayerID>>().WithChangeFilter<CurrPlayerID>())
         {
             foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
             {
