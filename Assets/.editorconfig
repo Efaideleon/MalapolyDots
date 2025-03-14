@@ -1,0 +1,20 @@
+root = true
+
+[*]
+generated_code = false
+
+[**/obj/**]
+generated_code = true
+
+[**/bin/**]
+generated_code = true
+
+[*.g.cs]
+generated_code = true
+
+[*.generated.cs]
+generated_code = true
+
+[*_generated.cs]
+generated_code = true
+

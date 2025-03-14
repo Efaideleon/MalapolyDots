@@ -1,9 +1,6 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Profiling;
-using UnityEngine;
-using UnityEngine.Profiling;
 
 public struct TurnRequestEvent
 { }
@@ -13,7 +10,7 @@ public struct TurnEvents : IComponentData
     public NativeQueue<TurnRequestEvent> EventQueue;
 }
 
-public struct CharacterSelectedNameIndex : IComponentData
+public struct CharacterNameIndex : IComponentData
 {
     public int Index;
 }
@@ -39,10 +36,10 @@ public partial struct TurnSystem : ISystem
         }
         var currentPlayerIndexEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
-            ComponentType.ReadOnly<CharacterSelectedNameIndex>()
+            ComponentType.ReadOnly<CharacterNameIndex>()
         });
 
-        SystemAPI.SetComponent(currentPlayerIndexEntity, new CharacterSelectedNameIndex
+        SystemAPI.SetComponent(currentPlayerIndexEntity, new CharacterNameIndex
         {
             Index = 0
         });
@@ -58,10 +55,11 @@ public partial struct TurnSystem : ISystem
         {
             var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
             // Handle each change turn request
+            //
             while (turnManager.ValueRW.EventQueue.TryDequeue(out var _))
             {
                 // Find the player with the next turn and set it to true
-                var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterSelectedNameIndex>();
+                var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
                 var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
                 currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
 
@@ -70,10 +68,11 @@ public partial struct TurnSystem : ISystem
                     if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
                     {
                         var currentPlayerID = SystemAPI.GetSingletonRW<CurrentPlayerID>();
+
                         currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
                     }
                 }
-           }
+            }
         }
     }
 
