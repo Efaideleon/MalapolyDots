@@ -15,6 +15,10 @@ public class ChanceSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new NameComponent { Value = authoring.Name });
             AddComponent(entity, new SpaceIDComponent { Value = authoring.ID });
             AddComponent(entity, new BoardIndexComponent { Value = authoring.BoardIndex });
+            AddComponent(entity, new ChanceSpaceTag { });
         }
     }
 }
+
+public struct ChanceSpaceTag : IComponentData
+{ }

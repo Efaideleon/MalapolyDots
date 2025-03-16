@@ -38,6 +38,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<CanvasReferenceComponent>();
         state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<CurrPlayerID>();
+        state.RequireForUpdate<LandedOnSpace>();
     }
 
     public void OnStartRunning(ref SystemState state)
@@ -139,6 +140,38 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 case GameState.Transaction:
                     canvasVisualElements.RollPanel.style.display = DisplayStyle.None;
                     canvasVisualElements.BuyQuestionPanel.style.display = DisplayStyle.Flex;
+
+                    var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
+                    var spaceLandedName = SystemAPI.GetComponent<NameComponent>(spaceLanded.entity);
+                    if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLanded.entity))
+                    {
+                        Debug.Log($"You landed on property {spaceLandedName.Value}!");
+                    }
+                    if (SystemAPI.HasComponent<TreasureSpaceTag>(spaceLanded.entity))
+                    {
+                        Debug.Log("You landed on treasure!");
+                    }
+                    if (SystemAPI.HasComponent<TaxSpaceTag>(spaceLanded.entity))
+                    {
+                        Debug.Log("You landed on tax!");
+                    }
+                    if (SystemAPI.HasComponent<ChanceSpaceTag>(spaceLanded.entity))
+                    {
+                        Debug.Log("You landed on chance!");
+                    }
+                    if (SystemAPI.HasComponent<GoSpaceTag>(spaceLanded.entity))
+                    {
+                        Debug.Log("You landed on go!");
+                    }
+                    if (SystemAPI.HasComponent<GoToJailTag>(spaceLanded.entity))
+                    {
+                        Debug.Log("You landed on gotojail!");
+                    }
+                    if (SystemAPI.HasComponent<JailSpaceTag>(spaceLanded.entity))
+                    {
+                        Debug.Log("You landed on jail!");
+                    }
+
                     break;
             }
         }

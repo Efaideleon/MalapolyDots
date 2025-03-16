@@ -15,6 +15,10 @@ public class GoSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new NameComponent { Value = authoring.Name });
             AddComponent(entity, new SpaceIDComponent { Value = authoring.ID });
             AddComponent(entity, new BoardIndexComponent { Value = authoring.BoardIndex });
+            AddComponent(entity, new GoSpaceTag { });
         }
     }
 }
+
+public struct GoSpaceTag : IComponentData
+{ }

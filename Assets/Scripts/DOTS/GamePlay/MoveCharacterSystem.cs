@@ -42,24 +42,25 @@ public partial struct MoveCharacterSystem : ISystem
             var currentPlayerID = SystemAPI.GetSingleton<CurrPlayerID>().Value;
 
             foreach (
-                    var (playerID, characterWaypoint, localTransform) in
+                    var (playerID, characterWaypoint, localTransform, playerEntity) in
                     SystemAPI.Query<
                     RefRO<PlayerID>,
-                    RefRW<WayPointsBufferIndex>,
+                    RefRO<PlayerWaypointIndex>,
                     RefRW<LocalTransform>
-                    >())
+                    >().WithEntityAccess())
             {
                 if (playerID.ValueRO.Value == currentPlayerID)
                 {
                     var rollData = SystemAPI.GetSingleton<RollAmountComponent>();
                     var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
                     int numOfWayPoints = wayPointsBuffer.Length;
-                    int newWayPointIndex = (rollData.Amount + characterWaypoint.ValueRO.Index) % numOfWayPoints;
+                    int newWayPointIndex = (rollData.Amount + characterWaypoint.ValueRO.Value) % numOfWayPoints;
                     var targetPosition = wayPointsBuffer[newWayPointIndex].WayPoint;
 
                     if (MoveToTarget(ref localTransform.ValueRW, targetPosition, moveSpeed))
                     {
-                        characterWaypoint.ValueRW.Index = newWayPointIndex;
+                        var characterWaypointRW = SystemAPI.GetComponentRW<PlayerWaypointIndex>(playerEntity);
+                        characterWaypointRW.ValueRW.Value = newWayPointIndex;
                         foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>())
                         {
                             arrivedFlag.ValueRW.Arrived = true;
