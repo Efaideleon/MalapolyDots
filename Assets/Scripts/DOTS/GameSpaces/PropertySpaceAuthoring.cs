@@ -6,6 +6,7 @@ public class PropertySpaceAuthoring : MonoBehaviour
     [SerializeField] int ID;
     [SerializeField] string Name;
     [SerializeField] int BoardIndex;
+    [SerializeField] int Price;
 
     class PropertySpaceAuthoringBaker : Baker<PropertySpaceAuthoring>
     {
@@ -15,6 +16,7 @@ public class PropertySpaceAuthoring : MonoBehaviour
             AddComponent(entity, new NameComponent { Value = authoring.Name });
             AddComponent(entity, new SpaceIDComponent { Value = authoring.ID });
             AddComponent(entity, new BoardIndexComponent { Value = authoring.BoardIndex });
+            AddComponent(entity, new SpacePriceComponent { Value = authoring.Price });
             AddComponent(entity, new PropertySpaceTag {});
         }
     }
