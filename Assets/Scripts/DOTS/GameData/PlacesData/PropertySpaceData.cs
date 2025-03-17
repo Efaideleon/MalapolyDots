@@ -6,5 +6,5 @@ public class PropertySpaceData: ScriptableObject
     public int id;
     public string Name;
     public int boardIndex;
-    public float price;
+    public int price;
 }
