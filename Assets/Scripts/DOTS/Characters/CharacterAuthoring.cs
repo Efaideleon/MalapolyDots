@@ -38,3 +38,4 @@ public struct PlayerWaypointIndex : IComponentData
 
 public struct CharacterFlag : IComponentData
 {}
+
