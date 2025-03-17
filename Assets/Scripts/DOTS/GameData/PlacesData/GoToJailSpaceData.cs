@@ -1,6 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GoToJailSpaceSO", menuName = "Scriptable Objects/GoToJailSpaceSO")]
-public class GoToJailSpaceData: SpaceData
+public class GoToJailSpaceData: ScriptableObject
 {
+    public int id;
+    public string Name;
+    public int boardIndex;
 }
