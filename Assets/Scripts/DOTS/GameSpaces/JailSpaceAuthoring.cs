@@ -14,6 +14,7 @@ public class JailSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = authoring.data.id });
             AddComponent(entity, new BoardIndexComponent { Value = authoring.data.boardIndex });
             AddComponent(entity, new JailSpaceTag { });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Jail });
         }
     }
 }

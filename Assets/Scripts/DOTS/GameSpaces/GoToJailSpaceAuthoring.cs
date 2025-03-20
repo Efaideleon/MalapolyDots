@@ -14,9 +14,11 @@ public class GoToJailSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = authoring.data.id });
             AddComponent(entity, new BoardIndexComponent { Value = authoring.data.boardIndex });
             AddComponent(entity, new GoToJailTag { });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.GoToJail });
         }
     }
 }
 
 public struct GoToJailTag : IComponentData
 { }
+

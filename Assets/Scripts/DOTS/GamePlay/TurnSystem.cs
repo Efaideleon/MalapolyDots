@@ -2,12 +2,12 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
-public struct TurnRequestEvent
+public struct ChangeTurnRequestEvent
 { }
 
 public struct TurnEvents : IComponentData
 {
-    public NativeQueue<TurnRequestEvent> EventQueue;
+    public NativeQueue<ChangeTurnRequestEvent> EventQueue;
 }
 
 public struct CharacterNameIndex : IComponentData
@@ -31,7 +31,7 @@ public partial struct TurnSystem : ISystem
             });
             SystemAPI.SetComponent(entity, new TurnEvents
             {
-                EventQueue = new NativeQueue<TurnRequestEvent>(Allocator.Persistent) //Remeber to dispose
+                EventQueue = new NativeQueue<ChangeTurnRequestEvent>(Allocator.Persistent) //Remeber to dispose
             });
         }
         var currentPlayerIndexEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]

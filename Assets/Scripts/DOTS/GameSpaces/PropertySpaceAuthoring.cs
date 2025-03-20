@@ -15,9 +15,11 @@ public class PropertySpaceAuthoring : MonoBehaviour
             AddComponent(entity, new BoardIndexComponent { Value = authoring.data.boardIndex });
             AddComponent(entity, new SpacePriceComponent { Value = authoring.data.price });
             AddComponent(entity, new PropertySpaceTag {});
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Property });
         }
     }
 }
 
 public struct PropertySpaceTag : IComponentData
 { }
+
