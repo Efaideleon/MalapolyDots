@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -76,13 +77,33 @@ public partial struct TurnSystem : ISystem
         }
     }
 
-    [BurstCompile]
+    //[BurstCompile]
     public void OnDestroy(ref SystemState state)
     {
-        foreach (var turnManager in SystemAPI.Query<RefRW<TurnEvents>>())
+        EntityQuery turnEventsQuery = state.GetEntityQuery(ComponentType.ReadWrite<TurnEvents>());
+        using (var entities = turnEventsQuery.ToEntityArray(Allocator.Temp))
         {
-            turnManager.ValueRW.EventQueue.Clear();
-            turnManager.ValueRW.EventQueue.Dispose();
+            foreach (var entity in entities)
+            {
+                var turnEvents = state.EntityManager.GetComponentData<TurnEvents>(entity);
+                if (turnEvents.EventQueue.IsCreated)
+                {
+                    turnEvents.EventQueue.Clear();
+                    turnEvents.EventQueue.Dispose();
+                }
+            }
         }
+        // var turnEventsArray = turnEventsQuery.ToComponentDataArray<TurnEvents>(Allocator.Temp);
+        // foreach (var turnEvent in turnEventsArray)
+        // {
+        //     turnEvent.EventQueue.Clear();
+        //     turnEvent.EventQueue.Dispose();
+        // }
+        // // foreach (var turnManager in SystemAPI.Query<RefRW<TurnEvents>>())
+        // {
+        //     UnityEngine.Debug.Log("Destroing the turn system");
+        //     turnManager.ValueRW.EventQueue.Clear();
+        //     turnManager.ValueRW.EventQueue.Dispose();
+        // }
     }
 }
