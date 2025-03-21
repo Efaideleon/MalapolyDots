@@ -13,6 +13,7 @@ public class CharacterAuthoring : MonoBehaviour
             var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
 
             AddComponent(authoringEntity, new NameComponent{ Value = authoring.charName });
+            AddComponent(authoringEntity, new MoneyComponent{ Value = 500_000 });
             AddComponent(authoringEntity, new PrefabTag());
             AddComponent(authoringEntity, new PlayerWaypointIndex{ Value = 0 } );
             AddComponent(authoringEntity, new CharacterFlag{});

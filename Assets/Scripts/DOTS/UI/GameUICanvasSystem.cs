@@ -105,11 +105,20 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     {
         var uiPanels = SystemAPI.ManagedAPI.GetComponent<UIPanels>(state.SystemHandle);
 
-        foreach (var (playerID, nameComponent) in SystemAPI.Query<RefRO<PlayerID>, RefRO<NameComponent>>())
+        foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrPlayerID>>().WithChangeFilter<CurrPlayerID>())
         {
-            if (playerID.ValueRO.Value == SystemAPI.GetSingleton<CurrPlayerID>().Value)
+            foreach (var (playerID, nameComponent, moneyComponent) 
+                    in SystemAPI.Query<
+                    RefRO<PlayerID>, 
+                    RefRO<NameComponent>,
+                    RefRO<MoneyComponent>
+                    >()) 
             {
-                uiPanels.statsPanel.UpdatePlayerLabelText(nameComponent.ValueRO.Value.ToString());
+                if (playerID.ValueRO.Value == currPlayerID.ValueRO.Value)
+                {
+                    uiPanels.statsPanel.UpdatePlayerNameLabelText(nameComponent.ValueRO.Value.ToString());
+                    uiPanels.statsPanel.UpdatePlayerMoneyLabelText(moneyComponent.ValueRO.Value.ToString());
+                }
             }
         }
 
