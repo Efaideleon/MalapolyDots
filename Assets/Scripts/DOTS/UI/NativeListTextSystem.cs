@@ -58,6 +58,7 @@ public partial struct NativeListTextSystem : ISystem
                 UnityEngine.Debug.Log($"Reinitializing NativeQueue");
             }
         }
+
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<CurrPlayerID>();
         state.RequireForUpdate<SomeEvents>();
