@@ -1,6 +1,7 @@
 using UnityEngine.UIElements;
 using Unity.Entities;
 using System;
+using Unity.VisualScripting;
 
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
@@ -10,7 +11,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public Label TopLabel { get; private set; }
         public Button AcceptButton { get; private set; }
 
-        public Action OnAcceptButton;
+        public Action OnAcceptButton = null;
 
         public Panel(VisualElement root)
         {
@@ -32,15 +33,15 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             TopLabel.text = text;
         }
 
-        public void AddAcceptButtonAction(Action action)
-        {
-            OnAcceptButton = action;
-            AcceptButton.clickable.clicked += OnAcceptButton;
-        }
+        public virtual void AddAcceptButtonAction(EntityQuery entityQuery) { }
 
         private void UnsubscribeAcceptButton()
         {
-            AcceptButton.clickable.clicked -= OnAcceptButton;
+            if (OnAcceptButton != null)
+            {
+                UnityEngine.Debug.Log("Unsubscribing AcceptButton");
+                AcceptButton.clickable.clicked -= OnAcceptButton;
+            }
         }
 
         public virtual void Show() => Root.style.display = DisplayStyle.Flex;
@@ -186,6 +187,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             PriceLabel.text = text;
         }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Property});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
+        }
     }
 
     public class TaxPanel : OnLandPanel
@@ -203,6 +214,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             var name = entityManager.GetComponentData<NameComponent>(entity);
             UpdateLabelText($"{name.Value}");
             Show();
+        }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Tax});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
         }
     }
 
@@ -222,6 +243,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             UpdateLabelText($"{name.Value}");
             Show();
         }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Jail});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
+        }
     }
 
     public class GoToJailPanel : OnLandPanel
@@ -239,6 +270,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             var name = entityManager.GetComponentData<NameComponent>(entity);
             UpdateLabelText($"{name.Value}");
             Show();
+        }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.GoToJail});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
         }
     }
 
@@ -258,6 +299,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             UpdateLabelText($"{name.Value}");
             Show();
         }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Chance});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
+        }
     }
 
     public class GoPanel : OnLandPanel
@@ -275,6 +326,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             var name = entityManager.GetComponentData<NameComponent>(entity);
             UpdateLabelText($"{name.Value}");
             Show();
+        }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Go});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
         }
     }
 
@@ -294,6 +355,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             UpdateLabelText($"{name.Value}");
             Show();
         }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Parking});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
+        }
     }
 
     public class TreasurePanel : OnLandPanel
@@ -312,6 +383,16 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             var name = entityManager.GetComponentData<NameComponent>(entity);
             UpdateLabelText($"{name.Value}");
             Show();
+        }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () => { 
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Treasure});
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
         }
     }
 }
