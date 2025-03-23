@@ -4,34 +4,34 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
-public struct TransactionEvent
-{
-    public SpaceTypeEnum EventType;
-}
-
-public struct TransactionEvents : IComponentData
-{
-    public NativeQueue<TransactionEvent> EventQueue;
-}
+// public struct TransactionEvent
+// {
+//     public SpaceTypeEnum EventType;
+// }
+//
+// public struct TransactionEvents : IComponentData
+// {
+//     public NativeQueue<TransactionEvent> EventQueue;
+// }
 
 public struct RollAmountComponent : IComponentData
 {
     public int Amount;
 }
 
-public class UIPanels : IComponentData
-{
-    public TopPanel topPanel;
-    public BotPanel botPanel;
-    public StatsPanel statsPanel;
-    public RollPanel rollPanel;
-    public YouBoughtPanel youBoughtPanel;
-}
-
-public class OnLandPanelsDictionay : IComponentData
-{
-    public Dictionary<SpaceTypeEnum, OnLandPanel> Value;
-}
+// public class UIPanels : IComponentData
+// {
+//     public TopPanel topPanel;
+//     public BotPanel botPanel;
+//     public StatsPanel statsPanel;
+//     public RollPanel rollPanel;
+//     public YouBoughtPanel youBoughtPanel;
+// }
+//
+// public class OnLandPanelsDictionay : IComponentData
+// {
+//     public Dictionary<SpaceTypeEnum, OnLandPanel> Value;
+// }
 
 public partial struct GameUICanvasSystem : ISystem
 {

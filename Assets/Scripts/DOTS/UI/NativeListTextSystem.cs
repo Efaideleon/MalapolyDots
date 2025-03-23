@@ -60,7 +60,7 @@ public partial struct NativeListTextSystem : ISystem
         }
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<CurrPlayerID>();
-        state.RequireForUpdate<TransactionEvents>();
+        state.RequireForUpdate<SomeEvents>();
     }
 
     [BurstCompile]

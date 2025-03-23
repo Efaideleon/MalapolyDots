@@ -7,6 +7,16 @@ public struct CharacterNameIndex : IComponentData
     public int Index;
 }
 
+public struct TransactionEvent
+{
+    public SpaceTypeEnum EventType;
+}
+
+public struct TransactionEvents : IComponentData
+{
+    public NativeQueue<TransactionEvent> EventQueue;
+}
+
 [BurstCompile]
 public partial struct TransactionSystem : ISystem
 {
