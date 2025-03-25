@@ -36,7 +36,7 @@ public partial struct TransactionSystem : ISystem
             while (transactionEvents.ValueRW.EventQueue.TryDequeue(out var transactionEvent))
             {
                 // Purchase the property if possible
-                if (transactionEvent.EventType == SpaceTypeEnum.Property)
+                if (transactionEvent.EventType == TransactionEventsEnum.Purchase)
                 {
                     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
                     {
@@ -44,22 +44,28 @@ public partial struct TransactionSystem : ISystem
                         if (playerID.ValueRO.Value == currentPlayerID.Value)
                         {
                             var property = SystemAPI.GetSingleton<LandedOnSpace>();
-                            var propertyPrice = SystemAPI.GetComponent<SpacePriceComponent>(property.entity);
-                            playerMoney.ValueRW.Value -= propertyPrice.Value;
+                            var price = SystemAPI.GetComponent<SpacePriceComponent>(property.entity);
+                            playerMoney.ValueRW.Value -= price.Value;
+                            var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
+                            owner.ValueRW.OwnerID = playerID.ValueRO.Value;
                         }
                     }
                 }
-                // Handle each change turn request
-                var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
-                var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
-                currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
 
-                foreach (var (nameComponent, playerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>>())
+                if (transactionEvent.EventType == TransactionEventsEnum.ChangeTurn)
                 {
-                    if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
+                    // Handle each change turn request
+                    var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
+                    var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
+                    currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
+
+                    foreach (var (nameComponent, playerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>>())
                     {
-                        var currentPlayerID = SystemAPI.GetSingletonRW<CurrPlayerID>();
-                        currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
+                        if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
+                        {
+                            var currentPlayerID = SystemAPI.GetSingletonRW<CurrPlayerID>();
+                            currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
+                        }
                     }
                 }
             }

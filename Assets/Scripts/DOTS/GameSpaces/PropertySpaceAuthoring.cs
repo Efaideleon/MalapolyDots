@@ -16,6 +16,7 @@ public class PropertySpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpacePriceComponent { Value = authoring.data.price });
             AddComponent(entity, new PropertySpaceTag {});
             AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Property });
+            AddComponent(entity, new OwnerComponent{ OwnerID = -1 });
         }
     }
 }

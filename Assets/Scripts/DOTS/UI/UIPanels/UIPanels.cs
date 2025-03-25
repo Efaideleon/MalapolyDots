@@ -1,54 +1,10 @@
 using UnityEngine.UIElements;
 using Unity.Entities;
 using System;
+using Unity.Collections;
 
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
-    public class Panel 
-    {
-        public VisualElement Root { get; private set; }
-        public Label TopLabel { get; private set; }
-        public Button AcceptButton { get; private set; }
-
-        public Action OnAcceptButton = null;
-
-        public Panel(VisualElement root)
-        {
-            Root = root;
-        }
-
-        public void UpdateLabelReference(string className)
-        {
-            TopLabel = Root.Q<Label>(className);
-        }
-
-        public void UpdateAcceptButtonReference(string className)
-        {
-            AcceptButton = Root.Q<Button>(className);
-        }
-
-        public void UpdateLabelText(string text)
-        {
-            TopLabel.text = text;
-        }
-
-        public virtual void AddAcceptButtonAction(EntityQuery entityQuery) { }
-
-        private void UnsubscribeAcceptButton()
-        {
-            if (OnAcceptButton != null)
-            {
-                UnityEngine.Debug.Log("Unsubscribing AcceptButton");
-                AcceptButton.clickable.clicked -= OnAcceptButton;
-            }
-        }
-
-        public virtual void Show() => Root.style.display = DisplayStyle.Flex;
-        public virtual void Hide() => Root.style.display = DisplayStyle.None;
-
-        public virtual void Dispose() => UnsubscribeAcceptButton();
-    }
-
     public class OnLandPanel : Panel
     {
         public SpaceTypeEnum PanelType { get; protected set; }
@@ -151,52 +107,22 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
     {
         public YouBoughtPanel(VisualElement parent) : base(parent.Q<VisualElement>("YouBoughtPanel"))
         {
+            UpdateAcceptButtonReference("you-bought-ok-button");
+            UpdateLabelReference("you-bought-label");
             Hide();
-        }
-    }
-
-    public class PropertyPanel : OnLandPanel
-    {
-        private Label PriceLabel;
-
-        public PropertyPanel(VisualElement parent) : base(parent.Q<VisualElement>("PopupMenuPanel"))
-        {
-            PanelType = SpaceTypeEnum.Property;
-            UpdateAcceptButtonReference("popup-menu-accept-button");
-            UpdateLabelReference("buy-popup-menu-label");
-            SetPriceLabelReference("price-popup-menu-label");
-            Hide();
-        }
-
-        public override void HandleTransaction(Entity entity, EntityManager entityManager)
-        {
-            var name = entityManager.GetComponentData<NameComponent>(entity);
-            var price = entityManager.GetComponentData<SpacePriceComponent>(entity);
-            UpdateLabelText($"{name.Value}");
-            UpdatePriceLabel($"{price.Value}");
-            Show();
-        }
-
-        private void SetPriceLabelReference(string className)
-        {
-            PriceLabel = Root.Q<Label>(className);
-        }
-
-        private void UpdatePriceLabel(string text)
-        {
-            PriceLabel.text = text;
         }
 
         public override void AddAcceptButtonAction(EntityQuery entityQuery)
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Property});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
         }
     }
+
 
     public class TaxPanel : OnLandPanel
     {
@@ -219,7 +145,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Tax});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -247,7 +173,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Jail});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn});
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -275,7 +201,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.GoToJail});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -303,7 +229,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Chance});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -331,7 +257,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Go});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -359,7 +285,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Parking});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -388,7 +314,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () => { 
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent{ EventType = SpaceTypeEnum.Treasure});
+                eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
