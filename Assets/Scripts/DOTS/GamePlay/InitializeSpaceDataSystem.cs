@@ -44,6 +44,13 @@ public partial struct InitializeSpaceDataSystem : ISystem
     {
         state.Enabled = false;
         var propertiesReference = SystemAPI.GetSingleton<PropertiesDataBlobReference>().propertiesBlobReference;
+        var treasuresReference = SystemAPI.GetSingleton<TreasuresDataBlobReference>().treasuresBlobReference;
+        var goToJailReference = SystemAPI.GetSingleton<GoToJailDataBlobReference>().goToJailBlobReference;
+        var chancesReference = SystemAPI.GetSingleton<ChancesDataBlobReference>().chancesBlobReference;
+        var parkingReference = SystemAPI.GetSingleton<ParkingDataBlobReference>().parkingBlobReference;
+        var taxesReference = SystemAPI.GetSingleton<TaxesDataBlobReference>().taxesBlobReference;
+        var jailReference = SystemAPI.GetSingleton<JailDataBlobReference>().jailBlobReference;
+        var goReference = SystemAPI.GetSingleton<GoDataBlobReference>().goBlobReference;
 
         new InitializePropertiesJob
         {

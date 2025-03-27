@@ -104,12 +104,57 @@ public class JsonDataReader : MonoBehaviour
                 SpacesData spacesData = JsonUtility.FromJson<SpacesData>(spacesDataString);
                 // Create a BlobAsset
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
+
                 var propertiesBlobReference = PropertiesDataBlobBuilder.Create(spacesData.properties);
+                var treasuresBlobReference = TreasureDataBlobBuilder.Create(spacesData.treasures);
+                var goToJailBlobReference = GoToJailDataBlobBuilder.Create(spacesData.goToJail);
+                var chancesBlobReference = ChancesDataBlobBuilder.Create(spacesData.chances);
+                var parkingBlobReference = ParkingDataBlobBuilder.Create(spacesData.parking);
+                var taxesBlobReference = TaxesDataBlobBuilder.Create(spacesData.taxes);
+                var jailBlobReference = JailDataBlobBuilder.Create(spacesData.jail);
+                var goBlobReference = GoDataBlobBuilder.Create(spacesData.go);
+
                 var propertiesDataBlobComponent = new PropertiesDataBlobReference
                 {
                     propertiesBlobReference = propertiesBlobReference
                 };
+                var treasuresDataBlobComponent = new TreasuresDataBlobReference
+                {
+                    treasuresBlobReference = treasuresBlobReference
+                };
+                var goToJailDataBlobComponent = new GoToJailDataBlobReference
+                {
+                    goToJailBlobReference = goToJailBlobReference
+                };
+                var chancesDataBlobComponent = new ChancesDataBlobReference
+                {
+                    chancesBlobReference = chancesBlobReference
+                };
+                var parkingDataBlobComponent = new ParkingDataBlobReference
+                {
+                    parkingBlobReference = parkingBlobReference
+                };
+                var taxesDataBlobComponent = new TaxesDataBlobReference
+                {
+                    taxesBlobReference = taxesBlobReference
+                };
+                var jailDataBlobComponent = new JailDataBlobReference
+                {
+                    jailBlobReference = jailBlobReference
+                };
+                var goDataBlobComponent = new GoDataBlobReference
+                {
+                    goBlobReference = goBlobReference
+                };
+
                 AddComponent(entity, propertiesDataBlobComponent);
+                AddComponent(entity, treasuresDataBlobComponent);
+                AddComponent(entity, goToJailDataBlobComponent);
+                AddComponent(entity, chancesDataBlobComponent);
+                AddComponent(entity, parkingDataBlobComponent);
+                AddComponent(entity, taxesDataBlobComponent);
+                AddComponent(entity, jailDataBlobComponent);
+                AddComponent(entity, goDataBlobComponent);
             }
         }
     }
