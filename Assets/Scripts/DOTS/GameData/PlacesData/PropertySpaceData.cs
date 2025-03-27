@@ -7,4 +7,5 @@ public class PropertySpaceData: ScriptableObject
     public string Name;
     public int boardIndex;
     public int price;
+    public int baseRent;
 }

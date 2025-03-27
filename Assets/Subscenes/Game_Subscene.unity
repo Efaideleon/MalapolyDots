@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &36864496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 36864498}
+  - component: {fileID: 36864497}
+  m_Layer: 0
+  m_Name: SpacesDataJson
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &36864497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36864496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e7328f1a86ec4bb497cbf26a5ab2a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spacesDataJsonFile: {fileID: 4900000, guid: 9a67f864ab71848c19a77c8c37b6705f, type: 3}
+--- !u!4 &36864498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36864496}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -27.10363, y: 1.03711, z: -9.77417}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &623444461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,7 +1650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 24bf2c381e4f84e17819cb203f016911, type: 2}
+  Name: Ineb
 --- !u!1 &1625471290124426290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,7 +2573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: ff65b297c09d649d48e367d287add428, type: 2}
+  Name: Alejos
 --- !u!4 &2698039853734516629
 Transform:
   m_ObjectHideFlags: 0
@@ -3202,7 +3247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 3d07f1ff3fb604f808d68bdd07b4c771, type: 2}
+  Name: La Municipalidad
 --- !u!4 &3682916240443891500
 Transform:
   m_ObjectHideFlags: 0
@@ -5197,7 +5242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 254a83d6d4886403ba4b6b03ff572823, type: 2}
+  Name: Bomberos
 --- !u!1 &6403819286285653814
 GameObject:
   m_ObjectHideFlags: 0
@@ -5416,7 +5461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 8d05d0c788e714b848184cbd2c8cb52c, type: 2}
+  Name: La Estrella
 --- !u!4 &6529814450375215819
 Transform:
   m_ObjectHideFlags: 0
@@ -5560,7 +5605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: fe59bbeb464d7418fadb8244bf902561, type: 2}
+  Name: Morazan
 --- !u!33 &6620778651228027086
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5957,7 +6002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: aee8fa079d6d54c98875bd014d4f65d3, type: 2}
+  Name: Estadio
 --- !u!23 &7098338560308657035
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6015,7 +6060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 96dd2a4eb05b54d0288b1e6db1b6d4dd, type: 2}
+  Name: Chop suey
 --- !u!4 &7129504842008582800
 Transform:
   m_ObjectHideFlags: 0
@@ -6103,7 +6148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 962c47e6df0ff427786dfb38a7a304c1, type: 2}
+  Name: Cabuz
 --- !u!33 &7134500340813895493
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6293,7 +6338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 5e714beef05ad4c2e9d7019482b98601, type: 2}
+  Name: Interseccion
 --- !u!23 &7436048381960753765
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6351,7 +6396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 31f037e4b5b804d5aa686756a9563853, type: 2}
+  Name: Santa Lucia
 --- !u!1 &7482464460784572794
 GameObject:
   m_ObjectHideFlags: 0
@@ -6401,7 +6446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 922e6b81e3d934fdba2af7c3e481c695, type: 2}
+  Name: Mangos
 --- !u!23 &7537972360617235527
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6496,7 +6541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: fda1ba289b8e84c328c181d75f69b28a, type: 2}
+  Name: Starbus
 --- !u!1 &7623911790822584540
 GameObject:
   m_ObjectHideFlags: 0
@@ -6546,7 +6591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 78e505f444aac461b89564d94790c696, type: 2}
+  Name: Electric Company
 --- !u!23 &7705866513329494204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6700,7 +6745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: f03c7508d68ec40328a1930951fbd941, type: 2}
+  Name: Mercado
 --- !u!33 &7816699580059339302
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6782,7 +6827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: ebb15f24f80d64dd3ab841ef783f6e2c, type: 2}
+  Name: Farmacia Higia
 --- !u!33 &7987862130699355680
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6885,7 +6930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 45c32dac59b144de2aaa3b3afdda9ecc, type: 2}
+  Name: El Rastro
 --- !u!4 &8045652761817647851
 Transform:
   m_ObjectHideFlags: 0
@@ -6946,7 +6991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 9d0085513246c4f328ce75a460ad11df, type: 2}
+  Name: La Terminal
 --- !u!33 &8095875728581412046
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6967,7 +7012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 99cf1095da10b4084b3d61ba96add93c, type: 2}
+  Name: Santo Domingo
 --- !u!33 &8127490264612190386
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7211,7 +7256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 23fcf491fc9934a9c928cf99b72490ce, type: 2}
+  Name: Water Company
 --- !u!4 &8495989646467610841
 Transform:
   m_ObjectHideFlags: 0
@@ -7239,7 +7284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 0e11cd48bb3c7412294c538e58a131dd, type: 2}
+  Name: Malacateo
 --- !u!23 &8518154475489271941
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7363,7 +7408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 4074e14ecf0194e41bae6a2d032ee1bd, type: 2}
+  Name: San Juan de Dios
 --- !u!4 &8617718087023519321
 Transform:
   m_ObjectHideFlags: 0
@@ -7478,7 +7523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: e07170f83167f4f2fb8957b17424ab52, type: 2}
+  Name: San Isidro
 --- !u!33 &8660308825500976875
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7598,7 +7643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 2e6030c0b9067438d8cac972ce051030, type: 2}
+  Name: Benson
 --- !u!33 &8789089461649039778
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7687,7 +7732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: ea61bf91ff2f74f8d8e9367218f6bf87, type: 2}
+  Name: La Trinidad
 --- !u!4 &8887324668610633655
 Transform:
   m_ObjectHideFlags: 0
@@ -7743,7 +7788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 049dbb46944884c1e82f67cf84e9c1c2, type: 2}
+  Name: Bon Cafe
 --- !u!23 &8910938626692228424
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7816,7 +7861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: deb3ae6faa303478b9b4ef8288d2e846, type: 2}
+  Name: Pollo Campero
 --- !u!33 &8935373679288507489
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7916,7 +7961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: e5b413716c93d41f081e1b7c168b1b73, type: 2}
+  Name: Parque
 --- !u!4 &9141461264633118693
 Transform:
   m_ObjectHideFlags: 0
@@ -7978,3 +8023,4 @@ SceneRoots:
   - {fileID: 1005556951}
   - {fileID: 623444462}
   - {fileID: 1151007030}
+  - {fileID: 36864498}
