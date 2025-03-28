@@ -1,8 +1,5 @@
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
-using System.Collections.Generic;
-using Unity.Transforms;
 
 namespace DOTS
 {

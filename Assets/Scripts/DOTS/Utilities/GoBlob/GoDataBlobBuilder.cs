@@ -9,7 +9,7 @@ public static class GoDataBlobBuilder
 
         ref GoDataBlob root = ref builder.ConstructRoot<GoDataBlob>();
 
-        root.go.id= goData.id;
+        root.go.id = goData.id;
         root.go.Name = goData.Name;
         root.go.boardIndex = goData.boardIndex;
 
