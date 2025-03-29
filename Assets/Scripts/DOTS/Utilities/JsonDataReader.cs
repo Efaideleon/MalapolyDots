@@ -105,14 +105,14 @@ public class JsonDataReader : MonoBehaviour
                 // Create a BlobAsset
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
 
-                var propertiesBlobReference = PropertiesDataBlobBuilder.Create(spacesData.properties);
-                var treasuresBlobReference = TreasureDataBlobBuilder.Create(spacesData.treasures);
-                var goToJailBlobReference = GoToJailDataBlobBuilder.Create(spacesData.goToJail);
-                var chancesBlobReference = ChancesDataBlobBuilder.Create(spacesData.chances);
-                var parkingBlobReference = ParkingDataBlobBuilder.Create(spacesData.parking);
-                var taxesBlobReference = TaxesDataBlobBuilder.Create(spacesData.taxes);
-                var jailBlobReference = JailDataBlobBuilder.Create(spacesData.jail);
-                var goBlobReference = GoDataBlobBuilder.Create(spacesData.go);
+                var propertiesBlobReference = PropertiesDataBlobBuilder.Create(spacesData.properties, this);
+                var treasuresBlobReference = TreasureDataBlobBuilder.Create(spacesData.treasures, this);
+                var goToJailBlobReference = GoToJailDataBlobBuilder.Create(spacesData.goToJail, this);
+                var chancesBlobReference = ChancesDataBlobBuilder.Create(spacesData.chances, this);
+                var parkingBlobReference = ParkingDataBlobBuilder.Create(spacesData.parking, this);
+                var taxesBlobReference = TaxesDataBlobBuilder.Create(spacesData.taxes, this);
+                var jailBlobReference = JailDataBlobBuilder.Create(spacesData.jail, this);
+                var goBlobReference = GoDataBlobBuilder.Create(spacesData.go, this);
 
                 var propertiesDataBlobComponent = new PropertiesDataBlobReference
                 {

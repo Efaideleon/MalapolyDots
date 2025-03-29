@@ -1,20 +1,15 @@
-using Unity.Collections;
 using Unity.Entities;
 
 public static class ParkingDataBlobBuilder
 {
-    public static BlobAssetReference<ParkingDataBlob> Create(ParkingData parkingData)
+    public static BlobAssetReference<ParkingDataBlob> Create(ParkingData parkingData, IBaker baker)
     {
-        var builder = new BlobBuilder(Allocator.Temp);
-
-        ref ParkingDataBlob root = ref builder.ConstructRoot<ParkingDataBlob>();
-
-        root.parking.id= parkingData.id;
-        root.parking.Name = parkingData.Name;
-        root.parking.boardIndex = parkingData.boardIndex;
-
-        BlobAssetReference<ParkingDataBlob> blobReference = builder.CreateBlobAssetReference<ParkingDataBlob>(Allocator.Persistent);
-        builder.Dispose();
-        return blobReference;
+        return GenericBlobAssetBuilder.CreateBlobAsset(baker, 
+        (BlobBuilder builder, ref ParkingDataBlob root) => 
+        {
+            root.parking.id= parkingData.id;
+            root.parking.Name = parkingData.Name;
+            root.parking.boardIndex = parkingData.boardIndex;
+        });
     }
 }
