@@ -10,7 +10,7 @@ public partial struct SpaceDetectorSystem : ISystem
         state.RequireForUpdate<BoardIndexComponent>(); 
         state.RequireForUpdate<PlayerID>();
         state.RequireForUpdate<PlayerWaypointIndex>();
-        state.RequireForUpdate<CurrPlayerID>();
+        state.RequireForUpdate<CurrentPlayerID>();
 
         var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
@@ -26,7 +26,7 @@ public partial struct SpaceDetectorSystem : ISystem
                 SystemAPI.Query<RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>()
                 .WithChangeFilter<PlayerWaypointIndex>())
         {
-            var currentPlayerID = SystemAPI.GetSingleton<CurrPlayerID>();
+            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
             foreach (var (boardIndex, spaceEntity) in SystemAPI.Query<RefRO<BoardIndexComponent>>().WithEntityAccess())
             {
                 if (playerID.ValueRO.Value == currentPlayerID.Value 

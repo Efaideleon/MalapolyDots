@@ -8,6 +8,7 @@ public enum TransactionEventsEnum
 {
     Purchase,
     ChangeTurn,
+    PayRent,
     Default
 }
 
@@ -45,7 +46,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     {
         state.RequireForUpdate<CanvasReferenceComponent>();
         state.RequireForUpdate<GameStateComponent>();
-        state.RequireForUpdate<CurrPlayerID>();
+        state.RequireForUpdate<CurrentPlayerID>();
         state.RequireForUpdate<LandedOnSpace>();
         state.RequireForUpdate<MoneyComponent>();
 
@@ -124,7 +125,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
         uiPanels.rollPanel.AddActionToRollButton(() =>
         {
-            var valueRolled = UnityEngine.Random.Range(1, 6);
+            // var valueRolled = UnityEngine.Random.Range(1, 6);
+            var valueRolled = 1;
             rollAmountComponent.GetSingletonRW<RollAmountComponent>().ValueRW.Amount = valueRolled;
             uiPanels.rollPanel.UpdateRollLabel(valueRolled.ToString());
             uiPanels.rollPanel.HideRollButton();
@@ -141,13 +143,13 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     {
         var overlayPanels = SystemAPI.ManagedAPI.GetComponent<OverLayPanels>(state.SystemHandle);
 
-        foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrPlayerID>>().WithChangeFilter<CurrPlayerID>())
+        foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
         {
-            foreach (var (playerID, name, money)
-                    in SystemAPI.Query<
-                    RefRO<PlayerID>,
-                    RefRO<NameComponent>,
-                    RefRO<MoneyComponent>
+            foreach (var (playerID, name, money) in 
+                    SystemAPI.Query<
+                        RefRO<PlayerID>,
+                        RefRO<NameComponent>,
+                        RefRO<MoneyComponent>
                     >())
             {
                 if (playerID.ValueRO.Value == currPlayerID.ValueRO.Value)
@@ -161,7 +163,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         foreach (var (playerID, money) in 
                 SystemAPI.Query<RefRO<PlayerID>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
         {
-            var currPlayerID = SystemAPI.GetSingleton<CurrPlayerID>();
+            var currPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
             if (playerID.ValueRO.Value == currPlayerID.Value)
             {
                 overlayPanels.statsPanel.UpdatePlayerMoneyLabelText(money.ValueRO.Value.ToString());
@@ -175,19 +177,30 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 case GameState.Rolling:
                     overlayPanels.rollPanel.Show();
                     break;
-                case GameState.Transaction:
+                case GameState.Landing: 
                     overlayPanels.rollPanel.Hide();
+
                     var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
-                    var onLandPanelsDict = SystemAPI
-                        .ManagedAPI
-                        .GetComponent<OnLandPanelsDictionay>(state.SystemHandle)
-                        .Value;
                     var spaceLandedType = SystemAPI
                         .GetComponent<SpaceTypeComponent>(spaceLanded.entity)
                         .Value;
+                    var landPanels = SystemAPI
+                        .ManagedAPI
+                        .GetComponent<OnLandPanelsDictionay>(state.SystemHandle)
+                        .Value;
 
-                    var onLandPanel = onLandPanelsDict[spaceLandedType];
-                    onLandPanel.HandleTransaction(spaceLanded.entity, state.EntityManager);
+                    // Get the correct popup panel to show.
+                    var landPanel = landPanels[spaceLandedType];
+                    var playerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                    var context = new ShowPanelContext 
+                    {
+                        entityManager = state.EntityManager,
+                        spaceEntity = spaceLanded.entity,
+                        playerID = playerID.Value
+                    };
+                    // This landPanel is more like a manager that will determine the correct panel
+                    // to show for the given space type
+                    landPanel.Show(context);
                     break;
             }
         }

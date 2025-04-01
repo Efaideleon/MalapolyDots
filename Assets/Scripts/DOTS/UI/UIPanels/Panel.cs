@@ -27,7 +27,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             AcceptButton = Root.Q<Button>(className);
         }
 
-        public void UpdateLabelText(string text)
+        public void UpdateTitleLabelText(string text)
         {
             TopLabel.text = text;
         }

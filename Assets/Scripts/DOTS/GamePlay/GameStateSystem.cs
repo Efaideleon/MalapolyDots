@@ -5,7 +5,7 @@ public enum GameState
 {
     Rolling,
     Walking,
-    Transaction,
+    Landing,
 }
 
 public struct TurnChangedFlag : IComponentData
@@ -43,7 +43,7 @@ public partial struct GamePlaySystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var playerID in SystemAPI.Query<RefRO<CurrPlayerID>>().WithChangeFilter<CurrPlayerID>())
+        foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
         {
             foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
             {
@@ -68,7 +68,7 @@ public partial struct GamePlaySystem : ISystem
             {
                 foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                 {
-                    gameState.ValueRW.State = GameState.Transaction;
+                    gameState.ValueRW.State = GameState.Landing;
                     arrivedFlag.ValueRW.Arrived = false;
                 }
             }

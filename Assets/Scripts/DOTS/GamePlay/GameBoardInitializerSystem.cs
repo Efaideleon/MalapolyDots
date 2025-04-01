@@ -1,7 +1,7 @@
 using Unity.Burst;
 using Unity.Entities;
 
-public struct CurrPlayerID : IComponentData
+public struct CurrentPlayerID : IComponentData
 {
     public int Value;
 }
@@ -22,7 +22,7 @@ public partial struct GameBoardInitializerSystem : ISystem
         state.Enabled = false;
         var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
-            ComponentType.ReadOnly<CurrPlayerID>(),
+            ComponentType.ReadOnly<CurrentPlayerID>(),
         });
 
         int currentPlayerID = default;
@@ -36,7 +36,7 @@ public partial struct GameBoardInitializerSystem : ISystem
             }
         }
 
-        SystemAPI.SetComponent(entity, new CurrPlayerID
+        SystemAPI.SetComponent(entity, new CurrentPlayerID
         {
             Value = currentPlayerID
         });

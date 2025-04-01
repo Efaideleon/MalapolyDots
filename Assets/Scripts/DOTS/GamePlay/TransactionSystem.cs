@@ -23,7 +23,7 @@ public partial struct TransactionSystem : ISystem
         });
 
         state.RequireForUpdate<GameDataComponent>();
-        state.RequireForUpdate<CurrPlayerID>();
+        state.RequireForUpdate<CurrentPlayerID>();
         state.RequireForUpdate<TransactionEvents>();
     }
 
@@ -35,19 +35,50 @@ public partial struct TransactionSystem : ISystem
             var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
             while (transactionEvents.ValueRW.EventQueue.TryDequeue(out var transactionEvent))
             {
+                if (transactionEvent.EventType == TransactionEventsEnum.PayRent)
+                {
+                    foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
+                    {
+                        var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                        if (playerID.ValueRO.Value == currentPlayerID.Value)
+                        {
+                            // Get the rent to pay
+                            var property = SystemAPI.GetSingleton<LandedOnSpace>();
+                            int rent = SystemAPI.GetComponent<RentComponent>(property.entity).Value;
+
+                            // Charge the rent from the player paying
+                            playerMoney.ValueRW.Value -= rent;
+
+                            // Add the money from the rent to the right owner
+                            int ownerID = SystemAPI.GetComponentRO<OwnerComponent>(property.entity).ValueRO.ID;
+                            foreach (var (otherPlayerMoney, otherPlayerID) in 
+                                    SystemAPI.Query<
+                                        RefRW<MoneyComponent>,
+                                        RefRO<PlayerID>
+                                    >())
+                            {
+                                if (ownerID == otherPlayerID.ValueRO.Value)
+                                {
+                                    otherPlayerMoney.ValueRW.Value += rent;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // Purchase the property if possible
                 if (transactionEvent.EventType == TransactionEventsEnum.Purchase)
                 {
                     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
                     {
-                        var currentPlayerID = SystemAPI.GetSingleton<CurrPlayerID>();
+                        var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
                         if (playerID.ValueRO.Value == currentPlayerID.Value)
                         {
                             var property = SystemAPI.GetSingleton<LandedOnSpace>();
-                            var price = SystemAPI.GetComponent<SpacePriceComponent>(property.entity);
+                            var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
                             playerMoney.ValueRW.Value -= price.Value;
                             var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
-                            owner.ValueRW.OwnerID = playerID.ValueRO.Value;
+                            owner.ValueRW.ID = playerID.ValueRO.Value;
                         }
                     }
                 }
@@ -63,7 +94,7 @@ public partial struct TransactionSystem : ISystem
                     {
                         if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
                         {
-                            var currentPlayerID = SystemAPI.GetSingletonRW<CurrPlayerID>();
+                            var currentPlayerID = SystemAPI.GetSingletonRW<CurrentPlayerID>();
                             currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
                         }
                     }

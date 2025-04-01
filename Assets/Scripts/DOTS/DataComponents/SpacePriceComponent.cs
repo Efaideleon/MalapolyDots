@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public struct SpacePriceComponent : IComponentData
+public struct PriceComponent : IComponentData
 {
     public int Value;
 }

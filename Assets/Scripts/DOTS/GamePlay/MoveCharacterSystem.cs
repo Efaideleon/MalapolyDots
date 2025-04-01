@@ -17,7 +17,7 @@ public partial struct MoveCharacterSystem : ISystem
         state.RequireForUpdate<RollAmountComponent>();
         state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<WayPointsTag>();
-        state.RequireForUpdate<CurrPlayerID>();
+        state.RequireForUpdate<CurrentPlayerID>();
 
         var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
@@ -39,7 +39,7 @@ public partial struct MoveCharacterSystem : ISystem
         var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
         if (currGameState.State == GameState.Walking)
         {
-            var currentPlayerID = SystemAPI.GetSingleton<CurrPlayerID>().Value;
+            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
 
             foreach (
                     var (playerID, characterWaypoint, localTransform, playerEntity) in

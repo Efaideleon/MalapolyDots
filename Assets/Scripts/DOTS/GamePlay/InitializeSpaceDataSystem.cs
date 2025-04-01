@@ -4,27 +4,36 @@ using Unity.Entities;
 [BurstCompile]
 public partial struct InitializePropertiesJob : IJobEntity
 {
-    public BlobAssetReference<PropertiesDataBlob> propertiesReference; 
+    public BlobAssetReference<PropertiesDataBlob> propertiesReference;
 
     public void Execute(
             in PropertySpaceTag _,
             in NameComponent name,
             ref SpaceIDComponent id,
             ref BoardIndexComponent boardIdx,
-            ref SpacePriceComponent price,
-            ref RentComponent rent
+            ref PriceComponent price,
+            ref RentComponent rent,
+            ref DynamicBuffer<BaseRentBuffer> rentBuffer
             )
     {
         var numOfProperties = propertiesReference.Value.properties.Length;
         for (int i = 0; i < numOfProperties; i++)
         {
             ref var property = ref propertiesReference.Value.properties[i];
+
             if (name.Value == property.name)
             {
                 id.Value = property.id;
                 boardIdx.Value = property.boardIndex;
                 price.Value = property.price;
-                rent.Value = property.rent;
+                rent.Value = 0;
+                for (int j = 0; j < property.rent.Length; j++)
+                {
+                    rentBuffer.Add(new BaseRentBuffer
+                    {
+                        Value = property.rent[j]
+                    });
+                }
             }
         }
     }
@@ -33,7 +42,7 @@ public partial struct InitializePropertiesJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeTreasuresJob : IJobEntity
 {
-    public BlobAssetReference<TreasureDataBlob> treasuresReference; 
+    public BlobAssetReference<TreasureDataBlob> treasuresReference;
 
     public void Execute(
             in TreasureSpaceTag _,
@@ -57,7 +66,7 @@ public partial struct InitializeTreasuresJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeGoToJailJob : IJobEntity
 {
-    public BlobAssetReference<GoToJailDataBlob> goToJailReference; 
+    public BlobAssetReference<GoToJailDataBlob> goToJailReference;
 
     public void Execute(
             in GoToJailTag _,
@@ -73,7 +82,7 @@ public partial struct InitializeGoToJailJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeChancesJob : IJobEntity
 {
-    public BlobAssetReference<ChancesDataBlob> chancesReference; 
+    public BlobAssetReference<ChancesDataBlob> chancesReference;
 
     public void Execute(
             in ChanceSpaceTag _,
@@ -97,7 +106,7 @@ public partial struct InitializeChancesJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeParkingJob : IJobEntity
 {
-    public BlobAssetReference<ParkingDataBlob> parkingReference; 
+    public BlobAssetReference<ParkingDataBlob> parkingReference;
 
     public void Execute(
             in ParkingSpaceTag _,
@@ -113,7 +122,7 @@ public partial struct InitializeParkingJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeTaxesJob : IJobEntity
 {
-    public BlobAssetReference<TaxesDataBlob> taxesReference; 
+    public BlobAssetReference<TaxesDataBlob> taxesReference;
 
     public void Execute(
             in TaxSpaceTag _,
@@ -137,7 +146,7 @@ public partial struct InitializeTaxesJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeJailJob : IJobEntity
 {
-    public BlobAssetReference<JailDataBlob> jailReference; 
+    public BlobAssetReference<JailDataBlob> jailReference;
 
     public void Execute(
             in JailSpaceTag _,
@@ -153,7 +162,7 @@ public partial struct InitializeJailJob : IJobEntity
 [BurstCompile]
 public partial struct InitializeGoJob : IJobEntity
 {
-    public BlobAssetReference<GoDataBlob> goReference; 
+    public BlobAssetReference<GoDataBlob> goReference;
 
     public void Execute(
             in GoSpaceTag _,
@@ -171,13 +180,13 @@ public partial struct InitializeGoJob : IJobEntity
 public partial struct InitializeSpaceDataSystem : ISystem
 {
     [BurstCompile]
-    public void OnCreate(ref SystemState state) 
+    public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<PropertiesDataBlobReference>();
     }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state) 
+    public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
         var propertiesReference = SystemAPI.GetSingleton<PropertiesDataBlobReference>().propertiesBlobReference;
