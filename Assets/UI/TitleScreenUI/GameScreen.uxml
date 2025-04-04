@@ -10,6 +10,7 @@
     <ui:Template name="ParkingPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/ParkingPanel.uxml?fileID=9197481963319205126&amp;guid=e99a1a4f0f5ab8044805f8605bc2825f&amp;type=3#ParkingPanel" />
     <ui:Template name="TreasurePanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/TreasurePanel.uxml?fileID=9197481963319205126&amp;guid=69fed211fabec244ab7bd785fdf1f70c&amp;type=3#TreasurePanel" />
     <ui:Template name="PayRentPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PayRentPanel.uxml?fileID=9197481963319205126&amp;guid=1db64a035f464445dac2c140e4f8add7&amp;type=3#PayRentPanel" />
+    <ui:Template name="UpgradeHousePanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/UpgradeHousePanel.uxml?fileID=9197481963319205126&amp;guid=f8b9754ee8dce49d0b0e6af2e0e77513&amp;type=3#UpgradeHousePanel" />
     <Style src="project://database/Assets/UI/USS/GameScreen.uss?fileID=7433441132597879392&amp;guid=d90b7e987511b584596d1bed6e988614&amp;type=3#GameScreen" />
     <ui:VisualElement name="game-screen-top-container" class="player-overview_player-name-container" style="width: 100%; height: 10%; flex-direction: row;">
         <ui:VisualElement name="player-overview_left-container" style="flex-grow: 1; align-self: auto; justify-content: center; align-items: flex-start; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
@@ -34,6 +35,7 @@
         <ui:Instance template="GoPanel" name="GoPanel" style="position: absolute;" />
         <ui:Instance template="ParkingPanel" name="ParkingPanel" style="position: absolute;" />
         <ui:Instance template="TreasurePanel" name="TreasurePanel" style="position: absolute; width: 100%; height: 100%;" />
-        <ui:Instance template="PayRentPanel" name="PayRentPanel" />
+        <ui:Instance template="PayRentPanel" name="PayRentPanel" style="display: none;" />
+        <ui:Instance template="UpgradeHousePanel" name="UpgradeHousePanel" />
     </ui:VisualElement>
 </ui:UXML>

@@ -8,9 +8,6 @@ public partial struct RentCalculatorSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        // Get the base rent of each place
-        // Use the algorithm to find the final current rent
-        // set the final rent
         foreach (var (rent, owner, entity) in 
                 SystemAPI.Query<
                     RefRW<RentComponent>, 

@@ -9,6 +9,7 @@ public enum TransactionEventsEnum
     Purchase,
     ChangeTurn,
     PayRent,
+    UpgradeHouse,
     Default
 }
 
@@ -44,6 +45,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 {
     public void OnCreate(ref SystemState state)
     {
+        UnityEngine.Debug.Log(">>> GameUICanvasSystem.OnCreate CALLED <<<");
         state.RequireForUpdate<CanvasReferenceComponent>();
         state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<CurrentPlayerID>();
@@ -78,8 +80,26 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
     public void OnStartRunning(ref SystemState state)
     {
+        UnityEngine.Debug.Log(">>> GameUICanvasSystem.OnStartRunning CALLED <<<");
         var canvasRef = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
-        var uiDocument = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO).GetComponent<UIDocument>();
+        if (canvasRef.uiDocumentGO == null)
+        {
+            UnityEngine.Debug.LogError("CanvasReferenceComponent has a null uiDocumentGO! Cannot instantiate UI.");
+            return; // Or disable system state.Enabled = false;
+        }
+        UnityEngine.Debug.Log($">>> CanvasReferenceComponent Found. Prefab GO: {canvasRef.uiDocumentGO.name}");
+
+        // --- Instantiate Prefab ---
+        var uiGameObject = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO);
+        var uiDocument = uiGameObject.GetComponent<UIDocument>();
+        if (uiDocument == null)
+        {
+            UnityEngine.Debug.LogError($"Instantiated UI Prefab '{uiGameObject.name}' is missing UIDocument component!");
+            UnityEngine.Object.Destroy(uiGameObject); // Clean up useless instance
+            return; // Or disable system
+        }
+
+        UnityEngine.Debug.Log($">>> Instantiated UIDocument '{uiGameObject.name}'. Initial rootVisualElement is {(uiDocument.rootVisualElement == null ? "NULL" : "NOT NULL")}");
 
         TopPanel topPanel = new(uiDocument);
         BotPanel botPanel = new(uiDocument);

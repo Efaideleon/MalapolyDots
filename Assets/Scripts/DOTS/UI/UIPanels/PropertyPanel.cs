@@ -4,6 +4,41 @@ using Unity.Collections;
 
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
+    public class UpgradeHousePanel : Panel
+    {
+        public Label PriceLabel { get; private set; }
+        public Button DeclineButton { get; private set; }
+
+        public UpgradeHousePanel(VisualElement parent) : base(parent.Q<VisualElement>("UpgradeHousePanel"))
+        {
+            UpdateAcceptButtonReference("upgrade-house-accept-button");
+            UpdateLabelReference("upgrade-house-title-label");
+            PriceLabel = Root.Q<Label>("upgrade-house-price-label");
+            DeclineButton = Root.Q<Button>("upgrade-house-decline-button");
+            Hide();
+        }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            OnAcceptButton = () =>
+            {
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.UpgradeHouse });
+                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.ChangeTurn });
+                Hide();
+            };
+            AcceptButton.clickable.clicked += OnAcceptButton;
+        }
+
+        public void Show(ShowPanelContext context)
+        {
+            // get the house level here
+            UpdateTitleLabelText($"House level: {1}");
+            PriceLabel.text = $"{1} Abel";
+            Show();
+        }
+    }
+
     public class YouBoughtPanel : Panel
     {
         public YouBoughtPanel(VisualElement parent) : base(parent.Q<VisualElement>("YouBoughtPanel"))
@@ -62,7 +97,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         }
     }
 
-    public class BuyPanel : OnLandPanel
+    public class BuyPanel : Panel
     {
         private Label PriceLabel;
         public FixedString64Bytes LandOnPropertyName { get; private set; }
@@ -86,7 +121,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             PriceLabel.text = text;
         }
 
-        public override void Show(ShowPanelContext context)
+        public void Show(ShowPanelContext context)
         {
             var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
             var price = context.entityManager.GetComponentData<PriceComponent>(context.spaceEntity);
@@ -119,6 +154,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         private readonly YouBoughtPanel youBoughtPanel; 
         private readonly PayRentPanel payRentPanel;
         private readonly BuyPanel buyPanel;
+        private readonly UpgradeHousePanel upgradeHousePanel;
         private ShowPanelContext showPanelContext;
 
         public PropertyPanel(VisualElement parent) : base(parent)
@@ -127,6 +163,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             youBoughtPanel = new(parent);
             payRentPanel = new(parent);
             buyPanel = new(parent);
+            upgradeHousePanel = new(parent);
             buyPanel.AcceptButton.clicked += OnBuyPanelAcceptClicked;
         }
 
@@ -138,15 +175,27 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             {
                 buyPanel.Show(context);
             }
-            if (IsPlayerOwner(ownerID, context.playerID)) 
+            if (!IsSpaceFree(ownerID) && !IsPlayerOwner(ownerID, context.playerID)) 
             {
                 payRentPanel.Show(context);
             }
+            if (!IsSpaceFree(ownerID) && IsPlayerOwner(ownerID, context.playerID))
+            {
+                upgradeHousePanel.Show(context);
+            }
+        }
+
+        public override void AddAcceptButtonAction(EntityQuery entityQuery)
+        {
+            buyPanel.AddAcceptButtonAction(entityQuery);
+            payRentPanel.AddAcceptButtonAction(entityQuery);
+            youBoughtPanel.AddAcceptButtonAction(entityQuery);
+            upgradeHousePanel.AddAcceptButtonAction(entityQuery);
         }
 
         private bool IsPlayerOwner(int ownerID, int playerID)
         {
-            return ownerID != PropertyConstants.Vacant && ownerID != playerID;
+            return ownerID == playerID;
         }
 
         private bool IsSpaceFree(int ownerID)
@@ -159,18 +208,14 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             youBoughtPanel.Show(showPanelContext);
         }
 
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-            buyPanel.AddAcceptButtonAction(entityQuery);
-            payRentPanel.AddAcceptButtonAction(entityQuery);
-            youBoughtPanel.AddAcceptButtonAction(entityQuery);
-        }
-
         public override void Dispose()
         {
             base.Dispose();
             buyPanel.AcceptButton.clicked -= OnBuyPanelAcceptClicked;
+            buyPanel.Dispose();
+            payRentPanel.Dispose();
             youBoughtPanel.Dispose();
+            upgradeHousePanel.Dispose();
         }
     }
 }

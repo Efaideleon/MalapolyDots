@@ -11,6 +11,8 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public int playerID;
     }
     
+    // This panel is for the controller to know what kind of events to send
+    // This class might be obsolete
     public class OnLandPanel : Panel
     {
         public SpaceTypeEnum PanelType { get; protected set; }

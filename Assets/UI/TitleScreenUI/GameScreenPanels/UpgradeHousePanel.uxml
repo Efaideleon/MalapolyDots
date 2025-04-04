@@ -1,0 +1,16 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="upgrade-house-container" enabled="true" style="flex-grow: 1; height: 100%; width: 100%; background-color: rgba(255, 70, 6, 0); align-items: center; justify-content: center; visibility: visible; display: flex; overflow: visible; position: absolute; top: 0; left: 0; -unity-text-align: upper-center;">
+        <engine:VisualElement name="upgrade-house-panel" style="height: 100px; width: 200px; background-color: rgb(255, 255, 255); flex-shrink: 1; flex-grow: 0;">
+            <engine:VisualElement name="upgrade-house-label-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; height: 100%; width: 100%;">
+                <engine:Label text="Sample Text?" name="upgrade-house-title-label" style="font-size: 25%;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="upgrade-house-price-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; height: 100%; width: 100%;">
+                <engine:Label text="Sample Text?" name="upgrade-house-price-label" style="font-size: 25%;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="upgrade-house-buttons-container" style="flex-grow: 1; flex-direction: row; justify-content: space-around; align-self: auto; height: 100%; font-size: 15px; align-content: stretch; width: 100%;">
+                <engine:Button text="Decline" name="upgrade-house-decline-button" style="min-width: 20%; max-width: 80%; max-height: 50%; min-height: 20%;" />
+                <engine:Button text="Accept" name="upgrade-house-accept-button" style="max-width: 80%; min-width: 20%; max-height: 50%; min-height: 20%;" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
