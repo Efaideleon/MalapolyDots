@@ -30,8 +30,6 @@ public struct RollAmountComponent : IComponentData
 
 public class OverLayPanels : IComponentData
 {
-    public TopPanel topPanel;
-    public BotPanel botPanel;
     public StatsPanel statsPanel;
     public RollPanel rollPanel;
 }
@@ -101,15 +99,14 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         UnityEngine.Debug.Log($">>> Instantiated UIDocument '{uiGameObject.name}'. Initial rootVisualElement is {(uiDocument.rootVisualElement == null ? "NULL" : "NOT NULL")}");
 
-        TopPanel topPanel = new(uiDocument);
-        BotPanel botPanel = new(uiDocument);
-        StatsPanel statsPanel = new(topPanel.Root);
-        RollPanel rollPanel = new(botPanel.Root);
+        var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
+        var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
+
+        StatsPanel statsPanel = new(topPanelRoot);
+        RollPanel rollPanel = new(botPanelRoot);
 
         var uiPanels = new OverLayPanels
         {
-            topPanel = topPanel,
-            botPanel = botPanel,
             statsPanel = statsPanel,
             rollPanel = rollPanel,
         };
@@ -118,14 +115,14 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
         {
-            { SpaceTypeEnum.Property, new PropertyPanel(botPanel.Root) },
-            { SpaceTypeEnum.Tax, new TaxPanel(botPanel.Root) },
-            { SpaceTypeEnum.Jail, new JailPanel(botPanel.Root) },
-            { SpaceTypeEnum.GoToJail, new GoToJailPanel(botPanel.Root) },
-            { SpaceTypeEnum.Chance, new ChancePanel(botPanel.Root) },
-            { SpaceTypeEnum.Go, new GoPanel(botPanel.Root) },
-            { SpaceTypeEnum.Parking, new ParkingPanel(botPanel.Root) },
-            { SpaceTypeEnum.Treasure, new TreasurePanel(botPanel.Root) },
+            { SpaceTypeEnum.Property, new PropertyPanel(botPanelRoot) },
+            { SpaceTypeEnum.Tax, new TaxPanel(botPanelRoot) },
+            { SpaceTypeEnum.Jail, new JailPanel(botPanelRoot) },
+            { SpaceTypeEnum.GoToJail, new GoToJailPanel(botPanelRoot) },
+            { SpaceTypeEnum.Chance, new ChancePanel(botPanelRoot) },
+            { SpaceTypeEnum.Go, new GoPanel(botPanelRoot) },
+            { SpaceTypeEnum.Parking, new ParkingPanel(botPanelRoot) },
+            { SpaceTypeEnum.Treasure, new TreasurePanel(botPanelRoot) },
         };
 
         state.EntityManager.AddComponentObject(state.SystemHandle, new OnLandPanelsDictionay

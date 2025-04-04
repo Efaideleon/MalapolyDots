@@ -20,30 +20,6 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public virtual void Show(ShowPanelContext context) { }
     }
 
-    public class TopPanel
-    {
-        private readonly UIDocument uiDocument;
-        public VisualElement Root { get; private set; }
-
-        public TopPanel(UIDocument uiDocument)
-        {
-            this.uiDocument = uiDocument;
-            Root = this.uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
-        }
-    }
-
-    public class BotPanel
-    {
-        private readonly UIDocument uiDocument;
-        public VisualElement Root { get; private set; }
-
-        public BotPanel(UIDocument uiDocument)
-        {
-            this.uiDocument = uiDocument;
-            Root = this.uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
-        }
-    }
-
     public class StatsPanel
     {
         public VisualElement Parent { get; private set; }
