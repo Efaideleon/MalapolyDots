@@ -69,6 +69,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         public void ShowBuyHousePanel()
         {
+            buyHousePanel.Show();
         }
     }
 }
