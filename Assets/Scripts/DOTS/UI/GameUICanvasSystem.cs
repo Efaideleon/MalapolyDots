@@ -104,7 +104,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
+        BuyHouseUI buyHouseUI = new(botPanelRoot);
 
+        // why do we have uiPanels?
         var uiPanels = new OverLayPanels
         {
             statsPanel = statsPanel,
@@ -149,10 +151,15 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             uiPanels.rollPanel.HideRollButton();
         });
 
-        var transactionEvents = SystemAPI.QueryBuilder().WithAllRW<TransactionEvents>().Build();
+        // Adding the transactionEventsQuery to the accept button in the ui
+        // so that when they are clicked an event happens
+        var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEvents>().Build();
+
+        buyHouseUI.AddAcceptButtonAction(transactionEventsQuery);
+
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
-            onLandPanel.AddAcceptButtonAction(transactionEvents);
+            onLandPanel.AddAcceptButtonAction(transactionEventsQuery);
         }
     }
 
