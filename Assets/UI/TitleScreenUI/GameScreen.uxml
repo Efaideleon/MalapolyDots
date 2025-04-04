@@ -25,9 +25,6 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="game-screen-bottom-container" enabled="true" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto;">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 1; align-items: center; justify-content: center; position: absolute; top: 50px; left: 50px;">
-            <ui:Button text="Buy House" name="buy-house-button" style="width: 200px;" />
-        </ui:VisualElement>
         <ui:Instance template="RollPanel" name="RollPanel" class="roll_template-container" style="position: relative; display: none; width: 100%; height: 100%;" />
         <ui:Instance template="PopupMenuPanel" name="PopupMenuPanel" style="position: absolute; display: none; height: 100%; width: 100%;" />
         <ui:Instance template="YouBoughtPanel" name="YouBoughtPanel" style="position: absolute; top: auto; left: auto;" />
@@ -39,6 +36,6 @@
         <ui:Instance template="ParkingPanel" name="ParkingPanel" style="position: absolute;" />
         <ui:Instance template="TreasurePanel" name="TreasurePanel" style="position: absolute; width: 100%; height: 100%;" />
         <ui:Instance template="PayRentPanel" name="PayRentPanel" style="display: none;" />
-        <ui:Instance template="UpgradeHousePanel" name="UpgradeHousePanel" style="top: 50px; left: auto; position: absolute; height: 200px; width: 100px;" />
+        <ui:Instance template="UpgradeHousePanel" name="UpgradeHousePanel" style="top: 50px; left: 25px; position: absolute; height: 200px; width: 300px; align-items: center;" />
     </ui:VisualElement>
 </ui:UXML>
