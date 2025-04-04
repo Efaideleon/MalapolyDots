@@ -8,7 +8,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public Label PriceLabel { get; private set; }
         public Button DeclineButton { get; private set; }
 
-        public BuyHousePanel(VisualElement parent) : base(parent.Q<VisualElement>("UpgradeHousePanel"))
+        public BuyHousePanel(VisualElement parent) : base(parent.Q<VisualElement>("upgrade-house-panel"))
         {
             UpdateAcceptButtonReference("upgrade-house-accept-button");
             UpdateLabelReference("upgrade-house-title-label");
@@ -41,14 +41,14 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
     public class BuyHouseUI
     {
         public VisualElement Root;
-        public Button BuyHouseButton;
+        public Button buyHouseButton;
         public BuyHousePanel buyHousePanel;
 
         public BuyHouseUI(VisualElement parent)
         {
             Root = parent.Q<VisualElement>("UpgradeHousePanel");
-            BuyHouseButton = Root.Q<Button>("buy-house-button");
-            buyHousePanel = new BuyHousePanel(parent);
+            buyHouseButton = Root.Q<Button>("buy-house-button");
+            buyHousePanel = new BuyHousePanel(Root);
             SubscribeEvents();
         }
 
@@ -59,12 +59,12 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         public void SubscribeEvents()
         {
-            BuyHouseButton.clickable.clicked += ShowBuyHousePanel;
+            buyHouseButton.clickable.clicked += ShowBuyHousePanel;
         }
 
         public void Dispose()
         {
-            BuyHouseButton.clickable.clicked -= ShowBuyHousePanel;
+            buyHouseButton.clickable.clicked -= ShowBuyHousePanel;
         }
 
         public void ShowBuyHousePanel()
