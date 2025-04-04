@@ -119,7 +119,6 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         private readonly YouBoughtPanel youBoughtPanel; 
         private readonly PayRentPanel payRentPanel;
         private readonly BuyPanel buyPanel;
-        private readonly UpgradeHousePanel upgradeHousePanel; // TODO: Remove this later
         private ShowPanelContext showPanelContext;
 
         public PropertyPanel(VisualElement parent) : base(parent)
@@ -128,7 +127,6 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             youBoughtPanel = new(parent);
             payRentPanel = new(parent);
             buyPanel = new(parent);
-            upgradeHousePanel = new(parent);
             buyPanel.AcceptButton.clicked += OnBuyPanelAcceptClicked;
         }
 
@@ -143,11 +141,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             if (!IsSpaceFree(ownerID) && !IsPlayerOwner(ownerID, context.playerID)) 
             {
                 payRentPanel.Show(context);
-            }
-            if (!IsSpaceFree(ownerID) && IsPlayerOwner(ownerID, context.playerID))
-            {
-                upgradeHousePanel.Show(context);
-            }
+           }
         }
 
         public override void AddAcceptButtonAction(EntityQuery entityQuery)
@@ -155,7 +149,6 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             buyPanel.AddAcceptButtonAction(entityQuery);
             payRentPanel.AddAcceptButtonAction(entityQuery);
             youBoughtPanel.AddAcceptButtonAction(entityQuery);
-            upgradeHousePanel.AddAcceptButtonAction(entityQuery);
         }
 
         private bool IsPlayerOwner(int ownerID, int playerID)
@@ -180,7 +173,6 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             buyPanel.Dispose();
             payRentPanel.Dispose();
             youBoughtPanel.Dispose();
-            upgradeHousePanel.Dispose();
         }
     }
 }
