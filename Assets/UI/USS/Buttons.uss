@@ -1,0 +1,52 @@
+.add-sub-button {
+    height: 40px;
+    color: white;
+    border-color: blue;
+    margin: 0;
+    padding: 0;
+    width: 40px;
+    border-radius: 0;
+    -unity-font-style: bold;
+    align-self: flex-start;
+    align-content: flex-start;
+    align-items: auto;
+    overflow: visible;
+}
+
+.sub-button {
+    border-right-color: blue;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.add-button {
+    border-left-color: blue;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.amount-counter {
+    height: 40px;
+    color: Black;
+    margin: 0;
+    width: 40px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: yellow;
+    -unity-text-align: middle-center;
+    padding: 0;
+    align-items: auto;
+}
+
+.add-sub-container {
+    border-radius: 0;
+    border-width: 1px;
+    border-color: red;
+    flex-direction: row;
+    justify-content: center;
+    width: 122px;
+    align-items: center;
+    height: 42px;
+    margin: 0;
+    padding: 0;
+}
