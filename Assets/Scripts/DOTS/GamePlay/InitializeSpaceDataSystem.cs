@@ -13,6 +13,7 @@ public partial struct InitializePropertiesJob : IJobEntity
             ref BoardIndexComponent boardIdx,
             ref PriceComponent price,
             ref RentComponent rent,
+            ref ColorCodeComponent color,
             ref DynamicBuffer<BaseRentBuffer> rentBuffer
             )
     {
@@ -27,6 +28,7 @@ public partial struct InitializePropertiesJob : IJobEntity
                 boardIdx.Value = property.boardIndex;
                 price.Value = property.price;
                 rent.Value = 0;
+                color.Value = property.color;
                 for (int j = 0; j < property.rent.Length; j++)
                 {
                     rentBuffer.Add(new BaseRentBuffer

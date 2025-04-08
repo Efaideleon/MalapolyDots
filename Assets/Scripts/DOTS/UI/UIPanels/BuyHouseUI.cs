@@ -1,19 +1,28 @@
+using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
+    public struct BuyHousePanelContext
+    {
+        public FixedString64Bytes Name { get; set; }
+        public int Price { get; set; }
+    }
     public class BuyHousePanel : Panel
     {
         public Label PriceLabel { get; private set; }
         public Button DeclineButton { get; private set; }
+        public BuyHousePanelContext context;
 
-        public BuyHousePanel(VisualElement parent) : base(parent.Q<VisualElement>("upgrade-house-panel"))
+        public BuyHousePanel(VisualElement parent, BuyHousePanelContext context) : base(parent.Q<VisualElement>("upgrade-house-panel"))
         {
             UpdateAcceptButtonReference("upgrade-house-accept-button");
             UpdateLabelReference("upgrade-house-title-label");
             PriceLabel = Root.Q<Label>("upgrade-house-price-label");
             DeclineButton = Root.Q<Button>("upgrade-house-decline-button");
+            this.context = context;
             Hide();
         }
 
@@ -21,18 +30,17 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () =>
             {
-                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.UpgradeHouse });
-                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.ChangeTurn });
+                var eventBuffer = entityQuery.GetSingletonBuffer<BuyHouseEvent>();
+                eventBuffer.Add(new BuyHouseEvent { property = context.Name });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
         }
 
-        public void Show(ShowPanelContext context)
+        public override void Show()
         {
             // get the house level here
-            UpdateTitleLabelText($"House level: {1}");
+            UpdateTitleLabelText($"{context.Name} House level: {1}");
             PriceLabel.text = $"{1} Abel";
             Show();
         }
@@ -43,33 +51,53 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public VisualElement Root;
         public Button buyHouseButton;
         public BuyHousePanel buyHousePanel;
+        public List<string> PropertiesToBuyHouses { get; private set; }
+        private EntityQuery buyHouseEventsQuery;
 
         public BuyHouseUI(VisualElement parent)
         {
+            PropertiesToBuyHouses = new();
             Root = parent.Q<VisualElement>("UpgradeHousePanel");
             buyHouseButton = Root.Q<Button>("buy-house-button");
-            buyHousePanel = new BuyHousePanel(Root);
             SubscribeEvents();
         }
 
-        public void AddAcceptButtonAction(EntityQuery entityQuery)
+        // once all the house have been bought for a property remove that panel or gray it out.
+        // so that no more house be bought for it.
+        public void AddPropertyName(string name) => PropertiesToBuyHouses.Add(name);
+
+        public void AddBuyHouseEventQuery(EntityQuery entityQuery)
         {
-            buyHousePanel.AddAcceptButtonAction(entityQuery);
+            buyHouseEventsQuery = entityQuery;
         }
 
         public void SubscribeEvents()
         {
-            buyHouseButton.clickable.clicked += ShowBuyHousePanel;
+            buyHouseButton.clickable.clicked += ShowBuyHousePanels;
         }
 
         public void Dispose()
         {
-            buyHouseButton.clickable.clicked -= ShowBuyHousePanel;
+            buyHouseButton.clickable.clicked -= ShowBuyHousePanels;
         }
 
-        public void ShowBuyHousePanel()
+        private void ShowBuyHousePanels()
         {
-            buyHousePanel.Show();
+            // Check if the current player has any monopolies over a color
+            // if they do then show him the panel to buy a house there
+            foreach (var name in PropertiesToBuyHouses)
+            {
+                var panelContext = new BuyHousePanelContext
+                {
+                    Name = name,
+                    Price = 0
+                };
+
+                buyHousePanel = new BuyHousePanel(Root, panelContext);
+                buyHousePanel.AddAcceptButtonAction(buyHouseEventsQuery);
+                buyHousePanel.Show();
+            }
+            PropertiesToBuyHouses.Clear();
         }
     }
 }

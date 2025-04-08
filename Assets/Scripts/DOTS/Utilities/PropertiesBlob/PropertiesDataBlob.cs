@@ -9,6 +9,7 @@ public struct FixedPropertyData
     public int price;
     public BlobArray<int> rent;
     public int rentWithHotel;
+    public PropertyColor color;
 }
 
 public struct PropertiesDataBlob

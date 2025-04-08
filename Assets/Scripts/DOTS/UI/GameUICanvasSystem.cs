@@ -32,6 +32,7 @@ public class OverLayPanels : IComponentData
 {
     public StatsPanel statsPanel;
     public RollPanel rollPanel;
+    public BuyHouseUI buyhouseUI;
 }
 
 public class OnLandPanelsDictionay : IComponentData
@@ -54,9 +55,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         if (query.IsEmpty)
         {
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-                    {
-                    ComponentType.ReadOnly<TransactionEvents>()
-                    });
+            {
+                ComponentType.ReadOnly<TransactionEvents>()
+            });
             SystemAPI.SetComponent(entity, new TransactionEvents
             {
                 EventQueue = new NativeQueue<TransactionEvent>(Allocator.Persistent)
@@ -107,10 +108,12 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         BuyHouseUI buyHouseUI = new(botPanelRoot);
 
         // why do we have uiPanels?
+        // To put it in components and change them on the OnUpdate loop
         var uiPanels = new OverLayPanels
         {
             statsPanel = statsPanel,
             rollPanel = rollPanel,
+            buyhouseUI = buyHouseUI
         };
 
         state.EntityManager.AddComponentObject(state.SystemHandle, uiPanels);
@@ -154,8 +157,10 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // Adding the transactionEventsQuery to the accept button in the ui
         // so that when they are clicked an event happens
         var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEvents>().Build();
+        // BUG?: I wonder if this gets the dynamic buffer
+        var buyHouseEventsQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
 
-        buyHouseUI.AddAcceptButtonAction(transactionEventsQuery);
+        buyHouseUI.AddBuyHouseEventQuery(buyHouseEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
@@ -225,6 +230,21 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                     // This landPanel is more like a manager that will determine the correct panel
                     // to show for the given space type
                     landPanel.Show(context);
+
+                    // Query for the properties that are a monopoly.
+                    foreach (var (owner, monopoly, name) in 
+                            SystemAPI.Query<
+                                RefRO<OwnerComponent>,
+                                RefRO<MonopolyFlagComponent>,
+                                RefRO<NameComponent>
+                            >())
+                    {
+                        if (owner.ValueRO.ID == playerID.Value && monopoly.ValueRO.State == true)
+                        {
+                            // Pass the name of the property where a house can be bought to ui here
+                            overlayPanels.buyhouseUI.AddPropertyName(name.ValueRO.Value.ToString());
+                        }
+                    }
                     break;
             }
         }

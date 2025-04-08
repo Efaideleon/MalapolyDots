@@ -18,6 +18,9 @@ public class PropertySpaceAuthoring : MonoBehaviour
             AddComponent(entity, new OwnerComponent { ID = PropertyConstants.Vacant });
             AddComponent(entity, new PropertySpaceTag {});
             AddComponent(entity, new RentComponent { Value = default });
+            AddComponent(entity, new ColorCodeComponent { Value = default });
+            AddComponent(entity, new MonopolyFlagComponent { State = false });
+            AddComponent(entity, new HouseCount { Value = 0 });
             AddBuffer<BaseRentBuffer>(entity);
         }
     }

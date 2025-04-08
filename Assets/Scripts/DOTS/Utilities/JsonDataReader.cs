@@ -10,6 +10,7 @@ public class PropertyData
     public int price;
     public int[] rent;
     public int rentWithHotel;
+    public string color;
 }
 
 [System.Serializable]

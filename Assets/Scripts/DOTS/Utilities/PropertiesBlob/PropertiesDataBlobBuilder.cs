@@ -1,4 +1,21 @@
+using System.Collections.Generic;
 using Unity.Entities;
+
+public static class PropertyColorUtility
+{
+    public static readonly Dictionary<string, PropertyColor> Map = new()
+    {
+        { "None", PropertyColor.White },
+        { "Brown", PropertyColor.Brown },
+        { "LightBlue", PropertyColor.LightBlue },
+        { "Purple", PropertyColor.Purple },
+        { "Orange", PropertyColor.Orange },
+        { "Red", PropertyColor.Red },
+        { "Yellow", PropertyColor.Yellow },
+        { "Green", PropertyColor.Green },
+        { "Blue", PropertyColor.Blue }
+    };
+}
 
 public static class PropertiesDataBlobBuilder
 {
@@ -12,20 +29,21 @@ public static class PropertiesDataBlobBuilder
 
             for (int i = 0; i < propertiesData.Length; i++)
             {
-            PropertyData property = propertiesData[i];
-            var propertyRentArray = propertiesData[i].rent;
+                PropertyData property = propertiesData[i];
+                var propertyRentArray = propertiesData[i].rent;
 
-            // Allocate memroy for the rent array in the propertiesBuilder array.
-            BlobBuilderArray<int> rentBuilder = builder.Allocate(ref propertiesBuilder[i].rent, propertyRentArray.Length);
-            for (int j = 0; j < propertyRentArray.Length; j++)
-            {
-            rentBuilder[j] = propertyRentArray[j];
-            }
-            propertiesBuilder[i].id = property.id;
-            propertiesBuilder[i].name = property.Name;
-            propertiesBuilder[i].boardIndex = property.boardIndex;
-            propertiesBuilder[i].price = property.price;
-            propertiesBuilder[i].rentWithHotel = property.rentWithHotel;
+                // Allocate memroy for the rent array in the propertiesBuilder array.
+                BlobBuilderArray<int> rentBuilder = builder.Allocate(ref propertiesBuilder[i].rent, propertyRentArray.Length);
+                for (int j = 0; j < propertyRentArray.Length; j++)
+                {
+                rentBuilder[j] = propertyRentArray[j];
+                }
+                propertiesBuilder[i].id = property.id;
+                propertiesBuilder[i].name = property.Name;
+                propertiesBuilder[i].boardIndex = property.boardIndex;
+                propertiesBuilder[i].price = property.price;
+                propertiesBuilder[i].rentWithHotel = property.rentWithHotel;
+                propertiesBuilder[i].color = PropertyColorUtility.Map[property.color];
             }
         });
     }
