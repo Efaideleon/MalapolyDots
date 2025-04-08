@@ -1,7 +1,8 @@
 .add-sub-button {
     height: 40px;
-    color: white;
-    border-color: blue;
+    color: blanchedalmond;
+    border-color: lightyellow;
+    background-color: saddlebrown;
     margin: 0;
     padding: 0;
     width: 40px;
@@ -14,13 +15,11 @@
 }
 
 .sub-button {
-    border-right-color: blue;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
 .add-button {
-    border-left-color: blue;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -32,7 +31,7 @@
     width: 40px;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    border-color: yellow;
+    border-color: lightyellow;
     -unity-text-align: middle-center;
     padding: 0;
     align-items: auto;
@@ -40,8 +39,8 @@
 
 .add-sub-container {
     border-radius: 6px;
-    border-width: 1px;
-    border-color: red;
+    border-width: 2px;
+    border-color: black;
     flex-direction: row;
     justify-content: center;
     width: 122px;
@@ -49,4 +48,27 @@
     height: 42px;
     margin: 0;
     padding: 0;
+}
+
+.buy-houses-panel_button {
+    width: 40px;
+    height: 40px;
+    color: blanchedalmond;
+    border-width: 2px;
+    border-color: black;
+    background-color: saddlebrown;
+    border-radius: 5px;
+}
+
+.buy-houses-panel {
+    background-color: blanchedalmond;
+    border-radius: 10px;
+    border-width: 5px;
+    border-color: saddlebrown;
+}
+
+.dollar-sign-buy-houses_panel {
+    margin: 0;
+    padding: 0;
+    -unity-font-style: bold;
 }
