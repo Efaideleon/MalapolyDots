@@ -14,8 +14,6 @@ public partial struct BuyHouseSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        var entity = state.EntityManager.CreateEntity();
-        state.EntityManager.AddBuffer<BuyHouseEvent>(entity);
         state.RequireForUpdate<BuyHouseEvent>();
         state.RequireForUpdate<NameComponent>();
         state.RequireForUpdate<HouseCount>();
@@ -25,7 +23,7 @@ public partial struct BuyHouseSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var buffer in SystemAPI.Query< DynamicBuffer<BuyHouseEvent>>().WithChangeFilter<BuyHouseEvent>()) 
+        foreach (var buffer in SystemAPI.Query<DynamicBuffer<BuyHouseEvent>>().WithChangeFilter<BuyHouseEvent>()) 
         {
             if (buffer.Length < 1)
                 return;
@@ -34,11 +32,12 @@ public partial struct BuyHouseSystem : ISystem
             {
                 // process the event
                 // check if a house can be bought. if yes inscrease the number of houses in the property
+                // TODO: check if the property is part of monopoly to see if it can be bought?
                 foreach (var (name, houseCount, _) in SystemAPI.Query<RefRO<NameComponent>, RefRW<HouseCount>, RefRO<PropertySpaceTag>>())
                 {
                     if (buyHouseEvent.property == name.ValueRO.Value)
                     {
-                        if ((houseCount.ValueRO.Value + 1) < 4)
+                        if (houseCount.ValueRO.Value < 4)
                         {
                             houseCount.ValueRW.Value++;
                         }

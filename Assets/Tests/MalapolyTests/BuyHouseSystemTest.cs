@@ -34,6 +34,8 @@ public class BuyHouseSystemTest : ECSTestsFixture
             typeof(PropertySpaceTag)
         );
 
+        testWorld.Update();
+
         var nameComponent = new NameComponent { Value = "Mercado" };
         entityManager.SetComponentData(propertyEntity, nameComponent);
 

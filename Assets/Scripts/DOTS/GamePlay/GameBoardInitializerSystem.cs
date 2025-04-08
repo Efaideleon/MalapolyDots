@@ -12,6 +12,11 @@ public partial struct GameBoardInitializerSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        // Initializing Event communication to buy houses
+        var entity = state.EntityManager.CreateEntity();
+        state.EntityManager.AddBuffer<BuyHouseEvent>(entity);
+
+        // Initializing the Current Player ID
         state.RequireForUpdate<CharacterSelectedBuffer>();
         state.RequireForUpdate<PlayerID>();
     }
