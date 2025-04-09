@@ -1,32 +1,10 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="BuyHousePanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/BuyHousePanel.uxml?fileID=9197481963319205126&amp;guid=9f680d58b724c43e6b09e3dfcb117c8a&amp;type=3#BuyHousePanel" />
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
     <engine:VisualElement name="buy-house-ui-container" style="flex-grow: 1;">
         <engine:VisualElement name="buy-house-expand-button-container" style="flex-grow: 1; align-items: center; justify-content: center; position: relative; top: auto; left: auto;">
             <engine:Button text="Buy House" name="buy-house-button" style="width: 200px;" />
         </engine:VisualElement>
-        <engine:VisualElement name="upgrade-house-container" enabled="true" style="flex-grow: 10; height: auto; width: auto; background-color: rgba(255, 70, 6, 0); align-items: center; justify-content: center; visibility: visible; display: flex; overflow: visible; position: relative; top: 0; left: 0; -unity-text-align: upper-center; flex-shrink: 1;">
-            <engine:VisualElement name="upgrade-house-panel" class="buy-houses-panel" style="height: 80%; width: 100%; background-color: rgb(255, 255, 255); flex-shrink: 1; flex-grow: 0;">
-                <engine:VisualElement name="upgrade-house-label-container" style="flex-grow: 1; justify-content: flex-start; align-self: auto; flex-shrink: 1; height: auto; width: 100%; align-items: center; align-content: stretch;">
-                    <engine:Label text="Buy Houses" name="upgrade-house-title-label" style="font-size: 25%;" />
-                    <engine:Label text="Choose how many houses to buy.&#10;" name="choose-how-many-houses_label" style="width: 230px; height: 26px; align-self: auto; align-items: flex-start; -unity-text-align: upper-center; white-space: nowrap; font-size: 12px;" />
-                </engine:VisualElement>
-                <engine:VisualElement name="property-element" style="flex-direction: row; align-items: flex-end; margin-right: 0; justify-content: center; align-content: flex-start; align-self: auto; flex-wrap: nowrap; flex-basis: auto; margin-left: 0; margin-top: 0; margin-bottom: 0; width: 100%; height: 42px; position: relative; top: 0; left: 0; -unity-text-align: upper-center; visibility: hidden; overflow: visible;">
-                    <engine:Label text="Name Of Property&#10;" name="property-name" style="width: 135px; height: 26px; align-self: auto; align-items: flex-start; -unity-text-align: upper-center; white-space: nowrap; font-size: 12px; color: rgb(0, 0, 0); visibility: visible;" />
-                    <engine:VisualElement name="VisualElement" class="add-sub-container" style="flex-direction: row; background-position-x: center 0; background-position-y: center 0; -unity-background-scale-mode: stretch-to-fill; justify-content: flex-start; align-content: flex-start; flex-wrap: nowrap; align-self: auto; align-items: flex-start; top: 0; left: auto; width: 122px; font-size: 25px; position: relative; height: 42px; overflow: hidden; visibility: visible;">
-                        <engine:Button text="-" name="subtract-houses-amount" class="add-sub-button sub-button" style="align-self: auto; -unity-text-align: middle-center; white-space: nowrap; text-overflow: clip; flex-direction: column; flex-wrap: nowrap; height: 40px;" />
-                        <engine:Label text="0" name="houses-counter" class="amount-counter" style="height: 40px;" />
-                        <engine:Button text="+" name="add-houses-amount" class="add-sub-button add-button" style="align-items: auto; height: 40px; width: 40px;" />
-                    </engine:VisualElement>
-                </engine:VisualElement>
-                <engine:VisualElement name="upgrade-house-price-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; height: auto; width: 100%; flex-direction: row; align-items: center;">
-                    <engine:Label text="$" name="dollar-sign" class="dollar-sign-buy-houses_panel" style="font-size: 25%;" />
-                    <engine:Label text="Price" name="upgrade-house-price-label" style="font-size: 25%;" />
-                </engine:VisualElement>
-                <engine:VisualElement name="upgrade-house-buttons-container" style="flex-grow: 1; flex-direction: row; justify-content: space-around; align-self: auto; height: auto; font-size: 15px; align-content: stretch; width: 100%;">
-                    <engine:Button text="Close" name="upgrade-house-decline-button" class="buy-houses-panel_button" style="min-width: 20%; max-width: 80%; max-height: 50%; min-height: 20%;" />
-                    <engine:Button text="Buy" name="upgrade-house-accept-button" class="buy-houses-panel_button" style="max-width: 80%; min-width: 20%; max-height: 50%; min-height: 20%;" />
-                </engine:VisualElement>
-            </engine:VisualElement>
-        </engine:VisualElement>
+        <engine:Instance template="BuyHousePanel" name="BuyHousePanel" />
     </engine:VisualElement>
 </engine:UXML>

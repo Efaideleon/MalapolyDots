@@ -40,7 +40,10 @@ public partial struct MonopolyTrackerSystem : ISystem
                     >()
                     .WithChangeFilter<OwnerComponent>())
             {
-                monopolyTracker[(int)color.ValueRO.Value].Add(owner.ValueRO.ID);
+                if (color.ValueRO.Value != PropertyColor.White)
+                {
+                    monopolyTracker[(int)color.ValueRO.Value].Add(owner.ValueRO.ID);
+                }
             }
 
             foreach (var _ in SystemAPI.Query<RefRO<OwnerComponent>>().WithChangeFilter<OwnerComponent>())
@@ -58,25 +61,25 @@ public partial struct MonopolyTrackerSystem : ISystem
                             houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
                             break;
                         case PropertyColor.LightBlue:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.LightBlue, monopolyTracker);
                             break;
                         case PropertyColor.Purple:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Purple, monopolyTracker);
                             break;
                         case PropertyColor.Orange:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Orange, monopolyTracker);
                             break;
                         case PropertyColor.Red:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Red, monopolyTracker);
                             break;
                         case PropertyColor.Yellow:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Yellow, monopolyTracker);
                             break;
                         case PropertyColor.Green:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Green, monopolyTracker);
                             break;
                         case PropertyColor.Blue:
-                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                            houseBuyable.ValueRW.State = IsMonopoly(PropertyColor.Blue, monopolyTracker);
                             break;
                     }
                 }
