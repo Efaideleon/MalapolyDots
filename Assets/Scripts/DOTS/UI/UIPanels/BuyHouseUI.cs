@@ -34,18 +34,34 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             Root = root;
             PropertyName = Root.Q<Label>("property-name"); 
             HouseCounter = Root.Q<Label>("houses-counter"); 
-            MinusButton = Root.Q<Button>("substract-houses-amount");
+            MinusButton = Root.Q<Button>("subtract-houses-amount");
             PlusButton = Root.Q<Button>("add-houses-amount");
 
             PropertyName.text = Context.Name.ToString();
+            SubscribeEvents();
         }
 
         public void SubscribeEvents()
         {
-            PlusButton.clickable.clicked += IncreaseNumOfHouseToBuy;
-            MinusButton.clickable.clicked += DecreaseNumOfHouseToBuy;
+            if (PlusButton != null)
+            {
+                PlusButton.clickable.clicked += IncreaseNumOfHouseToBuy;
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Plus button is null");
+            }
+            if (MinusButton != null)
+            {
+                MinusButton.clickable.clicked += DecreaseNumOfHouseToBuy;
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Minus button is null");
+            }
         }
 
+        // TODO: Must call when the element/BuyHousePanel gets destroyed
         public void Dispose()
         {
             PlusButton.clickable.clicked -= IncreaseNumOfHouseToBuy;
@@ -56,22 +72,33 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         // To prevent increase the number of the UI events it no houses can be bought
         private void IncreaseNumOfHouseToBuy() 
         {
+            UnityEngine.Debug.Log("Increasing num of house to buy");
             NumOfHousesToBuy++;
             UpdateNumOfHouseToBuyLabel();
         }
 
         private void DecreaseNumOfHouseToBuy() 
         {
+            UnityEngine.Debug.Log("Decreasing num of house to buy");
             NumOfHousesToBuy--;
             UpdateNumOfHouseToBuyLabel();
         }
 
         private void UpdateNumOfHouseToBuyLabel()
         {
-            HouseCounter.text = NumOfHousesToBuy.ToString();
+            if (HouseCounter != null)
+            {
+                HouseCounter.text = NumOfHousesToBuy.ToString();
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("HouseCounter Label is null");
+            }
         }
     }
 
+    // TODO: This shouldn't inherit from Panel
+    // It's different from regualr popup panels
     public class BuyHousePanel : Panel
     {
         public Label PriceLabel { get; private set; }
@@ -94,12 +121,17 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             ListOfBuyHouseEvents.Add(e);
         }
 
-        public void AddAcceptButtonAction(EntityQuery entityQuery)
+        public void AddAcceptButtonAction(EntityQuery entityQuery, Func<List<BuyHouseEvent>> GetListOfBuyHouseEvents)
         {
             OnAcceptButton = () =>
             {
                 var eventBuffer = entityQuery.GetSingletonBuffer<BuyHouseEvent>();
-                // The BuyHouseEVent represents purchasing one house
+                // The BuyHouseEvent represents purchasing one house
+                foreach (var e in GetListOfBuyHouseEvents())
+                {
+                    UnityEngine.Debug.Log($"Buy a hosue for {e.property}");
+                    eventBuffer.Add(e);
+                }
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -175,19 +207,23 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
                     Price = 0,
                 };
 
+                // instantiating the uxml
                 var propertyPanelVE = propertyNameCounterInstantiator.InstantiatePropertyNameCounterElement(Root);
+                // passing the reference to a setup/controller class
                 var propertyPanel = new PropertyNameCounterElement(propertyPanelVE, propertyNameCounterContext);
+                // keeping track of how many elements we instantiated
                 PropertyNameCounterElementsList.Add(propertyPanel);
             }
 
             // buyHouseVE is the BuyHousePanel
             // GetListOfBuyHouseEvents function crashes UnityEditor
             // When Accept is clicked we should pass the list of BuyHouseEvents
-            buyHousePanel.AddAcceptButtonAction(buyHouseEventsQuery);
+            buyHousePanel.AddAcceptButtonAction(buyHouseEventsQuery, GetListOfBuyHouseEvents);
             buyHousePanel.Show();
             PropertiesToBuyHouses.Clear();
         }
 
+        // Creates a list of events for each selected house to buy
         private List<BuyHouseEvent> GetListOfBuyHouseEvents()
         {
             List<BuyHouseEvent> listOfBuyHouseEvents = new();
