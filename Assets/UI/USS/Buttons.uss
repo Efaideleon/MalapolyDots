@@ -2,7 +2,6 @@
     height: 40px;
     color: blanchedalmond;
     border-color: lightyellow;
-    background-color: saddlebrown;
     margin: 0;
     padding: 0;
     width: 40px;
@@ -17,11 +16,13 @@
 .sub-button {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+
 }
 
 .add-button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+
 }
 
 .amount-counter {
@@ -40,7 +41,7 @@
 .add-sub-container {
     border-radius: 6px;
     border-width: 2px;
-    border-color: black;
+    border-color: #b1b5b3;
     flex-direction: row;
     justify-content: center;
     width: 122px;
@@ -71,4 +72,61 @@
     margin: 0;
     padding: 0;
     -unity-font-style: bold;
+}
+
+.buy-button {
+    width: 60px;
+    height: 30px;
+    color: white;
+    background-color: #448d61;
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 0;
+}
+
+.sell-button {
+    width: 60px;
+    height: 30px;
+    color: white;
+    background-color: #d0463a; 
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 0;
+}
+
+.on-toggle-button{
+    -unity-font-style: bold;
+    border-width: 0;
+    background-color: transparent;
+    width: 60px;
+    margin: 0;
+}
+
+.off-toggle-button{
+    -unity-font-style: bold;
+    border-width: 0;
+    background-color: transparent;
+    width: 60px;
+    margin: 0;
+}
+
+.toggle-element{
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-container{
+    padding: 2px;
+    background-color: gray;
+    border-radius: 10px;
+}
+
+.ok-button {
+    width: 100px;
+    height: 30px;
+    color: white;
+    background-color: #3a92d0;
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 0;
 }
