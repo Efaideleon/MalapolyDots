@@ -3,7 +3,12 @@
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
     <engine:VisualElement name="buy-house-ui-container">
         <engine:VisualElement name="buy-house-expand-button-container" style="flex-grow: 1; align-items: center; justify-content: center; position: relative; top: auto; left: auto;">
-            <engine:Button text="Buy House" name="buy-house-button" style="width: 200px;" />
+            <engine:Button name="buy-house-button" class="buy-houses-button">
+                <engine:VisualElement style="flex-grow: 1; justify-content: center; width: 100%; height: 100%; flex-direction: row; align-items: center;">
+                    <engine:VisualElement style="border-left-color: rgba(186, 0, 0, 0.95); border-right-color: rgba(186, 0, 0, 0.95); border-top-color: rgba(186, 0, 0, 0.95); border-bottom-color: rgba(186, 0, 0, 0.95); display: flex; visibility: visible; -unity-text-outline-color: rgba(0, 0, 0, 0); background-color: rgba(255, 0, 0, 0); background-image: url(&quot;project://database/Assets/Textures/GreenHouse128.png?fileID=21300000&amp;guid=67d352eb2cd62ab46b201ceb72182500&amp;type=3#GreenHouse128&quot;); width: 20px; height: 20px; -unity-background-scale-mode: scale-to-fit;" />
+                    <engine:Label text="BUY" style="margin-right: 0;" />
+                </engine:VisualElement>
+            </engine:Button>
         </engine:VisualElement>
         <engine:Instance template="BuyHousePanel" name="BuyHousePanel" />
     </engine:VisualElement>
