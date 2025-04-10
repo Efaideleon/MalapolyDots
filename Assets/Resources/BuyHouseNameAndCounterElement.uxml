@@ -1,10 +1,43 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement name="property-element" style="flex-direction: row; align-items: flex-end; margin-right: 0; justify-content: center; align-content: flex-start; align-self: auto; flex-wrap: nowrap; flex-basis: auto; margin-left: 0; margin-top: 0; margin-bottom: 0; width: 100%; height: 42px; position: relative; top: 0; left: 0; -unity-text-align: upper-center; visibility: hidden; overflow: visible;">
-        <engine:Label text="Name Of Property&#10;" name="property-name" style="width: 135px; height: 26px; align-self: auto; align-items: flex-start; -unity-text-align: upper-center; white-space: nowrap; font-size: 12px; color: rgb(0, 0, 0); visibility: visible;" />
-        <engine:VisualElement name="VisualElement" class="add-sub-container" style="flex-direction: row; background-position-x: center 0; background-position-y: center 0; -unity-background-scale-mode: stretch-to-fill; justify-content: flex-start; align-content: flex-start; flex-wrap: nowrap; align-self: auto; align-items: flex-start; top: 0; left: auto; width: 122px; font-size: 25px; position: relative; height: 42px; overflow: hidden; visibility: visible;">
-            <engine:Button text="-" name="subtract-houses-amount" class="add-sub-button sub-button" style="align-self: auto; -unity-text-align: middle-center; white-space: nowrap; text-overflow: clip; flex-direction: column; flex-wrap: nowrap; height: 40px;" />
-            <engine:Label text="0" name="houses-counter" class="amount-counter" style="height: 40px;" />
-            <engine:Button text="+" name="add-houses-amount" class="add-sub-button add-button" style="align-items: auto; height: 40px; width: 40px;" />
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <engine:VisualElement name="property-element" style="flex-direction: column; align-items: center; margin-right: 10px; justify-content: center; align-content: flex-start; align-self: auto; flex-wrap: nowrap; flex-basis: auto; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; width: auto; height: initial; position: relative; top: 0; left: 0; -unity-text-align: upper-center; visibility: visible; overflow: visible; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(213, 0, 0); border-right-color: rgb(213, 0, 0); border-top-color: rgb(213, 0, 0); border-bottom-color: rgba(255, 0, 0, 0.86); padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
+        <engine:VisualElement style="width: auto; height: auto; background-color: rgb(85, 42, 0); visibility: visible; color: rgb(255, 255, 255);">
+            <engine:Label text="Name Of Property&#10;" name="property-name" style="width: auto; height: auto; align-self: auto; align-items: flex-start; -unity-text-align: lower-center; white-space: nowrap; font-size: 14px; color: rgb(255, 255, 255); visibility: visible; -unity-font-style: bold; justify-content: flex-end; align-content: flex-start;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: column;">
+            <engine:VisualElement style="align-items: center; background-color: rgb(246, 243, 234); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-left-color: rgb(175, 177, 177); border-right-color: rgb(175, 177, 177); border-top-color: rgb(175, 177, 177); border-bottom-color: rgb(175, 177, 177); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <engine:Label text="0" name="number-houses-owned" style="color: rgb(72, 85, 87); -unity-font-style: bold; margin-right: 0;" />
+                    <engine:Label text="Houses Owned" name="houses-owned-label" style="color: rgb(72, 85, 87); -unity-font-style: bold;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="toggle-container" class="toggle-container" style="flex-grow: 1; flex-direction: row; border-left-color: rgb(132, 132, 132); border-right-color: rgb(132, 132, 132); border-top-color: rgb(132, 132, 132); border-bottom-color: rgb(132, 132, 132); background-color: rgba(178, 178, 178, 0.64); border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+                    <engine:VisualElement name="toggle-element" class="toggle-element" style="background-color: rgb(0, 145, 255); position: absolute; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;" />
+                    <engine:Button text="SELL" name="sell-toggle" class="sell-button off-toggle-button" style="border-left-color: rgb(62, 157, 228); border-right-color: rgb(62, 157, 228); border-top-color: rgb(62, 157, 228); border-bottom-color: rgb(62, 157, 228);" />
+                    <engine:Button text="BUY" name="buy-toggle" class="buy-button on-toggle-button" />
+                </engine:VisualElement>
+                <engine:VisualElement name="VisualElement" class="add-sub-container" style="flex-direction: row; background-position-x: center 0; background-position-y: center 0; -unity-background-scale-mode: stretch-to-fill; justify-content: flex-start; align-content: flex-start; flex-wrap: nowrap; align-self: auto; align-items: flex-start; top: 0; left: auto; width: auto; font-size: 25px; position: relative; height: 42px; overflow: hidden; visibility: visible; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
+                    <engine:Button text="-" name="subtract-houses-amount" class="add-sub-button sub-button" style="align-self: auto; -unity-text-align: middle-center; white-space: nowrap; text-overflow: clip; flex-direction: column; flex-wrap: nowrap; height: 40px;" />
+                    <engine:Label text="0" name="houses-counter" class="amount-counter" style="height: 40px; display: flex;" />
+                    <engine:Button text="+" name="add-houses-amount" class="add-sub-button add-button" style="align-items: auto; height: 40px; width: 40px;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <engine:Label text="$" name="Label" style="color: rgb(72, 85, 87); -unity-font-style: bold; margin-right: 0;" />
+                    <engine:Label text="Price" style="color: rgb(72, 85, 87); -unity-font-style: bold;" />
+                </engine:VisualElement>
+                <engine:Button text="OK" class="ok-button" />
+            </engine:VisualElement>
+            <engine:VisualElement style="align-items: center; background-color: rgb(246, 243, 234); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-left-color: rgb(175, 177, 177); border-right-color: rgb(175, 177, 177); border-top-color: rgb(175, 177, 177); border-bottom-color: rgb(175, 177, 177); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <engine:Label text="Hotel" style="color: rgb(72, 85, 87); -unity-font-style: bold;" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <engine:Label text="Not Available/price" />
+                </engine:VisualElement>
+                <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <engine:Button text="SELL" class="sell-button" />
+                    <engine:Button text="BUY" class="buy-button" />
+                </engine:VisualElement>
+            </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
