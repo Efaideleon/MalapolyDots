@@ -24,7 +24,7 @@
                     <engine:Label text="$" name="Label" style="color: rgb(72, 85, 87); -unity-font-style: bold; margin-right: 0;" />
                     <engine:Label text="Price" style="color: rgb(72, 85, 87); -unity-font-style: bold;" />
                 </engine:VisualElement>
-                <engine:Button text="OK" class="ok-button" />
+                <engine:Button text="OK" name="ok-button" class="ok-button" />
             </engine:VisualElement>
             <engine:VisualElement style="align-items: center; background-color: rgb(246, 243, 234); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-left-color: rgb(175, 177, 177); border-right-color: rgb(175, 177, 177); border-top-color: rgb(175, 177, 177); border-bottom-color: rgb(175, 177, 177); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
                 <engine:VisualElement style="flex-grow: 1; flex-direction: row;">

@@ -126,6 +126,9 @@
 .toggle-element{
     width: 60px;
     height: 30px;
+    transition-property: left;
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
 }
 
 .toggle-container{

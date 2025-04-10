@@ -16,10 +16,11 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public VisualElement Root;
         public Button buyHouseButton;
         private readonly PropertyToBuyHouseElementInstantiator propertyNameCounterInstantiator;
-        public BuyHousePanel buyHousePanel;
         public List<string> PropertiesToBuyHouses { get; private set; }
+        private BuyHousePanel buyHousePanel; 
 
         // TODO: Make sure to clear the list when the BuyHousePanel is closed.
+        // TODO: And unsubcribe from the events attached to the Actions
         public List<PropertyNameCounterElement> PropertyNameCounterElementsList { get; private set; }
 
         private EntityQuery buyHouseEventsQuery;
@@ -29,9 +30,9 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             PropertiesToBuyHouses = new();
             Root = parent.Q<VisualElement>("UpgradeHousePanel");
             buyHouseButton = Root.Q<Button>("buy-house-button");
-            buyHousePanel = new BuyHousePanel(Root.Q<VisualElement>("BuyHousePanel"));
             propertyNameCounterInstantiator = new();
             PropertyNameCounterElementsList = new();
+            buyHousePanel = new(Root.Q<VisualElement>("BuyHousePanel"));
             SubscribeEvents();
         }
 
@@ -51,30 +52,33 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public void SubscribeEvents()
         {
             buyHouseButton.clickable.clicked += ShowBuyHousePanel;
-            buyHousePanel.BuyButton.clickable.clicked += SendBuyHouseEvents;
         }
 
         public void Dispose()
         {
             buyHouseButton.clickable.clicked -= ShowBuyHousePanel;
-            buyHousePanel.BuyButton.clickable.clicked -= SendBuyHouseEvents;
         }
 
-        private void SendBuyHouseEvents()
+        private void SendBuyHouseEvents(ToggleState toggleState)
         {
-            var eventBuffer = buyHouseEventsQuery.GetSingletonBuffer<BuyHouseEvent>();
-            foreach (var buyHouseEvent in GetListOfBuyHouseEvents())
+            switch(toggleState)
             {
-                UnityEngine.Debug.Log($"Buy a house for {buyHouseEvent.property}");
-                eventBuffer.Add(buyHouseEvent);
+                case ToggleState.Buy:
+                    var eventBuffer = buyHouseEventsQuery.GetSingletonBuffer<BuyHouseEvent>();
+                    foreach (var buyHouseEvent in GetListOfBuyHouseEvents())
+                    {
+                        UnityEngine.Debug.Log($"Buy a house for {buyHouseEvent.property}");
+                        eventBuffer.Add(buyHouseEvent);
+                    }
+                    break;
+                case ToggleState.Sell:
+                    UnityEngine.Debug.Log("Selling abel houses lol");
+                    break;
             }
-            buyHousePanel.Hide();
         }
 
         private void ShowBuyHousePanel()
         {
-            buyHousePanel.Show();
-
             // Check if the current player has any monopolies over a color
             // if they do then create the panel to buy a house
             foreach (var name in PropertiesToBuyHouses)
@@ -87,12 +91,14 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
                 // Instantiating the uxml
                 var propertyPanelVE = propertyNameCounterInstantiator.InstantiatePropertyNameCounterElement(Root);
+                // TODO: Call dispose when the BuyHousePanel is closed.
                 var propertyPanel = new PropertyNameCounterElement(propertyPanelVE, propertyNameCounterContext);
+                propertyPanel.OnOkClicked += SendBuyHouseEvents;
                 // Keeping track of how many elements we instantiated
                 PropertyNameCounterElementsList.Add(propertyPanel);
             }
-
             buyHousePanel.Show();
+
             PropertiesToBuyHouses.Clear();
         }
 

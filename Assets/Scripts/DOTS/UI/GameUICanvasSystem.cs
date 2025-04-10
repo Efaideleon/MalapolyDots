@@ -50,6 +50,15 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<CurrentPlayerID>();
         state.RequireForUpdate<LandedOnSpace>();
         state.RequireForUpdate<MoneyComponent>();
+        state.RequireForUpdate<OverLayPanels>();
+
+        var uiEntity = state.EntityManager.CreateEntity();
+        state.EntityManager.AddComponentObject(uiEntity, new OverLayPanels
+        {
+            rollPanel = null,
+            buyhouseUI = null,
+            statsPanel = null,
+        });
 
         EntityQuery query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEvents>());
         if (query.IsEmpty)
@@ -116,7 +125,10 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             buyhouseUI = buyHouseUI
         };
 
-        state.EntityManager.AddComponentObject(state.SystemHandle, uiPanels);
+        foreach (var (overlayPanels, uiEntity) in SystemAPI.Query<OverLayPanels>().WithEntityAccess())
+        {
+            state.EntityManager.SetComponentData(uiEntity, uiPanels);
+        }
 
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
         {
@@ -170,7 +182,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
     public void OnUpdate(ref SystemState state)
     {
-        var overlayPanels = SystemAPI.ManagedAPI.GetComponent<OverLayPanels>(state.SystemHandle);
+        var overlayPanels = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
 
         foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
         {
@@ -252,7 +264,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
     public void OnStopRunning(ref SystemState state)
     {
-        var uiPanels = state.EntityManager.GetComponentObject<OverLayPanels>(state.SystemHandle);
+        // TODO: Rename uiPanels for consistency
+        var uiPanels = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
         uiPanels.rollPanel.Dispose();
 
         // First unsubscribe the button.clicked event 
