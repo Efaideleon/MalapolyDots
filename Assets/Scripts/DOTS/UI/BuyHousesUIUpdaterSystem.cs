@@ -8,6 +8,7 @@ public partial struct BuyHousesUIUpdaterSystem : ISystem
         state.RequireForUpdate<NameComponent>();
         state.RequireForUpdate<PropertySpaceTag>();
     }
+
     public void OnUpdate(ref SystemState state) 
     { 
         foreach (var (houseCount, name, _) in 
@@ -19,14 +20,14 @@ public partial struct BuyHousesUIUpdaterSystem : ISystem
                 .WithChangeFilter<HouseCount>())
         {
             var uiPanels = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
-            foreach (var propertyNameCounterElement in uiPanels.buyhouseUI.PropertyNameCounterElementsList)
+            foreach (var element in uiPanels.buyhouseUI.PropertyNameCounterElementsList)
             {
-                var context = propertyNameCounterElement.Context;
+                var context = element.Context;
                 if (context.Name == name.ValueRO.Value)
                 {
                     context.HousesOwned = houseCount.ValueRO.Value;
-                    propertyNameCounterElement.Context = context;
-                    propertyNameCounterElement.Update();
+                    element.Context = context;
+                    element.Update();
                 }
             }
         }

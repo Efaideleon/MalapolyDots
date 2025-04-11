@@ -11,6 +11,9 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public int Price { get; set; }
     }
 
+    // TODO: Currently this class is serving a both a UI and a form a controller
+    // Will be better to split up so that it makes more sense, and it is easier to understand
+    // what this class does.
     public class BuyHouseUI
     {
         public VisualElement Root;
@@ -21,6 +24,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         // TODO: Make sure to clear the list when the BuyHousePanel is closed.
         // TODO: And unsubcribe from the events attached to the Actions
+        // TODO: PropertyNameCounterElement should be renamed since it not longer represents just a name and +/- 
         public List<PropertyNameCounterElement> PropertyNameCounterElementsList { get; private set; }
 
         private EntityQuery buyHouseEventsQuery;
@@ -44,7 +48,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             PropertiesToBuyHouses.Add(name);
         }
 
-        public void AddBuyHouseEventQuery(EntityQuery entityQuery)
+        public void SetBuyHouseEventQuery(EntityQuery entityQuery)
         {
             buyHouseEventsQuery = entityQuery;
         }
@@ -59,13 +63,13 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             buyHouseButton.clickable.clicked -= ShowBuyHousePanel;
         }
 
-        private void SendBuyHouseEvents(ToggleState toggleState)
+        private void SendBuyHouseEvents(ToggleState toggleState, PropertyNameCounterElementContext context)
         {
             switch(toggleState)
             {
                 case ToggleState.Buy:
                     var eventBuffer = buyHouseEventsQuery.GetSingletonBuffer<BuyHouseEvent>();
-                    foreach (var buyHouseEvent in GetListOfBuyHouseEvents())
+                    foreach (var buyHouseEvent in GetListOfBuyHouseEvents(context))
                     {
                         UnityEngine.Debug.Log($"Buy a house for {buyHouseEvent.property}");
                         eventBuffer.Add(buyHouseEvent);
@@ -94,7 +98,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
                 // TODO: Call dispose when the BuyHousePanel is closed.
                 var propertyPanel = new PropertyNameCounterElement(propertyPanelVE, propertyNameCounterContext);
                 propertyPanel.OnOkClicked += SendBuyHouseEvents;
-                // Keeping track of how many elements we instantiated
+                // Keeping track of how many buy/sell property elements we instantiated
                 PropertyNameCounterElementsList.Add(propertyPanel);
             }
             buyHousePanel.Show();
@@ -103,14 +107,18 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         }
 
         // Creates a list of events for each selected house to buy
-        private List<BuyHouseEvent> GetListOfBuyHouseEvents()
+        private List<BuyHouseEvent> GetListOfBuyHouseEvents(PropertyNameCounterElementContext context)
         {
             List<BuyHouseEvent> listOfBuyHouseEvents = new();
+            UnityEngine.Debug.Log($"Buying hosues for {context.Name}");
             foreach (var panel in PropertyNameCounterElementsList)
             {
-                for (int i = 0; i < panel.NumOfHousesToBuy; i++)
+                if (context.Name == panel.Context.Name)
                 {
-                    listOfBuyHouseEvents.Add(new BuyHouseEvent { property = panel.Context.Name });
+                    for (int i = 0; i < panel.NumOfHousesToBuy; i++)
+                    {
+                        listOfBuyHouseEvents.Add(new BuyHouseEvent { property = panel.Context.Name });
+                    }
                 }
             }
             return listOfBuyHouseEvents;

@@ -24,7 +24,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         public int NumOfHousesToBuy { get; private set; }
         public PropertyNameCounterElementContext Context {get; set; }
-        public Action<ToggleState> OnOkClicked;
+        public Action<ToggleState, PropertyNameCounterElementContext> OnOkClicked;
 
         public PropertyNameCounterElement(VisualElement root, PropertyNameCounterElementContext context)
         {
@@ -64,7 +64,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             }
             if (MinusButton != null)
             {
-                MinusButton.clickable.clicked += HandleOkButtonClicked;
+                MinusButton.clickable.clicked += DecreaseNumOfHouseToBuy;
             }
             else
             {
@@ -85,10 +85,10 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             switch(BuySellToggle.State)
             {
                 case ToggleState.Buy:
-                    OnOkClicked?.Invoke(ToggleState.Buy);
+                    OnOkClicked?.Invoke(ToggleState.Buy, Context);
                     break;
                 case ToggleState.Sell:
-                    OnOkClicked?.Invoke(ToggleState.Sell);
+                    OnOkClicked?.Invoke(ToggleState.Sell, Context);
                     break;
             }
         }
