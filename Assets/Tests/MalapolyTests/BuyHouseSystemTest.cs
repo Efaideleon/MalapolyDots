@@ -53,4 +53,40 @@ public class BuyHouseSystemTest : ECSTestsFixture
 
         Assert.AreEqual(4, houseCount.Value);
     }
+
+    [Test]
+    public void Adding_Multipe_Events_To_Event_DynamicBuffer()
+    {
+        var propertyEntity = entityManager.CreateEntity
+        (
+            typeof(NameComponent),
+            typeof(HouseCount),
+            typeof(PropertySpaceTag)
+        );
+
+        testWorld.Update();
+
+        var nameComponent = new NameComponent { Value = "Mercado" };
+        entityManager.SetComponentData(propertyEntity, nameComponent);
+
+        var entity = entityManager.CreateEntity();
+        var eventBuffer = entityManager.AddBuffer<BuyHouseEvent>(entity);
+
+        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
+
+        testWorld.Update();
+
+        var houseCount = entityManager.GetComponentData<HouseCount>(propertyEntity);
+
+        Assert.AreEqual(2, houseCount.Value);
+
+        eventBuffer = entityManager.GetBuffer<BuyHouseEvent>(entity);
+        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
+        testWorld.Update();
+
+        var newHouseCount = entityManager.GetComponentData<HouseCount>(propertyEntity);
+
+        Assert.AreEqual(3, newHouseCount.Value);
+    }
 }

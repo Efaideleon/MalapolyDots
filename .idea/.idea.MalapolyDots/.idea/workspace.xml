@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12d493fe-654f-44e0-83b0-fa93ecd0ceb2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.MalapolyDots/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MalapolyDots/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/TitleScreenUI/GameScreenPanels/BuyHousePanel.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/TitleScreenUI/GameScreenPanels/BuyHousePanel.uxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/BuyHouseSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/BuyHouseSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/BuyHousesUIUpdaterSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/BuyHousesUIUpdaterSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/BuyHouseUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/BuyHouseUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PropertyNameCounterElement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PropertyNameCounterElement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/BuyHouseSystemTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/BuyHouseSystemTest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UI/USS/Buttons.uss" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/USS/Buttons.uss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +21,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/RentComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@b749ad90954b/Unity.Entities/SystemAPI.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -59,7 +61,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.0b10\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.1.0b10/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\abeld\Documents\GitHub\MalapolyDots -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\abeld\Documents\GitHub\MalapolyDots" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -67,7 +69,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.0b10\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.1.0b10/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\abeld\Documents\GitHub\MalapolyDots -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\abeld\Documents\GitHub\MalapolyDots" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -133,6 +135,7 @@
       <workItem from="1744075218929" duration="747000" />
       <workItem from="1744221081203" duration="7800000" />
       <workItem from="1744300331487" duration="6050000" />
+      <workItem from="1744337519036" duration="984000" />
     </task>
     <servers />
   </component>

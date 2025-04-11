@@ -35,6 +35,11 @@ public class OverLayPanels : IComponentData
     public BuyHouseUI buyhouseUI;
 }
 
+public class PanelControllers : IComponentData
+{
+    public BuyHouseUIController buyHouseUIController;
+}
+
 public class OnLandPanelsDictionay : IComponentData
 {
     public Dictionary<SpaceTypeEnum, OnLandPanel> Value;
@@ -172,7 +177,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // BUG?: I wonder if this gets the dynamic buffer
         var buyHouseEventsQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
 
-        buyHouseUI.AddBuyHouseEventQuery(buyHouseEventsQuery);
+        buyHouseUI.SetBuyHouseEventQuery(buyHouseEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {

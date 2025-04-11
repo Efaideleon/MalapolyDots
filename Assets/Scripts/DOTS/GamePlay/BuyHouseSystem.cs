@@ -25,14 +25,16 @@ public partial struct BuyHouseSystem : ISystem
     {
         foreach (var buffer in SystemAPI.Query<DynamicBuffer<BuyHouseEvent>>().WithChangeFilter<BuyHouseEvent>()) 
         {
+            UnityEngine.Debug.Log("Times called?");
             if (buffer.Length < 1)
-                return;
-
+                continue;
+        
             foreach (var buyHouseEvent in buffer)
             {
                 // process the event
                 // check if a house can be bought. if yes inscrease the number of houses in the property
                 // TODO: check if the property is part of monopoly to see if it can be bought?
+                UnityEngine.Debug.Log("Processing event...");
                 foreach (var (name, houseCount, _) in SystemAPI.Query<RefRO<NameComponent>, RefRW<HouseCount>, RefRO<PropertySpaceTag>>())
                 {
                     if (buyHouseEvent.property == name.ValueRO.Value)
@@ -45,7 +47,6 @@ public partial struct BuyHouseSystem : ISystem
                 }
             }
 
-            // this may cause an error as an element is being changed inside the foreach loop
             buffer.Clear();
         }
     }
