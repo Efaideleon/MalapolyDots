@@ -55,6 +55,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<LandedOnSpace>();
         state.RequireForUpdate<MoneyComponent>();
         state.RequireForUpdate<OverLayPanels>();
+        state.RequireForUpdate<PanelControllers>();
 
         // OverLayPanels Entity
         var uiEntity = state.EntityManager.CreateEntity();
@@ -66,7 +67,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         // PanelControllers Entity
         var controllerEntity = state.EntityManager.CreateEntity();
-        state.EntityManager.AddComponentObject(uiEntity, new PanelControllers
+        state.EntityManager.AddComponentObject(controllerEntity, new PanelControllers
         {
             buyHouseUIController = null,
         });
@@ -130,27 +131,13 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         // why do we have uiPanels?
         // To put it in components and change them on the OnUpdate loop
-        var uiPanels = new OverLayPanels
-        {
-            statsPanel = statsPanel,
-            rollPanel = rollPanel,
-        };
+        var uiEntity = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
+        uiEntity.rollPanel = rollPanel;
+        uiEntity.statsPanel = statsPanel;
 
-        foreach (var (overlayPanels, uiEntity) in SystemAPI.Query<OverLayPanels>().WithEntityAccess())
-        {
-            state.EntityManager.SetComponentData(uiEntity, uiPanels);
-        }
-
-        // Adding the PanelControllers IComponentData to an Entity;
-        BuyHouseUIController buyHouseUIController = new(buyHouseUI);
-        var panelControllers = new PanelControllers
-        {
-            buyHouseUIController = buyHouseUIController
-        };
-        foreach (var (controller, controllerEntity) in SystemAPI.Query<PanelControllers>().WithEntityAccess())
-        {
-            state.EntityManager.SetComponentData(controllerEntity, controller);
-        }
+        // Loading BuyHouseUIController component.
+        var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+        panelControllers.buyHouseUIController = new(buyHouseUI);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
@@ -180,13 +167,13 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         // Button Actions
         var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
-        uiPanels.rollPanel.AddActionToRollButton(() =>
+        rollPanel.AddActionToRollButton(() =>
         {
             // var valueRolled = UnityEngine.Random.Range(1, 6);
             var valueRolled = 1;
             rollAmountComponent.GetSingletonRW<RollAmountComponent>().ValueRW.Amount = valueRolled;
-            uiPanels.rollPanel.UpdateRollLabel(valueRolled.ToString());
-            uiPanels.rollPanel.HideRollButton();
+            rollPanel.UpdateRollLabel(valueRolled.ToString());
+            rollPanel.HideRollButton();
         });
 
         // Adding the transactionEventsQuery to the accept button in the ui
@@ -195,7 +182,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // BUG?: I wonder if this gets the dynamic buffer
         var buyHouseEventsQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
 
-        buyHouseUI.SetBuyHouseEventQuery(buyHouseEventsQuery);
+        panelControllers.buyHouseUIController.SetBuyHouseEventQuery(buyHouseEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
@@ -206,6 +193,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     public void OnUpdate(ref SystemState state)
     {
         var overlayPanels = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
+        var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>(); 
 
         foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
         {
@@ -277,7 +265,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         if (owner.ValueRO.ID == playerID.Value && monopoly.ValueRO.State == true)
                         {
                             // Pass the name of the property where a house can be bought to ui here
-                            overlayPanels.buyhouseUI.AddPropertyName(name.ValueRO.Value.ToString());
+                            panelControllers.buyHouseUIController.AddPropertyName(name.ValueRO.Value.ToString());
                         }
                     }
                     break;
@@ -290,6 +278,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // TODO: Rename uiPanels for consistency
         var uiPanels = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
         uiPanels.rollPanel.Dispose();
+        var panelsController = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+        panelsController.buyHouseUIController.Dispose();
 
         // First unsubscribe the button.clicked event 
         var onLandPanelsDictionary = state
