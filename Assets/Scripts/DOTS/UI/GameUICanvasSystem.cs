@@ -32,7 +32,6 @@ public class OverLayPanels : IComponentData
 {
     public StatsPanel statsPanel;
     public RollPanel rollPanel;
-    public BuyHouseUI buyhouseUI;
 }
 
 public class PanelControllers : IComponentData
@@ -57,14 +56,22 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<MoneyComponent>();
         state.RequireForUpdate<OverLayPanels>();
 
+        // OverLayPanels Entity
         var uiEntity = state.EntityManager.CreateEntity();
         state.EntityManager.AddComponentObject(uiEntity, new OverLayPanels
         {
             rollPanel = null,
-            buyhouseUI = null,
             statsPanel = null,
         });
 
+        // PanelControllers Entity
+        var controllerEntity = state.EntityManager.CreateEntity();
+        state.EntityManager.AddComponentObject(uiEntity, new PanelControllers
+        {
+            buyHouseUIController = null,
+        });
+
+        // TransactionEvents Entity
         EntityQuery query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEvents>());
         if (query.IsEmpty)
         {
@@ -127,7 +134,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         {
             statsPanel = statsPanel,
             rollPanel = rollPanel,
-            buyhouseUI = buyHouseUI
         };
 
         foreach (var (overlayPanels, uiEntity) in SystemAPI.Query<OverLayPanels>().WithEntityAccess())
@@ -135,6 +141,18 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             state.EntityManager.SetComponentData(uiEntity, uiPanels);
         }
 
+        // Adding the PanelControllers IComponentData to an Entity;
+        BuyHouseUIController buyHouseUIController = new(buyHouseUI);
+        var panelControllers = new PanelControllers
+        {
+            buyHouseUIController = buyHouseUIController
+        };
+        foreach (var (controller, controllerEntity) in SystemAPI.Query<PanelControllers>().WithEntityAccess())
+        {
+            state.EntityManager.SetComponentData(controllerEntity, controller);
+        }
+
+        // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
         {
             { SpaceTypeEnum.Property, new PropertyPanel(botPanelRoot) },
