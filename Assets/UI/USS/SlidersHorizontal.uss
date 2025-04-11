@@ -1,0 +1,48 @@
+#unity-low-button {
+    display: none;
+}
+
+#unity-high-button {
+    display: none;
+}
+
+#unity-drag-container {
+    background-color: yellow;
+    width: 100%;
+    align-items: auto;
+    justify-content: flex-start;
+    align-self: flex-start;
+}
+
+#unity-slider {
+    background-color: green;
+    width: 10px;
+    height: auto;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    visibility: visible;
+    bottom: 5px;
+}
+
+#unity-dragger {
+    -unity-background-scale-mode: scale-to-fit;
+    width: 15px;
+    height: 15px;
+    max-height: 60px;
+    max-width: 60px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    display: flex;
+    overflow: visible;
+    opacity: 1;
+}
+
+#unity-tracker {
+    height: 10px;
+    align-items: center;
+    width: 95%;
+}
