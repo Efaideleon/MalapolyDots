@@ -24,7 +24,7 @@ public partial struct BuyHousesUIUpdaterSystem : ISystem
             // On the first load, buyHouseUIController is null 
             if (panelControllers.buyHouseUIController != null)
             {
-                foreach (var element in panelControllers.buyHouseUIController.BuyHouseUI.PropertyNameCounterElementsList)
+                foreach (var element in panelControllers.buyHouseUIController.BuyHouseUI.ListOfPurchasePanels)
                 {
                     var context = element.Context;
                     if (context.Name == name.ValueRO.Value)

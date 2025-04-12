@@ -17,18 +17,20 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
     {
         public VisualElement Root;
         public Button buyHouseButton;
-        public BuyHousePanel BuyHousePanel { get;private set; } 
+        public Button closePanel;
+        public BuyHousePanel BuyHousePanel { get; private set; } 
 
         // TODO: Make sure to clear the list when the BuyHousePanel is closed.
         // TODO: And unsubcribe from the events attached to the Actions
         // TODO: PropertyNameCounterElement should be renamed since it not longer represents just a name and +/- 
-        public List<PropertyNameCounterElement> PropertyNameCounterElementsList { get; private set; }
+        public List<PropertyPurchasePanel> ListOfPurchasePanels { get; private set; }
 
         public BuyHouseUI(VisualElement parent)
         {
             Root = parent.Q<VisualElement>("UpgradeHousePanel");
             buyHouseButton = Root.Q<Button>("buy-house-button");
-            PropertyNameCounterElementsList = new();
+            closePanel = Root.Q<Button>("close-buy-houses-panel-button");
+            ListOfPurchasePanels = new();
             BuyHousePanel = new(Root.Q<VisualElement>("BuyHousePanel"));
         }
     }

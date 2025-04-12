@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PropertyToBuyHouseElementInstantiator
+public class PropertyPurchasePanelFactory
 {
     public VisualElement ParentElement { get; private set; }
     private VisualTreeAsset propertyNameCounterUxml;
 
-    public PropertyToBuyHouseElementInstantiator()
+    public PropertyPurchasePanelFactory()
     {
         LoadPropertyNameCounterUXML();
     }
@@ -17,8 +17,9 @@ public class PropertyToBuyHouseElementInstantiator
         propertyNameCounterUxml = Resources.Load<VisualTreeAsset>("BuyHouseNameAndCounterElement");
     }
 
-    public VisualElement InstantiatePropertyNameCounterElement(VisualElement parent)
+    public VisualElement InstantiatePanel(VisualElement parent)
     {
+        UnityEngine.Debug.Log("Instantiating propertyNameCounterUxml");
         ParentElement = parent;
         VisualElement propertyNameCounterVE = null;
         if (propertyNameCounterUxml != null)
@@ -28,7 +29,8 @@ public class PropertyToBuyHouseElementInstantiator
             var parentContainer = ParentElement.Q<VisualElement>("BuyHousePanel");
             if (parentContainer != null)
             {
-                var propertyElementContainer = parentContainer.Q<VisualElement>("property-element");
+                var scrollView = parentContainer.Q<VisualElement>("properties_scrollview");
+                var propertyElementContainer = scrollView.Q<VisualElement>("unity-content-container");
                 propertyElementContainer.Add(propertyNameCounterVE);
             }
             else

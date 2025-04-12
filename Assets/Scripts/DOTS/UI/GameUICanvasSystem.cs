@@ -265,7 +265,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         if (owner.ValueRO.ID == playerID.Value && monopoly.ValueRO.State == true)
                         {
                             // Pass the name of the property where a house can be bought to ui here
-                            panelControllers.buyHouseUIController.AddPropertyName(name.ValueRO.Value.ToString());
+                            panelControllers.buyHouseUIController.RegisterPropertyName(name.ValueRO.Value.ToString());
                         }
                     }
                     break;

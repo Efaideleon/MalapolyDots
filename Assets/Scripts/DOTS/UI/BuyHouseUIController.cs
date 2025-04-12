@@ -4,62 +4,70 @@ using Unity.Entities;
 
 public class BuyHouseUIController
 {
-    public List<string> PropertiesToBuyHouses { get; private set; }
+    public List<string> AvailableProperties { get; private set; }
     public BuyHouseUI BuyHouseUI { get; private set; }
     private EntityQuery buyHouseEventsQuery;
-    private readonly PropertyToBuyHouseElementInstantiator propertyNameCounterInstantiator;
+    private readonly PropertyPurchasePanelFactory purchasePanelFactory;
 
     public BuyHouseUIController(BuyHouseUI buyHouseUI)
     {
         BuyHouseUI = buyHouseUI;
-        PropertiesToBuyHouses = new();
-        propertyNameCounterInstantiator = new();
+        AvailableProperties = new();
+        purchasePanelFactory = new();
         SubscribeEvents();
     }
 
     // once all the house have been bought for a property remove that panel or gray it out.
     // so that no more house be bought for it.
-    public void AddPropertyName(string name)
+    public void RegisterPropertyName(string name)
     {
         UnityEngine.Debug.Log($"Add Property Name {name}");
-        PropertiesToBuyHouses.Add(name);
+        AvailableProperties.Add(name);
     }
 
-    private void ShowBuyHousePanel()
+    private void OpenPanel()
     {
         // Check if the current player has any monopolies over a color
         // if they do then create the panel to buy a house
-        foreach (var name in PropertiesToBuyHouses)
+        foreach (var name in AvailableProperties)
         {
-            var propertyNameCounterContext = new PropertyNameCounterElementContext
+            var propertyContext = new PropertyPurchasePanelContext
             {
                 Name = name,
                 Price = 0,
             };
 
             // Instantiating the uxml
-            var propertyPanelVE = propertyNameCounterInstantiator.InstantiatePropertyNameCounterElement(BuyHouseUI.Root);
-            // TODO: Call dispose when the BuyHousePanel is closed.
-            var propertyPanel = new PropertyNameCounterElement(propertyPanelVE, propertyNameCounterContext);
-            propertyPanel.OnOkClicked += SendBuyHouseEvents;
+            var panelVE = purchasePanelFactory.InstantiatePanel(BuyHouseUI.Root);
+            var panel = new PropertyPurchasePanel(panelVE, propertyContext);
+            panel.OnOkClicked += DispatchHousePurchaseEvents;
             // Keeping track of how many buy/sell property elements we instantiated
-            BuyHouseUI.PropertyNameCounterElementsList.Add(propertyPanel);
+            // When do I clear this list? when no properties can be bought anymore?
+            BuyHouseUI.ListOfPurchasePanels.Add(panel);
         }
         BuyHouseUI.BuyHousePanel.Show();
-
-        PropertiesToBuyHouses.Clear();
     }
 
-    private void SendBuyHouseEvents(ToggleState toggleState, PropertyNameCounterElementContext context)
+    private void ClosePanel()
+    {
+        BuyHouseUI.BuyHousePanel.Hide();
+        foreach (var panel in BuyHouseUI.ListOfPurchasePanels)
+        {
+            panel.Dispose();
+        }
+        AvailableProperties.Clear();
+    }
+
+    private void DispatchHousePurchaseEvents(ToggleState toggleState, PropertyPurchasePanelContext context)
     {
         switch(toggleState)
         {
             case ToggleState.Buy:
                 var eventBuffer = buyHouseEventsQuery.GetSingletonBuffer<BuyHouseEvent>();
-                foreach (var buyHouseEvent in GetListOfBuyHouseEvents(context))
+                foreach (var PurchaseEvent in GeneratePurchaseEvents(context))
                 {
-                    UnityEngine.Debug.Log($"Buy a house for {buyHouseEvent.property}");
-                    eventBuffer.Add(buyHouseEvent);
+                    UnityEngine.Debug.Log($"Buy a house for {PurchaseEvent.property}");
+                    eventBuffer.Add(PurchaseEvent);
                 }
                 break;
             case ToggleState.Sell:
@@ -73,11 +81,11 @@ public class BuyHouseUIController
         buyHouseEventsQuery = entityQuery;
     }
 
-    private List<BuyHouseEvent> GetListOfBuyHouseEvents(PropertyNameCounterElementContext context)
+    private List<BuyHouseEvent> GeneratePurchaseEvents(PropertyPurchasePanelContext context)
     {
         List<BuyHouseEvent> listOfBuyHouseEvents = new();
         UnityEngine.Debug.Log($"Buying hosues for {context.Name}");
-        foreach (var panel in BuyHouseUI.PropertyNameCounterElementsList)
+        foreach (var panel in BuyHouseUI.ListOfPurchasePanels)
         {
             if (context.Name == panel.Context.Name)
             {
@@ -92,11 +100,13 @@ public class BuyHouseUIController
 
     private void SubscribeEvents()
     {
-        BuyHouseUI.buyHouseButton.clickable.clicked += ShowBuyHousePanel;
+        BuyHouseUI.buyHouseButton.clickable.clicked += OpenPanel;
+        BuyHouseUI.closePanel.clickable.clicked += ClosePanel;
     }
 
     public void Dispose()
     {
-        BuyHouseUI.buyHouseButton.clickable.clicked -= ShowBuyHousePanel;
+        BuyHouseUI.buyHouseButton.clickable.clicked -= OpenPanel;
+        BuyHouseUI.closePanel.clickable.clicked -= ClosePanel;
     }
 }
