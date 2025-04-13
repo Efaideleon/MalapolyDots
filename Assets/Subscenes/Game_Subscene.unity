@@ -2211,6 +2211,7 @@ GameObject:
   - component: {fileID: 2682259811867749998}
   - component: {fileID: 172176282606244360}
   - component: {fileID: 2682259811867749999}
+  - component: {fileID: 2682259811867750000}
   m_Layer: 0
   m_Name: Alejos.001
   m_TagString: Untagged
@@ -2574,6 +2575,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Alejos
+--- !u!65 &2682259811867750000
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2301109929948227884}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0593233, y: 3.548813, z: 4.100389}
+  m_Center: {x: -4.9745e-41, y: 1.7616247, z: 0.06003636}
 --- !u!4 &2698039853734516629
 Transform:
   m_ObjectHideFlags: 0
@@ -3648,6 +3670,7 @@ GameObject:
   - component: {fileID: 869795894979135822}
   - component: {fileID: 6713195291736628198}
   - component: {fileID: 7814621580115163182}
+  - component: {fileID: 7814621580115163183}
   m_Layer: 0
   m_Name: El Mercado Final Toon S.001
   m_TagString: Untagged
@@ -6746,6 +6769,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Mercado
+--- !u!65 &7814621580115163183
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4261073734211213555}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.863703, y: 1.1556399, z: 2.5800128}
+  m_Center: {x: 0.000002503395, y: -0.08412343, z: 0.039439857}
 --- !u!33 &7816699580059339302
 MeshFilter:
   m_ObjectHideFlags: 0

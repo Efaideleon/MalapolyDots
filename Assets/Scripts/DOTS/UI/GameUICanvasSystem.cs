@@ -32,6 +32,7 @@ public class OverLayPanels : IComponentData
 {
     public StatsPanel statsPanel;
     public RollPanel rollPanel;
+    public PropertyPurchasePanel propertyPurchasePanel;
 }
 
 public class PanelControllers : IComponentData
@@ -63,6 +64,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         {
             rollPanel = null,
             statsPanel = null,
+            propertyPurchasePanel = null
         });
 
         // PanelControllers Entity
@@ -127,6 +129,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
+        // PropertyPurchasePanel propertyPurchasePanel = new(botPanelRoot);
         BuyHouseUI buyHouseUI = new(botPanelRoot);
 
         // why do we have uiPanels?
@@ -220,6 +223,12 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             {
                 overlayPanels.statsPanel.UpdatePlayerMoneyLabelText(money.ValueRO.Value.ToString());
             }
+        }
+        
+        // When an entity is clicked show the panel to buy houses
+        foreach ( var clickedProperty in SystemAPI.Query<RefRW<ClickedPropertyComponent>>().WithChangeFilter<ClickedPropertyComponent>())
+        {
+            //show and hide the purchase panel here
         }
 
         foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())

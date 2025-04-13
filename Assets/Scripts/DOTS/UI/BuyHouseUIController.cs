@@ -25,7 +25,7 @@ public class BuyHouseUIController
         AvailableProperties.Add(name);
     }
 
-    private void OpenPanel()
+    public void OpenPanel()
     {
         // Check if the current player has any monopolies over a color
         // if they do then create the panel to buy a house
@@ -48,7 +48,7 @@ public class BuyHouseUIController
         BuyHouseUI.BuyHousePanel.Show();
     }
 
-    private void ClosePanel()
+    public void ClosePanel()
     {
         BuyHouseUI.BuyHousePanel.Hide();
         foreach (var panel in BuyHouseUI.ListOfPurchasePanels)
