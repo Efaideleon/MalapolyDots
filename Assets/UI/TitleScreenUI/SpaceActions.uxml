@@ -1,6 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="ASimmnplePanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/ASimmnplePanel.uxml?fileID=9197481963319205126&amp;guid=6b0d6c8f357d2b84ab30144ef06e4dc7&amp;type=3#ASimmnplePanel" />
-    <engine:VisualElement name="VisualElement" style="width: 100%; position: absolute; align-items: center; bottom: 10%;">
+    <engine:VisualElement name="VisualElement" style="width: auto; position: relative; align-items: center; bottom: auto;">
         <engine:VisualElement style="height: 200px; flex-direction: row; justify-content: center; position: relative; bottom: auto;">
             <engine:Instance template="ASimmnplePanel" name="TemplateContainer" />
             <engine:Instance template="ASimmnplePanel" />
