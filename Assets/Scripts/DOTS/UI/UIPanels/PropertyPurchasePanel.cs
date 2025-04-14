@@ -7,7 +7,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
     public struct PropertyPurchasePanelContext
     {
         public FixedString64Bytes Name { get; set; }
-        public int HousesOwned {get; set; }
+        public int HousesOwned { get; set; }
         public int Price { get; set; }
     }
 
@@ -23,33 +23,54 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public ToggleControl BuySellToggle { get; private set; }
 
         public int NumOfHousesToBuy { get; private set; }
-        public PropertyPurchasePanelContext Context {get; set; }
+        public PropertyPurchasePanelContext Context { get { return _context; } set { _context = value;} }
         public Action<ToggleState, PropertyPurchasePanelContext> OnOkClicked;
+        private PropertyPurchasePanelContext _context;
 
         public PropertyPurchasePanel(VisualElement root, PropertyPurchasePanelContext context)
         {
-            Context = context;
-            Root = root;
-            PropertyName = Root.Q<Label>("property-name"); 
-            BuyingHouseCounter = Root.Q<Label>("houses-counter"); 
-            HousesOwnedCounter = Root.Q<Label>("number-houses-owned"); 
+            _context = context;
+            Root = root.Query<VisualElement>("PurchaseHousePanel");
+            PropertyName = Root.Q<Label>("property-name");
+            BuyingHouseCounter = Root.Q<Label>("houses-counter");
+            HousesOwnedCounter = Root.Q<Label>("number-houses-owned");
             MinusButton = Root.Q<Button>("subtract-houses-amount");
             PlusButton = Root.Q<Button>("add-houses-amount");
             OkButton = Root.Q<Button>("ok-button");
 
-            PropertyName.text = Context.Name.ToString();
+            PropertyName.text = _context.Name.ToString();
             BuySellToggle = new ToggleControl(Root.Q<VisualElement>("toggle-container"));
             SubscribeEvents();
         }
 
         public void Update()
         {
-            UpdateNumOfHousesOwnedLabel(Context.HousesOwned.ToString());
+            UpdateNumOfHousesOwnedLabel(_context.HousesOwned.ToString());
+            UpdatePropertyNameLabel(_context.Name.ToString());
         }
 
         private void UpdateNumOfHousesOwnedLabel(string text)
         {
-            HousesOwnedCounter.text = text;
+            if (HousesOwnedCounter != null)
+            {
+                HousesOwnedCounter.text = text;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("HousesOwnedCounter is null");
+            }
+        }
+
+        private void UpdatePropertyNameLabel(string text)
+        {
+            if (PropertyName != null)
+            {
+                PropertyName.text = text;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("PropertyName is null");
+            }
         }
 
         public void SubscribeEvents()
@@ -80,15 +101,18 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             }
         }
 
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
+
         public void HandleOkButtonClicked()
         {
-            switch(BuySellToggle.State)
+            switch (BuySellToggle.State)
             {
                 case ToggleState.Buy:
-                    OnOkClicked?.Invoke(ToggleState.Buy, Context);
+                    OnOkClicked?.Invoke(ToggleState.Buy, _context);
                     break;
                 case ToggleState.Sell:
-                    OnOkClicked?.Invoke(ToggleState.Sell, Context);
+                    OnOkClicked?.Invoke(ToggleState.Sell, _context);
                     break;
             }
         }
@@ -104,13 +128,13 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         // TODO: Later we may want to send the events to a system to check if a house can be bought at all
         // To prevent increase the number of the UI events it no houses can be bought
-        private void IncreaseNumOfHouseToBuy() 
+        private void IncreaseNumOfHouseToBuy()
         {
             NumOfHousesToBuy++;
             UpdateNumOfHouseToBuyLabel();
         }
 
-        private void DecreaseNumOfHouseToBuy() 
+        private void DecreaseNumOfHouseToBuy()
         {
             NumOfHousesToBuy--;
             UpdateNumOfHouseToBuyLabel();

@@ -25,6 +25,129 @@ public class HouseTrackerTests : ECSTestsFixture
     }
 
     [Test]
+    public void No_Monopoly_If_No_Onwer_At_First_And_Then_One_Property_Is_Bought()
+    {
+        var brownProperty1 = entityManager.CreateEntity(
+                typeof(OwnerComponent),
+                typeof(ColorCodeComponent),
+                typeof(MonopolyFlagComponent),
+                typeof(PropertySpaceTag)
+        );
+
+        var brownProperty2 = entityManager.CreateEntity(
+                typeof(OwnerComponent),
+                typeof(ColorCodeComponent),
+                typeof(MonopolyFlagComponent),
+                typeof(PropertySpaceTag)
+        );
+
+        var ownerComponent = new OwnerComponent { ID = 0 };
+        var noOwnerComponent = new OwnerComponent { ID = -1 };
+        var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
+        var houseBuyable = new MonopolyFlagComponent { State = false };
+
+        entityManager.SetComponentData(brownProperty1, noOwnerComponent);
+        entityManager.SetComponentData(brownProperty1, brownColorComponent);
+        entityManager.SetComponentData(brownProperty1, houseBuyable);
+
+        entityManager.SetComponentData(brownProperty2, noOwnerComponent);
+        entityManager.SetComponentData(brownProperty2, brownColorComponent);
+        entityManager.SetComponentData(brownProperty2, houseBuyable);
+
+        testWorld.Update();
+
+        var houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
+        var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
+        Assert.AreEqual(false, houseBuyable1.State);
+        Assert.AreEqual(false, houseBuyable2.State);
+
+        entityManager.SetComponentData(brownProperty1, ownerComponent);
+        testWorld.Update();
+
+        houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
+        houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
+        var house1Owner = entityManager.GetComponentData<OwnerComponent>(brownProperty1);
+        Assert.AreEqual(0, house1Owner.ID);
+        Assert.AreEqual(false, houseBuyable1.State);
+        Assert.AreEqual(false, houseBuyable2.State);
+    }
+
+    [Test]
+    public void No_Monopoly_If_Noone_Owns_A_Property()
+    {
+        var brownProperty1 = entityManager.CreateEntity(
+                typeof(OwnerComponent),
+                typeof(ColorCodeComponent),
+                typeof(MonopolyFlagComponent),
+                typeof(PropertySpaceTag)
+        );
+
+        var brownProperty2 = entityManager.CreateEntity(
+                typeof(OwnerComponent),
+                typeof(ColorCodeComponent),
+                typeof(MonopolyFlagComponent),
+                typeof(PropertySpaceTag)
+        );
+
+        var noOwnerComponent = new OwnerComponent { ID = -1 };
+        var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
+        var houseBuyable = new MonopolyFlagComponent { State = false };
+
+        entityManager.SetComponentData(brownProperty1, noOwnerComponent);
+        entityManager.SetComponentData(brownProperty1, brownColorComponent);
+        entityManager.SetComponentData(brownProperty1, houseBuyable);
+
+        entityManager.SetComponentData(brownProperty2, noOwnerComponent);
+        entityManager.SetComponentData(brownProperty2, brownColorComponent);
+        entityManager.SetComponentData(brownProperty2, houseBuyable);
+
+        testWorld.Update();
+
+        var houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
+        var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
+        Assert.AreEqual(false, houseBuyable1.State);
+        Assert.AreEqual(false, houseBuyable2.State);
+    }
+
+    [Test]
+    public void No_Monopoly_If_Only_Own_One_Out_Of_Two_Properties()
+    {
+        var brownProperty1 = entityManager.CreateEntity(
+                typeof(OwnerComponent),
+                typeof(ColorCodeComponent),
+                typeof(MonopolyFlagComponent),
+                typeof(PropertySpaceTag)
+        );
+
+        var brownProperty2 = entityManager.CreateEntity(
+                typeof(OwnerComponent),
+                typeof(ColorCodeComponent),
+                typeof(MonopolyFlagComponent),
+                typeof(PropertySpaceTag)
+        );
+
+        var ownerComponent = new OwnerComponent { ID = 1 };
+        var noOwnerComponent = new OwnerComponent { ID = -1 };
+        var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
+        var houseBuyable = new MonopolyFlagComponent { State = false };
+
+        entityManager.SetComponentData(brownProperty1, ownerComponent);
+        entityManager.SetComponentData(brownProperty1, brownColorComponent);
+        entityManager.SetComponentData(brownProperty1, houseBuyable);
+
+        entityManager.SetComponentData(brownProperty2, noOwnerComponent);
+        entityManager.SetComponentData(brownProperty2, brownColorComponent);
+        entityManager.SetComponentData(brownProperty2, houseBuyable);
+
+        testWorld.Update();
+
+        var houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
+        var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
+        Assert.AreEqual(false, houseBuyable1.State);
+        Assert.AreEqual(false, houseBuyable2.State);
+    }
+
+    [Test]
     public void Monopoly_If_AllProperties_Have_Same_Owner()
     {
         var brownProperty1 = entityManager.CreateEntity(
@@ -51,6 +174,8 @@ public class HouseTrackerTests : ECSTestsFixture
         var ownerComponent = new OwnerComponent { ID = 1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
         var houseBuyable = new MonopolyFlagComponent { State = false };
+
+        testWorld.Update();
 
         entityManager.SetComponentData(brownProperty1, ownerComponent);
         entityManager.SetComponentData(brownProperty1, brownColorComponent);

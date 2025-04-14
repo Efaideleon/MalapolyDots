@@ -38,6 +38,7 @@ public class OverLayPanels : IComponentData
 public class PanelControllers : IComponentData
 {
     public BuyHouseUIController buyHouseUIController;
+    public PurchasePanelController purchasePanelController;
 }
 
 public class OnLandPanelsDictionay : IComponentData
@@ -72,6 +73,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.EntityManager.AddComponentObject(controllerEntity, new PanelControllers
         {
             buyHouseUIController = null,
+            purchasePanelController = null
         });
 
         // TransactionEvents Entity
@@ -127,9 +129,16 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
 
+        PropertyPurchasePanelContext purchasePanelContext = new ()
+        {
+            Name = default,
+            HousesOwned = default,
+            Price = default
+        };
+
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
-        // PropertyPurchasePanel propertyPurchasePanel = new(botPanelRoot);
+        PropertyPurchasePanel propertyPurchasePanel = new(botPanelRoot, purchasePanelContext);
         BuyHouseUI buyHouseUI = new(botPanelRoot);
 
         // why do we have uiPanels?
@@ -137,10 +146,12 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var uiEntity = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
         uiEntity.rollPanel = rollPanel;
         uiEntity.statsPanel = statsPanel;
+        uiEntity.propertyPurchasePanel = propertyPurchasePanel;
 
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
         panelControllers.buyHouseUIController = new(buyHouseUI);
+        panelControllers.purchasePanelController = new(propertyPurchasePanel);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
@@ -186,6 +197,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var buyHouseEventsQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
 
         panelControllers.buyHouseUIController.SetBuyHouseEventQuery(buyHouseEventsQuery);
+        panelControllers.purchasePanelController.SetBuyHouseEventQuery(buyHouseEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
@@ -228,7 +240,23 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // When an entity is clicked show the panel to buy houses
         foreach ( var clickedProperty in SystemAPI.Query<RefRW<ClickedPropertyComponent>>().WithChangeFilter<ClickedPropertyComponent>())
         {
-            //show and hide the purchase panel here
+            if (clickedProperty.ValueRO.entity != Entity.Null)
+            {
+                //show and hide the purchase panel here
+                PropertyPurchasePanelContext context = new()
+                {
+                    Name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity).Value,
+                    HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
+                    Price = 10,
+                };
+                // TODO: Should I create a proxy function to this?
+                // TODO: Should I Set the Context and then call Update or do it in one Call Function?
+                panelControllers.purchasePanelController.PurchasePanel.Context = context;
+                panelControllers.purchasePanelController.PurchasePanel.Update();
+                panelControllers.purchasePanelController.PurchasePanel.Show();
+
+                clickedProperty.ValueRW.entity = Entity.Null;
+            }
         }
 
         foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
@@ -264,19 +292,19 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                     landPanel.Show(context);
 
                     // Query for the properties that are a monopoly.
-                    foreach (var (owner, monopoly, name) in 
-                            SystemAPI.Query<
-                                RefRO<OwnerComponent>,
-                                RefRO<MonopolyFlagComponent>,
-                                RefRO<NameComponent>
-                            >())
-                    {
-                        if (owner.ValueRO.ID == playerID.Value && monopoly.ValueRO.State == true)
-                        {
-                            // Pass the name of the property where a house can be bought to ui here
-                            panelControllers.buyHouseUIController.RegisterPropertyName(name.ValueRO.Value.ToString());
-                        }
-                    }
+            //         foreach (var (owner, monopoly, name) in 
+            //                 SystemAPI.Query<
+            //                     RefRO<OwnerComponent>,
+            //                     RefRO<MonopolyFlagComponent>,
+            //                     RefRO<NameComponent>
+            //                 >())
+            //         {
+            //             if (owner.ValueRO.ID == playerID.Value && monopoly.ValueRO.State == true)
+            //             {
+            //                 // Pass the name of the property where a house can be bought to ui here
+            //                 panelControllers.buyHouseUIController.RegisterPropertyName(name.ValueRO.Value.ToString());
+            //             }
+            //         }
                     break;
             }
         }
