@@ -20,6 +20,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public Button PlusButton { get; private set; }
         public Button MinusButton { get; private set; }
         public Button OkButton { get; private set; }
+        public Button CloseButton { get; private set; }
         public ToggleControl BuySellToggle { get; private set; }
 
         public int NumOfHousesToBuy { get; private set; }
@@ -37,6 +38,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             MinusButton = Root.Q<Button>("subtract-houses-amount");
             PlusButton = Root.Q<Button>("add-houses-amount");
             OkButton = Root.Q<Button>("ok-button");
+            CloseButton = Root.Q<Button>("purchase-houses-panel-close-button");
 
             PropertyName.text = _context.Name.ToString();
             BuySellToggle = new ToggleControl(Root.Q<VisualElement>("toggle-container"));
@@ -99,6 +101,14 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             {
                 UnityEngine.Debug.LogWarning("OkButton is null");
             }
+            if (CloseButton != null)
+            {
+                CloseButton.clickable.clicked += Hide;
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("CloseButton is null");
+            }
         }
 
         public void Show() => Root.style.display = DisplayStyle.Flex;
@@ -123,6 +133,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             PlusButton.clickable.clicked -= IncreaseNumOfHouseToBuy;
             MinusButton.clickable.clicked -= DecreaseNumOfHouseToBuy;
             OkButton.clickable.clicked -= HandleOkButtonClicked;
+            CloseButton.clickable.clicked -= Hide;
             BuySellToggle.Dispose();
         }
 

@@ -17,7 +17,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             OnAcceptButton = () =>
             {
-                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
                 eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
             };
@@ -46,7 +46,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             // Show pay the rent first and then change turn
             OnAcceptButton = () =>
             {
-                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
                 eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.PayRent });
                 eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.ChangeTurn });
                 Hide();
@@ -100,7 +100,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public override void AddAcceptButtonAction(EntityQuery entityQuery)
         {
             OnAcceptButton = () => { 
-                var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+                var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
                 eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.Purchase });
                 Hide();
             };

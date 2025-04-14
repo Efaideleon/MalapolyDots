@@ -23,7 +23,7 @@ public class TreasurePanel : OnLandPanel
     public override void AddAcceptButtonAction(EntityQuery entityQuery)
     {
         OnAcceptButton = () => { 
-            var eventQueue = entityQuery.GetSingletonRW<TransactionEvents>().ValueRW.EventQueue;
+            var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
             eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
             Hide();
         };

@@ -18,7 +18,7 @@ public struct TransactionEvent
     public TransactionEventsEnum EventType;
 }
 
-public struct TransactionEvents : IComponentData
+public struct TransactionEventBus : IComponentData
 {
     public NativeQueue<TransactionEvent> EventQueue;
 }
@@ -75,14 +75,14 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         });
 
         // TransactionEvents Entity
-        EntityQuery query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEvents>());
+        EntityQuery query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEventBus>());
         if (query.IsEmpty)
         {
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
             {
-                ComponentType.ReadOnly<TransactionEvents>()
+                ComponentType.ReadOnly<TransactionEventBus>()
             });
-            SystemAPI.SetComponent(entity, new TransactionEvents
+            SystemAPI.SetComponent(entity, new TransactionEventBus
             {
                 EventQueue = new NativeQueue<TransactionEvent>(Allocator.Persistent)
             });
@@ -90,7 +90,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         else
         {
             var entity = query.GetSingletonEntity();
-            var events = state.EntityManager.GetComponentData<TransactionEvents>(entity);
+            var events = state.EntityManager.GetComponentData<TransactionEventBus>(entity);
 
             if (events.EventQueue.IsCreated)
             {
@@ -179,17 +179,14 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
         rollPanel.AddActionToRollButton(() =>
         {
-            // var valueRolled = UnityEngine.Random.Range(1, 6);
-            var valueRolled = 1;
+            var valueRolled = UnityEngine.Random.Range(1, 6);
             rollAmountComponent.GetSingletonRW<RollAmountComponent>().ValueRW.Amount = valueRolled;
             rollPanel.UpdateRollLabel(valueRolled.ToString());
             rollPanel.HideRollButton();
         });
 
-        // Adding the transactionEventsQuery to the accept button in the ui
-        // so that when they are clicked an event happens
-        var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEvents>().Build();
-        // BUG?: I wonder if this gets the dynamic buffer
+        // Events Bus
+        var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBus>().Build();
         var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
         panelControllers.purchasePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
 
@@ -313,10 +310,10 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     public void OnDestroy(ref SystemState state)
     {
         // Then free the TransactionEvents.EventQueue since no anonymous function has a handle to the NativeQueue.
-        var query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEvents>());
+        var query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEventBus>());
         foreach (var entity in query.ToEntityArray(Allocator.Temp))
         {
-            var transactionEvent = state.EntityManager.GetComponentData<TransactionEvents>(entity);
+            var transactionEvent = state.EntityManager.GetComponentData<TransactionEventBus>(entity);
             if (transactionEvent.EventQueue.IsCreated)
             {
                 transactionEvent.EventQueue.Dispose();

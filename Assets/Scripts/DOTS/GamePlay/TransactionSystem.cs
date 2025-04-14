@@ -24,13 +24,13 @@ public partial struct TransactionSystem : ISystem
 
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<CurrentPlayerID>();
-        state.RequireForUpdate<TransactionEvents>();
+        state.RequireForUpdate<TransactionEventBus>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var transactionEvents in SystemAPI.Query<RefRW<TransactionEvents>>().WithChangeFilter<TransactionEvents>())
+        foreach (var transactionEvents in SystemAPI.Query<RefRW<TransactionEventBus>>().WithChangeFilter<TransactionEventBus>())
         {
             var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
             while (transactionEvents.ValueRW.EventQueue.TryDequeue(out var transactionEvent))
