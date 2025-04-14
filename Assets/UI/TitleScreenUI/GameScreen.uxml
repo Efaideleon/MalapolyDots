@@ -40,6 +40,6 @@
         <ui:Instance template="PayRentPanel" name="PayRentPanel" style="display: none;" />
         <ui:Instance template="UpgradeHousePanel" name="UpgradeHousePanel" style="top: 50px; left: 25px; position: absolute; height: auto; width: auto; align-items: center; scale: 1.5 1.5; transform-origin: left top;" />
         <ui:Instance template="BuyHouseNameAndCounterElement" name="PurchaseHousePanel" style="display: none;" />
-        <ui:Instance template="SpaceActions" name="SpaceActions" style="bottom: 10%; position: absolute;" />
+        <ui:Instance template="SpaceActions" name="SpaceActions" style="bottom: 10%; position: absolute; display: none;" />
     </ui:VisualElement>
 </ui:UXML>
