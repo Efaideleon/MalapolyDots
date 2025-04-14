@@ -39,6 +39,8 @@ public partial struct PropertyClickSystem : ISystem
             if (collisionWorld.CastRay(input, out RaycastHit hit))
             {
                 float3 hitPosition = clickRayCastData.ValueRO.RayOrigin + (clickRayCastData.ValueRO.RayDirection * hit.Fraction);
+                // Bug: Might click on an enitity that doesn't have a NameComponent
+                // TODO: Filter this click for just Properties
                 var name = SystemAPI.GetComponent<NameComponent>(hit.Entity);
 
                 UnityEngine.Debug.Log($"Name {name.Value}");
