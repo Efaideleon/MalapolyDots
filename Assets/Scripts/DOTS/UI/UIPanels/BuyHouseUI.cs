@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
+    // Legacy code
+    /*
     public struct BuyHousePanelContext
     {
         public FixedString64Bytes Name { get; set; }
@@ -23,7 +25,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         // TODO: Make sure to clear the list when the BuyHousePanel is closed.
         // TODO: And unsubcribe from the events attached to the Actions
         // TODO: PropertyNameCounterElement should be renamed since it not longer represents just a name and +/- 
-        public List<PropertyPurchasePanel> ListOfPurchasePanels { get; private set; }
+        public List<PurchaseHousePanel> ListOfPurchasePanels { get; private set; }
 
         public BuyHouseUI(VisualElement parent)
         {
@@ -34,4 +36,5 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             BuyHousePanel = new(Root.Q<VisualElement>("BuyHousePanel"));
         }
     }
+    */
 }

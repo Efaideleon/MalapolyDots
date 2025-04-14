@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public partial struct BuyHousesUIUpdaterSystem : ISystem
+public partial struct PurchaseHousePanelUpdaterSystem : ISystem
 {
     public void OnCreate(ref SystemState state) 
     {
@@ -21,18 +21,17 @@ public partial struct BuyHousesUIUpdaterSystem : ISystem
                 .WithChangeFilter<HouseCount>())
         {
             var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            // On the first load, buyHouseUIController is null 
-            if (panelControllers.buyHouseUIController != null)
+
+            // On the first load, panelControllers is null 
+            if (panelControllers.purchasePanelController != null)
             {
-                foreach (var element in panelControllers.buyHouseUIController.BuyHouseUI.ListOfPurchasePanels)
+                var panel = panelControllers.purchasePanelController.PurchaseHousePanel;
+                var context = panel.Context;
+                if (context.Name == name.ValueRO.Value)
                 {
-                    var context = element.Context;
-                    if (context.Name == name.ValueRO.Value)
-                    {
-                        context.HousesOwned = houseCount.ValueRO.Value;
-                        element.Context = context;
-                        element.Update();
-                    }
+                    context.HousesOwned = houseCount.ValueRO.Value;
+                    panel.Context = context;
+                    panel.Update();
                 }
             }
         }

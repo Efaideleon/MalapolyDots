@@ -1,5 +1,7 @@
 using UnityEngine.UIElements;
 
+// Legacy Code
+/*
 public class BuyHousePanel 
 {
     public VisualElement Root { get; private set; }
@@ -28,3 +30,4 @@ public class BuyHousePanel
     public virtual void Show() => Root.style.display = DisplayStyle.Flex;
     public virtual void Hide() => Root.style.display = DisplayStyle.None;
 }
+*/

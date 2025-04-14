@@ -32,12 +32,11 @@ public class OverLayPanels : IComponentData
 {
     public StatsPanel statsPanel;
     public RollPanel rollPanel;
-    public PropertyPurchasePanel propertyPurchasePanel;
+    public PurchaseHousePanel propertyPurchasePanel;
 }
 
 public class PanelControllers : IComponentData
 {
-    public BuyHouseUIController buyHouseUIController;
     public PurchasePanelController purchasePanelController;
 }
 
@@ -72,7 +71,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var controllerEntity = state.EntityManager.CreateEntity();
         state.EntityManager.AddComponentObject(controllerEntity, new PanelControllers
         {
-            buyHouseUIController = null,
             purchasePanelController = null
         });
 
@@ -129,7 +127,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
 
-        PropertyPurchasePanelContext purchasePanelContext = new ()
+        PurchaseHousePanelContext purchasePanelContext = new ()
         {
             Name = default,
             HousesOwned = default,
@@ -138,8 +136,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
-        PropertyPurchasePanel propertyPurchasePanel = new(botPanelRoot, purchasePanelContext);
-        BuyHouseUI buyHouseUI = new(botPanelRoot);
+        PurchaseHousePanel propertyPurchasePanel = new(botPanelRoot, purchasePanelContext);
 
         // why do we have uiPanels?
         // To put it in components and change them on the OnUpdate loop
@@ -150,7 +147,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-        panelControllers.buyHouseUIController = new(buyHouseUI);
         panelControllers.purchasePanelController = new(propertyPurchasePanel);
 
         // Setting Dictionary for each SpaceType to Panel;
@@ -194,10 +190,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // so that when they are clicked an event happens
         var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEvents>().Build();
         // BUG?: I wonder if this gets the dynamic buffer
-        var buyHouseEventsQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
-
-        panelControllers.buyHouseUIController.SetBuyHouseEventQuery(buyHouseEventsQuery);
-        panelControllers.purchasePanelController.SetBuyHouseEventQuery(buyHouseEventsQuery);
+        var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
+        panelControllers.purchasePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
@@ -243,7 +237,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             if (clickedProperty.ValueRO.entity != Entity.Null)
             {
                 //show and hide the purchase panel here
-                PropertyPurchasePanelContext context = new()
+                PurchaseHousePanelContext context = new()
                 {
                     Name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity).Value,
                     HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
@@ -251,9 +245,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 };
                 // TODO: Should I create a proxy function to this?
                 // TODO: Should I Set the Context and then call Update or do it in one Call Function?
-                panelControllers.purchasePanelController.PurchasePanel.Context = context;
-                panelControllers.purchasePanelController.PurchasePanel.Update();
-                panelControllers.purchasePanelController.PurchasePanel.Show();
+                panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
+                panelControllers.purchasePanelController.PurchaseHousePanel.Update();
+                panelControllers.purchasePanelController.PurchaseHousePanel.Show();
 
                 clickedProperty.ValueRW.entity = Entity.Null;
             }
@@ -290,21 +284,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                     // This landPanel is more like a manager that will determine the correct panel
                     // to show for the given space type
                     landPanel.Show(context);
-
-                    // Query for the properties that are a monopoly.
-            //         foreach (var (owner, monopoly, name) in 
-            //                 SystemAPI.Query<
-            //                     RefRO<OwnerComponent>,
-            //                     RefRO<MonopolyFlagComponent>,
-            //                     RefRO<NameComponent>
-            //                 >())
-            //         {
-            //             if (owner.ValueRO.ID == playerID.Value && monopoly.ValueRO.State == true)
-            //             {
-            //                 // Pass the name of the property where a house can be bought to ui here
-            //                 panelControllers.buyHouseUIController.RegisterPropertyName(name.ValueRO.Value.ToString());
-            //             }
-            //         }
                     break;
             }
         }
@@ -316,7 +295,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var uiPanels = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
         uiPanels.rollPanel.Dispose();
         var panelsController = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-        panelsController.buyHouseUIController.Dispose();
+        panelsController.purchasePanelController.Dispose();
 
         // First unsubscribe the button.clicked event 
         var onLandPanelsDictionary = state

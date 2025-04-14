@@ -4,14 +4,14 @@ using UnityEngine.UIElements;
 
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
-    public struct PropertyPurchasePanelContext
+    public struct PurchaseHousePanelContext
     {
         public FixedString64Bytes Name { get; set; }
         public int HousesOwned { get; set; }
         public int Price { get; set; }
     }
 
-    public class PropertyPurchasePanel
+    public class PurchaseHousePanel
     {
         public VisualElement Root { get; private set; }
         public Label PropertyName { get; private set; }
@@ -23,11 +23,11 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public ToggleControl BuySellToggle { get; private set; }
 
         public int NumOfHousesToBuy { get; private set; }
-        public PropertyPurchasePanelContext Context { get { return _context; } set { _context = value;} }
-        public Action<ToggleState, PropertyPurchasePanelContext> OnOkClicked;
-        private PropertyPurchasePanelContext _context;
+        public PurchaseHousePanelContext Context { get { return _context; } set { _context = value;} }
+        public Action<ToggleState, PurchaseHousePanelContext> OnOkClicked;
+        private PurchaseHousePanelContext _context;
 
-        public PropertyPurchasePanel(VisualElement root, PropertyPurchasePanelContext context)
+        public PurchaseHousePanel(VisualElement root, PurchaseHousePanelContext context)
         {
             _context = context;
             Root = root.Query<VisualElement>("PurchaseHousePanel");

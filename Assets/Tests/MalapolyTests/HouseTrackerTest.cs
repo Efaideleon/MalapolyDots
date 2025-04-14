@@ -44,7 +44,7 @@ public class HouseTrackerTests : ECSTestsFixture
         var ownerComponent = new OwnerComponent { ID = 0 };
         var noOwnerComponent = new OwnerComponent { ID = -1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
-        var houseBuyable = new MonopolyFlagComponent { State = false };
+        var houseBuyable = new MonopolyFlagComponent { Value = false };
 
         entityManager.SetComponentData(brownProperty1, noOwnerComponent);
         entityManager.SetComponentData(brownProperty1, brownColorComponent);
@@ -58,8 +58,8 @@ public class HouseTrackerTests : ECSTestsFixture
 
         var houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
         var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
-        Assert.AreEqual(false, houseBuyable1.State);
-        Assert.AreEqual(false, houseBuyable2.State);
+        Assert.AreEqual(false, houseBuyable1.Value);
+        Assert.AreEqual(false, houseBuyable2.Value);
 
         entityManager.SetComponentData(brownProperty1, ownerComponent);
         testWorld.Update();
@@ -68,8 +68,8 @@ public class HouseTrackerTests : ECSTestsFixture
         houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
         var house1Owner = entityManager.GetComponentData<OwnerComponent>(brownProperty1);
         Assert.AreEqual(0, house1Owner.ID);
-        Assert.AreEqual(false, houseBuyable1.State);
-        Assert.AreEqual(false, houseBuyable2.State);
+        Assert.AreEqual(false, houseBuyable1.Value);
+        Assert.AreEqual(false, houseBuyable2.Value);
     }
 
     [Test]
@@ -91,7 +91,7 @@ public class HouseTrackerTests : ECSTestsFixture
 
         var noOwnerComponent = new OwnerComponent { ID = -1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
-        var houseBuyable = new MonopolyFlagComponent { State = false };
+        var houseBuyable = new MonopolyFlagComponent { Value = false };
 
         entityManager.SetComponentData(brownProperty1, noOwnerComponent);
         entityManager.SetComponentData(brownProperty1, brownColorComponent);
@@ -105,8 +105,8 @@ public class HouseTrackerTests : ECSTestsFixture
 
         var houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
         var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
-        Assert.AreEqual(false, houseBuyable1.State);
-        Assert.AreEqual(false, houseBuyable2.State);
+        Assert.AreEqual(false, houseBuyable1.Value);
+        Assert.AreEqual(false, houseBuyable2.Value);
     }
 
     [Test]
@@ -129,7 +129,7 @@ public class HouseTrackerTests : ECSTestsFixture
         var ownerComponent = new OwnerComponent { ID = 1 };
         var noOwnerComponent = new OwnerComponent { ID = -1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
-        var houseBuyable = new MonopolyFlagComponent { State = false };
+        var houseBuyable = new MonopolyFlagComponent { Value = false };
 
         entityManager.SetComponentData(brownProperty1, ownerComponent);
         entityManager.SetComponentData(brownProperty1, brownColorComponent);
@@ -143,8 +143,8 @@ public class HouseTrackerTests : ECSTestsFixture
 
         var houseBuyable1 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty1);
         var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
-        Assert.AreEqual(false, houseBuyable1.State);
-        Assert.AreEqual(false, houseBuyable2.State);
+        Assert.AreEqual(false, houseBuyable1.Value);
+        Assert.AreEqual(false, houseBuyable2.Value);
     }
 
     [Test]
@@ -173,7 +173,7 @@ public class HouseTrackerTests : ECSTestsFixture
 
         var ownerComponent = new OwnerComponent { ID = 1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
-        var houseBuyable = new MonopolyFlagComponent { State = false };
+        var houseBuyable = new MonopolyFlagComponent { Value = false };
 
         testWorld.Update();
 
@@ -195,9 +195,9 @@ public class HouseTrackerTests : ECSTestsFixture
         var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
         var houseBuyable3 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty3);
 
-        Assert.AreEqual(true, houseBuyable1.State);
-        Assert.AreEqual(true, houseBuyable2.State);
-        Assert.AreEqual(true, houseBuyable3.State);
+        Assert.AreEqual(true, houseBuyable1.Value);
+        Assert.AreEqual(true, houseBuyable2.Value);
+        Assert.AreEqual(true, houseBuyable3.Value);
     }
 
     [Test]
@@ -227,7 +227,7 @@ public class HouseTrackerTests : ECSTestsFixture
         var noOwnerComponent = new OwnerComponent { ID = PropertyConstants.Vacant };
         var owner1Component = new OwnerComponent { ID = 1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
-        var houseBuyable = new MonopolyFlagComponent { State = false };
+        var houseBuyable = new MonopolyFlagComponent { Value = false };
 
         entityManager.SetComponentData(brownProperty1, noOwnerComponent);
         entityManager.SetComponentData(brownProperty1, brownColorComponent);
@@ -247,9 +247,9 @@ public class HouseTrackerTests : ECSTestsFixture
         var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
         var houseBuyable3 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty3);
 
-        Assert.AreEqual(false, houseBuyable1.State);
-        Assert.AreEqual(false, houseBuyable2.State);
-        Assert.AreEqual(false, houseBuyable3.State);
+        Assert.AreEqual(false, houseBuyable1.Value);
+        Assert.AreEqual(false, houseBuyable2.Value);
+        Assert.AreEqual(false, houseBuyable3.Value);
     }
 
     [Test]
@@ -279,7 +279,7 @@ public class HouseTrackerTests : ECSTestsFixture
         var noOwnerComponent = new OwnerComponent { ID = PropertyConstants.Vacant };
         var owner1Component = new OwnerComponent { ID = 1 };
         var brownColorComponent = new ColorCodeComponent { Value = PropertyColor.Brown };
-        var houseBuyable = new MonopolyFlagComponent { State = false };
+        var houseBuyable = new MonopolyFlagComponent { Value = false };
 
         entityManager.SetComponentData(brownProperty1, noOwnerComponent);
         entityManager.SetComponentData(brownProperty1, brownColorComponent);
@@ -299,9 +299,9 @@ public class HouseTrackerTests : ECSTestsFixture
         var houseBuyable2 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty2);
         var houseBuyable3 = entityManager.GetComponentData<MonopolyFlagComponent>(brownProperty3);
 
-        Assert.AreEqual(false, houseBuyable1.State);
-        Assert.AreEqual(false, houseBuyable2.State);
-        Assert.AreEqual(false, houseBuyable3.State);
+        Assert.AreEqual(false, houseBuyable1.Value);
+        Assert.AreEqual(false, houseBuyable2.Value);
+        Assert.AreEqual(false, houseBuyable3.Value);
 
         // Arrange
         entityManager.SetComponentData(brownProperty1, owner1Component);
@@ -315,8 +315,8 @@ public class HouseTrackerTests : ECSTestsFixture
 
         // Assert
         // Now all the properties should be owned by the same player
-        Assert.AreEqual(true, houseBuyable1.State);
-        Assert.AreEqual(true, houseBuyable2.State);
-        Assert.AreEqual(true, houseBuyable3.State);
+        Assert.AreEqual(true, houseBuyable1.Value);
+        Assert.AreEqual(true, houseBuyable2.Value);
+        Assert.AreEqual(true, houseBuyable3.Value);
     }
 }

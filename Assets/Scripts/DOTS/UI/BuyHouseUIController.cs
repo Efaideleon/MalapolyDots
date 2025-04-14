@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Assets.Scripts.DOTS.UI.UIPanels;
 using Unity.Entities;
 
+// Legacy Code
+/*
 public class BuyHouseUIController
 {
     public List<string> AvailableProperties { get; private set; }
@@ -31,7 +33,7 @@ public class BuyHouseUIController
         // if they do then create the panel to buy a house
         foreach (var name in AvailableProperties)
         {
-            var propertyContext = new PropertyPurchasePanelContext
+            var propertyContext = new PurchaseHousePanelContext
             {
                 Name = name,
                 Price = 0,
@@ -39,7 +41,7 @@ public class BuyHouseUIController
 
             // Instantiating the uxml
             var panelVE = purchasePanelFactory.InstantiatePanel(BuyHouseUI.Root);
-            var panel = new PropertyPurchasePanel(panelVE, propertyContext);
+            var panel = new PurchaseHousePanel(panelVE, propertyContext);
             panel.OnOkClicked += DispatchHousePurchaseEvents;
             // Keeping track of how many buy/sell property elements we instantiated
             // When do I clear this list? when no properties can be bought anymore?
@@ -58,7 +60,7 @@ public class BuyHouseUIController
         AvailableProperties.Clear();
     }
 
-    private void DispatchHousePurchaseEvents(ToggleState toggleState, PropertyPurchasePanelContext context)
+    private void DispatchHousePurchaseEvents(ToggleState toggleState, PurchaseHousePanelContext context)
     {
         switch(toggleState)
         {
@@ -81,7 +83,7 @@ public class BuyHouseUIController
         buyHouseEventsQuery = entityQuery;
     }
 
-    private List<BuyHouseEvent> GeneratePurchaseEvents(PropertyPurchasePanelContext context)
+    private List<BuyHouseEvent> GeneratePurchaseEvents(PurchaseHousePanelContext context)
     {
         List<BuyHouseEvent> listOfBuyHouseEvents = new();
         UnityEngine.Debug.Log($"Buying hosues for {context.Name}");
@@ -110,3 +112,4 @@ public class BuyHouseUIController
         BuyHouseUI.closePanel.clickable.clicked -= ClosePanel;
     }
 }
+*/

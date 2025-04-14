@@ -18,6 +18,7 @@ public partial struct MonopolyTrackerSystem : ISystem
     {
         bool ownerChanged = false;
         // I wonder how many this this loop iterates?
+        // TODO: I wonder if I can just detect a change and then continue instead of looping here 20 times
         foreach ( var _ in SystemAPI.Query<RefRO<OwnerComponent>>().WithChangeFilter<OwnerComponent>())
         {
             UnityEngine.Debug.Log("Testing how many times we iterate");
@@ -62,28 +63,28 @@ public partial struct MonopolyTrackerSystem : ISystem
                 switch(color.ValueRO.Value)
                 {
                     case PropertyColor.Brown:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Brown, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Brown, monopolyTracker);
                         break;
                     case PropertyColor.LightBlue:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.LightBlue, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.LightBlue, monopolyTracker);
                         break;
                     case PropertyColor.Purple:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Purple, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Purple, monopolyTracker);
                         break;
                     case PropertyColor.Orange:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Orange, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Orange, monopolyTracker);
                         break;
                     case PropertyColor.Red:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Red, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Red, monopolyTracker);
                         break;
                     case PropertyColor.Yellow:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Yellow, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Yellow, monopolyTracker);
                         break;
                     case PropertyColor.Green:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Green, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Green, monopolyTracker);
                         break;
                     case PropertyColor.Blue:
-                        monopolyFlag.ValueRW.State = IsMonopoly(PropertyColor.Blue, monopolyTracker);
+                        monopolyFlag.ValueRW.Value = IsMonopoly(PropertyColor.Blue, monopolyTracker);
                         break;
                 }
             }

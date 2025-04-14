@@ -4,38 +4,38 @@ using Unity.Entities;
 
 public class PurchasePanelController
 {
-    private EntityQuery buyHouseEventsQuery;
-    public PropertyPurchasePanel PurchasePanel { get; private set; }
+    private EntityQuery buyHouseEventBufferQuery;
+    public PurchaseHousePanel PurchaseHousePanel { get; private set; }
 
-    public PurchasePanelController(PropertyPurchasePanel purchasePanel)
+    public PurchasePanelController(PurchaseHousePanel purchasePanel)
     {
-        PurchasePanel = purchasePanel;
+        PurchaseHousePanel = purchasePanel;
         SubscribeEvents();
     }
 
     public void SetBuyHouseEventQuery(EntityQuery entityQuery)
     {
-        buyHouseEventsQuery = entityQuery;
+        buyHouseEventBufferQuery = entityQuery;
     }
 
     private void SubscribeEvents()
     {
-        PurchasePanel.OnOkClicked += DispatchHousePurchaseEvents;
+        PurchaseHousePanel.OnOkClicked += DispatchHousePurchaseEvents;
     }
 
     public void Dispose()
     {
-        PurchasePanel.OnOkClicked -= DispatchHousePurchaseEvents;
+        PurchaseHousePanel.OnOkClicked -= DispatchHousePurchaseEvents;
     }
 
-    private void DispatchHousePurchaseEvents(ToggleState toggleState, PropertyPurchasePanelContext context)
+    private void DispatchHousePurchaseEvents(ToggleState toggleState, PurchaseHousePanelContext context)
     {
         switch(toggleState)
         {
             case ToggleState.Buy:
-                if (buyHouseEventsQuery != null)
+                if (buyHouseEventBufferQuery != null)
                 {
-                    var eventBuffer = buyHouseEventsQuery.GetSingletonBuffer<BuyHouseEvent>();
+                    var eventBuffer = buyHouseEventBufferQuery.GetSingletonBuffer<BuyHouseEvent>();
                     foreach (var PurchaseEvent in GeneratePurchaseEvents(context))
                     {
                         UnityEngine.Debug.Log($"Buy a house for {PurchaseEvent.property}");
@@ -53,16 +53,16 @@ public class PurchasePanelController
         }
     }
 
-    private List<BuyHouseEvent> GeneratePurchaseEvents(PropertyPurchasePanelContext context)
+    private List<BuyHouseEvent> GeneratePurchaseEvents(PurchaseHousePanelContext context)
     {
         List<BuyHouseEvent> listOfBuyHouseEvents = new();
         UnityEngine.Debug.Log($"Buying hosues for {context.Name}");
 
-        if (context.Name == PurchasePanel.Context.Name)
+        if (context.Name == PurchaseHousePanel.Context.Name)
         {
-            for (int i = 0; i < PurchasePanel.NumOfHousesToBuy; i++)
+            for (int i = 0; i < PurchaseHousePanel.NumOfHousesToBuy; i++)
             {
-                listOfBuyHouseEvents.Add(new BuyHouseEvent { property = PurchasePanel.Context.Name });
+                listOfBuyHouseEvents.Add(new BuyHouseEvent { property = PurchaseHousePanel.Context.Name });
             }
         }
         return listOfBuyHouseEvents;
