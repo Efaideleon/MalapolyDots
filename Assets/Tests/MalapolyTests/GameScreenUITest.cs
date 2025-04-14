@@ -66,8 +66,8 @@ public class GameUICanvasSystemTests
         _landedOnSpaceEntity = _entityManager.CreateSingleton<LandedOnSpace>(new LandedOnSpace { entity = Entity.Null });
 
         // TransactionEvents needs special handling for the persistent queue
-        _transactionEventsEntity = _entityManager.CreateEntity(typeof(TransactionEvents));
-        _entityManager.SetComponentData(_transactionEventsEntity, new TransactionEvents
+        _transactionEventsEntity = _entityManager.CreateEntity(typeof(TransactionEventBus));
+        _entityManager.SetComponentData(_transactionEventsEntity, new TransactionEventBus
         {
             EventQueue = new NativeQueue<TransactionEvent>(Allocator.Persistent)
         });
@@ -96,9 +96,9 @@ public class GameUICanvasSystemTests
         {
             // Dispose the persistent queue using the stored entity handle
             // Check existence first in case TearDown is called after world disposal or entity destruction
-            if (_entityManager.Exists(_transactionEventsEntity) && _entityManager.HasComponent<TransactionEvents>(_transactionEventsEntity))
+            if (_entityManager.Exists(_transactionEventsEntity) && _entityManager.HasComponent<TransactionEventBus>(_transactionEventsEntity))
             {
-                var queue = _entityManager.GetComponentData<TransactionEvents>(_transactionEventsEntity).EventQueue;
+                var queue = _entityManager.GetComponentData<TransactionEventBus>(_transactionEventsEntity).EventQueue;
                 if (queue.IsCreated)
                 {
                     queue.Dispose();

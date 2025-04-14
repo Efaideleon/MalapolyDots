@@ -38,6 +38,7 @@ public class OverLayPanels : IComponentData
 public class PanelControllers : IComponentData
 {
     public PurchasePanelController purchasePanelController;
+    public SpaceActionsPanelController spaceActionsPanelController;
 }
 
 public class OnLandPanelsDictionay : IComponentData
@@ -71,7 +72,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var controllerEntity = state.EntityManager.CreateEntity();
         state.EntityManager.AddComponentObject(controllerEntity, new PanelControllers
         {
-            purchasePanelController = null
+            purchasePanelController = null,
+            spaceActionsPanelController = null
         });
 
         // TransactionEvents Entity
@@ -136,6 +138,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
+        SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
         PurchaseHousePanel propertyPurchasePanel = new(botPanelRoot, purchasePanelContext);
 
         // why do we have uiPanels?
@@ -148,6 +151,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
         panelControllers.purchasePanelController = new(propertyPurchasePanel);
+        panelControllers.spaceActionsPanelController = new(spaceActionsPanel);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
@@ -245,6 +249,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
                 panelControllers.purchasePanelController.PurchaseHousePanel.Update();
                 panelControllers.purchasePanelController.PurchaseHousePanel.Show();
+                panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
 
                 clickedProperty.ValueRW.entity = Entity.Null;
             }
