@@ -39,6 +39,7 @@ public class BackdropController
 
     private void HidePanelsAndButton()
     {
+        UnityEngine.Debug.Log("????????");
         HideRegisteredPanels();
         HideBackdrop();
     }
@@ -68,10 +69,10 @@ public class BackdropController
 
     public void RegisterPanelToHide(VisualElement panel)
     {
-        panel.RegisterCallback((PointerDownEvent evt) => 
-        {
-            evt.StopPropagation();
-        });
+        // panel.RegisterCallback((PointerDownEvent evt) => 
+        // {
+        //     evt.StopPropagation();
+        // });
         PanelsToHide.Add(panel);
     }
 }
