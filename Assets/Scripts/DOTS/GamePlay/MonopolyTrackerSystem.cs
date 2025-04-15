@@ -21,7 +21,6 @@ public partial struct MonopolyTrackerSystem : ISystem
         // TODO: I wonder if I can just detect a change and then continue instead of looping here 20 times
         foreach ( var _ in SystemAPI.Query<RefRO<OwnerComponent>>().WithChangeFilter<OwnerComponent>())
         {
-            UnityEngine.Debug.Log("Testing how many times we iterate");
             ownerChanged = true;
         }
 
@@ -39,14 +38,10 @@ public partial struct MonopolyTrackerSystem : ISystem
             monopolyTracker.TryAdd((int)PropertyColor.Green, new NativeList<int>(Allocator.Temp));
             monopolyTracker.TryAdd((int)PropertyColor.Blue, new NativeList<int>(Allocator.Temp));
 
-            UnityEngine.Debug.Log("This should only be printed once");
             foreach (var (owner, color)  in SystemAPI.Query<RefRO<OwnerComponent>, RefRO<ColorCodeComponent>>())
             {
                 if (color.ValueRO.Value != PropertyColor.White)
                 {
-                    UnityEngine.Debug.Log("Loading the Color to ID HashMap");
-                    UnityEngine.Debug.Log($"Color: { color.ValueRO.Value}, ID: {owner.ValueRO.ID}");
-
                     monopolyTracker[(int)color.ValueRO.Value].Add(owner.ValueRO.ID);
                 }
             }
@@ -59,7 +54,6 @@ public partial struct MonopolyTrackerSystem : ISystem
                         RefRO<PropertySpaceTag>
                     >())
             {
-                UnityEngine.Debug.Log("Checking if each color has a monopoly");
                 switch(color.ValueRO.Value)
                 {
                     case PropertyColor.Brown:

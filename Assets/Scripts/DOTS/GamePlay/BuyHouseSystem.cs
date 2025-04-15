@@ -26,7 +26,6 @@ public partial struct BuyHouseSystem : ISystem
     {
         foreach (var buffer in SystemAPI.Query<DynamicBuffer<BuyHouseEvent>>().WithChangeFilter<BuyHouseEvent>()) 
         {
-            UnityEngine.Debug.Log("Times called?");
             if (buffer.Length < 1)
                 continue;
         
