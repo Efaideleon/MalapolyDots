@@ -21,6 +21,7 @@ public class BackdropController
         else
         {
             Backdrop = backdrop;
+            UnityEngine.Debug.Log("Loading Backdrop");
             SubscribeEvents();
         }
         HideBackdrop();
