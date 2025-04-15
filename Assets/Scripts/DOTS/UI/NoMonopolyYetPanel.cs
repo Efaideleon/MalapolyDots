@@ -7,6 +7,7 @@ public class NoMonopolyYetPanel
     public NoMonopolyYetPanel(VisualElement root)
     {
         Panel = root.Q<VisualElement>("NoMonopolyYetPanel");
+        Hide();
     }
 
     public void Show() => Panel.style.display = DisplayStyle.Flex;
