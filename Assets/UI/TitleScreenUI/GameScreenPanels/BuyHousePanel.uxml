@@ -3,8 +3,7 @@
     <Style src="project://database/Assets/UI/USS/Sliders.uss?fileID=7433441132597879392&amp;guid=53fa3d7f831594646b6177f0303482a5&amp;type=3#Sliders" />
     <Style src="project://database/Assets/UI/USS/SlidersHorizontal.uss?fileID=7433441132597879392&amp;guid=759075652b8901e46962acfd4a5964ad&amp;type=3#SlidersHorizontal" />
     <Style src="project://database/Assets/UI/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=13e66c935a89d2d49b37966f56ac1081&amp;type=3#Inventory" />
-    <engine:VisualElement name="upgrade-house-container" enabled="true" style="flex-grow: 10; height: auto; width: auto; background-color: rgba(255, 70, 6, 0); align-items: center; justify-content: center; visibility: visible; display: flex; overflow: visible; position: relative; top: 0; left: 0; -unity-text-align: upper-center; flex-shrink: 1; scale: 1 1;" />
-    <engine:VisualElement name="upgrade-house-panel" class="buy-houses-panel" style="height: auto; width: 100%; background-color: rgb(255, 255, 255); flex-shrink: 1;">
+    <engine:VisualElement name="upgrade-house-panel" picking-mode="Ignore" class="buy-houses-panel" style="height: auto; width: 100%; background-color: rgb(255, 255, 255); flex-shrink: 1;">
         <engine:VisualElement name="upgrade-house-label-container" style="flex-grow: 1; justify-content: space-between; align-self: auto; flex-shrink: 1; height: auto; width: 100%; align-items: center; align-content: stretch; flex-direction: row;">
             <engine:Label text="Buy Houses" style="font-size: 25%;" />
             <engine:Button text="X" name="close-buy-houses-panel-button" />
