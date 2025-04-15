@@ -2,13 +2,12 @@
     width: 80px;
     height: 30px;
     color: white;
-    background-color: #dab40a;
+    background-color: rgb(218, 180, 10);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 2px;
-    border-color: #fff5a8;
+    border-color: rgb(255, 245, 168);
     padding: 0;
-    
 }
 
 .add-sub-button {
@@ -29,13 +28,11 @@
 .sub-button {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-
 }
 
 .add-button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-
 }
 
 .amount-counter {
@@ -54,7 +51,7 @@
 .add-sub-container {
     border-radius: 6px;
     border-width: 2px;
-    border-color: #b1b5b3;
+    border-color: rgb(177, 181, 179);
     flex-direction: row;
     justify-content: center;
     width: 122px;
@@ -88,26 +85,27 @@
 }
 
 .buy-button {
-    width: 60px;
-    height: 30px;
+    width: 180px;
+    height: 180px;
     color: white;
-    background-color: #448d61;
-    border-radius: 5px;
+    background-color: rgb(68, 141, 97);
     -unity-font-style: bold;
-    border-width: 0;
+    border-radius: 25px;
+    border-width: 10px;
+    margin: 10px;
 }
 
 .sell-button {
     width: 60px;
     height: 30px;
     color: white;
-    background-color: #d0463a; 
+    background-color: rgb(208, 70, 58);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
 }
 
-.on-toggle-button{
+.on-toggle-button {
     -unity-font-style: bold;
     border-width: 0;
     background-color: transparent;
@@ -115,7 +113,7 @@
     margin: 0;
 }
 
-.off-toggle-button{
+.off-toggle-button {
     -unity-font-style: bold;
     border-width: 0;
     background-color: transparent;
@@ -123,7 +121,7 @@
     margin: 0;
 }
 
-.toggle-element{
+.toggle-element {
     width: 60px;
     height: 30px;
     transition-property: left;
@@ -131,7 +129,7 @@
     transition-timing-function: ease-out;
 }
 
-.toggle-container{
+.toggle-container {
     padding: 2px;
     background-color: gray;
     border-radius: 10px;
@@ -141,12 +139,11 @@
     width: 100px;
     height: 30px;
     color: white;
-    background-color: #3a92d0;
+    background-color: rgb(58, 146, 208);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
 }
 
 .property-element {
-    
 }
