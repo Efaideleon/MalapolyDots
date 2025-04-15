@@ -4,6 +4,7 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 public enum TransactionEventsEnum
 {
@@ -12,6 +13,11 @@ public enum TransactionEventsEnum
     PayRent,
     UpgradeHouse,
     Default
+}
+
+public struct LastPropertyClicked : IComponentData
+{
+    public Entity entity;
 }
 
 public struct TransactionEvent
@@ -62,6 +68,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<PanelControllers>();
         state.RequireForUpdate<ClickData>();
         state.RequireForUpdate<ClickedPropertyComponent>();
+
+        state.EntityManager.CreateSingleton( new LastPropertyClicked { entity = Entity.Null });
 
         // OverLayPanels Entity
         var uiEntity = state.EntityManager.CreateEntity();
@@ -141,10 +149,17 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             Price = default
         };
 
+        SpaceActionsPanelContext spaceActionsPanelContext = new ()
+        {
+            HasMonopoly = false,
+            IsPlayerOwner = false
+        };
+
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
         SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
         PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
+        NoMonopolyYetPanel noMonopolyYetPanel = new(botPanelRoot);
 
         // Register the panels to hide, such as the ActionsSpace Panel
 
@@ -158,7 +173,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
         panelControllers.purchasePanelController = new(purchaseHousePanel);
-        panelControllers.spaceActionsPanelController = new(spaceActionsPanel, purchaseHousePanel);
+        panelControllers.spaceActionsPanelController = new(spaceActionsPanelContext, spaceActionsPanel, purchaseHousePanel, noMonopolyYetPanel);
         panelControllers.backdropController = new(backdrop);
         panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel.Panel);
@@ -242,6 +257,30 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
         
+        foreach ( var (_, lastPropertyClicked) in 
+                SystemAPI.Query<
+                    RefRO<MonopolyFlagComponent>,
+                    RefRO<LastPropertyClicked>>()
+                .WithChangeFilter<MonopolyFlagComponent>())
+        {
+            var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(lastPropertyClicked.ValueRO.entity);
+            var owner = SystemAPI.GetComponent<OwnerComponent>(lastPropertyClicked.ValueRO.entity);
+            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
+            bool isCurrentOwner = false;
+            if (currentPlayerID.Value == owner.ID)
+            {
+                isCurrentOwner = true;
+            }
+            SpaceActionsPanelContext spaceActionsContext = new()
+            {
+                HasMonopoly = hasMonopoly.Value,
+                IsPlayerOwner = isCurrentOwner
+            };
+
+            panelControllers.spaceActionsPanelController.Context = spaceActionsContext;
+        }
+
         // When an entity is clicked show the panel to buy houses
         foreach ( var clickedProperty in SystemAPI.Query<RefRW<ClickedPropertyComponent>>().WithChangeFilter<ClickedPropertyComponent>())
         {
@@ -251,6 +290,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 //show and hide the purchase panel here
                 UnityEngine.Debug.Log("clicked property entity is not null");
                 var clickData = SystemAPI.GetSingleton<ClickData>();
+                SystemAPI.SetSingleton(new LastPropertyClicked { entity = clickedProperty.ValueRO.entity });
+
                 switch (clickData.Phase)
                 {
                     case InputActionPhase.Started:
@@ -260,6 +301,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                             HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
                             Price = 10,
                         };
+
                         // TODO: Should I create a proxy function to this?
                         // TODO: Should I Set the Context and then call Update or do it in one Call Function?
                         panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
@@ -271,10 +313,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         panelControllers.backdropController.ShowBackdrop();
                         UnityEngine.Debug.Log("Click Canceled showing backdrop panel");
                         break;
-
                 }
                 // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
-                clickedProperty.ValueRW.entity = Entity.Null;
+                SystemAPI.SetSingleton( new ClickedPropertyComponent { entity = Entity.Null });
             }
         }
 
