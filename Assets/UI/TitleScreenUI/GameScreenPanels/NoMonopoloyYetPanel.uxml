@@ -3,7 +3,7 @@
         <engine:VisualElement style="flex-grow: 1; width: 100%; height: 100%; background-color: rgb(255, 254, 0);">
             <engine:VisualElement style="flex-direction: column; align-items: center; height: 100%; justify-content: space-evenly; background-color: rgb(255, 81, 75);">
                 <engine:Label text="You need a full&#10;set of proterties&#10;(Monopoly)&#10;to build houses&#10;or hotels!" style="-unity-text-align: upper-center; font-size: 28px; -unity-font-style: bold; -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(8, 48, 244); color: rgb(255, 255, 255);" />
-                <engine:Button text="Got it!" />
+                <engine:Button text="Got it!" name="got-it-button" />
             </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
