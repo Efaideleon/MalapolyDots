@@ -60,6 +60,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<MoneyComponent>();
         state.RequireForUpdate<OverLayPanels>();
         state.RequireForUpdate<PanelControllers>();
+        state.RequireForUpdate<ClickData>();
+        state.RequireForUpdate<ClickedPropertyComponent>();
 
         // OverLayPanels Entity
         var uiEntity = state.EntityManager.CreateEntity();
@@ -240,18 +242,15 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         }
         
         // When an entity is clicked show the panel to buy houses
-        foreach ( var (clickedProperty, clickData) in 
-                SystemAPI.Query<
-                    RefRW<ClickedPropertyComponent>,
-                    RefRO<ClickData>
-                >()
-                .WithChangeFilter<ClickedPropertyComponent>()
-                .WithChangeFilter<ClickData>())
+        foreach ( var clickedProperty in SystemAPI.Query<RefRW<ClickedPropertyComponent>>().WithChangeFilter<ClickedPropertyComponent>())
         {
+            UnityEngine.Debug.Log("Click recieved in GameUICanvasSystem");
             if (clickedProperty.ValueRO.entity != Entity.Null)
             {
                 //show and hide the purchase panel here
-                switch (clickData.ValueRO.Phase)
+                UnityEngine.Debug.Log("clicked property entity is not null");
+                var clickData = SystemAPI.GetSingleton<ClickData>();
+                switch (clickData.Phase)
                 {
                     case InputActionPhase.Started:
                         PurchaseHousePanelContext context = new()
@@ -266,9 +265,11 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         panelControllers.purchasePanelController.PurchaseHousePanel.Update();
                         panelControllers.purchasePanelController.PurchaseHousePanel.Show();
                         panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                        UnityEngine.Debug.Log("Click Started showing space actions panel");
                         break;
                     case InputActionPhase.Canceled:
                         panelControllers.backdropController.ShowBackdrop();
+                        UnityEngine.Debug.Log("Click Canceled showing backdrop panel");
                         break;
 
                 }

@@ -112,6 +112,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
                     break;
             }
         };
+        inputActionsComponent.Value.Mouse.LeftClick.started += clickCallback.leftClickCallback;
         inputActionsComponent.Value.Mouse.LeftClick.canceled += clickCallback.leftClickCallback;
         inputActionsComponent.Value.Enable();
     }
@@ -122,6 +123,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
     {
         var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
         var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
+        inputActionsComponent.Value.Mouse.LeftClick.started -= clickCallback.leftClickCallback;
         inputActionsComponent.Value.Mouse.LeftClick.canceled -= clickCallback.leftClickCallback;
         inputActionsComponent.Value.Disable();
     }
