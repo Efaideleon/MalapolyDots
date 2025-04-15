@@ -12,6 +12,7 @@ public class InputActionsComponent : IComponentData
 public struct ClickData : IComponentData
 {
     public float2 Position;
+    public InputActionPhase Phase;
 }
 
 public struct ClickRayCastData : IComponentData
@@ -50,7 +51,8 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
         });
         SystemAPI.SetComponent(clickDataEntity, new ClickData
         {
-            Position = new float2()
+            Position = new float2(),
+            Phase = default 
         });
 
         // InputAction Entity
@@ -81,24 +83,36 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
 
         var clickDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickData>().Build();
         var clickRayCastDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickRayCastData>().Build();
+        float rayLenght = 1000f;
         clickCallback.leftClickCallback = ctx => 
         {
             switch(ctx.phase)
             {
                 case InputActionPhase.Started:
-                    float rayLenght = 1000f;
                     var clickPositionVector = Mouse.current.position.ReadValue();
                     UnityEngine.Debug.Log("Mouse button pressed");
                     float2 clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
                     Ray ray = Camera.main.ScreenPointToRay(clickPositionVector);
-                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Position = clickPositionFloat2;  
                     clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayOrigin = ray.origin;  
                     clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayDirection = ray.direction;  
                     clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayEnd = ray.origin + (ray.direction * rayLenght);  
+                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Position = clickPositionFloat2;  
+                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Phase = InputActionPhase.Started;  
+                    break;
+                case InputActionPhase.Canceled:
+                    UnityEngine.Debug.Log("Mouse button released");
+                    clickPositionVector = Mouse.current.position.ReadValue();
+                    clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
+                    ray = Camera.main.ScreenPointToRay(clickPositionVector);
+                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayOrigin = ray.origin;  
+                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayDirection = ray.direction;  
+                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayEnd = ray.origin + (ray.direction * rayLenght);  
+                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Position = clickPositionFloat2;  
+                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Phase = InputActionPhase.Canceled;  
                     break;
             }
         };
-        inputActionsComponent.Value.Mouse.LeftClick.started += clickCallback.leftClickCallback;
+        inputActionsComponent.Value.Mouse.LeftClick.canceled += clickCallback.leftClickCallback;
         inputActionsComponent.Value.Enable();
     }
 
@@ -108,7 +122,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
     {
         var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
         var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
-        inputActionsComponent.Value.Mouse.LeftClick.started -= clickCallback.leftClickCallback;
+        inputActionsComponent.Value.Mouse.LeftClick.canceled -= clickCallback.leftClickCallback;
         inputActionsComponent.Value.Disable();
     }
 }

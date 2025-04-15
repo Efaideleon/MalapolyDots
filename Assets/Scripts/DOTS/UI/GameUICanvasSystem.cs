@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public enum TransactionEventsEnum
 {
@@ -39,6 +40,7 @@ public class PanelControllers : IComponentData
 {
     public PurchasePanelController purchasePanelController;
     public SpaceActionsPanelController spaceActionsPanelController;
+    public BackdropController backdropController;
 }
 
 public class OnLandPanelsDictionay : IComponentData
@@ -128,6 +130,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
+        var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
 
         PurchaseHousePanelContext purchasePanelContext = new ()
         {
@@ -141,6 +144,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
         PurchaseHousePanel propertyPurchasePanel = new(botPanelRoot, purchasePanelContext);
 
+        // Register the panels to hide, such as the ActionsSpace Panel
+
         // why do we have uiPanels?
         // To put it in components and change them on the OnUpdate loop
         var uiEntity = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
@@ -152,6 +157,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
         panelControllers.purchasePanelController = new(propertyPurchasePanel);
         panelControllers.spaceActionsPanelController = new(spaceActionsPanel);
+        panelControllers.backdropController = new(backdrop);
+        panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
@@ -233,24 +240,39 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         }
         
         // When an entity is clicked show the panel to buy houses
-        foreach ( var clickedProperty in SystemAPI.Query<RefRW<ClickedPropertyComponent>>().WithChangeFilter<ClickedPropertyComponent>())
+        foreach ( var (clickedProperty, clickData) in 
+                SystemAPI.Query<
+                    RefRW<ClickedPropertyComponent>,
+                    RefRO<ClickData>
+                >()
+                .WithChangeFilter<ClickedPropertyComponent>()
+                .WithChangeFilter<ClickData>())
         {
             if (clickedProperty.ValueRO.entity != Entity.Null)
             {
                 //show and hide the purchase panel here
-                PurchaseHousePanelContext context = new()
+                switch (clickData.ValueRO.Phase)
                 {
-                    Name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity).Value,
-                    HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
-                    Price = 10,
-                };
-                // TODO: Should I create a proxy function to this?
-                // TODO: Should I Set the Context and then call Update or do it in one Call Function?
-                panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
-                panelControllers.purchasePanelController.PurchaseHousePanel.Update();
-                panelControllers.purchasePanelController.PurchaseHousePanel.Show();
-                panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                    case InputActionPhase.Started:
+                        PurchaseHousePanelContext context = new()
+                        {
+                            Name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity).Value,
+                            HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
+                            Price = 10,
+                        };
+                        // TODO: Should I create a proxy function to this?
+                        // TODO: Should I Set the Context and then call Update or do it in one Call Function?
+                        panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
+                        panelControllers.purchasePanelController.PurchaseHousePanel.Update();
+                        panelControllers.purchasePanelController.PurchaseHousePanel.Show();
+                        panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                        break;
+                    case InputActionPhase.Canceled:
+                        panelControllers.backdropController.ShowBackdrop();
+                        break;
 
+                }
+                // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
                 clickedProperty.ValueRW.entity = Entity.Null;
             }
         }

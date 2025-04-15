@@ -6,6 +6,7 @@ public class PurchasePanelController
 {
     private EntityQuery buyHouseEventBufferQuery;
     public PurchaseHousePanel PurchaseHousePanel { get; private set; }
+    // TODO: Add a backdrop visual element and the dispose if not null
 
     public PurchasePanelController(PurchaseHousePanel purchasePanel)
     {
