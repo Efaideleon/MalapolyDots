@@ -15,7 +15,7 @@
     <ui:Template name="SpaceActions" src="project://database/Assets/UI/TitleScreenUI/SpaceActions.uxml?fileID=9197481963319205126&amp;guid=f1a491c04e1e03b4cafdf7196f4f0208&amp;type=3#SpaceActions" />
     <Style src="project://database/Assets/UI/USS/GameScreen.uss?fileID=7433441132597879392&amp;guid=d90b7e987511b584596d1bed6e988614&amp;type=3#GameScreen" />
     <ui:Button name="Backdrop" style="width: 100%; height: 100%; position: absolute; background-color: rgba(71, 80, 212, 0.28);" />
-    <ui:VisualElement name="foreground" style="flex-grow: 1;">
+    <ui:VisualElement name="foreground" focusable="false" picking-mode="Ignore" style="flex-grow: 1;">
         <ui:VisualElement name="game-screen-top-container" class="player-overview_player-name-container" style="width: 100%; height: 10%; flex-direction: row;">
             <ui:VisualElement name="player-overview_left-container" style="flex-grow: 1; align-self: auto; justify-content: center; align-items: flex-start; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
                 <ui:VisualElement name="player-overview_name-label-container" style="flex-grow: 1; align-items: center; justify-content: center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-color: rgb(250, 237, 237);">
