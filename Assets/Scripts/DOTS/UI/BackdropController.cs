@@ -39,7 +39,6 @@ public class BackdropController
 
     private void HidePanelsAndButton()
     {
-        UnityEngine.Debug.Log("????????");
         HideRegisteredPanels();
         HideBackdrop();
     }
