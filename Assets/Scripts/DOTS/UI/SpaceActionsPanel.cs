@@ -3,14 +3,16 @@ using UnityEngine.UIElements;
 public class SpaceActionsPanel
 {
     public VisualElement Panel { get; private set; }
+    public Button BuyButton { get; private set; }
 
     public SpaceActionsPanel(VisualElement root)
     {
         Panel = root.Q<VisualElement>("SpaceActions");
-    //     Panel.RegisterCallback((PointerDownEvent evt) => 
-    //     {
-    //         evt.StopPropagation();
-    //     });
+        BuyButton = Panel.Q<Button>("buy-house-button");
+        if (BuyButton == null)
+        {
+            UnityEngine.Debug.LogWarning("BuyButton is null");
+        }
     }
 
     public void Show() 

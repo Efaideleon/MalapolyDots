@@ -68,10 +68,6 @@ public class BackdropController
 
     public void RegisterPanelToHide(VisualElement panel)
     {
-        // panel.RegisterCallback((PointerDownEvent evt) => 
-        // {
-        //     evt.StopPropagation();
-        // });
         PanelsToHide.Add(panel);
     }
 }

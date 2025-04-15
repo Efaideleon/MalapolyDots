@@ -33,7 +33,7 @@ public class OverLayPanels : IComponentData
 {
     public StatsPanel statsPanel;
     public RollPanel rollPanel;
-    public PurchaseHousePanel propertyPurchasePanel;
+    public PurchaseHousePanel purchaseHousePanel;
 }
 
 public class PanelControllers : IComponentData
@@ -69,7 +69,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         {
             rollPanel = null,
             statsPanel = null,
-            propertyPurchasePanel = null
+            purchaseHousePanel = null
         });
 
         // PanelControllers Entity
@@ -134,7 +134,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
         var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
 
-        PurchaseHousePanelContext purchasePanelContext = new ()
+        PurchaseHousePanelContext purchaseHousePanelContext = new ()
         {
             Name = default,
             HousesOwned = default,
@@ -144,7 +144,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
         SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
-        PurchaseHousePanel propertyPurchasePanel = new(botPanelRoot, purchasePanelContext);
+        PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
 
         // Register the panels to hide, such as the ActionsSpace Panel
 
@@ -153,14 +153,15 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var uiEntity = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
         uiEntity.rollPanel = rollPanel;
         uiEntity.statsPanel = statsPanel;
-        uiEntity.propertyPurchasePanel = propertyPurchasePanel;
+        uiEntity.purchaseHousePanel = purchaseHousePanel;
 
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-        panelControllers.purchasePanelController = new(propertyPurchasePanel);
-        panelControllers.spaceActionsPanelController = new(spaceActionsPanel);
+        panelControllers.purchasePanelController = new(purchaseHousePanel);
+        panelControllers.spaceActionsPanelController = new(spaceActionsPanel, purchaseHousePanel);
         panelControllers.backdropController = new(backdrop);
         panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
+        panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel.Panel);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
@@ -263,7 +264,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         // TODO: Should I Set the Context and then call Update or do it in one Call Function?
                         panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
                         panelControllers.purchasePanelController.PurchaseHousePanel.Update();
-                        panelControllers.purchasePanelController.PurchaseHousePanel.Show();
                         panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
                         UnityEngine.Debug.Log("Click Started showing space actions panel");
                         break;
@@ -321,6 +321,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         uiPanels.rollPanel.Dispose();
         var panelsController = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
         panelsController.purchasePanelController.Dispose();
+        panelsController.spaceActionsPanelController.Dispose();
+        panelsController.backdropController.Dispose();
 
         // First unsubscribe the button.clicked event 
         var onLandPanelsDictionary = state

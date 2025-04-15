@@ -13,7 +13,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
     public class PurchaseHousePanel
     {
-        public VisualElement Root { get; private set; }
+        public VisualElement Panel { get; private set; }
         public Label PropertyName { get; private set; }
         public Label BuyingHouseCounter { get; private set; }
         public Label HousesOwnedCounter { get; private set; }
@@ -31,17 +31,17 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public PurchaseHousePanel(VisualElement root, PurchaseHousePanelContext context)
         {
             _context = context;
-            Root = root.Query<VisualElement>("PurchaseHousePanel");
-            PropertyName = Root.Q<Label>("property-name");
-            BuyingHouseCounter = Root.Q<Label>("houses-counter");
-            HousesOwnedCounter = Root.Q<Label>("number-houses-owned");
-            MinusButton = Root.Q<Button>("subtract-houses-amount");
-            PlusButton = Root.Q<Button>("add-houses-amount");
-            OkButton = Root.Q<Button>("ok-button");
-            CloseButton = Root.Q<Button>("purchase-houses-panel-close-button");
+            Panel = root.Query<VisualElement>("PurchaseHousePanel");
+            PropertyName = Panel.Q<Label>("property-name");
+            BuyingHouseCounter = Panel.Q<Label>("houses-counter");
+            HousesOwnedCounter = Panel.Q<Label>("number-houses-owned");
+            MinusButton = Panel.Q<Button>("subtract-houses-amount");
+            PlusButton = Panel.Q<Button>("add-houses-amount");
+            OkButton = Panel.Q<Button>("ok-button");
+            CloseButton = Panel.Q<Button>("purchase-houses-panel-close-button");
 
             PropertyName.text = _context.Name.ToString();
-            BuySellToggle = new ToggleControl(Root.Q<VisualElement>("toggle-container"));
+            BuySellToggle = new ToggleControl(Panel.Q<VisualElement>("toggle-container"));
             SubscribeEvents();
         }
 
@@ -111,8 +111,8 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             }
         }
 
-        public void Show() => Root.style.display = DisplayStyle.Flex;
-        public void Hide() => Root.style.display = DisplayStyle.None;
+        public void Show() => Panel.style.display = DisplayStyle.Flex;
+        public void Hide() => Panel.style.display = DisplayStyle.None;
 
         public void HandleOkButtonClicked()
         {
