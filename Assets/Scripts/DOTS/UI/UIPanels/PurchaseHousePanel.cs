@@ -42,6 +42,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
             PropertyName.text = _context.Name.ToString();
             BuySellToggle = new ToggleControl(Panel.Q<VisualElement>("toggle-container"));
+            Hide();
             SubscribeEvents();
         }
 
