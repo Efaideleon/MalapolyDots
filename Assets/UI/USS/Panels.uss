@@ -1,23 +1,38 @@
 .panel-1-outer {
-    background-color: #fff41c;
+    background-color: rgb(255, 244, 28);
     border-radius: 10px;
     border-width: 5px;
-    border-color: #267bfa;
+    border-color: rgb(38, 123, 250);
     padding: 10px;
 }
 
 .panel-1-inner {
-    background-color: #ff9d1c;
+    background-color: rgb(255, 157, 28);
     border-radius: 10px;
     border-width: 5px;
-    border-color: #da2828;
+    border-color: rgb(218, 40, 40);
     padding: 10px;
 }
 
 .panel-1-inner-2 {
-    background-color: #a4ff1c;
+    background-color: rgb(164, 255, 28);
     border-radius: 10px;
     border-width: 5px;
-    border-color: #c84016;
+    border-color: rgb(200, 64, 22);
     padding: 10px;
+}
+
+.buy-panel {
+    width: 180px;
+    height: 180px;
+    color: white;
+    background-color: rgb(217, 182, 65);
+    -unity-font-style: bold;
+    border-radius: 25px;
+    border-width: 10px;
+    margin: 10px;
+    border-left-color: rgba(255, 249, 166, 0.53);
+    border-right-color: rgba(255, 249, 166, 0.53);
+    border-top-color: rgba(255, 249, 166, 0.53);
+    border-bottom-color: rgba(255, 249, 166, 0.53);
 }
