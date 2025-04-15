@@ -15,7 +15,8 @@
                 </engine:VisualElement>
             </engine:Button>
             <engine:Button name="buy-property-button" class="buy-houses-button buy-panel" style="width: 180px; height: 180px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px;">
-                <engine:VisualElement style="flex-grow: 1; justify-content: center; width: 100%; height: 100%; flex-direction: row; align-items: center;">
+                <engine:VisualElement style="flex-grow: 1; justify-content: center; width: 100%; height: 100%; flex-direction: column; align-items: center;">
+                    <engine:VisualElement style="border-left-color: rgba(186, 0, 0, 0.95); border-right-color: rgba(186, 0, 0, 0.95); border-top-color: rgba(186, 0, 0, 0.95); border-bottom-color: rgba(186, 0, 0, 0.95); display: flex; visibility: visible; -unity-text-outline-color: rgba(0, 0, 0, 0); background-color: rgba(255, 0, 0, 0); background-image: url(&quot;project://database/Assets/Textures/BuyPropertySprite128.png?fileID=21300000&amp;guid=623399e278ae67e4cb64979da827d4c9&amp;type=3#BuyPropertySprite128&quot;); width: 80px; height: 80px; -unity-background-scale-mode: scale-to-fit;" />
                     <engine:Label text="BUY &#10;PROPERTY" style="margin-right: 0; font-size: 24px;" />
                 </engine:VisualElement>
             </engine:Button>
