@@ -68,6 +68,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<PanelControllers>();
         state.RequireForUpdate<ClickData>();
         state.RequireForUpdate<ClickedPropertyComponent>();
+        state.RequireForUpdate<LastPropertyClicked>();
 
         state.EntityManager.CreateSingleton( new LastPropertyClicked { entity = Entity.Null });
 
@@ -257,28 +258,29 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
         
-        foreach ( var (_, lastPropertyClicked) in 
-                SystemAPI.Query<
-                    RefRO<MonopolyFlagComponent>,
-                    RefRO<LastPropertyClicked>>()
-                .WithChangeFilter<MonopolyFlagComponent>())
+        foreach ( var _ in SystemAPI.Query<RefRO<MonopolyFlagComponent>>().WithChangeFilter<MonopolyFlagComponent>())
         {
-            var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(lastPropertyClicked.ValueRO.entity);
-            var owner = SystemAPI.GetComponent<OwnerComponent>(lastPropertyClicked.ValueRO.entity);
-            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-
-            bool isCurrentOwner = false;
-            if (currentPlayerID.Value == owner.ID)
+            var lastPropertyClicked =  SystemAPI.GetSingleton<LastPropertyClicked>();
+            if (lastPropertyClicked.entity != Entity.Null)
             {
-                isCurrentOwner = true;
+                var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(lastPropertyClicked.entity);
+                var owner = SystemAPI.GetComponent<OwnerComponent>(lastPropertyClicked.entity);
+                var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
+                bool isCurrentOwner = false;
+                if (currentPlayerID.Value == owner.ID)
+                {
+                    isCurrentOwner = true;
+                }
+                SpaceActionsPanelContext spaceActionsContext = new()
+                {
+                    HasMonopoly = hasMonopoly.Value,
+                    IsPlayerOwner = isCurrentOwner
+                };
+
+                panelControllers.spaceActionsPanelController.Context = spaceActionsContext;
+                continue;
             }
-            SpaceActionsPanelContext spaceActionsContext = new()
-            {
-                HasMonopoly = hasMonopoly.Value,
-                IsPlayerOwner = isCurrentOwner
-            };
-
-            panelControllers.spaceActionsPanelController.Context = spaceActionsContext;
         }
 
         // When an entity is clicked show the panel to buy houses

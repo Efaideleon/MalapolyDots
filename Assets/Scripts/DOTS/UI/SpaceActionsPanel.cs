@@ -13,6 +13,7 @@ public class SpaceActionsPanel
         {
             UnityEngine.Debug.LogWarning("BuyButton is null");
         }
+        Hide();
     }
 
     public void Show() 
