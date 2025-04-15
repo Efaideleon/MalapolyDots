@@ -35,10 +35,6 @@ public class SpaceActionsPanelController
 
     private void SubscribeEvents()
     {
-        // TODO: Deterime if there is monopoly on the proporty to know what panel to show
-        // PurchaseHousePanel or NoMonopolyYetPanel
-        // This controller needs to now the state of the monopoly
-        // Create a context for this controller too, based on the context the buybutton look and behavior will change
         SpaceActionsPanel.BuyButton.clickable.clicked += HandleBuyButtonClick;
     }
 
@@ -49,6 +45,10 @@ public class SpaceActionsPanelController
 
     private void HandleBuyButtonClick()
     {
+        // TODO: Deterime if there is monopoly on the proporty to know what panel to show
+        // PurchaseHousePanel or NoMonopolyYetPanel
+        // This controller needs to now the state of the monopoly
+        // Create a context for this controller too, based on the context the buybutton look and behavior will change
         if (!Context.HasMonopoly)
         {
             NoMonopolyYetPanel.Show();
