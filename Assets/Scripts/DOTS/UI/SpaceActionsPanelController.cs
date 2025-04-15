@@ -36,6 +36,7 @@ public class SpaceActionsPanelController
     private void SubscribeEvents()
     {
         SpaceActionsPanel.BuyButton.clickable.clicked += HandleBuyButtonClick;
+        NoMonopolyYetPanel.GotItButton.clickable.clicked += NoMonopolyYetPanel.Hide;
     }
 
     public void Update()
@@ -62,5 +63,6 @@ public class SpaceActionsPanelController
     public void Dispose()
     {
         SpaceActionsPanel.BuyButton.clickable.clicked -= HandleBuyButtonClick;
+        NoMonopolyYetPanel.GotItButton.clickable.clicked -= NoMonopolyYetPanel.Hide;
     }
 }
