@@ -1,25 +1,17 @@
-.panel-1-outer {
-    background-color: rgb(255, 244, 28);
-    border-radius: 10px;
-    border-width: 5px;
-    border-color: rgb(38, 123, 250);
-    padding: 10px;
-}
-
 .panel-1-inner {
-    background-color: rgb(255, 157, 28);
+    background-color: rgb(255, 180, 25);
     border-radius: 10px;
     border-width: 5px;
     border-color: rgb(218, 40, 40);
     padding: 10px;
-}
-
-.panel-1-inner-2 {
-    background-color: rgb(164, 255, 28);
-    border-radius: 10px;
-    border-width: 5px;
-    border-color: rgb(200, 64, 22);
-    padding: 10px;
+    border-left-color: rgb(249, 220, 126);
+    border-right-color: rgb(237, 149, 26);
+    border-top-color: rgb(249, 220, 126);
+    border-bottom-color: rgb(237, 149, 26);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
 }
 
 .buy-panel {
@@ -35,4 +27,46 @@
     border-right-color: rgba(255, 249, 166, 0.53);
     border-top-color: rgba(255, 249, 166, 0.53);
     border-bottom-color: rgba(255, 249, 166, 0.53);
+}
+
+.panel-1-outer {
+    background-color: rgb(13, 60, 130);
+    border-radius: 10px;
+    border-width: 5px;
+    border-color: rgb(38, 123, 250);
+    padding: 0;
+    border-left-color: rgb(13, 60, 130);
+    border-right-color: rgb(13, 60, 130);
+    border-top-color: rgb(13, 60, 130);
+    border-bottom-color: rgb(13, 60, 130);
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+    border-bottom-right-radius: 35px;
+    border-bottom-left-radius: 35px;
+}
+
+.panel-1-inner-2 {
+    border-radius: 10px;
+    border-width: 5px;
+    border-color: rgb(200, 64, 22);
+    padding: 10px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    background-color: rgba(159, 180, 37, 0.63);
+    background-image: url("project://database/Assets/Textures/RepeatingCircles128.png?fileID=2800000&guid=138c68af241af35459f6906cf08aaef1&type=3#RepeatingCircles128");
+    background-repeat: space space;
+    -unity-background-scale-mode: stretch-to-fill;
+    background-size: auto;
+}
+
+.panel-text-1 {
+    -unity-text-align: upper-center;
+    font-size: 28px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-width: 38px;
+    -unity-text-outline-color: rgb(13, 60, 130);
+    -unity-font-definition: url("project://database/Assets/Fonts/8-BIT%20WONDER%20SDF.asset?fileID=11400000&guid=efbeaf3630f3c914b90728b1b0e8774d&type=2#8-BIT WONDER SDF");
 }
