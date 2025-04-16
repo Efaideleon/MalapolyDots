@@ -2,13 +2,12 @@
     width: 80px;
     height: 30px;
     color: white;
-    background-color: #dab40a;
+    background-color: rgb(218, 180, 10);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 2px;
-    border-color: #fff5a8;
+    border-color: rgb(255, 245, 168);
     padding: 0;
-    
 }
 
 .add-sub-button {
@@ -29,13 +28,11 @@
 .sub-button {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-
 }
 
 .add-button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-
 }
 
 .amount-counter {
@@ -54,7 +51,7 @@
 .add-sub-container {
     border-radius: 6px;
     border-width: 2px;
-    border-color: #b1b5b3;
+    border-color: rgb(177, 181, 179);
     flex-direction: row;
     justify-content: center;
     width: 122px;
@@ -91,7 +88,7 @@
     width: 60px;
     height: 30px;
     color: white;
-    background-color: #448d61;
+    background-color: rgb(68, 141, 97);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
@@ -101,13 +98,13 @@
     width: 60px;
     height: 30px;
     color: white;
-    background-color: #d0463a; 
+    background-color: rgb(208, 70, 58);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
 }
 
-.on-toggle-button{
+.on-toggle-button {
     -unity-font-style: bold;
     border-width: 0;
     background-color: transparent;
@@ -115,7 +112,7 @@
     margin: 0;
 }
 
-.off-toggle-button{
+.off-toggle-button {
     -unity-font-style: bold;
     border-width: 0;
     background-color: transparent;
@@ -123,7 +120,7 @@
     margin: 0;
 }
 
-.toggle-element{
+.toggle-element {
     width: 60px;
     height: 30px;
     transition-property: left;
@@ -131,7 +128,7 @@
     transition-timing-function: ease-out;
 }
 
-.toggle-container{
+.toggle-container {
     padding: 2px;
     background-color: gray;
     border-radius: 10px;
@@ -141,12 +138,81 @@
     width: 100px;
     height: 30px;
     color: white;
-    background-color: #3a92d0;
+    background-color: rgb(58, 146, 208);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
 }
 
 .property-element {
-    
+}
+
+.panel-button-1-border {
+    background-color: rgb(13, 60, 130);
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 2px;
+    border-color: rgb(13, 60, 130);
+    padding: 0;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.panel-button-1-button {
+    background-color: rgb(253, 241, 217);
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 2px;
+    border-color: rgb(38, 204, 52);
+    padding: 0;
+    border-left-color: rgb(252, 246, 235);
+    border-right-color: rgb(213, 203, 183);
+    border-top-color: rgb(252, 246, 235);
+    border-bottom-color: rgb(213, 203, 183);
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    color: rgb(239, 70, 14);
+    -unity-font-definition: url("project://database/Assets/Fonts/8-BIT%20WONDER%20SDF.asset?fileID=11400000&guid=efbeaf3630f3c914b90728b1b0e8774d&type=2#8-BIT WONDER SDF");
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    width: auto;
+    height: auto;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+}
+
+.panel-button-blue-border-1-shadow {
+    background-color: rgba(38, 38, 38, 0.3);
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: -10px;
+    right: -5px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
