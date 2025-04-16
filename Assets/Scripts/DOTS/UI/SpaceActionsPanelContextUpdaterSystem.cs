@@ -7,7 +7,7 @@ public struct SpaceActionsPanelContextComponent : IComponentData
     public SpaceActionsPanelContext Value;
 }
 
-public struct PurhcasePropertyPanelContextComponent : IComponentData
+public struct PurchasePropertyPanelContextComponent : IComponentData
 {
     public PurchasePropertyPanelContext Value;
 }
@@ -19,10 +19,10 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.EntityManager.CreateSingleton(new SpaceActionsPanelContextComponent { Value = default });
-        state.EntityManager.CreateSingleton(new PurhcasePropertyPanelContextComponent { Value = default });
+        state.EntityManager.CreateSingleton(new PurchasePropertyPanelContextComponent { Value = default });
         state.RequireForUpdate<SpaceActionsPanelContextComponent>();
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
-        state.RequireForUpdate<PurhcasePropertyPanelContextComponent>();
+        state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
         state.RequireForUpdate<LastPropertyClicked>();
     }
 
@@ -66,15 +66,13 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
                 };
                 SystemAPI.SetSingleton(new PurhcaseHousePanelContextComponent { Value = purchaseHouseContext});
 
-                UnityEngine.Debug.Log(clickedProperty.ValueRO.entity);
-                UnityEngine.Debug.Log("This shouldn't print on the acitons updater system");
                 PurchasePropertyPanelContext purchasePropertyPanelContext = new()
                 {
                     spaceEntity = clickedProperty.ValueRO.entity,
                     entityManager = state.EntityManager,
                     playerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
                 };
-                SystemAPI.SetSingleton(new PurhcasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
+                SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
             }
         }
     }
