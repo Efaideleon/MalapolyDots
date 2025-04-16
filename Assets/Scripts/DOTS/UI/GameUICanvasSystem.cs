@@ -69,7 +69,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<ClickData>();
         state.RequireForUpdate<ClickedPropertyComponent>();
         state.RequireForUpdate<LastPropertyClicked>();
-        state.RequireForUpdate<PurhcasePropertyPanelContextComponent>();
+        state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
 
         state.EntityManager.CreateSingleton( new LastPropertyClicked { entity = Entity.Null });
@@ -298,9 +298,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         foreach (var purchasePropertyPanelContext in 
                 SystemAPI.Query<
-                    RefRO<PurhcasePropertyPanelContextComponent>
+                    RefRO<PurchasePropertyPanelContextComponent>
                 >()
-                .WithChangeFilter<PurhcasePropertyPanelContextComponent>())
+                .WithChangeFilter<PurchasePropertyPanelContextComponent>())
         {
             if (panelControllers.purchasePanelController != null && 
                     purchasePropertyPanelContext.ValueRO.Value.spaceEntity != Entity.Null)
@@ -313,7 +313,11 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         }
 
         // When an entity is clicked show the actions panel 
-        foreach ( var clickedProperty in SystemAPI.Query<RefRW<ClickedPropertyComponent>>().WithChangeFilter<ClickedPropertyComponent>())
+        foreach ( var clickedProperty in 
+                SystemAPI.Query<
+                    RefRW<ClickedPropertyComponent>
+                >()
+                .WithChangeFilter<ClickedPropertyComponent>())
         {
             if (clickedProperty.ValueRO.entity != Entity.Null)
             {
