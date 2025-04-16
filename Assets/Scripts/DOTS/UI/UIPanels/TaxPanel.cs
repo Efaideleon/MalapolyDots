@@ -6,7 +6,7 @@ public class TaxPanel : OnLandPanel
 {
     public TaxPanel(VisualElement parent) : base (parent.Q<VisualElement>("TaxPanel"))
     {
-        PanelType = SpaceTypeEnum.Tax;
+        PanelType = SpaceType.Tax;
         UpdateAcceptButtonReference("tax-panel-button");
         UpdateLabelReference("tax-panel-label");
         Hide();
@@ -23,7 +23,7 @@ public class TaxPanel : OnLandPanel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.ChangeTurn });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

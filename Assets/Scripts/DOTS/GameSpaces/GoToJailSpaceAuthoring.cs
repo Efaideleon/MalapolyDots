@@ -14,7 +14,7 @@ public class GoToJailSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = default });
             AddComponent(entity, new BoardIndexComponent { Value = default });
             AddComponent(entity, new GoToJailTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.GoToJail });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.GoToJail });
         }
     }
 }

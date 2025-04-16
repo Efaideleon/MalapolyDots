@@ -14,7 +14,7 @@ public class TreasureSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = default });
             AddComponent(entity, new BoardIndexComponent { Value = default });
             AddComponent(entity, new TreasureSpaceTag {});
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Treasure });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Treasure });
         }
     }
 }

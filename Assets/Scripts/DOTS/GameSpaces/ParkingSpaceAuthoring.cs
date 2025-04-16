@@ -14,7 +14,7 @@ public class ParkingSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = default });
             AddComponent(entity, new BoardIndexComponent { Value = default });
             AddComponent(entity, new ParkingSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Parking });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Parking });
         }
     }
 }

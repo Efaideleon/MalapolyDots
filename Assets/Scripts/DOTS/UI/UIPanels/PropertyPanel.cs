@@ -17,7 +17,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             OnAcceptButton = () =>
             {
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.ChangeTurn });
+                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventType.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -46,8 +46,8 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             OnAcceptButton = () =>
             {
                 var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.PayRent });
-                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventsEnum.ChangeTurn });
+                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventType.PayRent });
+                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventType.ChangeTurn });
                 Hide();
             };
             AcceptButton.clickable.clicked += OnAcceptButton;
@@ -72,7 +72,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         public PropertyPanel(VisualElement parent) : base(parent)
         {
-            PanelType = SpaceTypeEnum.Property;
+            PanelType = SpaceType.Property;
             youBoughtPanel = new(parent);
             payRentPanel = new(parent);
             buyPanel = new(parent);

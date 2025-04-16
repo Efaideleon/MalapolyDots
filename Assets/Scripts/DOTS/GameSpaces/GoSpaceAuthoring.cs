@@ -14,7 +14,7 @@ public class GoSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = default });
             AddComponent(entity, new BoardIndexComponent { Value = default });
             AddComponent(entity, new GoSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Go });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Go });
         }
     }
 }

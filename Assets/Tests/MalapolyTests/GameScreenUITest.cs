@@ -82,7 +82,7 @@ public class GameUICanvasSystemTests
             typeof(SpaceTypeComponent), typeof(NameComponent), typeof(OwnerComponent),
             typeof(PriceComponent), typeof(RentComponent)
         );
-        _entityManager.SetComponentData(_propertyEntity, new SpaceTypeComponent { Value = SpaceTypeEnum.Property });
+        _entityManager.SetComponentData(_propertyEntity, new SpaceTypeComponent { Value = SpaceType.Property });
         _entityManager.SetComponentData(_propertyEntity, new NameComponent { Value = "TestProperty" });
         _entityManager.SetComponentData(_propertyEntity, new PriceComponent { Value = 200 });
         _entityManager.SetComponentData(_propertyEntity, new RentComponent { Value = 20 });
