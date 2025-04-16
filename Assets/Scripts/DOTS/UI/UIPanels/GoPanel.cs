@@ -6,7 +6,7 @@ public class GoPanel : OnLandPanel
 {
     public GoPanel(VisualElement parent) : base (parent.Q<VisualElement>("GoPanel"))
     {
-        PanelType = SpaceTypeEnum.Go;
+        PanelType = SpaceType.Go;
         UpdateAcceptButtonReference("go-panel-button");
         UpdateLabelReference("go-panel-label");
         Hide();
@@ -23,7 +23,7 @@ public class GoPanel : OnLandPanel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.ChangeTurn });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

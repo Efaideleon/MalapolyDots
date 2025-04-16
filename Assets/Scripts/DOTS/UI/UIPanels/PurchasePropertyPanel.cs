@@ -42,7 +42,7 @@ public class PurchasePropertyPanel : Panel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.Purchase });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.Purchase });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

@@ -6,7 +6,7 @@ public class TreasurePanel : OnLandPanel
 {
     public TreasurePanel(VisualElement parent) : base(parent.Q<VisualElement>("TreasurePanel"))
     {
-        PanelType = SpaceTypeEnum.Treasure;
+        PanelType = SpaceType.Treasure;
         UpdateAcceptButtonReference("treasure-panel-button");
         UpdateLabelReference("treasure-panel-label");
         Hide();
@@ -24,7 +24,7 @@ public class TreasurePanel : OnLandPanel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.ChangeTurn });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

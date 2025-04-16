@@ -14,7 +14,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
     // This class might be obsolete
     public class OnLandPanel : Panel
     {
-        public SpaceTypeEnum PanelType { get; protected set; }
+        public SpaceType PanelType { get; protected set; }
         public OnLandPanel(VisualElement parent) : base(parent) { }
         public virtual void Show(ShowPanelContext context) { }
     }

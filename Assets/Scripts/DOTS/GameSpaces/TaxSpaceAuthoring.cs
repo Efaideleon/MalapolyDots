@@ -14,7 +14,7 @@ public class TaxSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = default });
             AddComponent(entity, new BoardIndexComponent { Value = default });
             AddComponent(entity, new TaxSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Tax });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Tax });
         }
     }
 }

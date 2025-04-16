@@ -6,7 +6,7 @@ public class ChancePanel : OnLandPanel
 {
     public ChancePanel(VisualElement parent) : base(parent.Q<VisualElement>("ChancePanel"))
     {
-        PanelType = SpaceTypeEnum.Chance;
+        PanelType = SpaceType.Chance;
         UpdateAcceptButtonReference("chance-panel-button");
         UpdateLabelReference("chance-panel-label");
         Hide();
@@ -23,7 +23,7 @@ public class ChancePanel : OnLandPanel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.ChangeTurn });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

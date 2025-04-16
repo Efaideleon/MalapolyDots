@@ -6,7 +6,7 @@ public class ParkingPanel : OnLandPanel
 {
     public ParkingPanel(VisualElement parent) : base(parent.Q<VisualElement>("ParkingPanel"))
     {
-        PanelType = SpaceTypeEnum.Parking;
+        PanelType = SpaceType.Parking;
         UpdateAcceptButtonReference("parking-panel-button");
         UpdateLabelReference("parking-panel-label");
         Hide();
@@ -23,7 +23,7 @@ public class ParkingPanel : OnLandPanel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.ChangeTurn });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

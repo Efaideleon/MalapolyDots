@@ -54,13 +54,14 @@ public class SpaceActionsPanelController
     private void HandleBuyButtonClick()
     {
         // TODO: Create a context for this controller too, based on the context the buybutton look and behavior will change
-        if (!Context.HasMonopoly)
+        switch (Context.HasMonopoly)
         {
-            NoMonopolyYetPanel.Show();
-        }
-        else
-        {
-            PurchaseHousePanel.Show();
+            case true:
+                PurchaseHousePanel.Show();
+                break;
+            case false:
+                NoMonopolyYetPanel.Show();
+                break;
         }
     }
 

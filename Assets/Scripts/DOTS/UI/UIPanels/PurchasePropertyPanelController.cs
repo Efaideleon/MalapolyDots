@@ -37,7 +37,7 @@ public class PurchasePropertyPanelController
     {
         var eventQueue = transactionEventQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
         UnityEngine.Debug.Log("Dispatching buy property event");
-        eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.Purchase });
+        eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.Purchase });
         PurchasePropertyPanel.Hide();
     }
 

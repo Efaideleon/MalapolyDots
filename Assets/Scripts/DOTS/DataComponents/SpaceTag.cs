@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public enum SpaceTypeEnum
+public enum SpaceType
 {
     Property,
     Treasure,
@@ -15,5 +15,5 @@ public enum SpaceTypeEnum
 
 public struct SpaceTypeComponent : IComponentData
 {
-    public SpaceTypeEnum Value;
+    public SpaceType Value;
 }

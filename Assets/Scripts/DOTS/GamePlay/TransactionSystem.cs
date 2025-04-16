@@ -36,7 +36,7 @@ public partial struct TransactionSystem : ISystem
             var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
             while (transactionEvents.ValueRW.EventQueue.TryDequeue(out var transactionEvent))
             {
-                if (transactionEvent.EventType == TransactionEventsEnum.PayRent)
+                if (transactionEvent.EventType == TransactionEventType.PayRent)
                 {
                     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
                     {
@@ -68,7 +68,7 @@ public partial struct TransactionSystem : ISystem
                 }
 
                 // Purchase the property if possible
-                if (transactionEvent.EventType == TransactionEventsEnum.Purchase)
+                if (transactionEvent.EventType == TransactionEventType.Purchase)
                 {
                     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
                     {
@@ -90,7 +90,7 @@ public partial struct TransactionSystem : ISystem
                     }
                 }
 
-                if (transactionEvent.EventType == TransactionEventsEnum.ChangeTurn)
+                if (transactionEvent.EventType == TransactionEventType.ChangeTurn)
                 {
                     // Handle each change turn request
                     var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();

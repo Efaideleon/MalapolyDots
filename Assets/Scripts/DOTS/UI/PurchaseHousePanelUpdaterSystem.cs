@@ -1,13 +1,21 @@
+using Assets.Scripts.DOTS.UI.UIPanels;
 using Unity.Entities;
+
+public struct PurhcaseHousePanelContextComponent : IComponentData
+{
+    public PurchaseHousePanelContext Value;
+}
 
 public partial struct PurchaseHousePanelUpdaterSystem : ISystem
 {
     public void OnCreate(ref SystemState state) 
     {
+        state.EntityManager.CreateSingleton(new PurhcaseHousePanelContextComponent { Value = default });
         state.RequireForUpdate<HouseCount>();
         state.RequireForUpdate<NameComponent>();
         state.RequireForUpdate<PropertySpaceTag>();
         state.RequireForUpdate<PanelControllers>();
+        state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
     }
 
     public void OnUpdate(ref SystemState state) 
@@ -20,19 +28,13 @@ public partial struct PurchaseHousePanelUpdaterSystem : ISystem
                 >()
                 .WithChangeFilter<HouseCount>())
         {
-            var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-
-            // On the first load, panelControllers is null 
-            if (panelControllers.purchasePanelController != null)
+            var purchaseHousePanelContext = SystemAPI.GetSingletonRW<PurhcaseHousePanelContextComponent>();
+            if (purchaseHousePanelContext.ValueRO.Value.Name == name.ValueRO.Value)
             {
-                var panel = panelControllers.purchasePanelController.PurchaseHousePanel;
-                var context = panel.Context;
-                if (context.Name == name.ValueRO.Value)
-                {
-                    context.HousesOwned = houseCount.ValueRO.Value;
-                    panel.Context = context;
-                    panel.Update();
-                }
+                // BUG: Is this even possible or do we have to reassigned the component using SetComponent to trigger
+                // the WithChangeFilter?
+                purchaseHousePanelContext.ValueRW.Value.HousesOwned = houseCount.ValueRO.Value;
+                continue;
             }
         }
     }

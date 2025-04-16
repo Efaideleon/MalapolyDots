@@ -6,7 +6,7 @@ public class GoToJailPanel : OnLandPanel
 {
     public GoToJailPanel(VisualElement parent) : base(parent.Q<VisualElement>("GoToJailPanel"))
     {
-        PanelType = SpaceTypeEnum.GoToJail;
+        PanelType = SpaceType.GoToJail;
         UpdateAcceptButtonReference("go-to-jail-panel-button");
         UpdateLabelReference("go-to-jail-panel-label");
         Hide();
@@ -23,7 +23,7 @@ public class GoToJailPanel : OnLandPanel
     {
         OnAcceptButton = () => { 
             var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.ChangeTurn });
+            eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.ChangeTurn });
             Hide();
         };
         AcceptButton.clickable.clicked += OnAcceptButton;

@@ -14,7 +14,7 @@ public class ChanceSpaceAuthoring : MonoBehaviour
             AddComponent(entity, new SpaceIDComponent { Value = default });
             AddComponent(entity, new BoardIndexComponent { Value = default });
             AddComponent(entity, new ChanceSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceTypeEnum.Chance });
+            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Chance });
         }
     }
 }
