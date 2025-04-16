@@ -25,6 +25,7 @@ public partial struct TransactionSystem : ISystem
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<CurrentPlayerID>();
         state.RequireForUpdate<TransactionEventBus>();
+        state.RequireForUpdate<ClickedPropertyComponent>();
     }
 
     [BurstCompile]
@@ -74,11 +75,17 @@ public partial struct TransactionSystem : ISystem
                         var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
                         if (playerID.ValueRO.Value == currentPlayerID.Value)
                         {
-                            var property = SystemAPI.GetSingleton<LandedOnSpace>();
-                            var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
-                            playerMoney.ValueRW.Value -= price.Value;
-                            var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
-                            owner.ValueRW.ID = playerID.ValueRO.Value;
+                            var property = SystemAPI.GetSingleton<LastPropertyClicked>();
+                            // TODO: Check if the player is on the this entity to be able to buy it
+                            if (property.entity != Entity.Null && 
+                                    SystemAPI.HasComponent<PropertySpaceTag>(property.entity))
+                            {
+                                UnityEngine.Debug.Log("Buying Property");
+                                var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
+                                playerMoney.ValueRW.Value -= price.Value;
+                                var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
+                                owner.ValueRW.ID = playerID.ValueRO.Value;
+                            }
                         }
                     }
                 }

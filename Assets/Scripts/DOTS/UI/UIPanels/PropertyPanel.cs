@@ -62,6 +62,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
     }
 
     // This behaves more like a controller, determining what panels to show and changing their content.
+    // TODO: DELETE This code
     public class PropertyPanel : OnLandPanel
     {
         private readonly YouBoughtPanel youBoughtPanel; 
@@ -111,7 +112,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
 
         private void OnBuyPanelAcceptClicked()
         {
-            youBoughtPanel.Show(showPanelContext);
+            // youBoughtPanel.Show(showPanelContext);
         }
 
         public override void Dispose()

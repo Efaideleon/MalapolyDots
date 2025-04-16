@@ -4,7 +4,6 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using UnityEngine;
 
 public enum TransactionEventsEnum
 {
@@ -123,22 +122,17 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var canvasRef = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
         if (canvasRef.uiDocumentGO == null)
         {
-            UnityEngine.Debug.LogError("CanvasReferenceComponent has a null uiDocumentGO! Cannot instantiate UI.");
             return; // Or disable system state.Enabled = false;
         }
-        UnityEngine.Debug.Log($">>> CanvasReferenceComponent Found. Prefab GO: {canvasRef.uiDocumentGO.name}");
 
         // --- Instantiate Prefab ---
         var uiGameObject = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO);
         var uiDocument = uiGameObject.GetComponent<UIDocument>();
         if (uiDocument == null)
         {
-            UnityEngine.Debug.LogError($"Instantiated UI Prefab '{uiGameObject.name}' is missing UIDocument component!");
             UnityEngine.Object.Destroy(uiGameObject); // Clean up useless instance
             return; // Or disable system
         }
-
-        UnityEngine.Debug.Log($">>> Instantiated UIDocument '{uiGameObject.name}'. Initial rootVisualElement is {(uiDocument.rootVisualElement == null ? "NULL" : "NOT NULL")}");
 
         var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
@@ -336,6 +330,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         panelControllers.purchasePanelController.PurchaseHousePanel.Update();
                         panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
                         panelControllers.purchasePropertyController.Context = purchasePropertyPanelContext;
+                        panelControllers.purchasePropertyController.Update();
                         UnityEngine.Debug.Log("Click Started showing space actions panel");
                         break;
                     case InputActionPhase.Canceled:

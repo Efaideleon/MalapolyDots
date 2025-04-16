@@ -19,14 +19,36 @@ public class PurchasePropertyPanelController
         Context = context;
     }
 
+    public void Update()
+    {
+        var name = Context.entityManager.GetComponentData<NameComponent>(Context.spaceEntity);
+        var price = Context.entityManager.GetComponentData<PriceComponent>(Context.spaceEntity);
+        PurchasePropertyPanel.UpdateTitleLabelText(name.Value.ToString());
+        PurchasePropertyPanel.UpdatePriceLabelText(price.Value.ToString());
+        SubscribeEvents();
+    }
+
+    private void SubscribeEvents()
+    {
+        PurchasePropertyPanel.AcceptButton.clickable.clicked += DispatchEvents;
+    }
+
+    private void DispatchEvents()
+    {
+        var eventQueue = transactionEventQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
+        UnityEngine.Debug.Log("Dispatching buy property event");
+        eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventsEnum.Purchase });
+        PurchasePropertyPanel.Hide();
+    }
+
     public void SetTransactionEventQuery(EntityQuery query)
     {
         transactionEventQuery = query;
-        PurchasePropertyPanel.AddAcceptButtonAction(transactionEventQuery);
     }
 
     public void Dispose()
     {
+        PurchasePropertyPanel.AcceptButton.clickable.clicked -= DispatchEvents;
         PurchasePropertyPanel.Dispose();
     }
 }
