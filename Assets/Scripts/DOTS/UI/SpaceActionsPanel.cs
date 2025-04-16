@@ -3,15 +3,21 @@ using UnityEngine.UIElements;
 public class SpaceActionsPanel
 {
     public VisualElement Panel { get; private set; }
-    public Button BuyButton { get; private set; }
+    public Button BuyHouseButton { get; private set; }
+    public Button BuyPropertyButton { get; private set; }
 
     public SpaceActionsPanel(VisualElement root)
     {
         Panel = root.Q<VisualElement>("SpaceActions");
-        BuyButton = Panel.Q<Button>("buy-house-button");
-        if (BuyButton == null)
+        BuyHouseButton = Panel.Q<Button>("buy-house-button");
+        if (BuyHouseButton == null)
         {
             UnityEngine.Debug.LogWarning("BuyButton is null");
+        }
+        BuyPropertyButton = Panel.Q<Button>("buy-property-button");
+        if (BuyPropertyButton == null)
+        {
+            UnityEngine.Debug.LogWarning("BuyPropertyButton is null");
         }
         Hide();
     }

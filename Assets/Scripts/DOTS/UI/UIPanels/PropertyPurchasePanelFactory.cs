@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/* Legacy Code
 public class PropertyPurchasePanelFactory
 {
     public VisualElement ParentElement { get; private set; }
@@ -47,3 +48,4 @@ public class PropertyPurchasePanelFactory
         return propertyNameCounterVE;
     }
 }
+*/

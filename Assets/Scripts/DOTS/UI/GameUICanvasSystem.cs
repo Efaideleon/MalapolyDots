@@ -4,7 +4,6 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using UnityEngine;
 
 public enum TransactionEventsEnum
 {
@@ -47,6 +46,7 @@ public class PanelControllers : IComponentData
     public PurchasePanelController purchasePanelController;
     public SpaceActionsPanelController spaceActionsPanelController;
     public BackdropController backdropController;
+    public PurchasePropertyPanelController purchasePropertyController;
 }
 
 public class OnLandPanelsDictionay : IComponentData
@@ -122,26 +122,28 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var canvasRef = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
         if (canvasRef.uiDocumentGO == null)
         {
-            UnityEngine.Debug.LogError("CanvasReferenceComponent has a null uiDocumentGO! Cannot instantiate UI.");
             return; // Or disable system state.Enabled = false;
         }
-        UnityEngine.Debug.Log($">>> CanvasReferenceComponent Found. Prefab GO: {canvasRef.uiDocumentGO.name}");
 
         // --- Instantiate Prefab ---
         var uiGameObject = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO);
         var uiDocument = uiGameObject.GetComponent<UIDocument>();
         if (uiDocument == null)
         {
-            UnityEngine.Debug.LogError($"Instantiated UI Prefab '{uiGameObject.name}' is missing UIDocument component!");
             UnityEngine.Object.Destroy(uiGameObject); // Clean up useless instance
             return; // Or disable system
         }
 
-        UnityEngine.Debug.Log($">>> Instantiated UIDocument '{uiGameObject.name}'. Initial rootVisualElement is {(uiDocument.rootVisualElement == null ? "NULL" : "NOT NULL")}");
-
         var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
         var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
+
+        PurchasePropertyPanelContext purchasePropertyPanelContext = new ()
+        {
+            playerID = default,
+            spaceEntity = default,
+            entityManager = default
+        };
 
         PurchaseHousePanelContext purchaseHousePanelContext = new ()
         {
@@ -161,9 +163,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
         PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
         NoMonopolyYetPanel noMonopolyYetPanel = new(botPanelRoot);
+        PurchasePropertyPanel purchasePropertyPanel = new(botPanelRoot);
 
         // Register the panels to hide, such as the ActionsSpace Panel
-
         // why do we have uiPanels?
         // To put it in components and change them on the OnUpdate loop
         var uiEntity = SystemAPI.ManagedAPI.GetSingleton<OverLayPanels>();
@@ -174,10 +176,20 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
         panelControllers.purchasePanelController = new(purchaseHousePanel);
-        panelControllers.spaceActionsPanelController = new(spaceActionsPanelContext, spaceActionsPanel, purchaseHousePanel, noMonopolyYetPanel);
+        panelControllers.spaceActionsPanelController = new(
+                spaceActionsPanelContext, 
+                spaceActionsPanel,
+                purchaseHousePanel,
+                noMonopolyYetPanel,
+                purchasePropertyPanel);
+
         panelControllers.backdropController = new(backdrop);
         panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel.Panel);
+        panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel.Panel);
+        panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Root);
+
+        panelControllers.purchasePropertyController = new(purchasePropertyPanel, purchasePropertyPanelContext);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceTypeEnum, OnLandPanel> onLandPanelsDictionary = new()
@@ -219,6 +231,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBus>().Build();
         var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
         panelControllers.purchasePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
+        panelControllers.purchasePropertyController.SetTransactionEventQuery(transactionEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
@@ -297,18 +310,27 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 switch (clickData.Phase)
                 {
                     case InputActionPhase.Started:
-                        PurchaseHousePanelContext context = new()
+                        PurchaseHousePanelContext purchaseHouseContext = new()
                         {
                             Name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity).Value,
                             HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
                             Price = 10,
                         };
 
+                        PurchasePropertyPanelContext purchasePropertyPanelContext = new()
+                        {
+                            spaceEntity = clickedProperty.ValueRO.entity,
+                            entityManager = state.EntityManager,
+                            playerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
+                        };
+
                         // TODO: Should I create a proxy function to this?
                         // TODO: Should I Set the Context and then call Update or do it in one Call Function?
-                        panelControllers.purchasePanelController.PurchaseHousePanel.Context = context;
+                        panelControllers.purchasePanelController.PurchaseHousePanel.Context = purchaseHouseContext;
                         panelControllers.purchasePanelController.PurchaseHousePanel.Update();
                         panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                        panelControllers.purchasePropertyController.Context = purchasePropertyPanelContext;
+                        panelControllers.purchasePropertyController.Update();
                         UnityEngine.Debug.Log("Click Started showing space actions panel");
                         break;
                     case InputActionPhase.Canceled:
@@ -366,6 +388,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelsController.purchasePanelController.Dispose();
         panelsController.spaceActionsPanelController.Dispose();
         panelsController.backdropController.Dispose();
+        panelsController.purchasePropertyController.Dispose();
 
         // First unsubscribe the button.clicked event 
         var onLandPanelsDictionary = state
