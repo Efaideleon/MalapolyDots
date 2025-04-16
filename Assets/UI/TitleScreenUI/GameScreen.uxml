@@ -41,11 +41,11 @@
             <ui:Instance template="TreasurePanel" name="TreasurePanel" picking-mode="Ignore" style="position: absolute; width: 100%; height: 100%; display: none;" />
             <ui:Instance template="PayRentPanel" name="PayRentPanel" picking-mode="Ignore" style="display: none;" />
             <ui:VisualElement picking-mode="Ignore" name="ActionsContainer" style="width: 100%; height: 100%; position: absolute; align-items: center; justify-content: flex-end; align-content: flex-start; flex-direction: column;">
-                <ui:VisualElement picking-mode="Ignore" style="flex-direction: column; flex-grow: 6; justify-content: center;">
-                    <ui:Instance template="BuyHouseNameAndCounterElement" name="PurchaseHousePanel" picking-mode="Ignore" style="display: none; position: relative; scale: 2.5 2.5;" />
-                    <ui:Instance template="NoMonopoloyYetPanel" name="NoMonopolyYetPanel" style="display: flex; position: relative;" />
+                <ui:VisualElement picking-mode="Ignore" style="flex-direction: column; flex-grow: 0; justify-content: center; flex-shrink: 1; height: 60%;">
+                    <ui:Instance template="BuyHouseNameAndCounterElement" name="PurchaseHousePanel" picking-mode="Ignore" style="display: flex; position: relative; scale: 2 2;" />
+                    <ui:Instance template="NoMonopoloyYetPanel" name="NoMonopolyYetPanel" style="display: none; position: relative;" />
                 </ui:VisualElement>
-                <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; justify-content: flex-start;">
+                <ui:VisualElement picking-mode="Ignore" style="flex-grow: 0; justify-content: flex-start; height: 30%;">
                     <ui:Instance template="SpaceActions" name="SpaceActions" picking-mode="Ignore" style="position: relative; display: flex;" />
                 </ui:VisualElement>
             </ui:VisualElement>
