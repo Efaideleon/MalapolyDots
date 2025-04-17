@@ -8,6 +8,7 @@ public partial struct PayRentPanelUpdaterSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<PayRentPanelContextComponent>();
+        state.RequireForUpdate<LandedOnSpace>();
     }
 
     [BurstCompile]
@@ -24,6 +25,23 @@ public partial struct PayRentPanelUpdaterSystem : ISystem
                 PayRentPanelContext payRentPanelContext = new()
                 {
                     Rent = SystemAPI.GetComponent<RentComponent>(clickedProperty.ValueRO.entity).Value,
+                };
+                SystemAPI.SetSingleton(new PayRentPanelContextComponent { Value = payRentPanelContext });
+            }
+        }
+
+        foreach ( var landedOnSpace in 
+                SystemAPI.Query<
+                    RefRO<LandedOnSpace>
+                >().
+                WithChangeFilter<LandedOnSpace>())
+        {
+            var landedOnSpaceEntity = landedOnSpace.ValueRO.entity;
+            if (landedOnSpaceEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(landedOnSpaceEntity))
+            {
+                PayRentPanelContext payRentPanelContext = new()
+                {
+                        Rent = SystemAPI.GetComponent<RentComponent>(landedOnSpaceEntity).Value,
                 };
                 SystemAPI.SetSingleton(new PayRentPanelContextComponent { Value = payRentPanelContext });
             }
