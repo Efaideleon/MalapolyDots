@@ -38,9 +38,11 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
     {
         foreach ( var _ in SystemAPI.Query<RefRO<MonopolyFlagComponent>>().WithChangeFilter<MonopolyFlagComponent>())
         {
+            // Updating the spaceActionsContext when a monopoly changes for the last property clicked
             var lastPropertyClicked =  SystemAPI.GetSingleton<LastPropertyClicked>();
             if (lastPropertyClicked.entity != Entity.Null)
             {
+                // TODO: This code is getting repetive
                 var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(lastPropertyClicked.entity);
                 var owner = SystemAPI.GetComponent<OwnerComponent>(lastPropertyClicked.entity);
                 var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
@@ -63,7 +65,8 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
                 >().
                 WithChangeFilter<LastPropertyClicked>())
         {
-            if (clickedProperty.ValueRO.entity != Entity.Null)
+            var clickedPropertyEntity = clickedProperty.ValueRO.entity;
+            if (clickedPropertyEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(clickedPropertyEntity))
             {
                 PurchaseHousePanelContext purchaseHouseContext = new()
                 {
@@ -80,6 +83,20 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
                     playerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
                 };
                 SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
+
+                // -- Updating the SpaceActionsPanelContext --
+                var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(clickedPropertyEntity);
+                var owner = SystemAPI.GetComponent<OwnerComponent>(clickedPropertyEntity);
+                var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
+                bool isCurrentOwner = currentPlayerID.Value == owner.ID;
+                SpaceActionsPanelContext spaceActionsContext = new()
+                {
+                    HasMonopoly = hasMonopoly.Value,
+                    IsPlayerOwner = isCurrentOwner
+                };
+
+                SystemAPI.SetSingleton(new SpaceActionsPanelContextComponent { Value = spaceActionsContext });
             }
         }
     }
