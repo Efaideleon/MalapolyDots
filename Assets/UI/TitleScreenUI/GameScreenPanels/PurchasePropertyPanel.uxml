@@ -1,15 +1,17 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement name="popup-menu-container" enabled="true" style="flex-grow: 1; height: 100%; width: 100%; background-color: rgba(255, 70, 6, 0); align-items: center; justify-content: center; visibility: visible; display: flex; overflow: visible; position: absolute; top: 0; left: 0; -unity-text-align: upper-center;">
-        <engine:VisualElement name="popup-menu" style="height: 100px; width: 200px; background-color: rgb(255, 255, 255); flex-shrink: 1; flex-grow: 0;">
-            <engine:VisualElement name="popup-menu-label-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; height: 100%; width: 100%;">
-                <engine:Label text="Sample Text?" name="buy-popup-menu-label" style="font-size: 25%;" />
+    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels" />
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <engine:VisualElement name="popup-menu-container" enabled="true">
+        <engine:VisualElement name="popup-menu" class="panel-simple-1" style="height: auto; width: 400px; background-color: rgb(255, 255, 255); align-items: center; justify-content: flex-start; padding-top: 20px;">
+            <engine:VisualElement name="popup-menu-label-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1;">
+                <engine:Label text="Name Of Property" name="buy-popup-menu-label" style="font-size: 25%; -unity-font-style: bold;" />
             </engine:VisualElement>
-            <engine:VisualElement name="popup-menu-price-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; height: 100%; width: 100%;">
-                <engine:Label text="Sample Text?" name="price-popup-menu-label" style="font-size: 25%;" />
+            <engine:VisualElement name="popup-menu-price-container" style="flex-grow: 1; justify-content: center; align-self: center; flex-shrink: 1; -unity-font-style: bold; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
+                <engine:Label text="price" name="price-popup-menu-label" style="font-size: 25%;" />
             </engine:VisualElement>
-            <engine:VisualElement name="popup-menu-buttons-container" style="flex-grow: 1; flex-direction: row; justify-content: space-around; align-self: auto; height: 100%; font-size: 15px; align-content: stretch; width: 100%;">
-                <engine:Button text="Decline" name="popup-menu-decline-button" style="min-width: 20%; max-width: 80%; max-height: 50%; min-height: 20%;" />
-                <engine:Button text="Accept" name="popup-menu-accept-button" style="max-width: 80%; min-width: 20%; max-height: 50%; min-height: 20%;" />
+            <engine:VisualElement name="popup-menu-buttons-container" style="flex-direction: column; justify-content: center; align-self: auto; font-size: 15px; align-content: flex-start; align-items: center;">
+                <engine:Button text="Buy" name="popup-menu-accept-button" class="black-button" style="width: 200px; margin-top: 10px; margin-right: 10px; margin-bottom: 0; margin-left: 10px;" />
+                <engine:Button text="Decline" name="popup-menu-decline-button" class="simple-button" style="width: 200px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;" />
             </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
