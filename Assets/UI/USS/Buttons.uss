@@ -56,7 +56,7 @@
     justify-content: center;
     width: 122px;
     align-items: center;
-    height: 42px;
+    height: 51px;
     margin: 0;
     padding: 0;
 }
@@ -108,35 +108,43 @@
     -unity-font-style: bold;
     border-width: 0;
     background-color: transparent;
-    width: 60px;
+    width: 100px;
+    height: 50px;
     margin: 0;
+    padding: 5px;
 }
 
 .off-toggle-button {
     -unity-font-style: bold;
     border-width: 0;
     background-color: transparent;
-    width: 60px;
+    width: 100px;
+    height: 50px;
     margin: 0;
+    padding: 5px;
 }
 
 .toggle-element {
-    width: 60px;
-    height: 30px;
+    width: 100px;
+    height: 50px;
     transition-property: left;
     transition-duration: 300ms;
     transition-timing-function: ease-out;
 }
 
 .toggle-container {
-    padding: 2px;
+    height: 60px;
     background-color: gray;
     border-radius: 10px;
+    font-size: 16px;
+    
+    
 }
 
 .ok-button {
     width: 100px;
-    height: 30px;
+    height: 40px;
+    font-size: 18px;
     color: white;
     background-color: rgb(58, 146, 208);
     border-radius: 5px;
@@ -217,3 +225,14 @@
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
 }
+
+.close-button {
+    width: 30px;
+    height: 30px;
+    color: white;
+    background-color: rgb(255, 0, 0);
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 0;
+}
+
