@@ -1,15 +1,20 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
-    <engine:VisualElement name="purchase-hotel-container" style="align-items: center; background-color: rgb(246, 243, 234); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-left-color: rgb(175, 177, 177); border-right-color: rgb(175, 177, 177); border-top-color: rgb(175, 177, 177); border-bottom-color: rgb(175, 177, 177); padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-bottom-right-radius: 20px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-left-radius: 20px;">
-        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
-            <engine:Label text="Hotel" style="color: rgb(72, 85, 87); -unity-font-style: bold;" />
+    <engine:VisualElement name="purchase-hotel-container" style="width: 400px;">
+        <engine:VisualElement name="purchase-hotel-title-bar-container" style="background-color: rgb(94, 52, 9); visibility: visible; color: rgb(255, 255, 255); flex-direction: row; justify-content: center; border-left-color: rgb(175, 177, 177); border-right-color: rgb(175, 177, 177); border-top-color: rgb(175, 177, 177); border-bottom-color: rgb(175, 177, 177); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; height: 60px; align-items: center; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+            <engine:Label text="Buy Hotel" name="hotel-label" style="align-self: auto; align-items: flex-start; -unity-text-align: middle-center; white-space: nowrap; font-size: 24px; color: rgb(255, 255, 255); visibility: visible; -unity-font-style: bold; justify-content: flex-end; align-content: center; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); margin-right: 50px; margin-left: 50px;" />
+            <engine:VisualElement name="purchase-button-container" style="position: absolute; right: 10px;">
+                <engine:Button text="X&#10;" name="purchase-hotel-close-button" class="panel-button-1-button close-button" style="position: relative; margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; padding-top: 2px; padding-right: 4px; padding-bottom: 2px; padding-left: 4px; font-size: 18px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; background-color: rgb(254, 248, 236); color: rgb(129, 128, 122); width: 40px; height: 40px;" />
+            </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
-            <engine:Label text="Not Available/price" name="hotel-price-label" style="margin-top: 15px; margin-bottom: 15px; margin-right: 2px;" />
-        </engine:VisualElement>
-        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
-            <engine:Button text="SELL" name="sell-hotel-button" class="sell-button" />
-            <engine:Button text="BUY" name="but-hotel-button" class="buy-button" />
+        <engine:VisualElement style="flex-grow: 1; background-color: rgb(246, 243, 234); align-items: center; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <engine:Label text="Not Available/price" name="hotel-price-label" style="margin-top: 15px; margin-bottom: 15px; margin-right: 2px; font-size: 24px;" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <engine:Button text="SELL" name="sell-hotel-button" class="sell-button" />
+                <engine:Button text="BUY" name="buy-hotel-button" class="buy-button" />
+            </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
