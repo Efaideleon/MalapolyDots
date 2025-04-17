@@ -4,6 +4,7 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System.Security.Cryptography.X509Certificates;
 
 public enum TransactionEventType
 {
@@ -50,6 +51,11 @@ public class PanelControllers : IComponentData
     public PayRentPanelController payRentPanelController;
 }
 
+public class PopupManagers : IComponentData
+{
+    public PropertyPopupManager propertyPopupManager;
+}
+
 public class OnLandPanelsDictionay : IComponentData
 {
     public Dictionary<SpaceType, OnLandPanel> Value;
@@ -67,6 +73,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<MoneyComponent>();
         state.RequireForUpdate<OverlayPanels>();
         state.RequireForUpdate<PanelControllers>();
+        state.RequireForUpdate<PopupManagers>();
         state.RequireForUpdate<ClickData>();
         state.RequireForUpdate<ClickedPropertyComponent>();
         state.RequireForUpdate<LastPropertyClicked>();
@@ -91,6 +98,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             purchaseHousePanelController = null,
             spaceActionsPanelController = null
         });
+
+        // PopupManagers
+        state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null});
 
         // TransactionEvents Entity
         EntityQuery query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEventBus>());
@@ -201,10 +211,16 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.purchasePropertyController = new(purchasePropertyPanel, purchasePropertyPanelContext);
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
 
+        PropertyPopupManagerContext propertyPopupManagerContext = new()
+        {
+            OwnerID = default,
+            CurrentPlayerID = default
+        };
+        PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);
+        SystemAPI.ManagedAPI.GetSingleton<PopupManagers>().propertyPopupManager = propertyPopupManager;
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceType, OnLandPanel> onLandPanelsDictionary = new()
         {
-            { SpaceType.Property, new PropertyPanel(botPanelRoot) },
             { SpaceType.Tax, new TaxPanel(botPanelRoot) },
             { SpaceType.Jail, new JailPanel(botPanelRoot) },
             { SpaceType.GoToJail, new GoToJailPanel(botPanelRoot) },
@@ -231,7 +247,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
         rollPanel.AddActionToRollButton(() =>
         {
-            var valueRolled = UnityEngine.Random.Range(1, 6);
+            // var valueRolled = UnityEngine.Random.Range(1, 6);
+            var valueRolled = 1;
             rollAmountComponent.GetSingletonRW<RollAmountComponent>().ValueRW.Amount = valueRolled;
             rollPanel.UpdateRollLabel(valueRolled.ToString());
             rollPanel.HideRollButton();
@@ -359,6 +376,23 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
 
+        // Updates the context for the popup when the player lands on a property space.
+        foreach (var landOnProperty in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
+        {
+            var landOnPropertyEntity = landOnProperty.ValueRO.entity;
+            if (landOnPropertyEntity != null && SystemAPI.HasComponent<PropertySpaceTag>(landOnPropertyEntity))
+            {
+                var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
+
+                PropertyPopupManagerContext propertyPopupManagerContext = new ()
+                {
+                    OwnerID = SystemAPI.GetComponent<OwnerComponent>(landOnPropertyEntity).ID,
+                    CurrentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
+                };
+                popupManagers.propertyPopupManager.Context = propertyPopupManagerContext;
+            }
+        }
+
         foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
         {
             switch (gameState.ValueRO.State)
@@ -368,28 +402,35 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                     break;
                 case GameState.Landing:
                     overlayPanels.rollPanel.Hide();
-
                     var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
-                    var spaceLandedType = SystemAPI
-                        .GetComponent<SpaceTypeComponent>(spaceLanded.entity)
-                        .Value;
-                    var landPanels = SystemAPI
-                        .ManagedAPI
-                        .GetComponent<OnLandPanelsDictionay>(state.SystemHandle)
-                        .Value;
-
-                    // Get the correct popup panel to show.
-                    var landPanel = landPanels[spaceLandedType];
-                    var playerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                    var context = new ShowPanelContext
+                    if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLanded.entity))
                     {
-                        entityManager = state.EntityManager,
-                        spaceEntity = spaceLanded.entity,
-                        playerID = playerID.Value
-                    };
-                    // This landPanel is more like a manager that will determine the correct panel
-                    // to show for the given space type
-                    landPanel.Show(context);
+                        var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
+                        popupManagers.propertyPopupManager.TriggerPopup();
+                    }
+
+                    // Legacy Code
+                    // var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
+                    // var spaceLandedType = SystemAPI
+                    //     .GetComponent<SpaceTypeComponent>(spaceLanded.entity)
+                    //     .Value;
+                    // var landPanels = SystemAPI
+                    //     .ManagedAPI
+                    //     .GetComponent<OnLandPanelsDictionay>(state.SystemHandle)
+                    //     .Value;
+                    //
+                    // // Get the correct popup panel to show.
+                    // var landPanel = landPanels[spaceLandedType];
+                    // var playerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                    // var context = new ShowPanelContext
+                    // {
+                    //     entityManager = state.EntityManager,
+                    //     spaceEntity = spaceLanded.entity,
+                    //     playerID = playerID.Value
+                    // };
+                    // // This landPanel is more like a manager that will determine the correct panel
+                    // // to show for the given space type
+                    // landPanel.Show(context);
                     break;
             }
         }
