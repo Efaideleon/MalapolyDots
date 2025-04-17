@@ -1,7 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Template name="RollPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/RollPanel.uxml?fileID=9197481963319205126&amp;guid=934182adbfd24714d82737df18aceaec&amp;type=3#RollPanel" />
-    <ui:Template name="PopupMenuPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PopupMenuPanel.uxml?fileID=9197481963319205126&amp;guid=cf6f8e7a4e4721b4ab2ec06e4dfbefcd&amp;type=3#PopupMenuPanel" />
-    <ui:Template name="YouBoughtPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/YouBoughtPanel.uxml?fileID=9197481963319205126&amp;guid=4fc764e722b2c6140b2777941789e699&amp;type=3#YouBoughtPanel" />
+    <ui:Template name="PopupMenuPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PurchasePropertyPanel.uxml?fileID=9197481963319205126&amp;guid=cf6f8e7a4e4721b4ab2ec06e4dfbefcd&amp;type=3#PurchasePropertyPanel" />
     <ui:Template name="TaxPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/TaxPanel.uxml?fileID=9197481963319205126&amp;guid=93dbccc80018968478db8ebe0d8cc5e3&amp;type=3#TaxPanel" />
     <ui:Template name="JailPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/JailPanel.uxml?fileID=9197481963319205126&amp;guid=c63d18b3aafba044cb690bd81a76a0d4&amp;type=3#JailPanel" />
     <ui:Template name="GoToJailPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/GoToJailPanel.uxml?fileID=9197481963319205126&amp;guid=75fe9de08ef75a947ae56955e613ed3c&amp;type=3#GoToJailPanel" />
@@ -31,8 +30,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="game-screen-bottom-container" enabled="true" picking-mode="Ignore" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto;">
             <ui:Instance template="RollPanel" name="RollPanel" picking-mode="Ignore" class="roll_template-container" style="position: relative; display: none; width: 100%; height: 100%;" />
-            <ui:Instance template="PopupMenuPanel" name="PopupMenuPanel" picking-mode="Ignore" style="position: absolute; display: none; height: 100%; width: 100%;" />
-            <ui:Instance template="YouBoughtPanel" name="YouBoughtPanel" picking-mode="Ignore" style="position: absolute; top: auto; left: auto;" />
+            <ui:Instance template="PopupMenuPanel" name="PurchasePropertyPanel" picking-mode="Ignore" style="position: absolute; display: none; height: 100%; width: 100%;" />
             <ui:Instance template="TaxPanel" name="TaxPanel" picking-mode="Ignore" style="position: absolute;" />
             <ui:Instance template="JailPanel" name="JailPanel" picking-mode="Ignore" style="position: absolute;" />
             <ui:Instance template="GoToJailPanel" name="GoToJailPanel" picking-mode="Ignore" style="position: absolute;" />
@@ -43,7 +41,7 @@
             <ui:Instance template="PayRentPanel" name="PayRentPanel" picking-mode="Ignore" style="display: flex; position: absolute;" />
             <ui:VisualElement picking-mode="Ignore" name="ActionsContainer" style="width: 100%; height: 100%; position: absolute; align-items: center; justify-content: flex-end; align-content: flex-start; flex-direction: column; display: flex;">
                 <ui:VisualElement picking-mode="Ignore" style="flex-direction: column; flex-grow: 0; justify-content: center; flex-shrink: 1; height: 60%; align-items: center;">
-                    <ui:Instance template="PurchaseHotelPanel" style="position: absolute; width: 400px;" />
+                    <ui:Instance template="PurchaseHotelPanel" name="PurchaseHotelPanel" style="position: absolute; width: 400px; display: none;" />
                     <ui:Instance template="BuyHouseNameAndCounterElement" name="PurchaseHousePanel" picking-mode="Ignore" style="display: none; position: relative; scale: 1.5 1.5; width: 370px;" />
                     <ui:Instance template="NoMonopoloyYetPanel" name="NoMonopolyYetPanel" style="display: none; position: relative;" />
                 </ui:VisualElement>

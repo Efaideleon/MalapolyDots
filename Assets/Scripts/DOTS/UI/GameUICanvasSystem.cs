@@ -4,7 +4,6 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using System.Security.Cryptography.X509Certificates;
 
 public enum TransactionEventType
 {
@@ -65,7 +64,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 {
     public void OnCreate(ref SystemState state)
     {
-        UnityEngine.Debug.Log(">>> GameUICanvasSystem.OnCreate CALLED <<<");
         state.RequireForUpdate<CanvasReferenceComponent>();
         state.RequireForUpdate<GameStateComponent>();
         state.RequireForUpdate<CurrentPlayerID>();
@@ -81,25 +79,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
 
         state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
-
-        // OverLayPanels Entity
-        var uiEntity = state.EntityManager.CreateEntity();
-        state.EntityManager.AddComponentObject(uiEntity, new OverlayPanels
-        {
-            rollPanel = null,
-            statsPanel = null,
-            purchaseHousePanel = null
-        });
-
-        // PanelControllers Entity
-        var controllerEntity = state.EntityManager.CreateEntity();
-        state.EntityManager.AddComponentObject(controllerEntity, new PanelControllers
-        {
-            purchaseHousePanelController = null,
-            spaceActionsPanelController = null
-        });
-
-        // PopupManagers
+        state.EntityManager.CreateSingleton(new OverlayPanels { rollPanel = null, statsPanel = null, purchaseHousePanel = null });
+        state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
         state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null});
 
         // TransactionEvents Entity
@@ -153,9 +134,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         PurchasePropertyPanelContext purchasePropertyPanelContext = new()
         {
-            playerID = default,
-            spaceEntity = default,
-            entityManager = default
+            Name = default,
+            Price = default,
         };
 
         PurchaseHousePanelContext purchaseHousePanelContext = new()
@@ -206,7 +186,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel.Panel);
-        panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Root);
+        panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Panel);
 
         panelControllers.purchasePropertyController = new(purchasePropertyPanel, purchasePropertyPanelContext);
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
@@ -328,8 +308,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 >()
                 .WithChangeFilter<PurchasePropertyPanelContextComponent>())
         {
-            if (panelControllers.purchaseHousePanelController != null &&
-                    purchasePropertyPanelContext.ValueRO.Value.spaceEntity != Entity.Null)
+            if (panelControllers.purchaseHousePanelController != null)
             {
                 // TODO: not consistent with the PurhcaseHousePanel.
                 // Here we assigned the Context to the controller instead of the panel itself

@@ -31,9 +31,8 @@ public partial struct PurchasePropertyPanelUpdaterSystem : ISystem
             {
                 PurchasePropertyPanelContext purchasePropertyPanelContext = new()
                 {
-                    spaceEntity = clickedProperty.ValueRO.entity,
-                    entityManager = state.EntityManager,
-                    playerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
+                    Name = SystemAPI.GetComponent<NameComponent>(clickedPropertyEntity).Value,
+                    Price = SystemAPI.GetComponent<PriceComponent>(clickedPropertyEntity).Value
                 };
                 SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
             }

@@ -1,47 +1,11 @@
-using UnityEngine.UIElements;
-using Unity.Entities;
-using UnityEngine;
-
 namespace Assets.Scripts.DOTS.UI.UIPanels
 {
-    public class YouBoughtPanel : Panel
-    {
-        public YouBoughtPanel(VisualElement parent) : base(parent.Q<VisualElement>("YouBoughtPanel"))
-        {
-            UpdateAcceptButtonReference("you-bought-ok-button");
-            UpdateLabelReference("you-bought-label");
-            Hide();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-            OnAcceptButton = () =>
-            {
-                var eventQueue = entityQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-                eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventType.ChangeTurn });
-                Hide();
-            };
-            AcceptButton.clickable.clicked += OnAcceptButton;
-        }
-        
-        public void Show(ShowPanelContext context)
-        {
-            var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity).Value;
-            UpdateTitleLabelText($"You bought: {name}");
-            Show();
-        }
-    }
-
-    //-------
-
     public struct PropertyPopupManagerContext
     {
         public int OwnerID;         
         public int CurrentPlayerID; 
     }
 
-    // This behaves more like a controller, determining what panels to show and changing their content.
-    // TODO: Rename This class
     public class PropertyPopupManager
     {
         public PayRentPanel PayRentPanel { get; private set; }

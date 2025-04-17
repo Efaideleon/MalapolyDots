@@ -1,10 +1,10 @@
+using Unity.Collections;
 using Unity.Entities;
 
 public struct PurchasePropertyPanelContext
 {
-    public Entity spaceEntity;
-    public EntityManager entityManager;
-    public int playerID;
+    public FixedString64Bytes Name; 
+    public int Price; 
 }
 
 public class PurchasePropertyPanelController
@@ -17,20 +17,18 @@ public class PurchasePropertyPanelController
     {
         PurchasePropertyPanel = purchasePropertyPanel;
         Context = context;
+        SubscribeEvents();
     }
 
     public void Update()
     {
-        var name = Context.entityManager.GetComponentData<NameComponent>(Context.spaceEntity);
-        var price = Context.entityManager.GetComponentData<PriceComponent>(Context.spaceEntity);
-        PurchasePropertyPanel.UpdateTitleLabelText(name.Value.ToString());
-        PurchasePropertyPanel.UpdatePriceLabelText(price.Value.ToString());
-        SubscribeEvents();
+        PurchasePropertyPanel.NameLabel.text = Context.Name.ToString();
+        PurchasePropertyPanel.PriceLabel.text = Context.Price.ToString();
     }
 
     private void SubscribeEvents()
     {
-        PurchasePropertyPanel.AcceptButton.clickable.clicked += DispatchEvents;
+        PurchasePropertyPanel.OkButton.clickable.clicked += DispatchEvents;
     }
 
     private void DispatchEvents()
@@ -48,7 +46,6 @@ public class PurchasePropertyPanelController
 
     public void Dispose()
     {
-        PurchasePropertyPanel.AcceptButton.clickable.clicked -= DispatchEvents;
-        PurchasePropertyPanel.Dispose();
+        PurchasePropertyPanel.OkButton.clickable.clicked -= DispatchEvents;
     }
 }
