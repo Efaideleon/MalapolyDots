@@ -1,9 +1,9 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels" />
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
-    <engine:VisualElement class="panel-1-outer">
-        <engine:VisualElement name="VisualElement" class="panel-1-inner" style="flex-grow: 1; width: 100%; height: 100%;">
-            <engine:VisualElement name="VisualElement" class="panel-1-inner-2" style="background-repeat: repeat repeat; align-items: center;">
+    <engine:VisualElement name="outer-border" class="panel-1-outer">
+        <engine:VisualElement name="Inner-border" class="panel-1-inner" style="flex-grow: 1; width: 100%; height: 100%;">
+            <engine:VisualElement name="inner-border-2" class="panel-1-inner-2" style="background-repeat: repeat repeat; align-items: center;">
                 <engine:Label text="You need a full&#10;set of proterties&#10;(Monopoly)&#10;to build houses&#10;or hotels!" class="panel-text-1" style="margin-top: 20px;" />
                 <engine:VisualElement name="ButtonGotIt" style="flex-grow: 1; bottom: -15px;">
                     <engine:VisualElement name="Shadow" class="panel-button-blue-border-1-shadow" style="flex-grow: 1;" />

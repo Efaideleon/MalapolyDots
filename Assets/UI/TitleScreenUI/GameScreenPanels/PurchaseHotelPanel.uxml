@@ -1,0 +1,15 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <engine:VisualElement name="purchase-hotel-container" style="align-items: center; background-color: rgb(246, 243, 234); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-left-color: rgb(175, 177, 177); border-right-color: rgb(175, 177, 177); border-top-color: rgb(175, 177, 177); border-bottom-color: rgb(175, 177, 177); padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-bottom-right-radius: 20px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-left-radius: 20px;">
+        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <engine:Label text="Hotel" style="color: rgb(72, 85, 87); -unity-font-style: bold;" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <engine:Label text="Not Available/price" name="hotel-price-label" style="margin-top: 15px; margin-bottom: 15px; margin-right: 2px;" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <engine:Button text="SELL" name="sell-hotel-button" class="sell-button" />
+            <engine:Button text="BUY" name="but-hotel-button" class="buy-button" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
