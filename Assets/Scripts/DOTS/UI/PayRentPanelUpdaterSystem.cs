@@ -1,12 +1,18 @@
 using Unity.Burst;
 using Unity.Entities;
 
+public struct PayRentPanelContextComponent : IComponentData
+{
+    public PayRentPanelContext Value;
+}
+
 [BurstCompile]
 public partial struct PayRentPanelUpdaterSystem : ISystem
 {
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        state.EntityManager.CreateSingleton(new PayRentPanelContextComponent { Value = default });
         state.RequireForUpdate<PayRentPanelContextComponent>();
         state.RequireForUpdate<LandedOnSpace>();
     }

@@ -579,6 +579,7 @@ GameObject:
   - component: {fileID: 2446172884775533983}
   - component: {fileID: 8541918611148327436}
   - component: {fileID: 8541918611148327437}
+  - component: {fileID: 8541918611148327438}
   m_Layer: 0
   m_Name: San Juan De Dios.001
   m_TagString: Untagged
@@ -616,6 +617,7 @@ GameObject:
   - component: {fileID: 1333544944692496337}
   - component: {fileID: 5853439228156563119}
   - component: {fileID: 8495989646467610842}
+  - component: {fileID: 8495989646467610843}
   m_Layer: 0
   m_Name: Malacateco Toon S.001
   m_TagString: Untagged
@@ -760,6 +762,7 @@ GameObject:
   - component: {fileID: 1962925686687501806}
   - component: {fileID: 3884065494647884634}
   - component: {fileID: 7373997592737946205}
+  - component: {fileID: 7373997592737946206}
   m_Layer: 0
   m_Name: Intercesion Toon S.001
   m_TagString: Untagged
@@ -839,6 +842,7 @@ GameObject:
   - component: {fileID: 6843086624494262531}
   - component: {fileID: 7098338560308657035}
   - component: {fileID: 7098338560308657036}
+  - component: {fileID: 7098338560308657037}
   m_Layer: 0
   m_Name: Chop Suey Final Toon S.001
   m_TagString: Untagged
@@ -1003,6 +1007,7 @@ GameObject:
   - component: {fileID: 136598989340960107}
   - component: {fileID: 1581461197905314047}
   - component: {fileID: 1581461197905314048}
+  - component: {fileID: 1581461197905314049}
   m_Layer: 0
   m_Name: Ineb Toon S.001
   m_TagString: Untagged
@@ -1369,6 +1374,7 @@ GameObject:
   - component: {fileID: 4937025574259583970}
   - component: {fileID: 3959785365203032135}
   - component: {fileID: 6594017485219112545}
+  - component: {fileID: 6594017485219112546}
   m_Layer: 0
   m_Name: Morazan.001
   m_TagString: Untagged
@@ -1651,6 +1657,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Ineb
+--- !u!65 &1581461197905314049
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796993166875022004}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.4055004, y: 0.8931166, z: 3.841456}
+  m_Center: {x: -0.11510551, y: 0.07737845, z: 0.010858059}
 --- !u!1 &1625471290124426290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,6 +2046,7 @@ GameObject:
   - component: {fileID: 5557291890399539674}
   - component: {fileID: 7902843073102695183}
   - component: {fileID: 7902843073102695184}
+  - component: {fileID: 7902843073102695185}
   m_Layer: 0
   m_Name: Farmacia Higia Toon S.001
   m_TagString: Untagged
@@ -2953,6 +2981,7 @@ GameObject:
   - component: {fileID: 6110733002071067817}
   - component: {fileID: 7289416036533544828}
   - component: {fileID: 8058814493946221420}
+  - component: {fileID: 8058814493946221421}
   m_Layer: 0
   m_Name: La Terminal Toon S.001
   m_TagString: Untagged
@@ -3048,6 +3077,7 @@ GameObject:
   - component: {fileID: 2657589834921306119}
   - component: {fileID: 5491140164428198887}
   - component: {fileID: 8928904458952689247}
+  - component: {fileID: 8928904458952689248}
   m_Layer: 0
   m_Name: Pollo Campero Toon S.001
   m_TagString: Untagged
@@ -3205,6 +3235,7 @@ GameObject:
   - component: {fileID: 2062949763047198805}
   - component: {fileID: 3613558218583016942}
   - component: {fileID: 3613558218583016943}
+  - component: {fileID: 3613558218583016944}
   m_Layer: 0
   m_Name: La Municipalidad Toon S.001
   m_TagString: Untagged
@@ -3270,6 +3301,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: La Municipalidad
+--- !u!65 &3613558218583016944
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565803034890698119}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.959557, y: 2.9774783, z: 2.9483585}
+  m_Center: {x: 0.3900833, y: 0.098480344, z: -0.33072704}
 --- !u!4 &3682916240443891500
 Transform:
   m_ObjectHideFlags: 0
@@ -3495,6 +3547,7 @@ GameObject:
   - component: {fileID: 8095875728581412046}
   - component: {fileID: 166366193155644841}
   - component: {fileID: 8095875728581412047}
+  - component: {fileID: 8095875728581412048}
   m_Layer: 0
   m_Name: Santo Domingo.001
   m_TagString: Untagged
@@ -4345,6 +4398,7 @@ GameObject:
   - component: {fileID: 4897704667435578776}
   - component: {fileID: 1241930219119261128}
   - component: {fileID: 7132277832678185446}
+  - component: {fileID: 7132277832678185447}
   m_Layer: 0
   m_Name: Cabuz Toon S.001
   m_TagString: Untagged
@@ -4394,6 +4448,7 @@ GameObject:
   - component: {fileID: 5114351219847892672}
   - component: {fileID: 7436048381960753765}
   - component: {fileID: 7436048381960753766}
+  - component: {fileID: 7436048381960753767}
   m_Layer: 0
   m_Name: Santa Lucia Toon S.001
   m_TagString: Untagged
@@ -5146,6 +5201,7 @@ GameObject:
   - component: {fileID: 8844734871026480180}
   - component: {fileID: 7131533518999663881}
   - component: {fileID: 8844734871026480181}
+  - component: {fileID: 8844734871026480182}
   m_Layer: 0
   m_Name: Trinidad  Toon S.001
   m_TagString: Untagged
@@ -5246,6 +5302,7 @@ GameObject:
   - component: {fileID: 6214553020474876981}
   - component: {fileID: 2546957927501932335}
   - component: {fileID: 6299166487643997781}
+  - component: {fileID: 6299166487643997782}
   m_Layer: 0
   m_Name: Bomberos Toon S.001
   m_TagString: Untagged
@@ -5266,6 +5323,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Bomberos
+--- !u!65 &6299166487643997782
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6299166487643997780}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.894535, y: 2.149561, z: 4.0053377}
+  m_Center: {x: -0.0758757, y: 0.074780405, z: -0.85091734}
 --- !u!1 &6403819286285653814
 GameObject:
   m_ObjectHideFlags: 0
@@ -5356,6 +5434,7 @@ GameObject:
   - component: {fileID: 7789833588435060348}
   - component: {fileID: 4327158518914515425}
   - component: {fileID: 8897187416254995120}
+  - component: {fileID: 8897187416254995121}
   m_Layer: 0
   m_Name: Boncafe Final Toon S.001
   m_TagString: Untagged
@@ -5465,6 +5544,7 @@ GameObject:
   - component: {fileID: 3910822472691571034}
   - component: {fileID: 3052112453112856924}
   - component: {fileID: 6527455046040066466}
+  - component: {fileID: 6527455046040066467}
   m_Layer: 0
   m_Name: La estrella Toon S.001
   m_TagString: Untagged
@@ -5485,6 +5565,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: La Estrella
+--- !u!65 &6527455046040066467
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527455046040066465}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.8811054, y: 2.3474767, z: 2.7275481}
+  m_Center: {x: -0.5015652, y: 0.30316213, z: 0.58172673}
 --- !u!4 &6529814450375215819
 Transform:
   m_ObjectHideFlags: 0
@@ -5629,6 +5730,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Morazan
+--- !u!65 &6594017485219112546
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293607045500236919}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.1003895, y: 3.548813, z: 2.0593243}
+  m_Center: {x: -0.060036182, y: 1.7616247, z: 4.9745e-41}
 --- !u!33 &6620778651228027086
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6006,6 +6128,7 @@ GameObject:
   - component: {fileID: 2236009519017692538}
   - component: {fileID: 3540497238886256779}
   - component: {fileID: 7082022293508531097}
+  - component: {fileID: 7082022293508531098}
   m_Layer: 0
   m_Name: Estadio Toon S.001
   m_TagString: Untagged
@@ -6026,6 +6149,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Estadio
+--- !u!65 &7082022293508531098
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7082022293508531096}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.2569306, y: 1.0349866, z: 4.846962}
+  m_Center: {x: -1.0933522, y: 0.46190852, z: 2.1997776}
 --- !u!23 &7098338560308657035
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6084,6 +6228,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Chop suey
+--- !u!65 &7098338560308657037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578320945973510054}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.0408072, y: 1.7378197, z: 3.8873236}
+  m_Center: {x: -0.27991825, y: -0.13109013, z: -0.08637345}
 --- !u!4 &7129504842008582800
 Transform:
   m_ObjectHideFlags: 0
@@ -6172,6 +6337,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Cabuz
+--- !u!65 &7132277832678185447
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5246047659437444069}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.2381063, y: 1.5764155, z: 2.2975144}
+  m_Center: {x: 0.020240784, y: 0.12982017, z: -0.024216771}
 --- !u!33 &7134500340813895493
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6192,6 +6378,7 @@ GameObject:
   - component: {fileID: 7833781935433499391}
   - component: {fileID: 3160142364562439628}
   - component: {fileID: 8779819462547558283}
+  - component: {fileID: 8779819462547558284}
   m_Layer: 0
   m_Name: Benson Toon S.001
   m_TagString: Untagged
@@ -6362,6 +6549,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Interseccion
+--- !u!65 &7373997592737946206
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519243536499668301}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0299941, y: 1.896451, z: 0.9761816}
+  m_Center: {x: 0.0418368, y: 0.9482255, z: 0.06874305}
 --- !u!23 &7436048381960753765
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6420,6 +6628,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Santa Lucia
+--- !u!65 &7436048381960753767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5340918105793548126}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.3238983, y: 1.7794702, z: 3.1546378}
+  m_Center: {x: -0.07582188, y: 0.057206124, z: 0.16489166}
 --- !u!1 &7482464460784572794
 GameObject:
   m_ObjectHideFlags: 0
@@ -6450,6 +6679,7 @@ GameObject:
   - component: {fileID: 955567530058483203}
   - component: {fileID: 4096693351657027685}
   - component: {fileID: 7534371394988410600}
+  - component: {fileID: 7534371394988410601}
   m_Layer: 0
   m_Name: Mangos Toon S.001
   m_TagString: Untagged
@@ -6470,6 +6700,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Mangos
+--- !u!65 &7534371394988410601
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7534371394988410599}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.4893413, y: 1.2035987, z: 4.4215674}
+  m_Center: {x: -0.10772824, y: -0.39820066, z: 1.1480341}
 --- !u!23 &7537972360617235527
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6545,6 +6796,7 @@ GameObject:
   - component: {fileID: 4392855330409549362}
   - component: {fileID: 910696886434985877}
   - component: {fileID: 7582142001137405761}
+  - component: {fileID: 7582142001137405762}
   m_Layer: 0
   m_Name: Starbus Toon S.002
   m_TagString: Untagged
@@ -6565,6 +6817,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Starbus
+--- !u!65 &7582142001137405762
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7582142001137405760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2765634, y: 2.1127458, z: 2.000001}
+  m_Center: {x: 0.1382817, y: 0.05637294, z: 0.00000047683716}
 --- !u!1 &7623911790822584540
 GameObject:
   m_ObjectHideFlags: 0
@@ -6872,6 +7145,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Farmacia Higia
+--- !u!65 &7902843073102695185
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063818816814465002}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.900857, y: 1.9313158, z: 3.4806433}
+  m_Center: {x: -0.07209176, y: -0.5389587, z: 0.6189751}
 --- !u!33 &7987862130699355680
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6955,6 +7249,7 @@ GameObject:
   - component: {fileID: 5233174883336882741}
   - component: {fileID: 81413436208882975}
   - component: {fileID: 8015738660258237831}
+  - component: {fileID: 8015738660258237832}
   m_Layer: 0
   m_Name: El Rastro Final S.001
   m_TagString: Untagged
@@ -6975,6 +7270,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: El Rastro
+--- !u!65 &8015738660258237832
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8015738660258237830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.075563, y: 2.1526031, z: 3.416479}
+  m_Center: {x: -0.07969403, y: 0.15992865, z: 0.48193502}
 --- !u!4 &8045652761817647851
 Transform:
   m_ObjectHideFlags: 0
@@ -7036,6 +7352,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: La Terminal
+--- !u!65 &8058814493946221421
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337026837391193618}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.7985244, y: 1.1112704, z: 3.7099273}
+  m_Center: {x: -0.0053497553, y: -0.19583118, z: -0.03756702}
 --- !u!33 &8095875728581412046
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7057,6 +7394,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Santo Domingo
+--- !u!65 &8095875728581412048
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3962723078702652609}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.100389, y: 3.548813, z: 2.059323}
+  m_Center: {x: 0.06003636, y: 1.7616247, z: -4.9745e-41}
 --- !u!33 &8127490264612190386
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7281,6 +7639,7 @@ GameObject:
   - component: {fileID: 5608367913680547695}
   - component: {fileID: 1533723257703541475}
   - component: {fileID: 8488430821037634801}
+  - component: {fileID: 8488430821037634802}
   m_Layer: 0
   m_Name: Water Company.001
   m_TagString: Untagged
@@ -7301,6 +7660,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Water Company
+--- !u!65 &8488430821037634802
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8488430821037634800}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6456065, y: 2.926209, z: 2.8384275}
+  m_Center: {x: 0.49020454, y: -0.0071644187, z: -0.0070412755}
 --- !u!4 &8495989646467610841
 Transform:
   m_ObjectHideFlags: 0
@@ -7329,6 +7709,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Malacateo
+--- !u!65 &8495989646467610843
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336582553151458557}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3937464, y: 2.7598016, z: 0.26233473}
+  m_Center: {x: -0.03951806, y: -0.016442657, z: 0.00003235042}
 --- !u!23 &8518154475489271941
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7453,6 +7854,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: San Juan de Dios
+--- !u!65 &8541918611148327438
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251941413649621715}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.059325, y: 3.548813, z: 4.1003895}
+  m_Center: {x: 4.9745e-41, y: 1.7616247, z: -0.060036123}
 --- !u!4 &8617718087023519321
 Transform:
   m_ObjectHideFlags: 0
@@ -7548,6 +7970,7 @@ GameObject:
   - component: {fileID: 1963852006000127525}
   - component: {fileID: 4938606374261860567}
   - component: {fileID: 8653851336993517628}
+  - component: {fileID: 8653851336993517629}
   m_Layer: 0
   m_Name: San Isidro Toon S.001
   m_TagString: Untagged
@@ -7568,6 +7991,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: San Isidro
+--- !u!65 &8653851336993517629
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8653851336993517627}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.563836, y: 1.9581139, z: 4.3956075}
+  m_Center: {x: -1.3969793, y: -0.09738316, z: -1.337156}
 --- !u!33 &8660308825500976875
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7688,6 +8132,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Benson
+--- !u!65 &8779819462547558284
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178275519235207906}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.1552215, y: 1.2299676, z: 4.285202}
+  m_Center: {x: -0.196378, y: -0.2054554, z: 0.0759002}
 --- !u!33 &8789089461649039778
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7777,6 +8242,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: La Trinidad
+--- !u!65 &8844734871026480182
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6113193579910383383}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.2670965, y: 1.1771747, z: 4.4180374}
+  m_Center: {x: -0.07851839, y: 0.5885872, z: -1.7191128}
 --- !u!4 &8887324668610633655
 Transform:
   m_ObjectHideFlags: 0
@@ -7833,6 +8319,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Bon Cafe
+--- !u!65 &8897187416254995121
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6480145837330133270}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0976646, y: 1.4321637, z: 2.2423308}
+  m_Center: {x: -0.5348599, y: -0.2839181, z: -0.121165395}
 --- !u!23 &8910938626692228424
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7906,6 +8413,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Pollo Campero
+--- !u!65 &8928904458952689248
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451516813881239720}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.139947, y: 1.2400217, z: 4.3461866}
+  m_Center: {x: 0.023812115, y: 0.11483848, z: 0.94555664}
 --- !u!33 &8935373679288507489
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7986,6 +8514,7 @@ GameObject:
   - component: {fileID: 2827117598948296757}
   - component: {fileID: 6963251469848841501}
   - component: {fileID: 9082180008269645207}
+  - component: {fileID: 9082180008269645208}
   m_Layer: 0
   m_Name: Parque Final Toon S.001
   m_TagString: Untagged
@@ -8006,6 +8535,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Parque
+--- !u!65 &9082180008269645208
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9082180008269645206}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.593352, y: 1.5177172, z: 2.6794896}
+  m_Center: {x: -0.060914755, y: 0.59485847, z: -0.14399844}
 --- !u!4 &9141461264633118693
 Transform:
   m_ObjectHideFlags: 0

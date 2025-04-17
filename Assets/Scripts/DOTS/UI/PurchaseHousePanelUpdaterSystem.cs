@@ -1,4 +1,5 @@
 using Assets.Scripts.DOTS.UI.UIPanels;
+using Unity.Burst;
 using Unity.Entities;
 
 public struct PurhcaseHousePanelContextComponent : IComponentData
@@ -6,18 +7,21 @@ public struct PurhcaseHousePanelContextComponent : IComponentData
     public PurchaseHousePanelContext Value;
 }
 
+[BurstCompile]
 public partial struct PurchaseHousePanelUpdaterSystem : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state) 
     {
         state.EntityManager.CreateSingleton(new PurhcaseHousePanelContextComponent { Value = default });
         state.RequireForUpdate<HouseCount>();
         state.RequireForUpdate<NameComponent>();
         state.RequireForUpdate<PropertySpaceTag>();
-        state.RequireForUpdate<PanelControllers>();
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
+        state.RequireForUpdate<LastPropertyClicked>();
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state) 
     { 
         foreach (var (houseCount, name, _) in 
@@ -35,6 +39,25 @@ public partial struct PurchaseHousePanelUpdaterSystem : ISystem
                 // the WithChangeFilter?
                 purchaseHousePanelContext.ValueRW.Value.HousesOwned = houseCount.ValueRO.Value;
                 continue;
+            }
+        }
+
+        foreach ( var clickedProperty in 
+                SystemAPI.Query<
+                    RefRO<LastPropertyClicked>
+                >().
+                WithChangeFilter<LastPropertyClicked>())
+        {
+            var clickedPropertyEntity = clickedProperty.ValueRO.entity;
+            if (clickedPropertyEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(clickedPropertyEntity))
+            {
+                PurchaseHousePanelContext purchaseHouseContext = new()
+                {
+                    Name = SystemAPI.GetComponent<NameComponent>(clickedPropertyEntity).Value,
+                    HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedPropertyEntity).Value,
+                    Price = 10,
+                };
+                SystemAPI.SetSingleton(new PurhcaseHousePanelContextComponent { Value = purchaseHouseContext});
             }
         }
     }

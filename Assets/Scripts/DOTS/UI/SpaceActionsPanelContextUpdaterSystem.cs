@@ -1,20 +1,9 @@
-using Assets.Scripts.DOTS.UI.UIPanels;
 using Unity.Burst;
 using Unity.Entities;
 
 public struct SpaceActionsPanelContextComponent : IComponentData
 {
     public SpaceActionsPanelContext Value;
-}
-
-public struct PurchasePropertyPanelContextComponent : IComponentData
-{
-    public PurchasePropertyPanelContext Value;
-}
-
-public struct PayRentPanelContextComponent : IComponentData
-{
-    public PayRentPanelContext Value;
 }
 
 [BurstCompile]
@@ -24,67 +13,29 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.EntityManager.CreateSingleton(new SpaceActionsPanelContextComponent { Value = default });
-        state.EntityManager.CreateSingleton(new PurchasePropertyPanelContextComponent { Value = default });
-        state.EntityManager.CreateSingleton(new PayRentPanelContextComponent { Value = default });
         state.RequireForUpdate<SpaceActionsPanelContextComponent>();
-        state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
-        state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
-        state.RequireForUpdate<PayRentPanelContextComponent>();
         state.RequireForUpdate<LastPropertyClicked>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        bool shouldUpdate = false;
         foreach ( var _ in SystemAPI.Query<RefRO<MonopolyFlagComponent>>().WithChangeFilter<MonopolyFlagComponent>())
         {
-            // Updating the spaceActionsContext when a monopoly changes for the last property clicked
-            var lastPropertyClicked =  SystemAPI.GetSingleton<LastPropertyClicked>();
-            if (lastPropertyClicked.entity != Entity.Null)
-            {
-                // TODO: This code is getting repetive
-                var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(lastPropertyClicked.entity);
-                var owner = SystemAPI.GetComponent<OwnerComponent>(lastPropertyClicked.entity);
-                var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-
-                bool isCurrentOwner = currentPlayerID.Value == owner.ID;
-                SpaceActionsPanelContext spaceActionsContext = new()
-                {
-                    HasMonopoly = hasMonopoly.Value,
-                    IsPlayerOwner = isCurrentOwner
-                };
-
-                SystemAPI.SetSingleton(new SpaceActionsPanelContextComponent { Value = spaceActionsContext });
-                continue;
-            }
+            shouldUpdate = true;
         }
 
-        foreach ( var clickedProperty in 
-                SystemAPI.Query<
-                    RefRO<LastPropertyClicked>
-                >().
-                WithChangeFilter<LastPropertyClicked>())
+        foreach ( var _ in SystemAPI.Query<RefRO<LastPropertyClicked>>().WithChangeFilter<LastPropertyClicked>())
         {
-            var clickedPropertyEntity = clickedProperty.ValueRO.entity;
+            shouldUpdate = true;
+        }
+
+        if (shouldUpdate)
+        {
+            var clickedPropertyEntity = SystemAPI.GetSingleton<LastPropertyClicked>().entity;
             if (clickedPropertyEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(clickedPropertyEntity))
             {
-                PurchaseHousePanelContext purchaseHouseContext = new()
-                {
-                    Name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity).Value,
-                    HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedProperty.ValueRO.entity).Value,
-                    Price = 10,
-                };
-                SystemAPI.SetSingleton(new PurhcaseHousePanelContextComponent { Value = purchaseHouseContext});
-
-                PurchasePropertyPanelContext purchasePropertyPanelContext = new()
-                {
-                    spaceEntity = clickedProperty.ValueRO.entity,
-                    entityManager = state.EntityManager,
-                    playerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
-                };
-                SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
-
-                // -- Updating the SpaceActionsPanelContext --
                 var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(clickedPropertyEntity);
                 var owner = SystemAPI.GetComponent<OwnerComponent>(clickedPropertyEntity);
                 var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
