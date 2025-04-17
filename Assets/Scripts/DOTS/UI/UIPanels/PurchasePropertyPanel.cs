@@ -29,6 +29,7 @@ public class PurchasePropertyPanel : Panel
 
     public void Show(ShowPanelContext context)
     {
+        // TODO: This should be change to only reading context and not entityManager
         var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
         var price = context.entityManager.GetComponentData<PriceComponent>(context.spaceEntity);
         LandOnPropertyName = name.Value;
@@ -38,6 +39,7 @@ public class PurchasePropertyPanel : Panel
         Show();
     }
 
+    // TODO: Remove the function because panels don't appear onLand anymore
     public override void AddAcceptButtonAction(EntityQuery entityQuery)
     {
         OnAcceptButton = () => { 

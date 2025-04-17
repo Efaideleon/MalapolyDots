@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using Assets.Scripts.DOTS.UI.UIPanels;
 using Unity.Entities;
 
-public class PurchasePanelController
+public class PurchaseHousePanelController
 {
     private EntityQuery buyHouseEventBufferQuery;
     public PurchaseHousePanel PurchaseHousePanel { get; private set; }
     // TODO: Add a backdrop visual element and the dispose if not null
 
-    public PurchasePanelController(PurchaseHousePanel purchasePanel)
+    public PurchaseHousePanelController(PurchaseHousePanel purchasePanel)
     {
         PurchaseHousePanel = purchasePanel;
         SubscribeEvents();

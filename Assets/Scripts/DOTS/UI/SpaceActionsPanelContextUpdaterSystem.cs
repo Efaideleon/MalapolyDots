@@ -12,6 +12,11 @@ public struct PurchasePropertyPanelContextComponent : IComponentData
     public PurchasePropertyPanelContext Value;
 }
 
+public struct PayRentPanelContextComponent : IComponentData
+{
+    public PayRentPanelContext Value;
+}
+
 [BurstCompile]
 public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
 {
@@ -20,9 +25,11 @@ public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
     {
         state.EntityManager.CreateSingleton(new SpaceActionsPanelContextComponent { Value = default });
         state.EntityManager.CreateSingleton(new PurchasePropertyPanelContextComponent { Value = default });
+        state.EntityManager.CreateSingleton(new PayRentPanelContextComponent { Value = default });
         state.RequireForUpdate<SpaceActionsPanelContextComponent>();
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
         state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
+        state.RequireForUpdate<PayRentPanelContextComponent>();
         state.RequireForUpdate<LastPropertyClicked>();
     }
 

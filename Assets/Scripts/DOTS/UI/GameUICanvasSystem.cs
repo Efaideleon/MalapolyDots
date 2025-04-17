@@ -43,10 +43,11 @@ public class OverlayPanels : IComponentData
 
 public class PanelControllers : IComponentData
 {
-    public PurchasePanelController purchasePanelController;
+    public PurchaseHousePanelController purchaseHousePanelController;
     public SpaceActionsPanelController spaceActionsPanelController;
     public BackdropController backdropController;
     public PurchasePropertyPanelController purchasePropertyController;
+    public PayRentPanelController payRentPanelController;
 }
 
 public class OnLandPanelsDictionay : IComponentData
@@ -72,7 +73,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
 
-        state.EntityManager.CreateSingleton( new LastPropertyClicked { entity = Entity.Null });
+        state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
 
         // OverLayPanels Entity
         var uiEntity = state.EntityManager.CreateEntity();
@@ -87,7 +88,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var controllerEntity = state.EntityManager.CreateEntity();
         state.EntityManager.AddComponentObject(controllerEntity, new PanelControllers
         {
-            purchasePanelController = null,
+            purchaseHousePanelController = null,
             spaceActionsPanelController = null
         });
 
@@ -140,24 +141,29 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
         var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
 
-        PurchasePropertyPanelContext purchasePropertyPanelContext = new ()
+        PurchasePropertyPanelContext purchasePropertyPanelContext = new()
         {
             playerID = default,
             spaceEntity = default,
             entityManager = default
         };
 
-        PurchaseHousePanelContext purchaseHousePanelContext = new ()
+        PurchaseHousePanelContext purchaseHousePanelContext = new()
         {
             Name = default,
             HousesOwned = default,
             Price = default
         };
 
-        SpaceActionsPanelContext spaceActionsPanelContext = new ()
+        SpaceActionsPanelContext spaceActionsPanelContext = new()
         {
             HasMonopoly = false,
             IsPlayerOwner = false
+        };
+
+        PayRentPanelContext payRentPanelContext = new()
+        {
+            Rent = default
         };
 
         StatsPanel statsPanel = new(topPanelRoot);
@@ -166,6 +172,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
         NoMonopolyYetPanel noMonopolyYetPanel = new(botPanelRoot);
         PurchasePropertyPanel purchasePropertyPanel = new(botPanelRoot);
+        PayRentPanel payRentPanel = new(botPanelRoot);
 
         // Register the panels to hide, such as the ActionsSpace Panel
         // why do we have uiPanels?
@@ -177,9 +184,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         // Loading BuyHouseUIController component.
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-        panelControllers.purchasePanelController = new(purchaseHousePanel);
+        panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
         panelControllers.spaceActionsPanelController = new(
-                spaceActionsPanelContext, 
+                spaceActionsPanelContext,
                 spaceActionsPanel,
                 purchaseHousePanel,
                 noMonopolyYetPanel,
@@ -192,6 +199,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Root);
 
         panelControllers.purchasePropertyController = new(purchasePropertyPanel, purchasePropertyPanelContext);
+        panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
 
         // Setting Dictionary for each SpaceType to Panel;
         Dictionary<SpaceType, OnLandPanel> onLandPanelsDictionary = new()
@@ -232,8 +240,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         // Events Bus
         var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBus>().Build();
         var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
-        panelControllers.purchasePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
+        panelControllers.purchaseHousePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
         panelControllers.purchasePropertyController.SetTransactionEventQuery(transactionEventsQuery);
+        panelControllers.payRentPanelController.SetTransactionEventBusQuery(transactionEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
         {
@@ -245,20 +254,20 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
     {
         // Every frame we are accessing this managed components maybe move this each foreach loop?
         var overlayPanels = SystemAPI.ManagedAPI.GetSingleton<OverlayPanels>();
-        var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>(); 
+        var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
-        foreach (var spaceActionsContext in 
+        foreach (var spaceActionsContext in
                 SystemAPI.Query<
                     RefRO<SpaceActionsPanelContextComponent>
                 >()
                 .WithChangeFilter<SpaceActionsPanelContextComponent>())
         {
-                panelControllers.spaceActionsPanelController.Context = spaceActionsContext.ValueRO.Value;
+            panelControllers.spaceActionsPanelController.Context = spaceActionsContext.ValueRO.Value;
         }
 
         foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
         {
-            foreach (var (playerID, name, money) in 
+            foreach (var (playerID, name, money) in
                     SystemAPI.Query<
                         RefRO<PlayerID>,
                         RefRO<NameComponent>,
@@ -273,7 +282,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
 
-        foreach (var (playerID, money) in 
+        foreach (var (playerID, money) in
                 SystemAPI.Query<RefRO<PlayerID>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
         {
             var currPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
@@ -283,26 +292,26 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
 
-        foreach (var purchaseHousePanelContext in 
+        foreach (var purchaseHousePanelContext in
                 SystemAPI.Query<
                     RefRO<PurhcaseHousePanelContextComponent>
                 >()
                 .WithChangeFilter<PurhcaseHousePanelContextComponent>())
         {
-            if (panelControllers.purchasePanelController != null)
+            if (panelControllers.purchaseHousePanelController != null)
             {
-                panelControllers.purchasePanelController.PurchaseHousePanel.Context = purchaseHousePanelContext.ValueRO.Value;
-                panelControllers.purchasePanelController.PurchaseHousePanel.Update();
+                panelControllers.purchaseHousePanelController.PurchaseHousePanel.Context = purchaseHousePanelContext.ValueRO.Value;
+                panelControllers.purchaseHousePanelController.PurchaseHousePanel.Update();
             }
         }
 
-        foreach (var purchasePropertyPanelContext in 
+        foreach (var purchasePropertyPanelContext in
                 SystemAPI.Query<
                     RefRO<PurchasePropertyPanelContextComponent>
                 >()
                 .WithChangeFilter<PurchasePropertyPanelContextComponent>())
         {
-            if (panelControllers.purchasePanelController != null && 
+            if (panelControllers.purchaseHousePanelController != null &&
                     purchasePropertyPanelContext.ValueRO.Value.spaceEntity != Entity.Null)
             {
                 // TODO: not consistent with the PurhcaseHousePanel.
@@ -312,8 +321,20 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
 
+        foreach (var payRentPanelContext in SystemAPI.Query<
+                    RefRO<PayRentPanelContextComponent>
+                >()
+                .WithChangeFilter<PayRentPanelContextComponent>())
+        {
+            if (panelControllers.payRentPanelController != null)
+            {
+                panelControllers.payRentPanelController.Context = payRentPanelContext.ValueRO.Value;
+                panelControllers.payRentPanelController.Update();
+            }
+        }
+
         // When an entity is clicked show the actions panel 
-        foreach ( var clickedProperty in 
+        foreach (var clickedProperty in
                 SystemAPI.Query<
                     RefRW<ClickedPropertyComponent>
                 >()
@@ -334,7 +355,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         break;
                 }
                 // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
-                SystemAPI.SetSingleton( new ClickedPropertyComponent { entity = Entity.Null });
+                SystemAPI.SetSingleton(new ClickedPropertyComponent { entity = Entity.Null });
             }
         }
 
@@ -345,7 +366,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                 case GameState.Rolling:
                     overlayPanels.rollPanel.Show();
                     break;
-                case GameState.Landing: 
+                case GameState.Landing:
                     overlayPanels.rollPanel.Hide();
 
                     var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
@@ -360,7 +381,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                     // Get the correct popup panel to show.
                     var landPanel = landPanels[spaceLandedType];
                     var playerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                    var context = new ShowPanelContext 
+                    var context = new ShowPanelContext
                     {
                         entityManager = state.EntityManager,
                         spaceEntity = spaceLanded.entity,
@@ -380,10 +401,11 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var uiPanels = SystemAPI.ManagedAPI.GetSingleton<OverlayPanels>();
         uiPanels.rollPanel.Dispose();
         var panelsController = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-        panelsController.purchasePanelController.Dispose();
+        panelsController.purchaseHousePanelController.Dispose();
         panelsController.spaceActionsPanelController.Dispose();
         panelsController.backdropController.Dispose();
         panelsController.purchasePropertyController.Dispose();
+        panelsController.payRentPanelController.Dispose();
 
         // First unsubscribe the button.clicked event 
         var onLandPanelsDictionary = state

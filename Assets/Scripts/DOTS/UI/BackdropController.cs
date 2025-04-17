@@ -9,11 +9,11 @@ public class BackdropController
     // Make subscribe to some event that a panel is visible and make the backdrop visible too
     public Button Backdrop { get; private set; } 
     // TODO: With the button just subscribe to it being clicked and then hid the button and the panel
-    public List<VisualElement> PanelsToHide {get; private set; }
+    public List<VisualElement> PanelsToHideRegistry {get; private set; }
 
     public BackdropController(Button backdrop)
     {
-        PanelsToHide = new();
+        PanelsToHideRegistry = new();
         if (backdrop == null)
         {
             UnityEngine.Debug.LogWarning("backdrop is null");
@@ -57,7 +57,7 @@ public class BackdropController
 
     public void HideRegisteredPanels()
     {
-        foreach (var panel in PanelsToHide)
+        foreach (var panel in PanelsToHideRegistry)
         {
             // TODO: Call on the Hide function from the panel here
             // TODO: Use an interface?
@@ -68,6 +68,6 @@ public class BackdropController
 
     public void RegisterPanelToHide(VisualElement panel)
     {
-        PanelsToHide.Add(panel);
+        PanelsToHideRegistry.Add(panel);
     }
 }
