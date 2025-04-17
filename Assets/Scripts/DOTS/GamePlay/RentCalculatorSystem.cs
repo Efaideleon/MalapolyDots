@@ -1,11 +1,14 @@
+using Unity.Burst;
 using Unity.Entities;
 
+[BurstCompile]
 public partial struct RentCalculatorSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         foreach (var (rent, owner, entity) in 
