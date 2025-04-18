@@ -245,18 +245,59 @@
     border-width: 0;
 }
 
-.button-with-border {
+.button-with-border-shell {
     color: white;
-    border-radius: 10px;
     -unity-font-style: bold;
-    border-width: 5px;
-    background-color: rgb(30, 151, 200);
-    border-left-color: rgb(108, 197, 222);
-    border-right-color: rgb(108, 197, 222);
-    border-top-color: rgb(108, 197, 222);
-    border-bottom-color: rgb(0, 100, 159);
-    border-right-width: 2px;
-    border-left-width: 2px;
+    border-width: 0;
+}
+
+.button-shadow {
+    background-color: rgba(38, 38, 38, 0.3);
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: -6px;
+    border-radius: 20px;
+}
+
+.button-border {
+    background-color: rgb(1, 215, 244);
+    -unity-font-style: bold;
+    padding: 0;
+    border-radius: 24px;
+    border-width: 3px;
+    border-color: black;
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    justify-content: flex-end;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+}
+
+.button-border-shadow-element {
+    background-color: rgba(38, 38, 38, 0.63);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    align-items: stretch;
+}
+
+.button-border-top-space {
+    margin-top: 5px;
 }
 
 .panel-button-blue-border-1-shadow {
@@ -279,4 +320,34 @@
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
+}
+
+.button-label {
+    color: white;
+    -unity-font-style: bold;
+    font-size: 20px;
+    margin-top: 0;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    background-color: rgb(22, 119, 229);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 250px;
+    padding-top: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+}
+
+.button-shadow {
+    background-color: rgba(38, 38, 38, 0.3);
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: -6px;
+    border-radius: 20px;
 }
