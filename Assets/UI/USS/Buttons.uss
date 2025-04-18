@@ -10,6 +10,15 @@
     padding: 0;
 }
 
+.shrinkable-button {
+    scale: 1;
+    transform-origin: 50% 50%;
+}
+
+.shrinkable-button:active {
+    scale: 0.8;
+}
+
 .add-sub-button {
     height: 40px;
     color: blanchedalmond;

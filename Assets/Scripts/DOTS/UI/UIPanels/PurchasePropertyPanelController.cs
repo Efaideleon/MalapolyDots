@@ -1,5 +1,6 @@
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 public struct PurchasePropertyPanelContext
 {
@@ -11,10 +12,18 @@ public class PurchasePropertyPanelController
 {
     public PurchasePropertyPanel PurchasePropertyPanel { get; private set; }
     public PurchasePropertyPanelContext Context { get; set; } 
+    public AudioClip ClickSound { get; private set; }
+    public AudioSource AudioSource { get; private set; }
     private EntityQuery transactionEventQuery;
 
-    public PurchasePropertyPanelController(PurchasePropertyPanel purchasePropertyPanel, PurchasePropertyPanelContext context)
+    public PurchasePropertyPanelController(
+            PurchasePropertyPanel purchasePropertyPanel,
+            PurchasePropertyPanelContext context,
+            AudioClip clickSound,
+            AudioSource audioSource)
     {
+        ClickSound = clickSound;
+        AudioSource = audioSource;
         PurchasePropertyPanel = purchasePropertyPanel;
         Context = context;
         SubscribeEvents();
@@ -31,6 +40,12 @@ public class PurchasePropertyPanelController
     private void SubscribeEvents()
     {
         PurchasePropertyPanel.OkButton.clickable.clicked += DispatchEvents;
+        PurchasePropertyPanel.OkButton.clickable.clicked += PlaySound;
+    }
+
+    private void PlaySound()
+    {
+        AudioSource.PlayOneShot(ClickSound);
     }
 
     private void DispatchEvents()
@@ -49,5 +64,6 @@ public class PurchasePropertyPanelController
     public void Dispose()
     {
         PurchasePropertyPanel.OkButton.clickable.clicked -= DispatchEvents;
+        PurchasePropertyPanel.OkButton.clickable.clicked -= PlaySound;
     }
 }

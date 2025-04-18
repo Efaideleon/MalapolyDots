@@ -4,6 +4,7 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 public enum TransactionEventType
 {
@@ -72,6 +73,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<LastPropertyClicked>();
         state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
+        state.RequireForUpdate<AudioSourceComponent>();
+        state.RequireForUpdate<ClickSoundClipComponent>();
 
         state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
         state.EntityManager.CreateSingleton(new OverlayPanels { rollPanel = null, statsPanel = null, purchaseHousePanel = null });
@@ -167,6 +170,17 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         uiEntity.statsPanel = statsPanel;
         uiEntity.purchaseHousePanel = purchaseHousePanel;
 
+        // Getting sound
+        var audioSourceRef = SystemAPI.ManagedAPI.GetSingleton<AudioSourceComponent>();
+        var clickSound = SystemAPI.ManagedAPI.GetSingleton<ClickSoundClipComponent>();
+        if (audioSourceRef.AudioSourceGO == null)
+        {
+            return; // Or disable system state.Enabled = false;
+        }
+
+        // --- Instantiate Prefab ---
+        var audioSourceGO = UnityEngine.Object.Instantiate(audioSourceRef.AudioSourceGO);
+        var audioSource = uiGameObject.GetComponent<AudioSource>();
         // Loading Controllers
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
@@ -177,7 +191,11 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Panel);
 
         panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
-        panelControllers.purchasePropertyPanelController = new(purchasePropertyPanel, purchasePropertyPanelContext);
+        panelControllers.purchasePropertyPanelController = new(
+                purchasePropertyPanel, 
+                purchasePropertyPanelContext,
+                clickSound.Value,
+                audioSource);
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
 
         panelControllers.spaceActionsPanelController = new(
@@ -315,7 +333,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             {
                 var clickData = SystemAPI.GetSingleton<ClickData>();
                 SystemAPI.SetSingleton(new LastPropertyClicked { entity = clickedProperty.ValueRO.entity });
-                UnityEngine.Debug.Log("a property was clicked");
 
                 switch (clickData.Phase)
                 {
