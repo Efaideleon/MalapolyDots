@@ -55,11 +55,6 @@ public class PopupManagers : IComponentData
     public PropertyPopupManager propertyPopupManager;
 }
 
-public class OnLandPanelsDictionay : IComponentData
-{
-    public Dictionary<SpaceType, OnLandPanel> Value;
-}
-
 public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 {
     public void OnCreate(ref SystemState state)
@@ -199,22 +194,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         };
         PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);
         SystemAPI.ManagedAPI.GetSingleton<PopupManagers>().propertyPopupManager = propertyPopupManager;
-        // Setting Dictionary for each SpaceType to Panel;
-        Dictionary<SpaceType, OnLandPanel> onLandPanelsDictionary = new()
-        {
-            { SpaceType.Tax, new TaxPanel(botPanelRoot) },
-            { SpaceType.Jail, new JailPanel(botPanelRoot) },
-            { SpaceType.GoToJail, new GoToJailPanel(botPanelRoot) },
-            { SpaceType.Chance, new ChancePanel(botPanelRoot) },
-            { SpaceType.Go, new GoPanel(botPanelRoot) },
-            { SpaceType.Parking, new ParkingPanel(botPanelRoot) },
-            { SpaceType.Treasure, new TreasurePanel(botPanelRoot) },
-        };
-
-        state.EntityManager.AddComponentObject(state.SystemHandle, new OnLandPanelsDictionay
-        {
-            Value = onLandPanelsDictionary
-        });
 
         // Create RollAmountComponent
         var rollAmountEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
@@ -241,11 +220,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.purchaseHousePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
         panelControllers.purchasePropertyPanelController.SetTransactionEventQuery(transactionEventsQuery);
         panelControllers.payRentPanelController.SetTransactionEventBusQuery(transactionEventsQuery);
-
-        foreach (var onLandPanel in onLandPanelsDictionary.Values)
-        {
-            onLandPanel.AddAcceptButtonAction(transactionEventsQuery);
-        }
     }
 
     public void OnUpdate(ref SystemState state)
@@ -389,29 +363,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
                         var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
                         popupManagers.propertyPopupManager.TriggerPopup();
                     }
-
-                    // Legacy Code
-                    // var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
-                    // var spaceLandedType = SystemAPI
-                    //     .GetComponent<SpaceTypeComponent>(spaceLanded.entity)
-                    //     .Value;
-                    // var landPanels = SystemAPI
-                    //     .ManagedAPI
-                    //     .GetComponent<OnLandPanelsDictionay>(state.SystemHandle)
-                    //     .Value;
-                    //
-                    // // Get the correct popup panel to show.
-                    // var landPanel = landPanels[spaceLandedType];
-                    // var playerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                    // var context = new ShowPanelContext
-                    // {
-                    //     entityManager = state.EntityManager,
-                    //     spaceEntity = spaceLanded.entity,
-                    //     playerID = playerID.Value
-                    // };
-                    // // This landPanel is more like a manager that will determine the correct panel
-                    // // to show for the given space type
-                    // landPanel.Show(context);
                     break;
             }
         }
@@ -428,17 +379,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelsController.backdropController.Dispose();
         panelsController.purchasePropertyPanelController.Dispose();
         panelsController.payRentPanelController.Dispose();
-
-        // First unsubscribe the button.clicked event 
-        var onLandPanelsDictionary = state
-            .EntityManager
-            .GetComponentData<OnLandPanelsDictionay>(state.SystemHandle)
-            .Value;
-
-        foreach (var onLandPanel in onLandPanelsDictionary.Values)
-        {
-            onLandPanel.Dispose();
-        }
     }
 
     //Is there a chance that the OnDestroy method from a system runs before the OnStopRunning of another?
