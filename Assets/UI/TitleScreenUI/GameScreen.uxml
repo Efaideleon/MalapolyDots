@@ -9,6 +9,7 @@
     <ui:Template name="ParkingPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/ParkingPanel.uxml?fileID=9197481963319205126&amp;guid=e99a1a4f0f5ab8044805f8605bc2825f&amp;type=3#ParkingPanel" />
     <ui:Template name="TreasurePanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/TreasurePanel.uxml?fileID=9197481963319205126&amp;guid=69fed211fabec244ab7bd785fdf1f70c&amp;type=3#TreasurePanel" />
     <ui:Template name="PayRentPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PayRentPanel.uxml?fileID=9197481963319205126&amp;guid=1db64a035f464445dac2c140e4f8add7&amp;type=3#PayRentPanel" />
+    <ui:Template name="ChangeTurnButton" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/ChangeTurnButton.uxml?fileID=9197481963319205126&amp;guid=2f871b7e3bae8a44685b61b613220aa6&amp;type=3#ChangeTurnButton" />
     <ui:Template name="PopupMenuPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PurchasePropertyPanel.uxml?fileID=9197481963319205126&amp;guid=cf6f8e7a4e4721b4ab2ec06e4dfbefcd&amp;type=3#PurchasePropertyPanel" />
     <ui:Template name="PurchaseHotelPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PurchaseHotelPanel.uxml?fileID=9197481963319205126&amp;guid=3c20b289ffae50d4584c2cf1250b98e7&amp;type=3#PurchaseHotelPanel" />
     <ui:Template name="BuyHouseNameAndCounterElement" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PurchaseHousePanel.uxml?fileID=9197481963319205126&amp;guid=ff2bfa9f4ec6e417a8a813de19dcd506&amp;type=3#PurchaseHousePanel" />
@@ -30,7 +31,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="game-screen-bottom-container" enabled="true" picking-mode="Ignore" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto;">
-            <ui:VisualElement name="PlayersStatsContainer" style="flex-grow: 0; position: absolute; top: 100px; left: 3%;">
+            <ui:VisualElement name="PlayersStatsContainer" style="flex-grow: 0; position: absolute; top: 100px; left: 3%; display: flex;">
                 <ui:Instance template="PlayerNameMoneyPanel" style="position: relative;" />
                 <ui:Instance template="PlayerNameMoneyPanel" style="position: relative;" />
             </ui:VisualElement>
@@ -43,7 +44,8 @@
             <ui:Instance template="ParkingPanel" name="ParkingPanel" picking-mode="Ignore" style="position: absolute; display: none;" />
             <ui:Instance template="TreasurePanel" name="TreasurePanel" picking-mode="Ignore" style="position: absolute; width: 100%; height: 100%; display: none;" />
             <ui:Instance template="PayRentPanel" name="PayRentPanel" picking-mode="Ignore" style="display: flex; position: absolute;" />
-            <ui:VisualElement picking-mode="Ignore" name="ActionsContainer" style="width: 100%; height: 100%; position: absolute; align-items: center; justify-content: flex-end; align-content: flex-start; flex-direction: column; display: flex;">
+            <ui:Instance template="ChangeTurnButton" name="ChangeTurnButton" style="position: absolute; right: 5%; bottom: 20%;" />
+            <ui:VisualElement picking-mode="Ignore" name="ActionsContainer" style="width: 100%; height: 100%; position: absolute; align-items: center; justify-content: flex-end; align-content: flex-start; flex-direction: column; display: flex; top: auto; left: auto;">
                 <ui:VisualElement picking-mode="Ignore" style="flex-direction: column; flex-grow: 0; justify-content: center; flex-shrink: 1; height: 60%; align-items: center;">
                     <ui:Instance template="PopupMenuPanel" name="PurchasePropertyPanel" picking-mode="Ignore" style="position: absolute; display: flex; height: auto; width: auto;" />
                     <ui:Instance template="PurchaseHotelPanel" name="PurchaseHotelPanel" style="position: absolute; width: 400px; display: none;" />
