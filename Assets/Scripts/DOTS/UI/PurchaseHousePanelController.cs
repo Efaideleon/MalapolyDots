@@ -6,18 +6,20 @@ public class PurchaseHousePanelController
 {
     private EntityQuery buyHouseEventBufferQuery;
     public PurchaseHousePanel PurchaseHousePanel { get; private set; }
-    // TODO: Add a backdrop visual element and the dispose if not null
-
     public PurchaseHousePanelController(PurchaseHousePanel purchasePanel)
     {
         PurchaseHousePanel = purchasePanel;
         SubscribeEvents();
     }
 
+    public void ShowPanel() => PurchaseHousePanel.Show();
+
     public void SetBuyHouseEventQuery(EntityQuery entityQuery)
     {
         buyHouseEventBufferQuery = entityQuery;
     }
+
+    public void ResetNumberOfHouseToBuy() => PurchaseHousePanel.ResetNumOfHousesToBuy();
 
     private void SubscribeEvents()
     {
@@ -29,7 +31,7 @@ public class PurchaseHousePanelController
         PurchaseHousePanel.OnOkClicked -= DispatchHousePurchaseEvents;
     }
 
-    private void DispatchHousePurchaseEvents(ToggleState toggleState, PurchaseHousePanelContext context)
+    private void DispatchHousePurchaseEvents(ToggleState toggleState, int numOfHousesToBuy)
     {
         switch(toggleState)
         {
@@ -37,15 +39,14 @@ public class PurchaseHousePanelController
                 if (buyHouseEventBufferQuery != null)
                 {
                     var eventBuffer = buyHouseEventBufferQuery.GetSingletonBuffer<BuyHouseEvent>();
-                    foreach (var PurchaseEvent in GeneratePurchaseEvents(context))
+                    foreach (var PurchaseEvent in GeneratePurchaseEvents(numOfHousesToBuy))
                     {
-                        UnityEngine.Debug.Log($"Buy a house for {PurchaseEvent.property}");
                         eventBuffer.Add(PurchaseEvent);
                     }
                 }
                 else 
                 {
-                    UnityEngine.Debug.Log("buyHouseEventsQuery not set in PurchasePanelController");
+                    UnityEngine.Debug.LogWarning("buyHouseEventsQuery not set in PurchasePanelController");
                 }
                 break;
             case ToggleState.Sell:
@@ -54,17 +55,12 @@ public class PurchaseHousePanelController
         }
     }
 
-    private List<BuyHouseEvent> GeneratePurchaseEvents(PurchaseHousePanelContext context)
+    private List<BuyHouseEvent> GeneratePurchaseEvents(int numOfHousesToBuy)
     {
         List<BuyHouseEvent> listOfBuyHouseEvents = new();
-        UnityEngine.Debug.Log($"Buying hosues for {context.Name}");
-
-        if (context.Name == PurchaseHousePanel.Context.Name)
+        for (int i = 0; i < numOfHousesToBuy; i++)
         {
-            for (int i = 0; i < PurchaseHousePanel.NumOfHousesToBuy; i++)
-            {
-                listOfBuyHouseEvents.Add(new BuyHouseEvent { property = PurchaseHousePanel.Context.Name });
-            }
+            listOfBuyHouseEvents.Add(new BuyHouseEvent { property = PurchaseHousePanel.Context.Name });
         }
         return listOfBuyHouseEvents;
     }

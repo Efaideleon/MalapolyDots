@@ -26,6 +26,8 @@ public class PurchasePropertyPanelController
         PurchasePropertyPanel.PriceLabel.text = Context.Price.ToString();
     }
 
+    public void ShowPanel() => PurchasePropertyPanel.Show();
+
     private void SubscribeEvents()
     {
         PurchasePropertyPanel.OkButton.clickable.clicked += DispatchEvents;

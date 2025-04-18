@@ -1,5 +1,3 @@
-using Assets.Scripts.DOTS.UI.UIPanels;
-
 public struct SpaceActionsPanelContext
 {
     public bool IsPlayerOwner;
@@ -8,32 +6,32 @@ public struct SpaceActionsPanelContext
 
 public class SpaceActionsPanelController
 {
-    public SpaceActionsPanel SpaceActionsPanel { get; private set; }
-    public PurchaseHousePanel PurchaseHousePanel { get; private set; }
-    public NoMonopolyYetPanel NoMonopolyYetPanel { get; private set; }
-    public PurchasePropertyPanel PurchasePropertyPanel { get; private set; }
     public SpaceActionsPanelContext Context { get; set; }
+    public SpaceActionsPanel SpaceActionsPanel { get; private set; }
+    public NoMonopolyYetPanel NoMonopolyYetPanel { get; private set; }
+    public PurchaseHousePanelController PurchaseHousePanelController { get; private set; }
+    public PurchasePropertyPanelController PurchasePropertyPanelController { get; private set; }
 
     public SpaceActionsPanelController(
             SpaceActionsPanelContext context,
             SpaceActionsPanel panel,
-            PurchaseHousePanel purchaseHousePanel,
+            PurchaseHousePanelController purchaseHousePanelController,
             NoMonopolyYetPanel noMonopolyYetPanel,
-            PurchasePropertyPanel buyPropertyPanel)
+            PurchasePropertyPanelController purchasePropertyPanelController)
     {
         if (panel == null || 
-            purchaseHousePanel == null || 
+            purchaseHousePanelController == null || 
             noMonopolyYetPanel == null ||
-            buyPropertyPanel == null)
+            purchasePropertyPanelController == null)
         {
             UnityEngine.Debug.LogWarning("Panel or PurchaseHousePanel is null");
         }
         else
         {
             SpaceActionsPanel = panel;
-            PurchaseHousePanel = purchaseHousePanel; 
+            PurchaseHousePanelController = purchaseHousePanelController; 
             NoMonopolyYetPanel = noMonopolyYetPanel;
-            PurchasePropertyPanel = buyPropertyPanel;
+            PurchasePropertyPanelController = purchasePropertyPanelController;
             Context = context;
             SubscribeEvents();
         }
@@ -41,8 +39,8 @@ public class SpaceActionsPanelController
 
     private void SubscribeEvents()
     {
-        SpaceActionsPanel.BuyHouseButton.clickable.clicked += HandleBuyButtonClick;
-        SpaceActionsPanel.BuyPropertyButton.clickable.clicked += PurchasePropertyPanel.Show;
+        SpaceActionsPanel.BuyHouseButton.clickable.clicked += HandleBuyHouseButtonClick;
+        SpaceActionsPanel.BuyPropertyButton.clickable.clicked += PurchasePropertyPanelController.ShowPanel;
         NoMonopolyYetPanel.GotItButton.clickable.clicked += NoMonopolyYetPanel.Hide;
     }
 
@@ -51,13 +49,14 @@ public class SpaceActionsPanelController
         // TODO: Here we'll change how the icon looks like
     }
 
-    private void HandleBuyButtonClick()
+    private void HandleBuyHouseButtonClick()
     {
         // TODO: Create a context for this controller too, based on the context the buybutton look and behavior will change
         switch (Context.HasMonopoly)
         {
             case true:
-                PurchaseHousePanel.Show();
+                PurchaseHousePanelController.ResetNumberOfHouseToBuy();
+                PurchaseHousePanelController.ShowPanel();
                 break;
             case false:
                 NoMonopolyYetPanel.Show();
@@ -67,8 +66,8 @@ public class SpaceActionsPanelController
 
     public void Dispose()
     {
-        SpaceActionsPanel.BuyHouseButton.clickable.clicked -= HandleBuyButtonClick;
+        SpaceActionsPanel.BuyHouseButton.clickable.clicked -= HandleBuyHouseButtonClick;
         NoMonopolyYetPanel.GotItButton.clickable.clicked -= NoMonopolyYetPanel.Hide;
-        SpaceActionsPanel.BuyPropertyButton.clickable.clicked -= PurchasePropertyPanel.Show;
+        SpaceActionsPanel.BuyPropertyButton.clickable.clicked -= PurchasePropertyPanelController.ShowPanel;
     }
 }

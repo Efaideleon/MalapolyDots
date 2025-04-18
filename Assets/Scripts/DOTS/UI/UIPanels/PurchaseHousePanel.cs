@@ -23,9 +23,9 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         public Button CloseButton { get; private set; }
         public ToggleControl BuySellToggle { get; private set; }
 
-        public int NumOfHousesToBuy { get; private set; }
+        private int _numOfHousesToBuy; 
         public PurchaseHousePanelContext Context { get { return _context; } set { _context = value;} }
-        public Action<ToggleState, PurchaseHousePanelContext> OnOkClicked;
+        public Action<ToggleState, int> OnOkClicked;
         private PurchaseHousePanelContext _context;
 
         public PurchaseHousePanel(VisualElement root, PurchaseHousePanelContext context)
@@ -113,6 +113,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         }
 
         public void Show() => Panel.style.display = DisplayStyle.Flex;
+
         public void Hide() => Panel.style.display = DisplayStyle.None;
 
         public void HandleOkButtonClicked()
@@ -120,10 +121,12 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
             switch (BuySellToggle.State)
             {
                 case ToggleState.Buy:
-                    OnOkClicked?.Invoke(ToggleState.Buy, _context);
+                    OnOkClicked?.Invoke(ToggleState.Buy, _numOfHousesToBuy);
+                    ResetNumOfHousesToBuy();
                     break;
                 case ToggleState.Sell:
-                    OnOkClicked?.Invoke(ToggleState.Sell, _context);
+                    OnOkClicked?.Invoke(ToggleState.Sell, _numOfHousesToBuy);
+                    ResetNumOfHousesToBuy();
                     break;
             }
         }
@@ -142,13 +145,19 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         // To prevent increase the number of the UI events it no houses can be bought
         private void IncreaseNumOfHouseToBuy()
         {
-            NumOfHousesToBuy++;
+            _numOfHousesToBuy++;
             UpdateNumOfHouseToBuyLabel();
         }
 
         private void DecreaseNumOfHouseToBuy()
         {
-            NumOfHousesToBuy--;
+            _numOfHousesToBuy--;
+            UpdateNumOfHouseToBuyLabel();
+        }
+
+        public void ResetNumOfHousesToBuy()
+        {
+            _numOfHousesToBuy = 0;
             UpdateNumOfHouseToBuyLabel();
         }
 
@@ -156,7 +165,7 @@ namespace Assets.Scripts.DOTS.UI.UIPanels
         {
             if (BuyingHouseCounter != null)
             {
-                BuyingHouseCounter.text = NumOfHousesToBuy.ToString();
+                BuyingHouseCounter.text = _numOfHousesToBuy.ToString();
             }
             else
             {

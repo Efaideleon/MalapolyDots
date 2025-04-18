@@ -46,7 +46,7 @@ public class PanelControllers : IComponentData
     public PurchaseHousePanelController purchaseHousePanelController;
     public SpaceActionsPanelController spaceActionsPanelController;
     public BackdropController backdropController;
-    public PurchasePropertyPanelController purchasePropertyController;
+    public PurchasePropertyPanelController purchasePropertyPanelController;
     public PayRentPanelController payRentPanelController;
 }
 
@@ -172,15 +172,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         uiEntity.statsPanel = statsPanel;
         uiEntity.purchaseHousePanel = purchaseHousePanel;
 
-        // Loading BuyHouseUIController component.
+        // Loading Controllers
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-        panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
-        panelControllers.spaceActionsPanelController = new(
-                spaceActionsPanelContext,
-                spaceActionsPanel,
-                purchaseHousePanel,
-                noMonopolyYetPanel,
-                purchasePropertyPanel);
 
         panelControllers.backdropController = new(backdrop);
         panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
@@ -188,8 +181,16 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Panel);
 
-        panelControllers.purchasePropertyController = new(purchasePropertyPanel, purchasePropertyPanelContext);
+        panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
+        panelControllers.purchasePropertyPanelController = new(purchasePropertyPanel, purchasePropertyPanelContext);
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
+
+        panelControllers.spaceActionsPanelController = new(
+                spaceActionsPanelContext,
+                spaceActionsPanel,
+                panelControllers.purchaseHousePanelController,
+                noMonopolyYetPanel,
+                panelControllers.purchasePropertyPanelController);
 
         PropertyPopupManagerContext propertyPopupManagerContext = new()
         {
@@ -238,7 +239,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBus>().Build();
         var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
         panelControllers.purchaseHousePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
-        panelControllers.purchasePropertyController.SetTransactionEventQuery(transactionEventsQuery);
+        panelControllers.purchasePropertyPanelController.SetTransactionEventQuery(transactionEventsQuery);
         panelControllers.payRentPanelController.SetTransactionEventBusQuery(transactionEventsQuery);
 
         foreach (var onLandPanel in onLandPanelsDictionary.Values)
@@ -312,8 +313,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             {
                 // TODO: not consistent with the PurhcaseHousePanel.
                 // Here we assigned the Context to the controller instead of the panel itself
-                panelControllers.purchasePropertyController.Context = purchasePropertyPanelContext.ValueRO.Value;
-                panelControllers.purchasePropertyController.Update();
+                panelControllers.purchasePropertyPanelController.Context = purchasePropertyPanelContext.ValueRO.Value;
+                panelControllers.purchasePropertyPanelController.Update();
             }
         }
 
@@ -340,6 +341,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             {
                 var clickData = SystemAPI.GetSingleton<ClickData>();
                 SystemAPI.SetSingleton(new LastPropertyClicked { entity = clickedProperty.ValueRO.entity });
+                UnityEngine.Debug.Log("a property was clicked");
 
                 switch (clickData.Phase)
                 {
@@ -424,7 +426,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelsController.purchaseHousePanelController.Dispose();
         panelsController.spaceActionsPanelController.Dispose();
         panelsController.backdropController.Dispose();
-        panelsController.purchasePropertyController.Dispose();
+        panelsController.purchasePropertyPanelController.Dispose();
         panelsController.payRentPanelController.Dispose();
 
         // First unsubscribe the button.clicked event 
