@@ -18,16 +18,15 @@ public class PurchasePropertyPanelController
 
     public PurchasePropertyPanelController(
             PurchasePropertyPanel purchasePropertyPanel,
-            PurchasePropertyPanelContext context,
-            AudioClip clickSound,
-            AudioSource audioSource)
+            PurchasePropertyPanelContext context)
     {
-        ClickSound = clickSound;
-        AudioSource = audioSource;
         PurchasePropertyPanel = purchasePropertyPanel;
         Context = context;
         SubscribeEvents();
     }
+
+    public void SetAudioSource(AudioSource audioSource) => AudioSource = audioSource;
+    public void SetClickSound(AudioClip audioClip) => ClickSound = audioClip;
 
     public void Update()
     {
@@ -43,9 +42,12 @@ public class PurchasePropertyPanelController
         PurchasePropertyPanel.OkButton.clickable.clicked += PlaySound;
     }
 
-    private void PlaySound()
+    private void PlaySound() 
     {
-        AudioSource.PlayOneShot(ClickSound);
+        if (ClickSound != null)
+        {
+            AudioSource?.PlayOneShot(ClickSound);
+        }
     }
 
     private void DispatchEvents()

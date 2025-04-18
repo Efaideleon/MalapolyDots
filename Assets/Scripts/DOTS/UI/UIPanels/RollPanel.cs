@@ -1,30 +1,17 @@
 using UnityEngine.UIElements;
-using Assets.Scripts.DOTS.UI.UIPanels;
-using System;
 
-public class RollPanel : Panel
+public class RollPanel 
 {
     public Button RollButton { get; private set; }
     public Label RollLabel { get; private set; }
+    public VisualElement Panel { get; private set; }
 
-    public Action OnRollButton;
-
-    public RollPanel(VisualElement parent) : base(parent.Q<VisualElement>("RollPanel"))
+    public RollPanel(VisualElement parent)
     {
-        RollButton = Root.Q<Button>("roll-button");
-        RollLabel = Root.Q<Label>("roll-amount-label");
-        Hide();
-    }
-
-    public void AddActionToRollButton(Action action)
-    {
-        OnRollButton = action;
-        RollButton.clickable.clicked += OnRollButton;
-    }
-
-    private void UnsubscribeRollButton()
-    {
-        RollButton.clickable.clicked -= OnRollButton;
+        Panel = parent.Q<VisualElement>("RollPanel");
+        RollButton = Panel.Q<Button>("roll-button");
+        RollLabel = Panel.Q<Label>("roll-amount-label");
+        // Hide();
     }
 
     public void UpdateRollLabel(string text)
@@ -32,15 +19,14 @@ public class RollPanel : Panel
         RollLabel.text = text;
     }
 
-    public override void Show()
+    public void Show() 
     {
-        base.Show();
         UpdateRollLabel("0");
+        Panel.style.display = DisplayStyle.Flex;
         ShowRollButton();
     }
+    public void Hide() => Panel.style.display = DisplayStyle.None;
 
     public void HideRollButton() => RollButton.style.display = DisplayStyle.None;
     public void ShowRollButton() => RollButton.style.display = DisplayStyle.Flex;
-
-    public override void Dispose() => UnsubscribeRollButton();
 }

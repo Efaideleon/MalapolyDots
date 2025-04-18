@@ -40,12 +40,12 @@ public class BuyHouseSystemTest : ECSTestsFixture
         entityManager.SetComponentData(propertyEntity, nameComponent);
 
         var entity = entityManager.CreateEntity();
-        var eventBuffer = entityManager.AddBuffer<BuyHouseEvent>(entity);
+        var eventBuffer = entityManager.AddBuffer<BuyHouseEventBuffer>(entity);
 
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
 
         testWorld.Update();
 
@@ -70,10 +70,10 @@ public class BuyHouseSystemTest : ECSTestsFixture
         entityManager.SetComponentData(propertyEntity, nameComponent);
 
         var entity = entityManager.CreateEntity();
-        var eventBuffer = entityManager.AddBuffer<BuyHouseEvent>(entity);
+        var eventBuffer = entityManager.AddBuffer<BuyHouseEventBuffer>(entity);
 
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
 
         testWorld.Update();
 
@@ -81,8 +81,8 @@ public class BuyHouseSystemTest : ECSTestsFixture
 
         Assert.AreEqual(2, houseCount.Value);
 
-        eventBuffer = entityManager.GetBuffer<BuyHouseEvent>(entity);
-        eventBuffer.Add(new BuyHouseEvent{ property = "Mercado" });
+        eventBuffer = entityManager.GetBuffer<BuyHouseEventBuffer>(entity);
+        eventBuffer.Add(new BuyHouseEventBuffer{ property = "Mercado" });
         testWorld.Update();
 
         var newHouseCount = entityManager.GetComponentData<HouseCount>(propertyEntity);

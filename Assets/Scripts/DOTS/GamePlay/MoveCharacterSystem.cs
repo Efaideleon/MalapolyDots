@@ -54,7 +54,7 @@ public partial struct MoveCharacterSystem : ISystem
                     var rollData = SystemAPI.GetSingleton<RollAmountComponent>();
                     var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
                     int numOfWayPoints = wayPointsBuffer.Length;
-                    int newWayPointIndex = (rollData.Amount + characterWaypoint.ValueRO.Value) % numOfWayPoints;
+                    int newWayPointIndex = (rollData.AmountRolled + characterWaypoint.ValueRO.Value) % numOfWayPoints;
                     var targetPosition = wayPointsBuffer[newWayPointIndex].WayPoint;
 
                     if (MoveToTarget(ref localTransform.ValueRW, targetPosition, moveSpeed))

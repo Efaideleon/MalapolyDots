@@ -53,7 +53,7 @@ public partial struct GamePlaySystem : ISystem
 
         foreach (var rollComponent in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
         {
-            if (rollComponent.ValueRO.Amount > 0)
+            if (rollComponent.ValueRO.AmountRolled > 0)
             {
                 foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                 {

@@ -9,6 +9,11 @@ public class StatsPanel
     public StatsPanel(VisualElement parent)
     {
         Parent = parent;
+        if (Parent == null)
+        {
+            UnityEngine.Debug.Log("Stats panels parent is null");
+        }
+        
         PlayerNameLabel = Parent.Q<Label>("player-name-label");
         PlayerMoneyLabel = Parent.Q<Label>("player-money-label");
     }

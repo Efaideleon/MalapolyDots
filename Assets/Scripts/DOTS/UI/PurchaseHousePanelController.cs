@@ -38,7 +38,7 @@ public class PurchaseHousePanelController
             case ToggleState.Buy:
                 if (buyHouseEventBufferQuery != null)
                 {
-                    var eventBuffer = buyHouseEventBufferQuery.GetSingletonBuffer<BuyHouseEvent>();
+                    var eventBuffer = buyHouseEventBufferQuery.GetSingletonBuffer<BuyHouseEventBuffer>();
                     foreach (var PurchaseEvent in GeneratePurchaseEvents(numOfHousesToBuy))
                     {
                         eventBuffer.Add(PurchaseEvent);
@@ -55,12 +55,12 @@ public class PurchaseHousePanelController
         }
     }
 
-    private List<BuyHouseEvent> GeneratePurchaseEvents(int numOfHousesToBuy)
+    private List<BuyHouseEventBuffer> GeneratePurchaseEvents(int numOfHousesToBuy)
     {
-        List<BuyHouseEvent> listOfBuyHouseEvents = new();
+        List<BuyHouseEventBuffer> listOfBuyHouseEvents = new();
         for (int i = 0; i < numOfHousesToBuy; i++)
         {
-            listOfBuyHouseEvents.Add(new BuyHouseEvent { property = PurchaseHousePanel.Context.Name });
+            listOfBuyHouseEvents.Add(new BuyHouseEventBuffer { property = PurchaseHousePanel.Context.Name });
         }
         return listOfBuyHouseEvents;
     }

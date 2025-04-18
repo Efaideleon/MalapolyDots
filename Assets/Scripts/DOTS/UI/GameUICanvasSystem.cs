@@ -2,7 +2,6 @@ using Assets.Scripts.DOTS.UI.UIPanels;
 using Unity.Entities;
 using Unity.Collections;
 using UnityEngine.UIElements;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
@@ -30,16 +29,9 @@ public struct TransactionEventBus : IComponentData
     public NativeQueue<TransactionEvent> EventQueue;
 }
 
-public struct RollAmountComponent : IComponentData
-{
-    public int Amount;
-}
-
 public class OverlayPanels : IComponentData
 {
     public StatsPanel statsPanel;
-    public RollPanel rollPanel;
-    public PurchaseHousePanel purchaseHousePanel;
 }
 
 public class PanelControllers : IComponentData
@@ -49,6 +41,12 @@ public class PanelControllers : IComponentData
     public BackdropController backdropController;
     public PurchasePropertyPanelController purchasePropertyPanelController;
     public PayRentPanelController payRentPanelController;
+    public RollPanelController rollPanelController;
+}
+
+public struct RollPanelContext : IComponentData
+{
+    public int AmountRolled;
 }
 
 public class PopupManagers : IComponentData
@@ -75,9 +73,12 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
         state.RequireForUpdate<AudioSourceComponent>();
         state.RequireForUpdate<ClickSoundClipComponent>();
+        state.RequireForUpdate<RollAmountComponent>();
+        state.RequireForUpdate<RollEventBuffer>();
+        state.RequireForUpdate<BuyHouseEventBuffer>();
 
         state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
-        state.EntityManager.CreateSingleton(new OverlayPanels { rollPanel = null, statsPanel = null, purchaseHousePanel = null });
+        state.EntityManager.CreateSingleton(new OverlayPanels { statsPanel = null });
         state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
         state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null});
 
@@ -154,6 +155,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             Rent = default
         };
 
+        // TODO: Need a controller for the statsPanel
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
         SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
@@ -162,25 +164,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         PurchasePropertyPanel purchasePropertyPanel = new(botPanelRoot);
         PayRentPanel payRentPanel = new(botPanelRoot);
 
-        // Register the panels to hide, such as the ActionsSpace Panel
-        // why do we have uiPanels?
-        // To put it in components and change them on the OnUpdate loop
-        var uiEntity = SystemAPI.ManagedAPI.GetSingleton<OverlayPanels>();
-        uiEntity.rollPanel = rollPanel;
-        uiEntity.statsPanel = statsPanel;
-        uiEntity.purchaseHousePanel = purchaseHousePanel;
+        var overlayPanels = SystemAPI.ManagedAPI.GetSingleton<OverlayPanels>();
+        overlayPanels.statsPanel = statsPanel;
 
-        // Getting sound
-        var audioSourceRef = SystemAPI.ManagedAPI.GetSingleton<AudioSourceComponent>();
-        var clickSound = SystemAPI.ManagedAPI.GetSingleton<ClickSoundClipComponent>();
-        if (audioSourceRef.AudioSourceGO == null)
-        {
-            return; // Or disable system state.Enabled = false;
-        }
-
-        // --- Instantiate Prefab ---
-        var audioSourceGO = UnityEngine.Object.Instantiate(audioSourceRef.AudioSourceGO);
-        var audioSource = uiGameObject.GetComponent<AudioSource>();
         // Loading Controllers
         var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
@@ -189,15 +175,25 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel.Panel);
         panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Panel);
-
         panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
-        panelControllers.purchasePropertyPanelController = new(
-                purchasePropertyPanel, 
-                purchasePropertyPanelContext,
-                clickSound.Value,
-                audioSource);
+        panelControllers.purchasePropertyPanelController = new(purchasePropertyPanel, purchasePropertyPanelContext);
+
+        // -- Loading Audio --
+        // -- PurchasePropertyPanel --
+        var audioSourceRef = SystemAPI.ManagedAPI.GetSingleton<AudioSourceComponent>();
+        var clickSound = SystemAPI.ManagedAPI.GetSingleton<ClickSoundClipComponent>().Value;
+        if (audioSourceRef.AudioSourceGO != null)
+        {
+            var audioSourceGO = UnityEngine.Object.Instantiate(audioSourceRef.AudioSourceGO);
+            var audioSource = audioSourceGO.GetComponent<AudioSource>();
+            panelControllers.purchasePropertyPanelController.SetAudioSource(audioSource);
+            panelControllers.purchasePropertyPanelController.SetClickSound(clickSound);
+        }
+
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
 
+        RollPanelContext rollPanelContext = new();
+        panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
         panelControllers.spaceActionsPanelController = new(
                 spaceActionsPanelContext,
                 spaceActionsPanel,
@@ -213,31 +209,14 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);
         SystemAPI.ManagedAPI.GetSingleton<PopupManagers>().propertyPopupManager = propertyPopupManager;
 
-        // Create RollAmountComponent
-        var rollAmountEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-        {
-            ComponentType.ReadOnly<RollAmountComponent>(),
-        });
-
-        SystemAPI.SetComponent(rollAmountEntity, new RollAmountComponent { Amount = 0 });
-
         // Button Actions
-        var rollAmountComponent = SystemAPI.QueryBuilder().WithAllRW<RollAmountComponent>().Build();
-        rollPanel.AddActionToRollButton(() =>
-        {
-            // var valueRolled = UnityEngine.Random.Range(1, 6);
-            var valueRolled = 1;
-            rollAmountComponent.GetSingletonRW<RollAmountComponent>().ValueRW.Amount = valueRolled;
-            rollPanel.UpdateRollLabel(valueRolled.ToString());
-            rollPanel.HideRollButton();
-        });
-
-        // Events Bus
+        var rollEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<RollEventBuffer>().Build();
         var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBus>().Build();
-        var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEvent>().Build();
+        var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
         panelControllers.purchaseHousePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
         panelControllers.purchasePropertyPanelController.SetTransactionEventQuery(transactionEventsQuery);
         panelControllers.payRentPanelController.SetTransactionEventBusQuery(transactionEventsQuery);
+        panelControllers.rollPanelController.SetRollAmountQuery(rollEventBufferQuery);
     }
 
     public void OnUpdate(ref SystemState state)
@@ -322,6 +301,13 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
 
+        foreach (var rollAmount in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
+        {
+            RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.AmountRolled };
+            panelControllers.rollPanelController.Context = rollPanelContext;
+            panelControllers.rollPanelController.Update();
+        }
+
         // When an entity is clicked show the actions panel 
         foreach (var clickedProperty in
                 SystemAPI.Query<
@@ -370,10 +356,10 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             switch (gameState.ValueRO.State)
             {
                 case GameState.Rolling:
-                    overlayPanels.rollPanel.Show();
+                    panelControllers.rollPanelController.ShowPanel();
                     break;
                 case GameState.Landing:
-                    overlayPanels.rollPanel.Hide();
+                    panelControllers.rollPanelController.HidePanel();
                     var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
                     if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLanded.entity))
                     {
@@ -387,15 +373,13 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
     public void OnStopRunning(ref SystemState state)
     {
-        // TODO: Rename uiPanels for consistency
-        var uiPanels = SystemAPI.ManagedAPI.GetSingleton<OverlayPanels>();
-        uiPanels.rollPanel.Dispose();
         var panelsController = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+        panelsController.purchasePropertyPanelController.Dispose();
         panelsController.purchaseHousePanelController.Dispose();
         panelsController.spaceActionsPanelController.Dispose();
-        panelsController.backdropController.Dispose();
-        panelsController.purchasePropertyPanelController.Dispose();
         panelsController.payRentPanelController.Dispose();
+        panelsController.rollPanelController.Dispose();
+        panelsController.backdropController.Dispose();
     }
 
     //Is there a chance that the OnDestroy method from a system runs before the OnStopRunning of another?
