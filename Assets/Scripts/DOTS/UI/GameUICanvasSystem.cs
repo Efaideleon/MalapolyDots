@@ -1,6 +1,5 @@
 using Assets.Scripts.DOTS.UI.UIPanels;
 using Unity.Entities;
-using Unity.Collections;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using UnityEngine;
@@ -19,14 +18,9 @@ public struct LastPropertyClicked : IComponentData
     public Entity entity;
 }
 
-public struct TransactionEvent
+public struct TransactionEventBuffer : IBufferElementData
 {
     public TransactionEventType EventType;
-}
-
-public struct TransactionEventBus : IComponentData
-{
-    public NativeQueue<TransactionEvent> EventQueue;
 }
 
 public class OverlayPanels : IComponentData
@@ -42,6 +36,7 @@ public class PanelControllers : IComponentData
     public PurchasePropertyPanelController purchasePropertyPanelController;
     public PayRentPanelController payRentPanelController;
     public RollPanelController rollPanelController;
+    public ChangeTurnPanelController changeTurnPanelController;
 }
 
 public struct RollPanelContext : IComponentData
@@ -76,37 +71,12 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<RollAmountComponent>();
         state.RequireForUpdate<RollEventBuffer>();
         state.RequireForUpdate<BuyHouseEventBuffer>();
+        state.RequireForUpdate<TransactionEventBuffer>();
 
         state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
         state.EntityManager.CreateSingleton(new OverlayPanels { statsPanel = null });
         state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
         state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null});
-
-        // TransactionEvents Entity
-        EntityQuery query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEventBus>());
-        if (query.IsEmpty)
-        {
-            var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-            {
-                ComponentType.ReadOnly<TransactionEventBus>()
-            });
-            SystemAPI.SetComponent(entity, new TransactionEventBus
-            {
-                EventQueue = new NativeQueue<TransactionEvent>(Allocator.Persistent)
-            });
-        }
-        else
-        {
-            var entity = query.GetSingletonEntity();
-            var events = state.EntityManager.GetComponentData<TransactionEventBus>(entity);
-
-            if (events.EventQueue.IsCreated)
-            {
-                events.EventQueue.Dispose();
-                events.EventQueue = new NativeQueue<TransactionEvent>(Allocator.Persistent);
-                state.EntityManager.SetComponentData(entity, events);
-            }
-        }
     }
 
     public void OnStartRunning(ref SystemState state)
@@ -155,6 +125,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             Rent = default
         };
 
+        RollPanelContext rollPanelContext = new();
+
         // TODO: Need a controller for the statsPanel
         StatsPanel statsPanel = new(topPanelRoot);
         RollPanel rollPanel = new(botPanelRoot);
@@ -163,6 +135,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         NoMonopolyYetPanel noMonopolyYetPanel = new(botPanelRoot);
         PurchasePropertyPanel purchasePropertyPanel = new(botPanelRoot);
         PayRentPanel payRentPanel = new(botPanelRoot);
+        ChangeTurnPanel changeTurnPanel = new(botPanelRoot);
 
         var overlayPanels = SystemAPI.ManagedAPI.GetSingleton<OverlayPanels>();
         overlayPanels.statsPanel = statsPanel;
@@ -191,9 +164,8 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         }
 
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
-
-        RollPanelContext rollPanelContext = new();
         panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
+        panelControllers.changeTurnPanelController = new(changeTurnPanel);
         panelControllers.spaceActionsPanelController = new(
                 spaceActionsPanelContext,
                 spaceActionsPanel,
@@ -211,12 +183,13 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         // Button Actions
         var rollEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<RollEventBuffer>().Build();
-        var transactionEventsQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBus>().Build();
+        var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
         var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
-        panelControllers.purchaseHousePanelController.SetBuyHouseEventQuery(buyHouseEventBufferQuery);
-        panelControllers.purchasePropertyPanelController.SetTransactionEventQuery(transactionEventsQuery);
-        panelControllers.payRentPanelController.SetTransactionEventBusQuery(transactionEventsQuery);
-        panelControllers.rollPanelController.SetRollAmountQuery(rollEventBufferQuery);
+        panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
+        panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+        panelControllers.payRentPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+        panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
+        panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery);
     }
 
     public void OnUpdate(ref SystemState state)
@@ -382,21 +355,6 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         panelsController.backdropController.Dispose();
     }
 
-    //Is there a chance that the OnDestroy method from a system runs before the OnStopRunning of another?
-    public void OnDestroy(ref SystemState state)
-    {
-        // Then free the TransactionEvents.EventQueue since no anonymous function has a handle to the NativeQueue.
-        var query = state.GetEntityQuery(ComponentType.ReadOnly<TransactionEventBus>());
-        foreach (var entity in query.ToEntityArray(Allocator.Temp))
-        {
-            var transactionEvent = state.EntityManager.GetComponentData<TransactionEventBus>(entity);
-            if (transactionEvent.EventQueue.IsCreated)
-            {
-                transactionEvent.EventQueue.Dispose();
-                transactionEvent.EventQueue = default;
-                state.EntityManager.SetComponentData(entity, transactionEvent);
-            }
-        }
-    }
+    public void OnDestroy(ref SystemState state) { }
 }
 

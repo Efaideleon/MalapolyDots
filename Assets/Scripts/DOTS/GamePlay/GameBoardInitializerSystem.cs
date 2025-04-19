@@ -20,6 +20,10 @@ public partial struct GameBoardInitializerSystem : ISystem
         var rollBusBufferEntity = state.EntityManager.CreateEntity();
         state.EntityManager.AddBuffer<RollEventBuffer>(rollBusBufferEntity);
 
+        // Initializing Roll Event Bus
+        var transactionEventEntity = state.EntityManager.CreateEntity();
+        state.EntityManager.AddBuffer<TransactionEventBuffer>(transactionEventEntity);
+
         // Initializing the Current Player ID
         state.RequireForUpdate<CharacterSelectedBuffer>();
         state.RequireForUpdate<PlayerID>();

@@ -14,7 +14,7 @@ public class PurchaseHousePanelController
 
     public void ShowPanel() => PurchaseHousePanel.Show();
 
-    public void SetBuyHouseEventQuery(EntityQuery entityQuery)
+    public void SetEventBufferQuery(EntityQuery entityQuery)
     {
         buyHouseEventBufferQuery = entityQuery;
     }

@@ -39,6 +39,7 @@ public class PurchasePropertyPanelController
     private void SubscribeEvents()
     {
         PurchasePropertyPanel.OkButton.clickable.clicked += DispatchEvents;
+        PurchasePropertyPanel.OkButton.clickable.clicked += PurchasePropertyPanel.Hide;
         PurchasePropertyPanel.OkButton.clickable.clicked += PlaySound;
     }
 
@@ -52,13 +53,11 @@ public class PurchasePropertyPanelController
 
     private void DispatchEvents()
     {
-        var eventQueue = transactionEventQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-        UnityEngine.Debug.Log("Dispatching buy property event");
-        eventQueue.Enqueue(new TransactionEvent{ EventType = TransactionEventType.Purchase });
-        PurchasePropertyPanel.Hide();
+        var eventBuffer = transactionEventQuery.GetSingletonBuffer<TransactionEventBuffer>();
+        eventBuffer.Add(new TransactionEventBuffer{ EventType = TransactionEventType.Purchase });
     }
 
-    public void SetTransactionEventQuery(EntityQuery query)
+    public void SetEventBufferQuery(EntityQuery query)
     {
         transactionEventQuery = query;
     }
@@ -66,6 +65,7 @@ public class PurchasePropertyPanelController
     public void Dispose()
     {
         PurchasePropertyPanel.OkButton.clickable.clicked -= DispatchEvents;
+        PurchasePropertyPanel.OkButton.clickable.clicked -= PurchasePropertyPanel.Hide;
         PurchasePropertyPanel.OkButton.clickable.clicked -= PlaySound;
     }
 }

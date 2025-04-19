@@ -24,19 +24,22 @@ public partial struct TransactionSystem : ISystem
 
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<CurrentPlayerID>();
-        state.RequireForUpdate<TransactionEventBus>();
+        state.RequireForUpdate<TransactionEventBuffer>();
         state.RequireForUpdate<ClickedPropertyComponent>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var transactionEvents in SystemAPI.Query<RefRW<TransactionEventBus>>().WithChangeFilter<TransactionEventBus>())
+        foreach (var transactionBuffer in SystemAPI.Query<DynamicBuffer<TransactionEventBuffer>>().WithChangeFilter<TransactionEventBuffer>())
         {
+            if (transactionBuffer.Length < 1)
+                continue;
+
             var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
-            while (transactionEvents.ValueRW.EventQueue.TryDequeue(out var transactionEvent))
+            foreach (var transaction in transactionBuffer)
             {
-                if (transactionEvent.EventType == TransactionEventType.PayRent)
+                if (transaction.EventType == TransactionEventType.PayRent)
                 {
                     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
                     {
@@ -68,7 +71,7 @@ public partial struct TransactionSystem : ISystem
                 }
 
                 // Purchase the property if possible
-                if (transactionEvent.EventType == TransactionEventType.Purchase)
+                if (transaction.EventType == TransactionEventType.Purchase)
                 {
                     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
                     {
@@ -90,7 +93,7 @@ public partial struct TransactionSystem : ISystem
                     }
                 }
 
-                if (transactionEvent.EventType == TransactionEventType.ChangeTurn)
+                if (transaction.EventType == TransactionEventType.ChangeTurn)
                 {
                     // Handle each change turn request
                     var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();

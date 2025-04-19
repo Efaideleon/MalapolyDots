@@ -21,6 +21,7 @@ public class PayRentPanelController
     private void SubscribeEvents()
     {
         Panel.AcceptButton.clickable.clicked += DispatchEvents;
+        Panel.AcceptButton.clickable.clicked += Panel.Hide;
     }
 
     public void Update()
@@ -28,23 +29,23 @@ public class PayRentPanelController
         Panel.UpdateRentAmountLabel(Context.Rent.ToString());
     }
 
-    public void SetTransactionEventBusQuery(EntityQuery query)
+    public void SetEventBufferQuery(EntityQuery query)
     {
         TransactionEventBusQuery = query;
     }
 
     private void DispatchEvents()
     {
-        var eventQueue = TransactionEventBusQuery.GetSingletonRW<TransactionEventBus>().ValueRW.EventQueue;
-        eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventType.PayRent });
+        var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
+        eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.PayRent });
         // TODO: Remove this, we don't want to change turns after paying rent.
-        eventQueue.Enqueue(new TransactionEvent { EventType = TransactionEventType.ChangeTurn });
-        Panel.Hide();
+        eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.ChangeTurn });
     }
 
     public void Dispose()
     {
         Panel.AcceptButton.clickable.clicked -= DispatchEvents;
+        Panel.AcceptButton.clickable.clicked -= Panel.Hide;
     }
 }
 

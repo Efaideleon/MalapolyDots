@@ -27,7 +27,7 @@ public class RollPanelController
         Panel.UpdateRollLabel(Context.AmountRolled.ToString());
     }
 
-    public void SetRollAmountQuery(EntityQuery query) => RollAmountQuery = query;
+    public void SetEventBufferQuery(EntityQuery query) => RollAmountQuery = query;
 
     private void DispatchRollEvent()
     {

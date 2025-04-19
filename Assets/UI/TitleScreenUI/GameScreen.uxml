@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="PlayerNameMoneyPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PlayerNameMoneyPanel.uxml?fileID=9197481963319205126&amp;guid=74c9cd4ba6ba0ac4da326a6ba6096459&amp;type=3#PlayerNameMoneyPanel" />
     <ui:Template name="RollPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/RollPanel.uxml?fileID=9197481963319205126&amp;guid=934182adbfd24714d82737df18aceaec&amp;type=3#RollPanel" />
     <ui:Template name="TaxPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/TaxPanel.uxml?fileID=9197481963319205126&amp;guid=93dbccc80018968478db8ebe0d8cc5e3&amp;type=3#TaxPanel" />
     <ui:Template name="JailPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/JailPanel.uxml?fileID=9197481963319205126&amp;guid=c63d18b3aafba044cb690bd81a76a0d4&amp;type=3#JailPanel" />
@@ -29,6 +30,10 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="game-screen-bottom-container" enabled="true" picking-mode="Ignore" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto;">
+            <ui:VisualElement name="PlayersStatsContainer" style="flex-grow: 0; position: absolute; top: 100px; left: 3%;">
+                <ui:Instance template="PlayerNameMoneyPanel" style="position: relative;" />
+                <ui:Instance template="PlayerNameMoneyPanel" style="position: relative;" />
+            </ui:VisualElement>
             <ui:Instance template="RollPanel" name="RollPanel" picking-mode="Ignore" class="roll_template-container" style="position: relative; display: none; width: 100%; height: 100%;" />
             <ui:Instance template="TaxPanel" name="TaxPanel" picking-mode="Ignore" style="position: absolute; display: none;" />
             <ui:Instance template="JailPanel" name="JailPanel" picking-mode="Ignore" style="position: absolute; display: none;" />
