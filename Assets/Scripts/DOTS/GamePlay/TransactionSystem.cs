@@ -110,6 +110,8 @@ public partial struct TransactionSystem : ISystem
                     }
                 }
             }
+
+            transactionBuffer.Clear();
         }
     }
 }

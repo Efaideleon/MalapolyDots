@@ -8,6 +8,11 @@ public struct ArrivedFlag : IComponentData
     public bool Arrived;
 }
 
+public struct IsCurrentCharacterMoving : IComponentData
+{
+    public bool Value;
+}
+
 [BurstCompile]
 public partial struct MoveCharacterSystem : ISystem
 {
@@ -19,15 +24,8 @@ public partial struct MoveCharacterSystem : ISystem
         state.RequireForUpdate<WayPointsTag>();
         state.RequireForUpdate<CurrentPlayerID>();
 
-        var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-        {
-            ComponentType.ReadOnly<ArrivedFlag>()
-        });
-
-        SystemAPI.SetComponent(entity, new ArrivedFlag
-        {
-            Arrived = false
-        });
+        state.EntityManager.CreateSingleton(new IsCurrentCharacterMoving { Value = false });
+        state.EntityManager.CreateSingleton(new ArrivedFlag { Arrived = false });
     }
 
     [BurstCompile]
@@ -40,6 +38,7 @@ public partial struct MoveCharacterSystem : ISystem
         if (currGameState.State == GameState.Walking)
         {
             var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
+            var isCurrentCharacterMoving = SystemAPI.GetSingletonRW<IsCurrentCharacterMoving>();
 
             foreach (
                     var (playerID, characterWaypoint, localTransform, playerEntity) in
@@ -56,9 +55,11 @@ public partial struct MoveCharacterSystem : ISystem
                     int numOfWayPoints = wayPointsBuffer.Length;
                     int newWayPointIndex = (rollData.AmountRolled + characterWaypoint.ValueRO.Value) % numOfWayPoints;
                     var targetPosition = wayPointsBuffer[newWayPointIndex].WayPoint;
+                    isCurrentCharacterMoving.ValueRW.Value = true;
 
                     if (MoveToTarget(ref localTransform.ValueRW, targetPosition, moveSpeed))
                     {
+                        isCurrentCharacterMoving.ValueRW.Value = false;
                         var characterWaypointRW = SystemAPI.GetComponentRW<PlayerWaypointIndex>(playerEntity);
                         characterWaypointRW.ValueRW.Value = newWayPointIndex;
                         foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>())

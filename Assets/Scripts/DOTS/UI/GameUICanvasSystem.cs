@@ -72,6 +72,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<RollEventBuffer>();
         state.RequireForUpdate<BuyHouseEventBuffer>();
         state.RequireForUpdate<TransactionEventBuffer>();
+        state.RequireForUpdate<IsCurrentCharacterMoving>();
 
         state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
         state.EntityManager.CreateSingleton(new OverlayPanels { statsPanel = null });
@@ -126,6 +127,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         };
 
         RollPanelContext rollPanelContext = new();
+        ChangeTurnPanelContext changeTurnPanelContext = new();
 
         // TODO: Need a controller for the statsPanel
         StatsPanel statsPanel = new(topPanelRoot);
@@ -165,7 +167,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
 
         panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
         panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
-        panelControllers.changeTurnPanelController = new(changeTurnPanel);
+        panelControllers.changeTurnPanelController = new(changeTurnPanel, changeTurnPanelContext);
         panelControllers.spaceActionsPanelController = new(
                 spaceActionsPanelContext,
                 spaceActionsPanel,
@@ -279,6 +281,18 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.AmountRolled };
             panelControllers.rollPanelController.Context = rollPanelContext;
             panelControllers.rollPanelController.Update();
+        }
+
+        foreach (var isCurrentCharacterMoving in 
+                SystemAPI.Query<
+                    RefRO<IsCurrentCharacterMoving>
+                >()
+                .WithChangeFilter<IsCurrentCharacterMoving>())
+        {
+            var isVisible = !isCurrentCharacterMoving.ValueRO.Value;
+            ChangeTurnPanelContext changeTurnPanelContext = new(){ IsVisible = isVisible };
+            panelControllers.changeTurnPanelController.Context = changeTurnPanelContext;
+            panelControllers.changeTurnPanelController.UpdateVisibility();
         }
 
         // When an entity is clicked show the actions panel 

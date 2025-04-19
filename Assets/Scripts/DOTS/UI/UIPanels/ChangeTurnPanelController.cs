@@ -1,13 +1,33 @@
 using Unity.Entities;
 
+public struct ChangeTurnPanelContext
+{
+    public bool IsVisible;
+}
+
 public class ChangeTurnPanelController
 {
     public ChangeTurnPanel ChangeTurnPanel { get; private set; }
     public EntityQuery TransactionEventBufferQuery { get; private set; }
-    public ChangeTurnPanelController(ChangeTurnPanel panel)
+    public ChangeTurnPanelContext Context { get; set; }
+
+    public ChangeTurnPanelController(ChangeTurnPanel panel, ChangeTurnPanelContext context)
     {
         ChangeTurnPanel = panel;
+        Context = context;
         SubscribeEvents();
+    }
+
+    public void UpdateVisibility()
+    {
+        if (Context.IsVisible)
+        {
+            ChangeTurnPanel.Show();
+        }
+        else
+        {
+            ChangeTurnPanel.Hide();
+        }
     }
 
     public void SubscribeEvents()
