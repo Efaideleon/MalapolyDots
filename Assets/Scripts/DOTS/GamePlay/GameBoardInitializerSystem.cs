@@ -33,25 +33,21 @@ public partial struct GameBoardInitializerSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
-        var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-        {
-            ComponentType.ReadOnly<CurrentPlayerID>(),
-        });
-
-        int currentPlayerID = default;
 
         var firstCharacter = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>()[0].Value;
-        foreach (var (playerName, playerID) in SystemAPI.Query<RefRO<NameComponent>, RefRW<PlayerID>>())
+        foreach (var (playerName, playerID, e) in 
+                SystemAPI.Query<
+                    RefRO<NameComponent>,
+                    RefRW<PlayerID>
+                >()
+                .WithEntityAccess())
         {
             if (firstCharacter == playerName.ValueRO.Value)
             {
-                currentPlayerID = playerID.ValueRO.Value;
+                var currentPlayerID = playerID.ValueRO.Value;
+                state.EntityManager.CreateSingleton( new CurrentPlayerComponent { entity = e });
+                state.EntityManager.CreateSingleton( new CurrentPlayerID { Value = currentPlayerID });
             }
         }
-
-        SystemAPI.SetComponent(entity, new CurrentPlayerID
-        {
-            Value = currentPlayerID
-        });
     }
 }

@@ -56,10 +56,11 @@ public partial struct MoveCharacterSystem : ISystem
                     int numOfWayPoints = wayPointsBuffer.Length;
                     int finalWayPointIndex = (rollAmount.ValueRO.AmountRolled + characterWaypoint.ValueRO.Value) % numOfWayPoints;
                     SystemAPI.GetSingletonRW<FinalWayPointIndex>().ValueRW.Value = finalWayPointIndex;
+                    SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollAmount.ValueRO.AmountRolled;
                 }
             }
         }
-
+        
         var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
         if (currGameState.State == GameState.Walking)
         {

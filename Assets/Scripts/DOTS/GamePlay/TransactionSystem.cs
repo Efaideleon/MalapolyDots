@@ -24,6 +24,7 @@ public partial struct TransactionSystem : ISystem
 
         state.RequireForUpdate<GameDataComponent>();
         state.RequireForUpdate<CurrentPlayerID>();
+        state.RequireForUpdate<CurrentPlayerComponent>();
         state.RequireForUpdate<TransactionEventBuffer>();
         state.RequireForUpdate<ClickedPropertyComponent>();
     }
@@ -100,12 +101,17 @@ public partial struct TransactionSystem : ISystem
                     var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
                     currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
 
-                    foreach (var (nameComponent, playerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>>())
+                    foreach (var (nameComponent, playerID, entity) in 
+                            SystemAPI.Query<
+                                RefRO<NameComponent>,
+                                RefRO<PlayerID>
+                            >()
+                            .WithEntityAccess())
                     {
                         if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
                         {
-                            var currentPlayerID = SystemAPI.GetSingletonRW<CurrentPlayerID>();
-                            currentPlayerID.ValueRW.Value = playerID.ValueRO.Value;
+                            SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
+                            SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
                         }
                     }
                 }
