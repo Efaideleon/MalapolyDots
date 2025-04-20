@@ -6,6 +6,9 @@ public partial struct RentCalculatorSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
+        state.RequireForUpdate<OwnerComponent>();
+        state.RequireForUpdate<RentComponent>();
+        state.RequireForUpdate<BaseRentBuffer>();
     }
 
     [BurstCompile]

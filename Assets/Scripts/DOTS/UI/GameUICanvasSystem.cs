@@ -73,6 +73,7 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<BuyHouseEventBuffer>();
         state.RequireForUpdate<TransactionEventBuffer>();
         state.RequireForUpdate<IsCurrentCharacterMoving>();
+        state.RequireForUpdate<RollAmountCountDown>();
 
         state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
         state.EntityManager.CreateSingleton(new OverlayPanels { statsPanel = null });
@@ -276,9 +277,9 @@ public partial struct GameUICanvasSystem : ISystem, ISystemStartStop
             }
         }
 
-        foreach (var rollAmount in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
+        foreach (var rollAmount in SystemAPI.Query<RefRO<RollAmountCountDown>>().WithChangeFilter<RollAmountCountDown>())
         {
-            RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.AmountRolled };
+            RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.Value };
             panelControllers.rollPanelController.Context = rollPanelContext;
             panelControllers.rollPanelController.Update();
         }
