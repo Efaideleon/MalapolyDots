@@ -1,48 +1,57 @@
+using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Physics;
 
-public struct ClickedPropertyComponent : IComponentData
+namespace DOTS.GamePlay
 {
-    public Entity entity;
-}
-
-[BurstCompile]
-public partial struct PropertyClickSystem : ISystem
-{
-    [BurstCompile]
-    public void OnCreate(ref SystemState state) 
+    public struct ClickedPropertyComponent : IComponentData
     {
-        state.EntityManager.CreateSingleton<ClickedPropertyComponent>();
-        state.RequireForUpdate<ClickRayCastData>();
-        state.RequireForUpdate<ClickedPropertyComponent>();
+        public Entity entity;
+    }
+
+    public struct LastPropertyClicked : IComponentData
+    {
+        public Entity entity;
     }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state) 
+    public partial struct PropertyClickSystem : ISystem
     {
-        PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
-        var collisionWorld = world.CollisionWorld;
-
-        // doesn't handle double tapping the same stop
-        foreach (var clickRayCastData in SystemAPI.Query<RefRO<ClickRayCastData>>().WithChangeFilter<ClickRayCastData>())
+        [BurstCompile]
+        public void OnCreate(ref SystemState state) 
         {
-            RaycastInput input = new()
+            state.EntityManager.CreateSingleton<ClickedPropertyComponent>();
+            state.RequireForUpdate<ClickRayCastData>();
+            state.RequireForUpdate<ClickedPropertyComponent>();
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state) 
+        {
+            PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
+            var collisionWorld = world.CollisionWorld;
+
+            // doesn't handle double tapping the same stop
+            foreach (var clickRayCastData in SystemAPI.Query<RefRO<ClickRayCastData>>().WithChangeFilter<ClickRayCastData>())
             {
-                Start = clickRayCastData.ValueRO.RayOrigin,
-                End = clickRayCastData.ValueRO.RayEnd,
-                Filter = new CollisionFilter
+                RaycastInput input = new()
                 {
-                    BelongsTo = ~0u,
-                    CollidesWith = ~0u,
-                    GroupIndex = 0
-                }
-            };
-            if (collisionWorld.CastRay(input, out RaycastHit hit))
-            {
-                if (SystemAPI.HasComponent<PropertySpaceTag>(hit.Entity))
+                    Start = clickRayCastData.ValueRO.RayOrigin,
+                    End = clickRayCastData.ValueRO.RayEnd,
+                    Filter = new CollisionFilter
+                    {
+                        BelongsTo = ~0u,
+                        CollidesWith = ~0u,
+                        GroupIndex = 0
+                    }
+                };
+                if (collisionWorld.CastRay(input, out RaycastHit hit))
                 {
-                    SystemAPI.SetSingleton(new ClickedPropertyComponent { entity = hit.Entity });
+                    if (SystemAPI.HasComponent<PropertySpaceTag>(hit.Entity))
+                    {
+                        SystemAPI.SetSingleton(new ClickedPropertyComponent { entity = hit.Entity });
+                    }
                 }
             }
         }

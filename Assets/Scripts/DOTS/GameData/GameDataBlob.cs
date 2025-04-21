@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace DOTS
+namespace DOTS.GameData
 {
     public struct GameDataBlob
     {

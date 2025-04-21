@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct MonopolyFlagComponent : IComponentData
+namespace DOTS.DataComponents
 {
-    public bool Value;
+    public struct MonopolyFlagComponent : IComponentData
+    {
+        public bool Value;
+    }
 }

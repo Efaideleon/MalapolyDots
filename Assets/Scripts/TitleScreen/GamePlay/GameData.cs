@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameData", menuName = "Scriptable Objects/GameData")]
-public class GameData : ScriptableObject
+[CreateAssetMenu(fileName = "Gamedata", menuName = "Scriptable Objects/Gamedata")]
+public class Gamedata : ScriptableObject
 {
     [SerializeField] public int numberOfPlayers;
     [SerializeField] public int numberOfRounds;

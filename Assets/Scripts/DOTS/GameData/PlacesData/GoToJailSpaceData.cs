@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GoToJailSpaceSO", menuName = "Scriptable Objects/GoToJailSpaceSO")]
-public class GoToJailSpaceData: ScriptableObject
+namespace DOTS.GameData.PlacesData
 {
-    public int id;
-    public string Name;
-    public int boardIndex;
+    [CreateAssetMenu(fileName = "GoToJailSpaceSO", menuName = "Scriptable Objects/GoToJailSpaceSO")]
+    public class GoToJailSpaceData: ScriptableObject
+    {
+        public int id;
+        public string Name;
+        public int boardIndex;
+    }
 }

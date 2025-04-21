@@ -1,14 +1,17 @@
 using Unity.Collections;
 using Unity.Entities;
 
-public struct FixedTaxesData
+namespace DOTS.Utilities.TaxesBlob
 {
-    public int id;
-    public FixedString32Bytes Name;
-    public int boardIndex;
-}
+    public struct FixedTaxesData
+    {
+        public int id;
+        public FixedString32Bytes Name;
+        public int boardIndex;
+    }
 
-public struct TaxesDataBlob
-{
-    public BlobArray<FixedTaxesData> taxes;
+    public struct TaxesDataBlob
+    {
+        public BlobArray<FixedTaxesData> taxes;
+    }
 }

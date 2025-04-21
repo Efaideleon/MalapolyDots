@@ -1,7 +1,10 @@
 using Unity.Entities;
 
-public struct HouseCount : IComponentData
+namespace DOTS.DataComponents
 {
-    public int Value;
-}
+    public struct HouseCount : IComponentData
+    {
+        public int Value;
+    }
 
+}

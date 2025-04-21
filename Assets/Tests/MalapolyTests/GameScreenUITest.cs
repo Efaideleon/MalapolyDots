@@ -6,7 +6,6 @@ using Unity.Collections;
 using UnityEngine.UIElements;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.DOTS.UI.UIPanels; // For Panel classes - Assuming this namespace is correct
 using System; // Needed for System.Action if using callback approach
 
 /* Legacy Code for Sample only

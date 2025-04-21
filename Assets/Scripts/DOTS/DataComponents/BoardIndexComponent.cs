@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct BoardIndexComponent : IComponentData
+namespace DOTS.DataComponents
 {
-    public int Value;
+    public struct BoardIndexComponent : IComponentData
+    {
+        public int Value;
+    }
 }

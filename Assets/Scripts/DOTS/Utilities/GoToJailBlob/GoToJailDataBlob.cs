@@ -1,13 +1,16 @@
 using Unity.Collections;
 
-public struct FixedGoToJailData
+namespace DOTS.Utilities.GoToJailBlob
 {
-    public int id;
-    public FixedString32Bytes Name;
-    public int boardIndex;
-}
+    public struct FixedGoToJailData
+    {
+        public int id;
+        public FixedString32Bytes Name;
+        public int boardIndex;
+    }
 
-public struct GoToJailDataBlob
-{
-    public FixedGoToJailData goToJail;
+    public struct GoToJailDataBlob
+    {
+        public FixedGoToJailData goToJail;
+    }
 }

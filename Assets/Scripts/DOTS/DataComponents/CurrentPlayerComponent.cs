@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct CurrentPlayerComponent : IComponentData
+namespace DOTS.DataComponents
 {
-    public Entity entity;
+    public struct CurrentPlayerComponent : IComponentData
+    {
+        public Entity entity;
+    }
 }

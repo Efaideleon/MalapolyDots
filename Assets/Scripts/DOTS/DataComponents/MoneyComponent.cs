@@ -1,7 +1,10 @@
 using Unity.Entities;
 
-public struct MoneyComponent : IComponentData
+namespace DOTS.DataComponents
 {
-    public int Value;
-}
+    public struct MoneyComponent : IComponentData
+    {
+        public int Value;
+    }
 
+}

@@ -12,9 +12,9 @@ namespace UI.GameMenu
         private readonly Button _button5Players;
         private readonly Button _button6Players;
         public Button ConfirmButton { get; private set; }
-        private readonly GameData _gameData;
+        private readonly Gamedata _gameData;
         
-        public NumberOfPlayersScreen(VisualElement root, GameData gameData)
+        public NumberOfPlayersScreen(VisualElement root, Gamedata gameData)
         {
             _root = root.Q<VisualElement>("NumOfPlayerScreen");
             _button2Players = _root.Q<Button>("num-of-players_2-button");

@@ -1,4 +1,7 @@
-public class PropertyConstants
+namespace DOTS.Utilities.Constants
 {
-    public const int Vacant = -1;
+    public class PropertyConstants
+    {
+        public const int Vacant = -1;
+    }
 }

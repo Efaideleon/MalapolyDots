@@ -12,9 +12,9 @@ class NumOfRoundsScreen
     private readonly Button _button12Rounds;
     private readonly Button _button16Rounds;
     public Button ConfirmButton { get; private set; }
-    private readonly GameData _gameData;
+    private readonly Gamedata _gameData;
 
-    public NumOfRoundsScreen(VisualElement root, GameData gameData)
+    public NumOfRoundsScreen(VisualElement root, Gamedata gameData)
     {
         _root = root.Q<VisualElement>("NumOfRoundsScreen");
         _button8Rounds = _root.Q<Button>("8-rounds-button");

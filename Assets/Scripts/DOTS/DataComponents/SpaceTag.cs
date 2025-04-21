@@ -1,19 +1,22 @@
 using Unity.Entities;
 
-public enum SpaceType
+namespace DOTS.DataComponents
 {
-    Property,
-    Treasure,
-    Tax,
-    Chance,
-    Parking,
-    Go,
-    GoToJail,
-    Jail,
-    Default
-}
+    public enum SpaceType
+    {
+        Property,
+        Treasure,
+        Tax,
+        Chance,
+        Parking,
+        Go,
+        GoToJail,
+        Jail,
+        Default
+    }
 
-public struct SpaceTypeComponent : IComponentData
-{
-    public SpaceType Value;
+    public struct SpaceTypeComponent : IComponentData
+    {
+        public SpaceType Value;
+    }
 }

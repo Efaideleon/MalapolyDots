@@ -1,45 +1,48 @@
 using Unity.Entities;
 using UnityEngine;
 
-public class CharactersAuthoring : MonoBehaviour
+namespace DOTS.Characters
 {
-    [SerializeField] public GameObject avocadoPrefab;
-    [SerializeField] public GameObject birdPrefab;
-    [SerializeField] public GameObject coinPrefab;
-    [SerializeField] public GameObject coffeePrefab;
-    [SerializeField] public GameObject liraPrefab;
-    [SerializeField] public GameObject tuctucPrefab;
-
-    class CharactersBaker : Baker<CharactersAuthoring>
+    public class CharactersAuthoring : MonoBehaviour
     {
-        public override void Bake(CharactersAuthoring authoring)
+        [SerializeField] public GameObject avocadoPrefab;
+        [SerializeField] public GameObject birdPrefab;
+        [SerializeField] public GameObject coinPrefab;
+        [SerializeField] public GameObject coffeePrefab;
+        [SerializeField] public GameObject liraPrefab;
+        [SerializeField] public GameObject tuctucPrefab;
+
+        class CharactersBaker : Baker<CharactersAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.None);
+            public override void Bake(CharactersAuthoring authoring)
+            {
+                var entity = GetEntity(authoring, TransformUsageFlags.None);
 
-            var avocadoEntity = GetEntity(authoring.avocadoPrefab, TransformUsageFlags.Dynamic);
-            var birdEntity = GetEntity(authoring.birdPrefab, TransformUsageFlags.Dynamic);
-            var coinEntity = GetEntity(authoring.coinPrefab, TransformUsageFlags.Dynamic);
-            var coffeeEntity = GetEntity(authoring.coffeePrefab, TransformUsageFlags.Dynamic);
-            var liraEntity = GetEntity(authoring.liraPrefab, TransformUsageFlags.Dynamic);
-            var tuctucEntity = GetEntity(authoring.tuctucPrefab, TransformUsageFlags.Dynamic);
+                var avocadoEntity = GetEntity(authoring.avocadoPrefab, TransformUsageFlags.Dynamic);
+                var birdEntity = GetEntity(authoring.birdPrefab, TransformUsageFlags.Dynamic);
+                var coinEntity = GetEntity(authoring.coinPrefab, TransformUsageFlags.Dynamic);
+                var coffeeEntity = GetEntity(authoring.coffeePrefab, TransformUsageFlags.Dynamic);
+                var liraEntity = GetEntity(authoring.liraPrefab, TransformUsageFlags.Dynamic);
+                var tuctucEntity = GetEntity(authoring.tuctucPrefab, TransformUsageFlags.Dynamic);
 
-            var buffer = AddBuffer<CharacterEntityBuffer>(entity);
-            buffer.Add(new CharacterEntityBuffer { Prefab = avocadoEntity});
-            buffer.Add(new CharacterEntityBuffer { Prefab = birdEntity});
-            buffer.Add(new CharacterEntityBuffer { Prefab = coinEntity});
-            buffer.Add(new CharacterEntityBuffer { Prefab = coffeeEntity});
-            buffer.Add(new CharacterEntityBuffer { Prefab = liraEntity});
-            buffer.Add(new CharacterEntityBuffer { Prefab = tuctucEntity});
+                var buffer = AddBuffer<CharacterEntityBuffer>(entity);
+                buffer.Add(new CharacterEntityBuffer { Prefab = avocadoEntity});
+                buffer.Add(new CharacterEntityBuffer { Prefab = birdEntity});
+                buffer.Add(new CharacterEntityBuffer { Prefab = coinEntity});
+                buffer.Add(new CharacterEntityBuffer { Prefab = coffeeEntity});
+                buffer.Add(new CharacterEntityBuffer { Prefab = liraEntity});
+                buffer.Add(new CharacterEntityBuffer { Prefab = tuctucEntity});
 
-            AddComponent(entity, new CharactersBufferTag{});
+                AddComponent(entity, new CharactersBufferTag{});
+            }
         }
     }
-}
 
-public struct CharacterEntityBuffer : IBufferElementData
-{
-    public Entity Prefab;
-}
+    public struct CharacterEntityBuffer : IBufferElementData
+    {
+        public Entity Prefab;
+    }
 
-public struct CharactersBufferTag : IComponentData
-{}
+    public struct CharactersBufferTag : IComponentData
+    {}
+}

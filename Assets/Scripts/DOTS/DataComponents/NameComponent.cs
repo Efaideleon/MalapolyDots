@@ -1,8 +1,11 @@
 using Unity.Entities;
 using Unity.Collections;
 
-public struct NameComponent : IComponentData
+namespace DOTS.DataComponents
 {
-    public FixedString64Bytes Value;
-}
+    public struct NameComponent : IComponentData
+    {
+        public FixedString64Bytes Value;
+    }
 
+}

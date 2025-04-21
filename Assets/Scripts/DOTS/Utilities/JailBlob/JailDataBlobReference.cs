@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct JailDataBlobReference : IComponentData
+namespace DOTS.Utilities.JailBlob
 {
-    public BlobAssetReference<JailDataBlob> jailBlobReference;
+    public struct JailDataBlobReference : IComponentData
+    {
+        public BlobAssetReference<JailDataBlob> jailBlobReference;
+    }
 }

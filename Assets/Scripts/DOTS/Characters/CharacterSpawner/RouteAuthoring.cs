@@ -2,39 +2,42 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class RouteAuthoring : MonoBehaviour
+namespace DOTS.Characters.CharacterSpawner
 {
-    [SerializeField] public GameObject spawnPoint;
-    [SerializeField] public GameObject[] wayPoints;
-
-    public class RouteBaker : Baker<RouteAuthoring>
+    public class RouteAuthoring : MonoBehaviour
     {
-        public override void Bake(RouteAuthoring authoring)
+        [SerializeField] public GameObject spawnPoint;
+        [SerializeField] public GameObject[] wayPoints;
+
+        public class RouteBaker : Baker<RouteAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.None);
-            float3 spawnPosition = authoring.spawnPoint.transform.position;
-            AddComponent(entity, new SpawnPointComponent { Position = spawnPosition });
-
-            var wayPointsBuffer = AddBuffer<WayPointBufferElement>(entity);
-            for (int i = 0; i < authoring.wayPoints.Length; i++)
+            public override void Bake(RouteAuthoring authoring)
             {
-                wayPointsBuffer.Add( new WayPointBufferElement{ WayPoint =  authoring.wayPoints[i].transform.position });
-            }
+                var entity = GetEntity(authoring, TransformUsageFlags.None);
+                float3 spawnPosition = authoring.spawnPoint.transform.position;
+                AddComponent(entity, new SpawnPointComponent { Position = spawnPosition });
 
-            AddComponent(entity, new WayPointsTag{});
+                var wayPointsBuffer = AddBuffer<WayPointBufferElement>(entity);
+                for (int i = 0; i < authoring.wayPoints.Length; i++)
+                {
+                    wayPointsBuffer.Add( new WayPointBufferElement{ WayPoint =  authoring.wayPoints[i].transform.position });
+                }
+
+                AddComponent(entity, new WayPointsTag{});
+            }
         }
     }
-}
 
-public struct SpawnPointComponent : IComponentData
-{
-    public float3 Position;
-}
+    public struct SpawnPointComponent : IComponentData
+    {
+        public float3 Position;
+    }
 
-public struct WayPointBufferElement : IBufferElementData
-{
-    public float3 WayPoint;
-}
+    public struct WayPointBufferElement : IBufferElementData
+    {
+        public float3 WayPoint;
+    }
 
-public struct WayPointsTag : IComponentData
-{}
+    public struct WayPointsTag : IComponentData
+    {}
+}

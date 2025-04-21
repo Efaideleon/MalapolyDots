@@ -1,23 +1,27 @@
+using DOTS.DataComponents;
 using Unity.Entities;
 using UnityEngine;
 
-public class GoSpaceAuthoring : MonoBehaviour
+namespace DOTS.GameSpaces
 {
-	[SerializeField] string Name;
-	
-    class GoSpaceAuthoringBaker : Baker<GoSpaceAuthoring>
+    public class GoSpaceAuthoring : MonoBehaviour
     {
-        public override void Bake(GoSpaceAuthoring authoring)
+        [SerializeField] string Name;
+
+        class GoSpaceAuthoringBaker : Baker<GoSpaceAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new NameComponent { Value = authoring.Name });
-            AddComponent(entity, new SpaceIDComponent { Value = default });
-            AddComponent(entity, new BoardIndexComponent { Value = default });
-            AddComponent(entity, new GoSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Go });
+            public override void Bake(GoSpaceAuthoring authoring)
+            {
+                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+                AddComponent(entity, new NameComponent { Value = authoring.Name });
+                AddComponent(entity, new SpaceIDComponent { Value = default });
+                AddComponent(entity, new BoardIndexComponent { Value = default });
+                AddComponent(entity, new GoSpaceTag { });
+                AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Go });
+            }
         }
     }
-}
 
-public struct GoSpaceTag : IComponentData
-{ }
+    public struct GoSpaceTag : IComponentData
+    { }
+}
