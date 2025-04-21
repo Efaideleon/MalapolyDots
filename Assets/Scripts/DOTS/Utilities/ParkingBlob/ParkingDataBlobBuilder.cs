@@ -1,15 +1,18 @@
 using Unity.Entities;
 
-public static class ParkingDataBlobBuilder
+namespace DOTS.Utilities.ParkingBlob
 {
-    public static BlobAssetReference<ParkingDataBlob> Create(ParkingData parkingData, IBaker baker)
+    public static class ParkingDataBlobBuilder
     {
-        return GenericBlobAssetBuilder.CreateBlobAsset(baker, 
-        (BlobBuilder builder, ref ParkingDataBlob root) => 
+        public static BlobAssetReference<ParkingDataBlob> Create(ParkingData parkingData, IBaker baker)
         {
-            root.parking.id= parkingData.id;
-            root.parking.Name = parkingData.Name;
-            root.parking.boardIndex = parkingData.boardIndex;
-        });
+            return GenericBlobAssetBuilder.CreateBlobAsset(baker, 
+                    (BlobBuilder builder, ref ParkingDataBlob root) => 
+                    {
+                    root.parking.id= parkingData.id;
+                    root.parking.Name = parkingData.Name;
+                    root.parking.boardIndex = parkingData.boardIndex;
+                    });
+        }
     }
 }

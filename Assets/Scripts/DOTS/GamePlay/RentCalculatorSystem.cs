@@ -1,31 +1,36 @@
+using DOTS.DataComponents;
+using DOTS.Utilities.Constants;
 using Unity.Burst;
 using Unity.Entities;
 
-[BurstCompile]
-public partial struct RentCalculatorSystem : ISystem
+namespace DOTS.GamePlay
 {
-    public void OnCreate(ref SystemState state)
-    {
-        state.RequireForUpdate<OwnerComponent>();
-        state.RequireForUpdate<RentComponent>();
-        state.RequireForUpdate<BaseRentBuffer>();
-    }
-
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    public partial struct RentCalculatorSystem : ISystem
     {
-        foreach (var (rent, owner, entity) in 
-                SystemAPI.Query<
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<OwnerComponent>();
+            state.RequireForUpdate<RentComponent>();
+            state.RequireForUpdate<BaseRentBuffer>();
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var (rent, owner, entity) in 
+                    SystemAPI.Query<
                     RefRW<RentComponent>, 
                     RefRO<OwnerComponent>
-                >()
-                .WithEntityAccess()
-                .WithChangeFilter<OwnerComponent>())
-        {
-            var baseRentsBuffer = SystemAPI.GetBuffer<BaseRentBuffer>(entity);
-            if (owner.ValueRO.ID != PropertyConstants.Vacant)
+                    >()
+                    .WithEntityAccess()
+                    .WithChangeFilter<OwnerComponent>())
             {
-                rent.ValueRW.Value = baseRentsBuffer[0].Value;
+                var baseRentsBuffer = SystemAPI.GetBuffer<BaseRentBuffer>(entity);
+                if (owner.ValueRO.ID != PropertyConstants.Vacant)
+                {
+                    rent.ValueRW.Value = baseRentsBuffer[0].Value;
+                }
             }
         }
     }

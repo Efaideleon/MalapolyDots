@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct ParkingDataBlobReference : IComponentData
+namespace DOTS.Utilities.ParkingBlob
 {
-    public BlobAssetReference<ParkingDataBlob> parkingBlobReference;
+    public struct ParkingDataBlobReference : IComponentData
+    {
+        public BlobAssetReference<ParkingDataBlob> parkingBlobReference;
+    }
 }

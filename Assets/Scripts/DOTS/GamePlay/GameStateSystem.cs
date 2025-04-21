@@ -1,75 +1,79 @@
+using DOTS.Characters.CharacterSpawner;
 using Unity.Burst;
 using Unity.Entities;
 
-public enum GameState
+namespace DOTS.GamePlay
 {
-    Rolling,
-    Walking,
-    Landing,
-}
-
-public struct TurnChangedFlag : IComponentData
-{
-    public bool Flag;
-}
-
-public struct GameStateComponent : IComponentData
-{
-    public GameState State;
-}
-
-[BurstCompile]
-public partial struct GamePlaySystem : ISystem
-{
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
+    public enum GameState
     {
-        state.RequireForUpdate<RollAmountComponent>();
-        state.RequireForUpdate<SpawnFlag>();
+        Rolling,
+        Walking,
+        Landing,
+    }
 
-        var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-        {
-            ComponentType.ReadOnly<GameStateComponent>(),
-        });
+    public struct TurnChangedFlag : IComponentData
+    {
+        public bool Flag;
+    }
 
-        SystemAPI.SetComponent(entity, new GameStateComponent
-        {
-            State = GameState.Rolling,
-        });
-
-        state.RequireForUpdate<GameStateComponent>();
+    public struct GameStateComponent : IComponentData
+    {
+        public GameState State;
     }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    public partial struct GamePlaySystem : ISystem
     {
-        foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
-            {
-                gameState.ValueRW.State = GameState.Rolling;
-            }
+            state.RequireForUpdate<RollAmountComponent>();
+            state.RequireForUpdate<SpawnFlag>();
+
+            var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
+                    {
+                    ComponentType.ReadOnly<GameStateComponent>(),
+                    });
+
+            SystemAPI.SetComponent(entity, new GameStateComponent
+                    {
+                    State = GameState.Rolling,
+                    });
+
+            state.RequireForUpdate<GameStateComponent>();
         }
 
-        foreach (var rollComponent in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
         {
-            if (rollComponent.ValueRO.AmountRolled > 0)
+            foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
             {
                 foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                 {
-                    gameState.ValueRW.State = GameState.Walking;
+                    gameState.ValueRW.State = GameState.Rolling;
                 }
             }
-        }
 
-        foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>().WithChangeFilter<ArrivedFlag>())
-        {
-            if (arrivedFlag.ValueRO.Arrived == true)
+            foreach (var rollComponent in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
             {
-                foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+                if (rollComponent.ValueRO.AmountRolled > 0)
                 {
-                    gameState.ValueRW.State = GameState.Landing;
-                    arrivedFlag.ValueRW.Arrived = false;
+                    foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+                    {
+                        gameState.ValueRW.State = GameState.Walking;
+                    }
+                }
+            }
+
+            foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>().WithChangeFilter<ArrivedFlag>())
+            {
+                if (arrivedFlag.ValueRO.Arrived == true)
+                {
+                    foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
+                    {
+                        gameState.ValueRW.State = GameState.Landing;
+                        arrivedFlag.ValueRW.Arrived = false;
+                    }
                 }
             }
         }

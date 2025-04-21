@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct PropertiesDataBlobReference : IComponentData
+namespace DOTS.Utilities.PropertiesBlob
 {
-    public BlobAssetReference<PropertiesDataBlob> propertiesBlobReference;
+    public struct PropertiesDataBlobReference : IComponentData
+    {
+        public BlobAssetReference<PropertiesDataBlob> propertiesBlobReference;
+    }
 }

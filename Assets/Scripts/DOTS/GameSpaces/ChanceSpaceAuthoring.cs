@@ -1,23 +1,27 @@
+using DOTS.DataComponents;
 using Unity.Entities;
 using UnityEngine;
 
-public class ChanceSpaceAuthoring : MonoBehaviour
+namespace DOTS.GameSpaces
 {
-	[SerializeField] string Name;
-
-    class ChanceSpaceAuthoringBaker : Baker<ChanceSpaceAuthoring>
+    public class ChanceSpaceAuthoring : MonoBehaviour
     {
-        public override void Bake(ChanceSpaceAuthoring authoring)
+        [SerializeField] string Name;
+
+        class ChanceSpaceAuthoringBaker : Baker<ChanceSpaceAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new NameComponent { Value = authoring.Name });
-            AddComponent(entity, new SpaceIDComponent { Value = default });
-            AddComponent(entity, new BoardIndexComponent { Value = default });
-            AddComponent(entity, new ChanceSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Chance });
+            public override void Bake(ChanceSpaceAuthoring authoring)
+            {
+                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+                AddComponent(entity, new NameComponent { Value = authoring.Name });
+                AddComponent(entity, new SpaceIDComponent { Value = default });
+                AddComponent(entity, new BoardIndexComponent { Value = default });
+                AddComponent(entity, new ChanceSpaceTag { });
+                AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Chance });
+            }
         }
     }
-}
 
-public struct ChanceSpaceTag : IComponentData
-{ }
+    public struct ChanceSpaceTag : IComponentData
+    { }
+}

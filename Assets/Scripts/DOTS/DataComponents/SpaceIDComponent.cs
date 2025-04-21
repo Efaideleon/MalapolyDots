@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct SpaceIDComponent : IComponentData
+namespace DOTS.DataComponents
 {
-    public int Value;
+    public struct SpaceIDComponent : IComponentData
+    {
+        public int Value;
+    }
 }

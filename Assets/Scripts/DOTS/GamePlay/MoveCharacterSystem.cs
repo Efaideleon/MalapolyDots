@@ -1,121 +1,126 @@
+using DOTS.Characters;
+using DOTS.Characters.CharacterSpawner;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-public struct ArrivedFlag : IComponentData
+namespace DOTS.GamePlay
 {
-    public bool Arrived;
-}
-
-public struct IsCurrentCharacterMoving : IComponentData
-{
-    public bool Value;
-}
-
-public struct FinalWayPointIndex : IComponentData
-{
-    public int Value;
-}
-
-[BurstCompile]
-public partial struct MoveCharacterSystem : ISystem
-{
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
+    public struct ArrivedFlag : IComponentData
     {
-        state.RequireForUpdate<RollAmountComponent>();
-        state.RequireForUpdate<GameStateComponent>();
-        state.RequireForUpdate<WayPointsTag>();
-        state.RequireForUpdate<CurrentPlayerID>();
-        state.RequireForUpdate<FinalWayPointIndex>();
+        public bool Arrived;
+    }
 
-        state.EntityManager.CreateSingleton(new IsCurrentCharacterMoving { Value = false });
-        state.EntityManager.CreateSingleton(new ArrivedFlag { Arrived = false });
-        state.EntityManager.CreateSingleton(new FinalWayPointIndex { Value = default });
+    public struct IsCurrentCharacterMoving : IComponentData
+    {
+        public bool Value;
+    }
+
+    public struct FinalWayPointIndex : IComponentData
+    {
+        public int Value;
     }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    public partial struct MoveCharacterSystem : ISystem
     {
-        var dt = SystemAPI.Time.DeltaTime;
-        var moveSpeed = dt * 5f;
-
-        foreach (var rollAmount in 
-                SystemAPI.Query<
-                    RefRO<RollAmountComponent>
-                >()
-                .WithChangeFilter<RollAmountComponent>())
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-            foreach (var (playerID, characterWaypoint) in SystemAPI.Query<RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>())
+            state.RequireForUpdate<RollAmountComponent>();
+            state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<WayPointsTag>();
+            state.RequireForUpdate<CurrentPlayerID>();
+            state.RequireForUpdate<FinalWayPointIndex>();
+
+            state.EntityManager.CreateSingleton(new IsCurrentCharacterMoving { Value = false });
+            state.EntityManager.CreateSingleton(new ArrivedFlag { Arrived = false });
+            state.EntityManager.CreateSingleton(new FinalWayPointIndex { Value = default });
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            var dt = SystemAPI.Time.DeltaTime;
+            var moveSpeed = dt * 5f;
+
+            foreach (var rollAmount in 
+                    SystemAPI.Query<
+                    RefRO<RollAmountComponent>
+                    >()
+                    .WithChangeFilter<RollAmountComponent>())
             {
-                if (playerID.ValueRO.Value == currentPlayerID.Value)
+                var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                foreach (var (playerID, characterWaypoint) in SystemAPI.Query<RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>())
                 {
-                    var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
-                    int numOfWayPoints = wayPointsBuffer.Length;
-                    int finalWayPointIndex = (rollAmount.ValueRO.AmountRolled + characterWaypoint.ValueRO.Value) % numOfWayPoints;
-                    SystemAPI.GetSingletonRW<FinalWayPointIndex>().ValueRW.Value = finalWayPointIndex;
-                    SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollAmount.ValueRO.AmountRolled;
+                    if (playerID.ValueRO.Value == currentPlayerID.Value)
+                    {
+                        var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
+                        int numOfWayPoints = wayPointsBuffer.Length;
+                        int finalWayPointIndex = (rollAmount.ValueRO.AmountRolled + characterWaypoint.ValueRO.Value) % numOfWayPoints;
+                        SystemAPI.GetSingletonRW<FinalWayPointIndex>().ValueRW.Value = finalWayPointIndex;
+                        SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollAmount.ValueRO.AmountRolled;
+                    }
                 }
             }
-        }
-        
-        var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
-        if (currGameState.State == GameState.Walking)
-        {
-            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
-            var isCurrentCharacterMoving = SystemAPI.GetSingletonRW<IsCurrentCharacterMoving>();
 
-            foreach (
-                    var (playerID, characterWaypoint, localTransform, playerEntity) in
-                    SystemAPI.Query<
+            var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
+            if (currGameState.State == GameState.Walking)
+            {
+                var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
+                var isCurrentCharacterMoving = SystemAPI.GetSingletonRW<IsCurrentCharacterMoving>();
+
+                foreach (
+                        var (playerID, characterWaypoint, localTransform, playerEntity) in
+                        SystemAPI.Query<
                         RefRO<PlayerID>,
                         RefRO<PlayerWaypointIndex>,
                         RefRW<LocalTransform>
-                    >()
-                    .WithEntityAccess())
-            {
-                if (playerID.ValueRO.Value == currentPlayerID)
+                        >()
+                        .WithEntityAccess())
                 {
-                    var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
-                    int numOfWayPoints = wayPointsBuffer.Length;
-                    int nextWayPointIndex = (characterWaypoint.ValueRO.Value + 1) % numOfWayPoints;
-                    var nextTargetPosition = wayPointsBuffer[nextWayPointIndex].WayPoint;
-                    isCurrentCharacterMoving.ValueRW.Value = true;
-
-                    if (MoveToTarget(ref localTransform.ValueRW, nextTargetPosition, moveSpeed))
+                    if (playerID.ValueRO.Value == currentPlayerID)
                     {
-                        SystemAPI.GetComponentRW<PlayerWaypointIndex>(playerEntity).ValueRW.Value = nextWayPointIndex;
-                        int finalWayPointIndex = SystemAPI.GetSingleton<FinalWayPointIndex>().Value;
-                        if (nextWayPointIndex == finalWayPointIndex)
+                        var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
+                        int numOfWayPoints = wayPointsBuffer.Length;
+                        int nextWayPointIndex = (characterWaypoint.ValueRO.Value + 1) % numOfWayPoints;
+                        var nextTargetPosition = wayPointsBuffer[nextWayPointIndex].WayPoint;
+                        isCurrentCharacterMoving.ValueRW.Value = true;
+
+                        if (MoveToTarget(ref localTransform.ValueRW, nextTargetPosition, moveSpeed))
                         {
-                            isCurrentCharacterMoving.ValueRW.Value = false;
-                            SystemAPI.GetSingletonRW<ArrivedFlag>().ValueRW.Arrived = true;
+                            SystemAPI.GetComponentRW<PlayerWaypointIndex>(playerEntity).ValueRW.Value = nextWayPointIndex;
+                            int finalWayPointIndex = SystemAPI.GetSingleton<FinalWayPointIndex>().Value;
+                            if (nextWayPointIndex == finalWayPointIndex)
+                            {
+                                isCurrentCharacterMoving.ValueRW.Value = false;
+                                SystemAPI.GetSingletonRW<ArrivedFlag>().ValueRW.Arrived = true;
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    [BurstCompile]
-    private readonly bool MoveToTarget(ref LocalTransform characterTransform, float3 nextTargetPosition, float moveSpeed)
-    {
-        var pos = characterTransform.Position;
-        var dir = nextTargetPosition - pos;
-
-        var moveDirectionNormalized = math.normalizesafe(dir);
-
-        if (math.distance(characterTransform.Position, nextTargetPosition) < 0.1)
+        [BurstCompile]
+        private readonly bool MoveToTarget(ref LocalTransform characterTransform, float3 nextTargetPosition, float moveSpeed)
         {
-            characterTransform.Position = nextTargetPosition;
-            return true;
-        }
+            var pos = characterTransform.Position;
+            var dir = nextTargetPosition - pos;
 
-        characterTransform.Position += moveDirectionNormalized * moveSpeed;
-        characterTransform.Rotation = quaternion.identity;
-        characterTransform.Scale = 1f;
-        return false;
+            var moveDirectionNormalized = math.normalizesafe(dir);
+
+            if (math.distance(characterTransform.Position, nextTargetPosition) < 0.1)
+            {
+                characterTransform.Position = nextTargetPosition;
+                return true;
+            }
+
+            characterTransform.Position += moveDirectionNormalized * moveSpeed;
+            characterTransform.Rotation = quaternion.identity;
+            characterTransform.Scale = 1f;
+            return false;
+        }
     }
 }

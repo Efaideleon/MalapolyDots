@@ -1,18 +1,22 @@
+using DOTS.DataComponents;
 using Unity.Collections;
 using Unity.Entities;
 
-public struct FixedPropertyData
+namespace DOTS.Utilities.PropertiesBlob
 {
-    public int id;
-    public FixedString32Bytes name;
-    public int boardIndex;
-    public int price;
-    public BlobArray<int> rent;
-    public int rentWithHotel;
-    public PropertyColor color;
-}
+    public struct FixedPropertyData
+    {
+        public int id;
+        public FixedString32Bytes name;
+        public int boardIndex;
+        public int price;
+        public BlobArray<int> rent;
+        public int rentWithHotel;
+        public PropertyColor color;
+    }
 
-public struct PropertiesDataBlob
-{
-    public BlobArray<FixedPropertyData> properties;
+    public struct PropertiesDataBlob
+    {
+        public BlobArray<FixedPropertyData> properties;
+    }
 }

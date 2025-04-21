@@ -1,18 +1,20 @@
 using Unity.Entities;
-using UnityEngine;
 
-public partial struct DebugSystem : ISystem
+namespace DOTS.GamePlay
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct DebugSystem : ISystem
     {
-        state.RequireForUpdate<CurrentPlayerID>();
-    }
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<CurrentPlayerID>();
+        }
 
-    public void OnUpdate(ref SystemState state)
-    {
-        // foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
-        // {
-        //     Debug.Break();
-        // }
+        public void OnUpdate(ref SystemState state)
+        {
+            // foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
+            // {
+            //     Debug.Break();
+            // }
+        }
     }
 }

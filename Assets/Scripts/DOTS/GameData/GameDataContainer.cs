@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace DOTS
+namespace DOTS.GameData
 {
     public class GameDataContainer : MonoBehaviour
     {
-        [SerializeField] public GameData gameData;
+        [SerializeField] public Gamedata gameData;
     }
 }

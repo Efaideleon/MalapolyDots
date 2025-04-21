@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 class CharacterSelectionScreen
@@ -19,14 +18,14 @@ class CharacterSelectionScreen
         private readonly Button _mug;
         private readonly Button _tuctuc;
         public Button ConfirmButton { get; private set; }
-        private readonly GameData _gameData;
+        private readonly Gamedata _gameData;
         private string _selectedCharacter;
 
         private int _numOfCharactersSelected = 0;
 
         public Action OnAllCharactersSelected;
 
-        public CharacterSelectionScreen(VisualElement root, GameData gameData)
+        public CharacterSelectionScreen(VisualElement root, Gamedata gameData)
         {
             _gameData = gameData;
 

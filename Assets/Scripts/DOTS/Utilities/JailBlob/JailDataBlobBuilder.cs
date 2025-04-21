@@ -1,15 +1,18 @@
 using Unity.Entities;
 
-public static class JailDataBlobBuilder
+namespace DOTS.Utilities.JailBlob
 {
-    public static BlobAssetReference<JailDataBlob> Create(JailData jailData, IBaker baker)
+    public static class JailDataBlobBuilder
     {
-        return GenericBlobAssetBuilder.CreateBlobAsset(baker, 
-        (BlobBuilder builder, ref JailDataBlob root) => 
+        public static BlobAssetReference<JailDataBlob> Create(JailData jailData, IBaker baker)
         {
-            root.jail.id= jailData.id;
-            root.jail.Name = jailData.Name;
-            root.jail.boardIndex = jailData.boardIndex;
-        });
+            return GenericBlobAssetBuilder.CreateBlobAsset(baker, 
+                    (BlobBuilder builder, ref JailDataBlob root) => 
+                    {
+                    root.jail.id= jailData.id;
+                    root.jail.Name = jailData.Name;
+                    root.jail.boardIndex = jailData.boardIndex;
+                    });
+        }
     }
 }

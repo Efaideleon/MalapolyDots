@@ -1,3 +1,6 @@
+using DOTS.DataComponents;
+using DOTS.GamePlay;
+using DOTS.GameSpaces;
 using NUnit.Framework;
 using Unity.Entities;
 using Unity.Entities.Tests;

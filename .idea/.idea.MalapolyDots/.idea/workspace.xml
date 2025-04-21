@@ -4,7 +4,182 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12d493fe-654f-44e0-83b0-fa93ecd0ceb2" name="Changes" comment="" />
+    <list default="true" id="12d493fe-654f-44e0-83b0-fa93ecd0ceb2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MalapolyDots/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MalapolyDots/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterSpawner/RouteAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterSpawner/RouteAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterSpawner/SpawnCharactersSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterSpawner/SpawnCharactersSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterSpawner/WayPointsCleaning.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharacterSpawner/WayPointsCleaning.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharactersAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Characters/CharactersAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/BaseRentBuffer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/BaseRentBuffer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/BoardIndexComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/BoardIndexComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/ColorCodeComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/ColorCodeComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/CurrentPlayerComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/CurrentPlayerComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/HouseCount.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/HouseCount.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/MoneyComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/MoneyComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/MonopolyFlagComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/MonopolyFlagComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/NameComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/NameComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/OwnerComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/OwnerComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/RentComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/RentComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/SpaceIDComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/SpaceIDComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/SpacePriceComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/SpacePriceComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/SpaceTag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/SpaceTag.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataArchetype.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataArchetype.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataBlobComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataBlobComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataSOAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/GameDataSOAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/ChancesSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/ChancesSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/GoSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/GoSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/GoToJailSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/GoToJailSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/JailSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/JailSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/ParkingSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/ParkingSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/PropertySpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/PropertySpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/TaxSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/TaxSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/TreasureSpaceData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameData/PlacesData/TreasureSpaceData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/BuyHouseSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/BuyHouseSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/DebugSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/DebugSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/GameBoardInitializerSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/GameBoardInitializerSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/GameBoardSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/GameBoardSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/GameStateSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/GameStateSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/InitializeSpaceDataSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/InitializeSpaceDataSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/MonopolyTrackerSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/MonopolyTrackerSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/MoveCharacterSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/MoveCharacterSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/PropertyClickSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/PropertyClickSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/RentCalculatorSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/RentCalculatorSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/RollAmountCountDownSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/RollAmountCountDownSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/RollSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/RollSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/SpaceDetectorSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/SpaceDetectorSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/TransactionSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GamePlay/TransactionSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/ChanceSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/ChanceSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/GoSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/GoSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/GoToJailSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/GoToJailSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/JailSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/JailSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/ParkingSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/ParkingSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/PropertySpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/PropertySpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/TaxSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/TaxSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/TreasureSpaceAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/GameSpaces/TreasureSpaceAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Malapoly.DOTS.Runtime.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Malapoly.DOTS.Runtime.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/SFX/Sound/SoundAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/SFX/Sound/SoundAuthoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/BackdropController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/BackdropController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/BuyHouseUIController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/BuyHouseUIController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/CanvasAuthoring.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/CanvasAuthoring.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/CanvasReferenceComponent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/CanvasReferenceComponent.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/CustomVisualElements/ToggleControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/CustomVisualElements/ToggleControl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/GameScreenPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/GameScreenPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/GameUICanvasSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/GameUICanvasSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/NoMonopolyYetPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/NoMonopolyYetPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PayRentPanelUpdaterSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PayRentPanelUpdaterSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PurchaseHousePanelController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PurchaseHousePanelController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PurchaseHousePanelUpdaterSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PurchaseHousePanelUpdaterSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PurchasePropertyPanelUpdaterSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/PurchasePropertyPanelUpdaterSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/SpaceActionsPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/SpaceActionsPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/SpaceActionsPanelContextUpdaterSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/SpaceActionsPanelContextUpdaterSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/SpaceActionsPanelController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/SpaceActionsPanelController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/BuyHousePanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/BuyHousePanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/BuyHouseUI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/BuyHouseUI.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ChancePanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ChancePanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ChangeTurnPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ChangeTurnPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ChangeTurnPanelController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ChangeTurnPanelController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/GoPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/GoPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/GoToJailPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/GoToJailPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/JailPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/JailPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/Panel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/Panel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ParkingPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/ParkingPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PayRentPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PayRentPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PayRentPanelController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PayRentPanelController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PropertyPopupManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PropertyPopupManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PropertyPurchasePanelFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PropertyPurchasePanelFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PurchaseHousePanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PurchaseHousePanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PurchasePropertyPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PurchasePropertyPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PurchasePropertyPanelController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/PurchasePropertyPanelController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/RollPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/RollPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/RollPanelController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/RollPanelController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/StatsPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/StatsPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/TaxPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/TaxPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/TreasurePanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/TreasurePanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/UIPanels.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/UIPanels.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/YouBoughPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/UI/UIPanels/YouBoughPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ChancesBlob/ChancesDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ChancesBlob/ChancesDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ChancesBlob/ChancesDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ChancesBlob/ChancesDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ChancesBlob/ChancesDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ChancesBlob/ChancesDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/Constants/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/Constants/Constants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/DestroyGameObjectOnAwake.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/DestroyGameObjectOnAwake.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GenericBlobAssetBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GenericBlobAssetBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoBlob/GoDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoBlob/GoDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoBlob/GoDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoBlob/GoDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoBlob/GoDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoBlob/GoDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoToJailBlob/GoToJailDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoToJailBlob/GoToJailDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoToJailBlob/GoToJailDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoToJailBlob/GoToJailDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoToJailBlob/GoToJailDataBlobReferences.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/GoToJailBlob/GoToJailDataBlobReferences.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JailBlob/JailDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JailBlob/JailDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JailBlob/JailDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JailBlob/JailDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JailBlob/JailDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JailBlob/JailDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JsonDataReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/JsonDataReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ParkingBlob/ParkingDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ParkingBlob/ParkingDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ParkingBlob/ParkingDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ParkingBlob/ParkingDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ParkingBlob/ParkingDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/ParkingBlob/ParkingDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/PropertiesBlob/PropertiesDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/PropertiesBlob/PropertiesDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/PropertiesBlob/PropertiesDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/PropertiesBlob/PropertiesDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/PropertiesBlob/PropertiesDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/PropertiesBlob/PropertiesDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TaxesBlob/TaxesDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TaxesBlob/TaxesDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TaxesBlob/TaxesDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TaxesBlob/TaxesDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TaxesBlob/TaxesDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TaxesBlob/TaxesDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TreasuresBlob/TreasureDataBlob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TreasuresBlob/TreasureDataBlob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TreasuresBlob/TreasureDataBlobBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TreasuresBlob/TreasureDataBlobBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TreasuresBlob/TreasureDataBlobReference.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DOTS/Utilities/TreasuresBlob/TreasureDataBlobReference.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/GamePlay/GameData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/GamePlay/GameData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/CharacterSelectionScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/CharacterSelectionScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/GameMenuScreenManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/GameMenuScreenManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/NumOfRoundsScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/NumOfRoundsScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/NumberOfPlayersScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TitleScreen/UI/GameMenu/NumberOfPlayersScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/BuyHouseSystemTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/BuyHouseSystemTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/GameScreenUITest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/GameScreenUITest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/HouseTrackerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/HouseTrackerTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/PayRentTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/MalapolyTests/PayRentTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tests/Tests.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tests/Tests.asmdef" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -133,6 +308,7 @@
       <workItem from="1744655241472" duration="1082000" />
       <workItem from="1744660248725" duration="699000" />
       <workItem from="1744686514218" duration="57000" />
+      <workItem from="1745193730923" duration="881000" />
     </task>
     <servers />
   </component>

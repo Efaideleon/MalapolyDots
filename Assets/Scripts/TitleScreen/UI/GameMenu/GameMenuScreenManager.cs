@@ -6,7 +6,7 @@ public class GameMenuScreenManager : MonoBehaviour
 {
     [SerializeField] private UIDocument uiDocument;
     [SerializeField] private SceneLoadersSystem sceneLoaderSystem;
-    [SerializeField] private GameData gameData;
+    [SerializeField] private Gamedata gameData;
     private VisualElement _root;
     private const string GameMenuRoot = "game-menu-root";
 

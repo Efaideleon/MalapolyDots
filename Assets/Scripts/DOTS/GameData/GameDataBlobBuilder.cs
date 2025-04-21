@@ -1,11 +1,11 @@
 using Unity.Collections;
 using Unity.Entities;
 
-namespace DOTS
+namespace DOTS.GameData
 {
     public static class GameDataBlobBuilder
     {
-        public static BlobAssetReference<GameDataBlob> Create(GameData gameData)
+        public static BlobAssetReference<GameDataBlob> Create(Gamedata gameData)
         {
             // Builder to help us allocate memory for elements in the blob asset
             // and also allocate memory for the blob asset itself.

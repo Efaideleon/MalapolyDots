@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct TaxesDataBlobReference : IComponentData
+namespace DOTS.Utilities.TaxesBlob
 {
-    public BlobAssetReference<TaxesDataBlob> taxesBlobReference;
+    public struct TaxesDataBlobReference : IComponentData
+    {
+        public BlobAssetReference<TaxesDataBlob> taxesBlobReference;
+    }
 }

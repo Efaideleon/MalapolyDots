@@ -1,11 +1,11 @@
 using Unity.Entities;
 using UnityEngine;
 
-namespace DOTS
+namespace DOTS.GameData
 {
     public class GameDataSOAuthoring : MonoBehaviour
     {
-        [SerializeField] GameData gameDataSO;
+        [SerializeField] Gamedata gameDataSO;
 
         void Start()
         {

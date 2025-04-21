@@ -1,4 +1,7 @@
 #if UNITY_EDITOR
+using DOTS.DataComponents;
+using DOTS.GamePlay;
+using DOTS.Utilities.Constants;
 using NUnit.Framework;
 using Unity.Entities;
 using Unity.Entities.Tests;

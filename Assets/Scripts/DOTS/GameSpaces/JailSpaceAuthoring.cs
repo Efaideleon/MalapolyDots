@@ -1,23 +1,27 @@
+using DOTS.DataComponents;
 using Unity.Entities;
 using UnityEngine;
 
-public class JailSpaceAuthoring : MonoBehaviour
+namespace DOTS.GameSpaces
 {
-    [SerializeField] string Name;
-
-    class JailSpaceAuthoringBaker : Baker<JailSpaceAuthoring>
+    public class JailSpaceAuthoring : MonoBehaviour
     {
-        public override void Bake(JailSpaceAuthoring authoring)
+        [SerializeField] string Name;
+
+        class JailSpaceAuthoringBaker : Baker<JailSpaceAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-            AddComponent(entity, new NameComponent { Value = authoring.Name });
-            AddComponent(entity, new SpaceIDComponent { Value = default });
-            AddComponent(entity, new BoardIndexComponent { Value = default });
-            AddComponent(entity, new JailSpaceTag { });
-            AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Jail });
+            public override void Bake(JailSpaceAuthoring authoring)
+            {
+                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+                AddComponent(entity, new NameComponent { Value = authoring.Name });
+                AddComponent(entity, new SpaceIDComponent { Value = default });
+                AddComponent(entity, new BoardIndexComponent { Value = default });
+                AddComponent(entity, new JailSpaceTag { });
+                AddComponent(entity, new SpaceTypeComponent{ Value = SpaceType.Jail });
+            }
         }
     }
-}
 
-public struct JailSpaceTag : IComponentData
-{ }
+    public struct JailSpaceTag : IComponentData
+    { }
+}

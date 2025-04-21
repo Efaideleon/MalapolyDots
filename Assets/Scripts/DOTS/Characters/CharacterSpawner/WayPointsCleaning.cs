@@ -1,7 +1,10 @@
 using Unity.Entities;
 
-public partial struct WayPointsDisposer : ISystem
+namespace DOTS.Characters.CharacterSpawner
 {
-    public void OnCreate(ref SystemState state)
-    {}
+    public partial struct WayPointsDisposer : ISystem
+    {
+        public void OnCreate(ref SystemState state)
+        {}
+    }
 }

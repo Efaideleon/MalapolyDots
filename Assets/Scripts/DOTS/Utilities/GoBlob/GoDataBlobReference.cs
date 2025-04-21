@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct GoDataBlobReference : IComponentData
+namespace DOTS.Utilities.GoBlob
 {
-    public BlobAssetReference<GoDataBlob> goBlobReference;
+    public struct GoDataBlobReference : IComponentData
+    {
+        public BlobAssetReference<GoDataBlob> goBlobReference;
+    }
 }
