@@ -1,4 +1,4 @@
-using DOTS.GamePlay;
+using DOTS.EventBuses;
 using DOTS.UI.Panels;
 using Unity.Entities;
 

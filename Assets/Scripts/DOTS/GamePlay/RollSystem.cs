@@ -1,3 +1,4 @@
+using DOTS.EventBuses;
 using Unity.Burst;
 using Unity.Entities;
 using Random = Unity.Mathematics.Random;
@@ -13,8 +14,6 @@ namespace DOTS.GamePlay
     {
         public Random Value;
     }
-
-    public struct RollEventBuffer : IBufferElementData { }
 
     public partial struct RollSystem : ISystem
     {

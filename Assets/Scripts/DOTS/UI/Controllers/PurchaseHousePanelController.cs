@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DOTS.GamePlay;
+using DOTS.EventBuses;
 using DOTS.UI.CustomVisualElements;
 using DOTS.UI.Panels;
 using Unity.Entities;

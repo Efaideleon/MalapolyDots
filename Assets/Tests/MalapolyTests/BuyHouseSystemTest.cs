@@ -1,4 +1,5 @@
 using DOTS.DataComponents;
+using DOTS.EventBuses;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
 using NUnit.Framework;

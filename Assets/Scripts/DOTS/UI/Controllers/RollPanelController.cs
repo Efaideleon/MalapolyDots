@@ -1,10 +1,14 @@
-using DOTS.GamePlay;
+using DOTS.EventBuses;
 using DOTS.UI.Panels;
-using DOTS.UI.Systems;
 using Unity.Entities;
 
 namespace DOTS.UI.Controllers
 {
+    public struct RollPanelContext : IComponentData
+    {
+        public int AmountRolled;
+    }
+
     public class RollPanelController
     {
         public RollPanel Panel { get; private set; }

@@ -17,18 +17,6 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            // Initializing Event communication to buy houses
-            var entity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddBuffer<BuyHouseEventBuffer>(entity);
-
-            // Initializing Roll Event Bus
-            var rollBusBufferEntity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddBuffer<RollEventBuffer>(rollBusBufferEntity);
-
-            // Initializing Roll Event Bus
-            var transactionEventEntity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddBuffer<TransactionEventBuffer>(transactionEventEntity);
-
             // Initializing the Current Player ID
             state.RequireForUpdate<CharacterSelectedBuffer>();
             state.RequireForUpdate<PlayerID>();

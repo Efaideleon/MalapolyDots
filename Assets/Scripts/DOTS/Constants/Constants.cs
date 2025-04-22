@@ -1,4 +1,4 @@
-namespace DOTS.Utilities.Constants
+namespace DOTS.Constants
 {
     public class PropertyConstants
     {

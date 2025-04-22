@@ -1,5 +1,6 @@
 using DOTS.Characters;
 using DOTS.DataComponents;
+using DOTS.EventBuses;
 using DOTS.GameData;
 using DOTS.GameSpaces;
 using Unity.Burst;
@@ -10,20 +11,6 @@ namespace DOTS.GamePlay
     public struct CharacterNameIndex : IComponentData
     {
         public int Index;
-    }
-
-    public struct TransactionEventBuffer : IBufferElementData
-    {
-        public TransactionEventType EventType;
-    }
-
-    public enum TransactionEventType
-    {
-        Purchase,
-        ChangeTurn,
-        PayRent,
-        UpgradeHouse,
-        Default
     }
 
     [BurstCompile]

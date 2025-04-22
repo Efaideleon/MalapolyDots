@@ -1,6 +1,6 @@
+using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
-using DOTS.Utilities.Constants;
 using Unity.Collections;
 using Unity.Entities;
 

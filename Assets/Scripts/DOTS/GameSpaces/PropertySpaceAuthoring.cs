@@ -1,5 +1,5 @@
+using DOTS.Constants;
 using DOTS.DataComponents;
-using DOTS.Utilities.Constants;
 using Unity.Entities;
 using UnityEngine;
 

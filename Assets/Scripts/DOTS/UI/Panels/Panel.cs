@@ -4,7 +4,7 @@ using System;
 
 namespace DOTS.UI.Panels
 {
-    public class Panel 
+    public class Panel
     {
         public VisualElement Root { get; private set; }
         public Label TopLabel { get; private set; }

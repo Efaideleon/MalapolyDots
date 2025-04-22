@@ -1,4 +1,3 @@
-using Assets.Scripts.DOTS.UI.UIPanels;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;

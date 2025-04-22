@@ -24,7 +24,7 @@ namespace DOTS.UI.Controllers
                 Backdrop = backdrop;
                 UnityEngine.Debug.Log("Loading Backdrop");
                 SubscribeEvents();
-            }
+           }
             HideBackdrop();
         }
 

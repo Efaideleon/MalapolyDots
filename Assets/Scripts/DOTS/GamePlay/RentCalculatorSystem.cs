@@ -1,5 +1,5 @@
+using DOTS.Constants;
 using DOTS.DataComponents;
-using DOTS.Utilities.Constants;
 using Unity.Burst;
 using Unity.Entities;
 
