@@ -8,13 +8,15 @@ namespace DOTS.UI.Panels
         public Label PriceLabel {get; private set; }
         public Label NameLabel {get; private set; }
         public Button OkButton {get; private set; }
+        public Button DeclineButton {get; private set; }
 
         public PurchasePropertyPanel(VisualElement parent)
         {
             Panel = parent.Q<VisualElement>("PurchasePropertyPanel");
-            PriceLabel = Panel.Q<Label>("price-popup-menu-label");
-            NameLabel = Panel.Q<Label>("buy-popup-menu-label");
-            OkButton = Panel.Q<Button>("popup-menu-accept-button");
+            NameLabel = Panel.Q<Label>("name-label");
+            PriceLabel = Panel.Q<Label>("price-label");
+            OkButton = Panel.Q<Button>("purchase-button");
+            DeclineButton = Panel.Q<Button>("decline-button");
             Hide();
         }
 
