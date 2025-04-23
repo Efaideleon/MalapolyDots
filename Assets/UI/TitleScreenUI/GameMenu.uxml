@@ -4,9 +4,9 @@
     <engine:Template name="CharacterSelectScreen" src="project://database/Assets/UI/TitleScreenUI/CharacterSelectScreen.uxml?fileID=9197481963319205126&amp;guid=0b284d8348eab45798adacf6f221b2f0&amp;type=3#CharacterSelectScreen" />
     <engine:Template name="NumOfRoundsScreen" src="project://database/Assets/UI/TitleScreenUI/NumOfRoundsScreen.uxml?fileID=9197481963319205126&amp;guid=23f39128688e44fce8dfb5100d5ef694&amp;type=3#NumOfRoundsScreen" />
     <engine:VisualElement name="game-menu-root" style="flex-grow: 1; background-color: rgb(84, 0, 255);">
-        <engine:Instance template="TitleScreen" name="TitleScreen" style="position: absolute; width: 100%; height: 100%; display: flex;" />
+        <engine:Instance template="TitleScreen" name="TitleScreen" style="position: absolute; width: 100%; height: 100%; display: none;" />
         <engine:Instance template="NumOfPlayerScreen" name="NumOfPlayerScreen" style="position: absolute; width: 100%; height: 100%; display: none;" />
         <engine:Instance template="CharacterSelectScreen" name="CharacterSelectScreen" style="position: absolute; width: 100%; height: 100%; display: none;" />
-        <engine:Instance template="NumOfRoundsScreen" name="NumOfRoundsScreen" style="position: absolute; width: 100%; height: 100%; display: none;" />
+        <engine:Instance template="NumOfRoundsScreen" name="NumOfRoundsScreen" style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;" />
     </engine:VisualElement>
 </engine:UXML>

@@ -322,6 +322,7 @@
     border-width: 0;
 }
 
+
 .button-label {
     color: white;
     -unity-font-style: bold;
@@ -350,4 +351,31 @@
     position: absolute;
     bottom: -6px;
     border-radius: 20px;
+}
+
+.animated-button {
+    transition: background-color 0.3s ease, scale 0.2s ease;
+}
+
+.animated-button:hover {
+    scale: 1.1;
+}
+
+.choose-button {
+    
+}
+
+.choose-button > Label{
+    background-color: #1260B0;
+}
+
+.choose-button:hover Label{
+    background-color: #458cd6;
+}
+.choose-button:active {
+    scale: 0.8;
+}
+
+.choose-button:active Label{
+    background-color: #b127b1;
 }
