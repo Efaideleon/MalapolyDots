@@ -1,26 +1,33 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/NumOfPlayersScreen.uss?fileID=7433441132597879392&amp;guid=894d526194f2f4c559cdd2bcdf3aacdc&amp;type=3#NumOfPlayersScreen" />
-    <engine:VisualElement name="num-of-players-screen_container" style="flex-grow: 1; justify-content: space-around; align-items: center;">
-        <engine:VisualElement name="num-of-players_title-container" class="num-of-players_title-container">
-            <engine:Label text="Num of Players" name="num-of-players_title-label" class="num-of-players_label-font-size" style="font-size: 100%; -unity-text-align: middle-center;" />
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <engine:VisualElement name="num-of-players-screen_container" style="justify-content: flex-start; align-items: center; width: 980px; height: 1030px; border-left-color: rgb(255, 217, 0); border-right-color: rgb(255, 217, 0); border-top-color: rgb(255, 217, 0); border-bottom-color: rgb(255, 217, 0); background-color: rgb(255, 195, 26); border-top-left-radius: 8%; border-top-right-radius: 8%; border-bottom-right-radius: 8%; border-bottom-left-radius: 8%; overflow: hidden;">
+        <engine:VisualElement name="num-of-players_title-container" class="num-of-players_title-container" style="width: 100%; height: 20%; border-left-color: rgb(199, 49, 49); border-right-color: rgb(199, 49, 49); border-top-color: rgb(199, 49, 49); border-bottom-color: rgb(199, 49, 49); background-color: rgb(196, 30, 34); margin-bottom: 30px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);">
+            <engine:Label text="Number of Players" name="num-of-players_title-label" class="num-of-players_label-font-size" style="font-size: 80%; -unity-text-align: middle-center; color: rgb(255, 255, 255); -unity-font-style: bold;" />
         </engine:VisualElement>
-        <engine:VisualElement name="num-of-players_2-container" class="num-of-players_small-container">
-            <engine:Button text="2" name="num-of-players_2-button" class="num-of-players_num-button" style="font-size: 100%;" />
-        </engine:VisualElement>
-        <engine:VisualElement name="num-of-players_3-container" class="num-of-players_small-container">
-            <engine:Button text="3" name="num-of-players_3-button" class="num-of-players_num-button" style="font-size: 100%;" />
-        </engine:VisualElement>
-        <engine:VisualElement name="num-of-players_4-container" class="num-of-players_small-container">
-            <engine:Button text="4" name="num-of-players_4-button" class="num-of-players_num-button" style="font-size: 100%;" />
-        </engine:VisualElement>
-        <engine:VisualElement name="num-of-players_5-container" class="num-of-players_small-container">
-            <engine:Button text="5" name="num-of-players_5-button" class="num-of-players_num-button" style="font-size: 100%;" />
-        </engine:VisualElement>
-        <engine:VisualElement name="num-of-players_6-container" class="num-of-players_small-container">
-            <engine:Button text="6" name="num-of-players_6-button" class="num-of-players_num-button" style="font-size: 100%;" />
-        </engine:VisualElement>
-        <engine:VisualElement name="num-of-players_confirm-button-container" class="num-of-players_confirm-buttom-container">
-            <engine:Button text="Confirm" name="num-of-players_confirm-button" class="num-of-players_confim-button" style="font-size: 100%;" />
-        </engine:VisualElement>
+        <engine:Button text="8" name="num-of-players_2-button" class="button choose-button" style="margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px; width: 180px; height: 80px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 10%; background-color: rgb(5, 64, 136); border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+            <engine:Label text="2" style="width: 100%; height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px;" />
+        </engine:Button>
+        <engine:Button text="8" name="num-of-players_3-button" class="button choose-button" style="margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px; width: 180px; height: 80px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 10%; background-color: rgb(5, 64, 136); border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+            <engine:Label text="3" style="width: 100%; height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px;" />
+        </engine:Button>
+        <engine:Button text="8" name="num-of-players_4-button" class="button choose-button" style="margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px; width: 180px; height: 80px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 10%; background-color: rgb(5, 64, 136); border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+            <engine:Label text="3" style="width: 100%; height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px;" />
+        </engine:Button>
+        <engine:Button text="8" name="num-of-players_5-button" class="button choose-button" style="margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px; width: 180px; height: 80px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 10%; background-color: rgb(5, 64, 136); border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+            <engine:Label text="3" style="width: 100%; height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px;" />
+        </engine:Button>
+        <engine:Button text="8" name="num-of-players_6-button" class="button choose-button" style="margin-top: 24px; margin-right: 24px; margin-bottom: 24px; margin-left: 24px; width: 180px; height: 80px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 10%; background-color: rgb(5, 64, 136); border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+            <engine:Label text="3" style="width: 100%; height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px;" />
+        </engine:Button>
+        <engine:Button text="8" name="num-of-players_confirm-button" class="button choose-button" style="margin-top: 32px; margin-right: 32px; margin-bottom: 32px; margin-left: 32px; width: 280px; height: 80px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 10%; background-color: rgb(5, 64, 136); border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
+            <engine:Label text="Confirm" style="width: 100%; height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px;" />
+        </engine:Button>
     </engine:VisualElement>
 </engine:UXML>
