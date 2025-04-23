@@ -326,20 +326,25 @@
     border-width: 0;
 }
 
+/* confirm-button */
 .confirm-button {
-    width: 100px;
-    height: 40px;
-    color: white;
-    background-color: rgb(58, 146, 208);
-    border-radius: 5px;
-    -unity-font-style: bold;
-    border-width: 0;
-    -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
-    margin-top: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
+    transition: background-color 0.3s ease, scale 0.2s ease;
 }
+
+.confirm-button > Label {
+    background-color: rgb(58, 146, 208);
+}
+
+.confirm-button:hover Label{
+    background-color: rgb(132, 198, 243);
+}
+
+.confirm-button:active {
+    scale: 0.9;
+}
+/*confirm-button end */
+
+
 
 .button-label {
     color: white;
