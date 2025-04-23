@@ -322,7 +322,6 @@
     border-width: 0;
 }
 
-
 .button-label {
     color: white;
     -unity-font-style: bold;
@@ -362,20 +361,26 @@
 }
 
 .choose-button {
-    
 }
 
-.choose-button > Label{
-    background-color: #1260B0;
+.choose-button > Label {
+    background-color: rgb(18, 96, 176);
+    -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
+    -unity-font-style: normal;
 }
 
-.choose-button:hover Label{
-    background-color: #458cd6;
+.choose-button:hover Label {
+    background-color: rgb(69, 140, 214);
 }
+
 .choose-button:active {
     scale: 0.8;
 }
 
-.choose-button:active Label{
-    background-color: #b127b1;
+.choose-button:active Label {
+    background-color: rgb(177, 39, 177);
+}
+
+.choose-button:checked Label {
+    background-color: rgb(177, 39, 177);
 }
