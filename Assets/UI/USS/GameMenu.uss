@@ -91,10 +91,73 @@ button {
 }
 
 .char-picked-btn-container Button:hover Label {
-    background-color:  rgb(244, 117, 229);
+    background-color: rgb(244, 117, 229);
 }
 
-/* character NOT picked start */
+.char-disabled-btn-container {
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.char-disabled-btn-container Button {
+    color: white;
+    border-radius: 10px;
+    width: 180px;
+    height: 180px;
+    border-color: rgb(0, 0, 0);
+    border-width: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.char-disabled-btn-container Label {
+    background-color: rgb(170, 170, 170);
+    margin: 0;
+    width: 100%;
+    height: 92%;
+    border-radius: 15px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-bottom-color: rgb(225, 225, 225);
+    border-top-color: rgb(186, 186, 186);
+}
+
+.char-disabled-btn-container Button:hover Label {
+    background-color: rgb(170, 170, 170);
+}
+
+.char-disabled-btn-container #highlight {
+    background-color: rgb(209, 209, 209);
+}
+
+.char-disabled-btn-container {
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.char-disabled-btn-container #shadow {
+    background-color: rgb(92, 92, 92);
+}
+
 .char-not-picked-btn-container {
     margin: 10px;
     align-items: center;
@@ -171,7 +234,6 @@ button {
     background-color: rgb(238, 130, 0);
 }
 
-/* character NOT picked end */
 .medium-panel {
     width: 512px;
     height: 512px;
