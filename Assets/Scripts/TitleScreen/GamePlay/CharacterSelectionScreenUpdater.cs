@@ -17,7 +17,7 @@ public partial struct CharacterSelectionScreenUpdater : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var buffer in 
+        foreach (var buffer in
                 SystemAPI.Query<
                 DynamicBuffer<CharacterButtonEventBufffer
                 >>()
@@ -31,14 +31,14 @@ public partial struct CharacterSelectionScreenUpdater : ISystem
             var tempContext = controllers.CharacterSelectionControler.Context;
             foreach (var e in buffer)
             {
-                tempContext.CharacterButtonEventQueue.Enqueue(e.CharacterButton);
+                tempContext.CharacterButton = e.CharacterButton;
+                controllers.CharacterSelectionControler.Context = tempContext;
+                controllers.CharacterSelectionControler.Update();
             }
             buffer.Clear();
-            controllers.CharacterSelectionControler.Context = tempContext;
-            controllers.CharacterSelectionControler.Update();
         }
 
-        foreach (var playerNumber in 
+        foreach (var playerNumber in
                 SystemAPI.Query<
                     RefRO<CurrentPlayerNumberPickingCharacter>
                 >()
@@ -50,28 +50,9 @@ public partial struct CharacterSelectionScreenUpdater : ISystem
             if (controllers.CharacterSelectionControler == null)
                 break;
 
-            controllers.CharacterSelectionControler.Context = new CharacterSelectionContext 
-            { 
-                PlayerNumber = playerNumber.ValueRO.Value 
-            };
-            controllers.CharacterSelectionControler.Update();
-        }
-
-        foreach (var _ in
-                SystemAPI.Query<
-                    DynamicBuffer<ChangeScreenEventBuffer>
-                >()
-                .WithChangeFilter<ChangeScreenEventBuffer>())
-        {
-            var controllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
-            if (controllers == null)
-                break;
-            if (controllers.CharacterSelectionControler == null)
-                break;
-
-            controllers.CharacterSelectionControler.Context = new CharacterSelectionContext 
-            { 
-                PlayerNumber = SystemAPI.GetSingleton<CurrentPlayerNumberPickingCharacter>().Value 
+            controllers.CharacterSelectionControler.Context = new CharacterSelectionContext
+            {
+                PlayerNumber = playerNumber.ValueRO.Value
             };
             controllers.CharacterSelectionControler.Update();
         }

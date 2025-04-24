@@ -101,6 +101,21 @@ public partial struct LoginSystem : ISystem
                     UnityEngine.Debug.Log("Adding element to name buffers");
                     SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = true;
                     SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.CharacterSelectedButton = e.CharacterButtonSelected;
+                    SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>();
+                    if (e.CharacterButtonSelected.State != CharacterButtonState.Choosing)
+                    {
+                        SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
+                            .Add(
+                                    new CharacterButtonEventBufffer 
+                                    { 
+                                        CharacterButton =  new CharacterButton 
+                                        { 
+                                            Name = e.CharacterButtonSelected.Name,
+                                            State = CharacterButtonState.Choosing
+                                        }
+                                    }
+                                );
+                    }
                 }
                 else
                 {
@@ -118,11 +133,11 @@ public partial struct LoginSystem : ISystem
                                 .Add(
                                         new CharacterButtonEventBufffer 
                                         { 
-                                        CharacterButton =  new CharacterButton 
-                                        { 
-                                        Name = e.CharacterButtonSelected.Name,
-                                        State = CharacterButtonState.Choosing
-                                        }
+                                            CharacterButton =  new CharacterButton 
+                                            { 
+                                                Name = e.CharacterButtonSelected.Name,
+                                                State = CharacterButtonState.Choosing
+                                            }
                                         }
                                     );
                         }

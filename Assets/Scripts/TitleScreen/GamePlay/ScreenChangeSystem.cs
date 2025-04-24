@@ -57,6 +57,12 @@ public partial struct ScreenChangeSystem : ISystem
                         if (numberOfPlayers >= 0)
                         {
                             titleScreenControllers.NumOfPlayersController.HideScreen();
+                            // TODO: Maybe make all of this into components for entities?
+                            titleScreenControllers.CharacterSelectionControler.Context = new CharacterSelectionContext
+                            {
+                                PlayerNumber = SystemAPI.GetSingleton<CurrentPlayerNumberPickingCharacter>().Value
+                            };
+                            titleScreenControllers.CharacterSelectionControler.Update();
                             titleScreenControllers.CharacterSelectionControler.ShowScreen();
                         }
                         break;
@@ -68,9 +74,24 @@ public partial struct ScreenChangeSystem : ISystem
                             if (currentPlayer.ValueRO.Value < numOfPlayers + 1)
                             {
                                 var charactersSelected = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
-                                var nameToAdd = SystemAPI.GetSingleton<IsCharacterAvailable>().CharacterSelectedButton.Name;
-                                charactersSelected.Add(new CharacterSelectedNameBuffer { Name = nameToAdd });
+                                var button = SystemAPI.GetSingleton<IsCharacterAvailable>().CharacterSelectedButton;
+                                charactersSelected.Add(new CharacterSelectedNameBuffer { Name = button.Name });
                                 currentPlayer.ValueRW.Value += 1;
+
+                                if (button.State != CharacterButtonState.Unavailable)
+                                {
+                                    SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
+                                        .Add(
+                                                new CharacterButtonEventBufffer 
+                                                { 
+                                                    CharacterButton =  new CharacterButton 
+                                                    { 
+                                                        Name = button.Name,
+                                                        State = CharacterButtonState.Unavailable
+                                                    }
+                                                }
+                                            );
+                                }
                             }
                             if (currentPlayer.ValueRW.Value == numOfPlayers + 1)
                             {

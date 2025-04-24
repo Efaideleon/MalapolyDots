@@ -49,12 +49,6 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         NumberOfPlayersScreen numberOfPlayersScreen = new(titleScreenRoot);
         CharacterSelectionScreen characterSelectionScreen = new(titleScreenRoot);
 
-        CharacterSelectionContext characterSelectionContext = new ()
-        {
-            PlayerNumber = default,
-            CharacterButtonEventQueue = new Queue<CharacterButton>(),
-        };
-
         var titleScreenControllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
         titleScreenControllers.TitleScreenController = new (titleScreen);
         titleScreenControllers.NumOfRoundsController = new (numOfRoundsScreen);
