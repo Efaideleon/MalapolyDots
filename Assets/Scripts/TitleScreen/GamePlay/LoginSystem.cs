@@ -1,10 +1,9 @@
-using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 
 public struct CharacterSelectedEventBuffer : IBufferElementData
 {
-    public FixedString64Bytes Name;
+    public CharacterButton CharacterButtonSelected;
 }
 
 public struct CurrentPlayerNumberPickingCharacter : IComponentData
@@ -15,7 +14,7 @@ public struct CurrentPlayerNumberPickingCharacter : IComponentData
 public struct IsCharacterAvailable : IComponentData
 {
     public bool Value;
-    public FixedString64Bytes Name;
+    public CharacterButton CharacterSelectedButton;
 }
 
 public struct NumberOfRoundsEventBuffer : IBufferElementData
@@ -46,7 +45,7 @@ public partial struct LoginSystem : ISystem
         state.EntityManager.CreateSingletonBuffer<CharacterSelectedEventBuffer>();
         state.EntityManager.CreateSingletonBuffer<NumberOfRoundsEventBuffer>();
         state.EntityManager.CreateSingletonBuffer<NumberOfPlayersEventBuffer>();
-        state.EntityManager.CreateSingleton( new IsCharacterAvailable { Value = false, Name = default });
+        state.EntityManager.CreateSingleton( new IsCharacterAvailable { Value = false, CharacterSelectedButton = default });
         state.EntityManager.CreateSingleton( new CurrentPlayerNumberPickingCharacter { Value = 1 });
         var loginEntity = state.EntityManager.CreateEntity( stackalloc ComponentType[] 
         {
@@ -60,6 +59,7 @@ public partial struct LoginSystem : ISystem
         state.RequireForUpdate<IsCharacterAvailable>();
         state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
         state.RequireForUpdate<CharacterSelectedNameBuffer>();
+        state.RequireForUpdate<CharacterButtonEventBufffer>();
     }
 
     public void OnUpdate(ref SystemState state)
@@ -96,29 +96,45 @@ public partial struct LoginSystem : ISystem
             foreach (var e in eventBuffer)
             {
                 var charactersSelected = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
-                if (charactersSelected.Length > 1)
-                {
-                    foreach (var character in charactersSelected)
-                    {
-                        if (e.Name == character.Name)
-                        {
-                            SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = false;
-                            SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Name = default;
-                            UnityEngine.Debug.Log("can't add element to buffer");
-                        }
-                        else 
-                        {
-                            UnityEngine.Debug.Log("Adding element to name buffers");
-                            SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = true;
-                            SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Name = e.Name;
-                        }
-                    }
-                }
-                else
+                if (charactersSelected.Length < 1)
                 {
                     UnityEngine.Debug.Log("Adding element to name buffers");
                     SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = true;
-                    SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Name = e.Name;
+                    SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.CharacterSelectedButton = e.CharacterButtonSelected;
+                }
+                else
+                {
+                    bool characterAvailable = true;
+                    foreach (var character in charactersSelected)
+                        if (e.CharacterButtonSelected.Name == character.Name)
+                            characterAvailable = false;
+
+                    if (characterAvailable)
+                    {
+                        UnityEngine.Debug.Log("Can add element to name buffers");
+                        if (e.CharacterButtonSelected.State != CharacterButtonState.Choosing)
+                        {
+                            SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
+                                .Add(
+                                        new CharacterButtonEventBufffer 
+                                        { 
+                                        CharacterButton =  new CharacterButton 
+                                        { 
+                                        Name = e.CharacterButtonSelected.Name,
+                                        State = CharacterButtonState.Choosing
+                                        }
+                                        }
+                                    );
+                        }
+                        SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = true;
+                        SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.CharacterSelectedButton = e.CharacterButtonSelected;
+                    }
+                    else
+                    {
+                        SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = false;
+                        SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.CharacterSelectedButton = default;
+                        UnityEngine.Debug.Log("can't add element to buffer");
+                    }
                 }
             }
             eventBuffer.Clear();

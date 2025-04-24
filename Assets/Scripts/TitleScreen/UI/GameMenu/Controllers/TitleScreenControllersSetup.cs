@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UI.GameMenu;
 using Unity.Entities;
 using UnityEngine.UIElements;
@@ -31,9 +33,7 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         var titleScreenCanvasRef = SystemAPI.ManagedAPI.GetSingleton<TitleScreenCanvasReference>();
         var titleScreenCanvasGO = titleScreenCanvasRef.uiDocumentGO;
         if (titleScreenCanvasGO == null)
-        {
             return;
-        }
 
         var uiGameObject = UnityEngine.Object.Instantiate(titleScreenCanvasRef.uiDocumentGO);
         var uiDocument = uiGameObject.GetComponent<UIDocument>();
@@ -49,12 +49,23 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         NumberOfPlayersScreen numberOfPlayersScreen = new(titleScreenRoot);
         CharacterSelectionScreen characterSelectionScreen = new(titleScreenRoot);
 
+        CharacterSelectionContext characterSelectionContext = new ()
+        {
+            PlayerNumber = default,
+            CharacterButtonEventQueue = new Queue<CharacterButton>(),
+        };
+
         var titleScreenControllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
         titleScreenControllers.TitleScreenController = new (titleScreen);
         titleScreenControllers.NumOfRoundsController = new (numOfRoundsScreen);
         titleScreenControllers.NumOfPlayersController = new (numberOfPlayersScreen);
         titleScreenControllers.CharacterSelectionControler = new (characterSelectionScreen, new CharacterSelectionContext());
         
+        titleScreenControllers.TitleScreenController.ShowScreen();
+        titleScreenControllers.NumOfRoundsController.HideScreen();
+        titleScreenControllers.NumOfPlayersController.HideScreen();
+        titleScreenControllers.CharacterSelectionControler.HideScreen();
+
         var changeScreenEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<ChangeScreenEventBuffer>().Build();
         titleScreenControllers.TitleScreenController.SetChangeScreenEventBufferQuery(changeScreenEventBufferQuery);
         titleScreenControllers.NumOfRoundsController.SetChangeScreenEventBufferQuery(changeScreenEventBufferQuery);

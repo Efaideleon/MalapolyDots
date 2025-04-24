@@ -9,6 +9,7 @@ public class CharacterSelectionScreen
         public readonly Button LiraButton;
         public readonly Button MugButton;
         public readonly Button TuctucButton;
+        public readonly Label PlayerNumberLabel;
         public Button ConfirmButton { get; private set; }
 
         public CharacterSelectionScreen(VisualElement root)
@@ -20,6 +21,7 @@ public class CharacterSelectionScreen
             LiraButton = _root.Q<Button>("character-four-button");
             MugButton = _root.Q<Button>("chracter-five-button");
             TuctucButton = _root.Q<Button>("character-six-button");
+            PlayerNumberLabel = _root.Q<Label>("player-number-label");
             ConfirmButton = _root.Q<Button>("character-confirm-button");
         }
 

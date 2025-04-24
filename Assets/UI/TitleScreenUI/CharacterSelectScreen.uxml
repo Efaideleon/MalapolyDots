@@ -6,7 +6,7 @@
         <engine:VisualElement name="character-select-text-container" style="flex-direction: column; justify-content: center; align-self: center; font-size: 70px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); color: rgb(255, 255, 255); margin-top: 0; margin-bottom: 10px; margin-right: 0; margin-left: 0;">
             <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; justify-content: center;">
                 <engine:Label text="Player" style="margin-right: 18px;" />
-                <engine:Label text="0" />
+                <engine:Label text="0" name="player-number-label" />
             </engine:VisualElement>
             <engine:Label text="Choose Your Character" />
         </engine:VisualElement>
