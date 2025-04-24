@@ -296,6 +296,7 @@
     align-items: stretch;
 }
 
+
 .button-border-top-space {
     margin-top: 5px;
 }
@@ -321,6 +322,26 @@
     -unity-font-style: bold;
     border-width: 0;
 }
+
+/* confirm-button */
+.confirm-button {
+    transition: background-color 0.3s ease, scale 0.2s ease;
+}
+
+.confirm-button > Label {
+    background-color: rgb(58, 146, 208);
+}
+
+.confirm-button:hover Label{
+    background-color: rgb(132, 198, 243);
+}
+
+.confirm-button:active {
+    scale: 0.9;
+}
+/*confirm-button end */
+
+
 
 .button-label {
     color: white;
@@ -350,4 +371,37 @@
     position: absolute;
     bottom: -6px;
     border-radius: 20px;
+}
+
+.animated-button {
+    transition: background-color 0.3s ease, scale 0.2s ease;
+}
+
+.animated-button:hover {
+    scale: 1.1;
+}
+
+.choose-button {
+}
+
+.choose-button > Label {
+    background-color: rgb(18, 96, 176);
+    -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
+    -unity-font-style: normal;
+}
+
+.choose-button:hover Label {
+    background-color: rgb(69, 140, 214);
+}
+
+.choose-button:active {
+    scale: 0.8;
+}
+
+.choose-button:active Label {
+    background-color: rgb(177, 39, 177);
+}
+
+.choose-button:checked Label {
+    background-color: rgb(177, 39, 177);
 }
