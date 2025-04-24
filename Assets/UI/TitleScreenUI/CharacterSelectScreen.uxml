@@ -1,7 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/GameMenu.uss?fileID=7433441132597879392&amp;guid=6125d87360e995e42bfbe6acbcb8c146&amp;type=3#GameMenu" />
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
-    <engine:VisualElement name="charachter-select-container" style="justify-content: center; align-items: center; flex-direction: column; font-size: 40px; border-top-width: 15px; border-right-width: 15px; border-bottom-width: 15px; border-left-width: 15px; border-left-color: rgb(231, 56, 226); border-right-color: rgb(231, 56, 226); border-top-color: rgb(231, 56, 226); border-bottom-color: rgb(231, 56, 226); border-top-left-radius: 8%; border-top-right-radius: 8%; border-bottom-right-radius: 8%; border-bottom-left-radius: 8%; background-color: rgb(119, 47, 243); width: 850px; height: 850px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+    <engine:VisualElement name="background" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-color: rgb(100, 47, 225);" />
+    <engine:VisualElement name="charachter-select-container" style="justify-content: center; align-items: center; flex-direction: column; font-size: 40px; border-top-width: 15px; border-right-width: 15px; border-bottom-width: 15px; border-left-width: 15px; border-left-color: rgb(224, 46, 254); border-right-color: rgb(224, 46, 254); border-top-color: rgb(224, 46, 254); border-bottom-color: rgb(224, 46, 254); border-top-left-radius: 8%; border-top-right-radius: 8%; border-bottom-right-radius: 8%; border-bottom-left-radius: 8%; background-color: rgb(100, 47, 225); width: 850px; height: 850px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
         <engine:VisualElement name="character-select-text-container" style="flex-direction: column; justify-content: center; align-self: center; font-size: 70px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); color: rgb(255, 255, 255); margin-top: 0; margin-bottom: 10px; margin-right: 0; margin-left: 0;">
             <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; justify-content: center;">
                 <engine:Label text="Player" style="margin-right: 18px;" />
@@ -9,13 +10,55 @@
             </engine:VisualElement>
             <engine:Label text="Choose Your Character" />
         </engine:VisualElement>
-        <engine:VisualElement name="charachter-select-panel-container" class="medium-panel" style="height: 420px; width: 620px; background-color: rgb(196, 29, 33); flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; align-self: auto; align-content: center; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
-            <engine:Button text="Avocado" name="character-one-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
-            <engine:Button text="Bird" name="character-two-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
-            <engine:Button text="Coin" name="character-three-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
-            <engine:Button text="Lira" name="character-four-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
-            <engine:Button text="Mug" name="chracter-five-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
-            <engine:Button text="TucTuc" name="character-six-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0);" />
+        <engine:VisualElement name="charachter-select-panel-container" class="medium-panel" style="height: 420px; width: 620px; background-color: rgba(196, 29, 33, 0); flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; align-self: auto; align-content: center; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
+            <engine:VisualElement name="char-one-btn-container" class="character-btn-container">
+                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
+                <engine:Button name="character-one-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
+                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
+                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
+                    <engine:Label text="Avocado" />
+                </engine:Button>
+            </engine:VisualElement>
+            <engine:VisualElement name="char-two-btn-container" class="character-btn-container">
+                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
+                <engine:Button name="character-two-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
+                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
+                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
+                    <engine:Label text="Bird" />
+                </engine:Button>
+            </engine:VisualElement>
+            <engine:VisualElement name="char-three-btn-container" class="character-btn-container">
+                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
+                <engine:Button name="character-three-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
+                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
+                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
+                    <engine:Label text="Coin" />
+                </engine:Button>
+            </engine:VisualElement>
+            <engine:VisualElement name="char-four-btn-container" class="character-btn-container">
+                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
+                <engine:Button name="character-four-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
+                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
+                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
+                    <engine:Label text="Lira" />
+                </engine:Button>
+            </engine:VisualElement>
+            <engine:VisualElement name="char-five-btn-container" class="character-btn-container">
+                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
+                <engine:Button name="character-five-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
+                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
+                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
+                    <engine:Label text="Mug" />
+                </engine:Button>
+            </engine:VisualElement>
+            <engine:VisualElement name="char-six-btn-container" class="character-btn-container">
+                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
+                <engine:Button name="character-six-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
+                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
+                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
+                    <engine:Label text="TucTuc" />
+                </engine:Button>
+            </engine:VisualElement>
         </engine:VisualElement>
         <engine:Button text="8" name="character-confirm-button" class="button confirm-button" style="margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; width: 300px; height: 90px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: visible; background-color: rgba(18, 96, 177, 0); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 12px; border-left-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;">
             <engine:VisualElement name="shadow" style="position: absolute; width: 100%; height: 100%; top: 10%; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
