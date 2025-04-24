@@ -1,3 +1,10 @@
+:root {
+    --blue-button-color: rgb(58, 146, 208);
+    --blue-button-hover-color: rgb(132, 198, 243);
+    --blue-button-active-color: rgb(189, 247, 255);
+    --blue-button-shadow-color: rgb(38, 108, 159);
+}
+
 .buy-houses-button {
     width: 80px;
     height: 30px;
@@ -296,7 +303,6 @@
     align-items: stretch;
 }
 
-
 .button-border-top-space {
     margin-top: 5px;
 }
@@ -323,25 +329,45 @@
     border-width: 0;
 }
 
-/* confirm-button */
 .confirm-button {
     transition: background-color 0.3s ease, scale 0.2s ease;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 9px;
+    border-left-width: 4px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
 }
 
 .confirm-button > Label {
-    background-color: rgb(58, 146, 208);
+    background-color: var(--blue-button-color);
 }
 
-.confirm-button:hover Label{
-    background-color: rgb(132, 198, 243);
+.confirm-button > VisualElement {
+    background-color: var(--blue-button-shadow-color);
+}
+
+.confirm-button:hover Label {
+    background-color: var(--blue-button-hover-color);
+}
+
+.confirm-button:hover {
+    scale: 1.05;
 }
 
 .confirm-button:active {
-    scale: 0.9;
+    scale: 0.95;
 }
-/*confirm-button end */
 
-
+.confirm-button:active Label {
+    background-color: var(--blue-button-active-color);
+}
 
 .button-label {
     color: white;
