@@ -1,8 +1,26 @@
+using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public struct CharacterSelectionContext
 {
     public int PlayerNumber;
+    public Queue<CharacterButton> CharacterButtonEventQueue;
+}
+
+public struct CharacterButton
+{
+    public FixedString64Bytes Name;
+    public CharacterButtonState State;
+}
+
+public enum CharacterButtonState
+{
+    Default,
+    Choosing,
+    Unavailable
 }
 
 public class CharacterSelectionControler
@@ -13,15 +31,27 @@ public class CharacterSelectionControler
     private const string LiraName = "Lira";
     private const string MugName = "Mug";
     private const string TucTucName = "TucTuc";
+    private readonly Dictionary<FixedString64Bytes, Button> _buttonRegistry; 
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
     private EntityQuery _dataEventBufferQuery; 
     private EntityQuery _changeScreenQuery;
 
+
+
     public CharacterSelectionControler(CharacterSelectionScreen screen, CharacterSelectionContext context)
     {
         Screen = screen;
         Context = context;
+        _buttonRegistry = new () 
+        {
+            { AvocadoName, Screen.AvocadoButton },
+            { BirdName, Screen.BirdButton },
+            { CoinName, Screen.CoinButton },
+            { LiraName, Screen.LiraButton },
+            { MugName, Screen.MugButton },
+            { TucTucName, Screen.TuctucButton }
+        };
         SubscribeEvents();
     }
 
@@ -32,7 +62,13 @@ public class CharacterSelectionControler
 
     public void Update() 
     {
-        //TODO: Update the text label for the current player basedon the context
+        Screen.PlayerNumberLabel.text = Context.PlayerNumber.ToString();
+        while (Context.CharacterButtonEventQueue.Count > 0) 
+        {
+            var e = Context.CharacterButtonEventQueue.Dequeue();
+            var label = _buttonRegistry[e.Name].Q<Label>("Label");
+            label.style.color = new StyleColor(Color.red);
+        }
     }
 
     public void SubscribeEvents()
@@ -57,7 +93,10 @@ public class CharacterSelectionControler
     {
         if (_dataEventBufferQuery != null)
             _dataEventBufferQuery.GetSingletonBuffer<CharacterSelectedEventBuffer>()
-                .Add(new CharacterSelectedEventBuffer { Name = name });
+                .Add(new CharacterSelectedEventBuffer 
+                { 
+                    CharacterButtonSelected = new CharacterButton{ Name = name, State = CharacterButtonState.Default }
+                });
         else
             UnityEngine.Debug.LogWarning("_eventBufferQuery not set in CharacterSelectionControler");
     }

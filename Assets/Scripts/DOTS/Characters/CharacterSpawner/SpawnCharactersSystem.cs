@@ -39,11 +39,11 @@ namespace DOTS.Characters.CharacterSpawner
         {
             var instance = ecbParallel.Instantiate(sort_key, prefab);
             ecbParallel.SetComponent(sort_key, instance, new LocalTransform
-                    {
-                    Position = position,
-                    Rotation = quaternion.identity,
-                    Scale = 1f
-                    });
+            {
+                Position = position,
+                Rotation = quaternion.identity,
+                Scale = 1f
+            });
 
             ecbParallel.SetComponent(sort_key, instance, new PlayerID { Value = sort_key });
         }

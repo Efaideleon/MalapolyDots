@@ -22,6 +22,7 @@ public partial struct ScreenChangeSystem : ISystem
         state.RequireForUpdate<TitleScreenControllers>();
         state.RequireForUpdate<LoginData>();
         state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
+        state.RequireForUpdate<CharacterButtonEventBufffer>();
     }
 
     public void OnUpdate(ref SystemState state)
@@ -62,21 +63,16 @@ public partial struct ScreenChangeSystem : ISystem
                     case ScreenType.CharacterSelection:
                         if (SystemAPI.GetSingleton<IsCharacterAvailable>().Value)
                         {
-                            var charactersSelected = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
-                            var nameToAdd = SystemAPI.GetSingleton<IsCharacterAvailable>().Name;
-                            charactersSelected.Add(new CharacterSelectedNameBuffer { Name = nameToAdd });
                             var currentPlayer = SystemAPI.GetSingletonRW<CurrentPlayerNumberPickingCharacter>();
                             var numOfPlayers = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
-                            if (currentPlayer.ValueRO.Value < numOfPlayers)
+                            if (currentPlayer.ValueRO.Value < numOfPlayers + 1)
                             {
+                                var charactersSelected = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
+                                var nameToAdd = SystemAPI.GetSingleton<IsCharacterAvailable>().CharacterSelectedButton.Name;
+                                charactersSelected.Add(new CharacterSelectedNameBuffer { Name = nameToAdd });
                                 currentPlayer.ValueRW.Value += 1;
-                                titleScreenControllers.CharacterSelectionControler.Context = new CharacterSelectionContext 
-                                { 
-                                    PlayerNumber = currentPlayer.ValueRO.Value 
-                                };
-                                titleScreenControllers.CharacterSelectionControler.Update();
                             }
-                            else
+                            if (currentPlayer.ValueRW.Value == numOfPlayers + 1)
                             {
                                 titleScreenControllers.CharacterSelectionControler.HideScreen();
                                 titleScreenControllers.NumOfRoundsController.ShowScreen();
