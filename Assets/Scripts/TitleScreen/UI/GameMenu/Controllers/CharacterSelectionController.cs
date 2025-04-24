@@ -37,7 +37,7 @@ public class CharacterSelectionControler
     public CharacterSelectionScreen Screen { get; private set;}
     private EntityQuery _dataEventBufferQuery; 
     private EntityQuery _changeScreenQuery;
-
+    private StyleColor _buttonDefaultColor = default;
 
 
     public CharacterSelectionControler(CharacterSelectionScreen screen, CharacterSelectionContext context)
@@ -62,6 +62,7 @@ public class CharacterSelectionControler
             { MugName, CharacterButtonState.Default },
             { TucTucName, CharacterButtonState.Default },
         };
+        _buttonDefaultColor = Screen.AvocadoButton.style.backgroundColor;
         SubscribeEvents();
     }
 
@@ -88,19 +89,27 @@ public class CharacterSelectionControler
             {
                 if (b.Value == CharacterButtonState.Default)
                 {
-                    _buttonRegistry[b.Key].style.color = new StyleColor(Color.black);
+                    var label = _buttonRegistry[b.Key].Q<Label>("btn-label");
+                    if (label != null)
+                    {
+                        _buttonRegistry[b.Key].Q<Label>("btn-label").style.backgroundColor = new StyleColor(Color.yellow);
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.Log($"Label is null");
+                    }
                 }
             }
             switch (characterButton.State)
             {
                 case CharacterButtonState.Choosing:
                     UnityEngine.Debug.Log($"changing: {button.name} to red");
-                    button.style.color = new StyleColor(Color.red);
+                    button.Q<Label>("btn-label").style.backgroundColor = new StyleColor(Color.red);
                     _buttonStateTracker[characterButton.Name] = characterButton.State; 
                     break;
                 case CharacterButtonState.Unavailable:
                     UnityEngine.Debug.Log($"changing: {button.name} to blue");
-                    button.style.color = new StyleColor(Color.blue);
+                    button.Q<Label>("btn-label").style.backgroundColor = new StyleColor(Color.blue);
                     _buttonStateTracker[characterButton.Name] = characterButton.State; 
                     break;
 
