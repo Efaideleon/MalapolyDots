@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public struct CharacterSelectionContext
 {
     public int PlayerNumber;
-    public Queue<CharacterButton> CharacterButtonEventQueue;
+    public CharacterButton CharacterButton;
 }
 
 public struct CharacterButton
@@ -32,6 +32,7 @@ public class CharacterSelectionControler
     private const string MugName = "Mug";
     private const string TucTucName = "TucTuc";
     private readonly Dictionary<FixedString64Bytes, Button> _buttonRegistry; 
+    private readonly Dictionary<FixedString64Bytes, CharacterButtonState> _buttonStateTracker; 
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
     private EntityQuery _dataEventBufferQuery; 
@@ -52,6 +53,15 @@ public class CharacterSelectionControler
             { MugName, Screen.MugButton },
             { TucTucName, Screen.TuctucButton }
         };
+        _buttonStateTracker = new ()
+        {
+            { AvocadoName, CharacterButtonState.Default },
+            { BirdName, CharacterButtonState.Default },
+            { CoinName, CharacterButtonState.Default },
+            { LiraName, CharacterButtonState.Default },
+            { MugName, CharacterButtonState.Default },
+            { TucTucName, CharacterButtonState.Default },
+        };
         SubscribeEvents();
     }
 
@@ -63,11 +73,42 @@ public class CharacterSelectionControler
     public void Update() 
     {
         Screen.PlayerNumberLabel.text = Context.PlayerNumber.ToString();
-        while (Context.CharacterButtonEventQueue.Count > 0) 
+        var characterButton = Context.CharacterButton;
+        _buttonRegistry.TryGetValue(characterButton.Name, out var button);
+        if (button != null)
         {
-            var e = Context.CharacterButtonEventQueue.Dequeue();
-            var label = _buttonRegistry[e.Name].Q<Label>("Label");
-            label.style.color = new StyleColor(Color.red);
+            foreach (var b in _buttonRegistry)
+            {
+                if (_buttonStateTracker[b.Key] != CharacterButtonState.Unavailable)
+                {
+                    _buttonStateTracker[b.Key] = CharacterButtonState.Default;
+                }
+            }
+            foreach (var b in _buttonStateTracker)
+            {
+                if (b.Value == CharacterButtonState.Default)
+                {
+                    _buttonRegistry[b.Key].style.color = new StyleColor(Color.black);
+                }
+            }
+            switch (characterButton.State)
+            {
+                case CharacterButtonState.Choosing:
+                    UnityEngine.Debug.Log($"changing: {button.name} to red");
+                    button.style.color = new StyleColor(Color.red);
+                    _buttonStateTracker[characterButton.Name] = characterButton.State; 
+                    break;
+                case CharacterButtonState.Unavailable:
+                    UnityEngine.Debug.Log($"changing: {button.name} to blue");
+                    button.style.color = new StyleColor(Color.blue);
+                    _buttonStateTracker[characterButton.Name] = characterButton.State; 
+                    break;
+
+            }
+            var tempContext = Context;
+            tempContext.CharacterButton.Name = default;
+            tempContext.CharacterButton.State = default;
+            Context = tempContext;
         }
     }
 
@@ -95,7 +136,7 @@ public class CharacterSelectionControler
             _dataEventBufferQuery.GetSingletonBuffer<CharacterSelectedEventBuffer>()
                 .Add(new CharacterSelectedEventBuffer 
                 { 
-                    CharacterButtonSelected = new CharacterButton{ Name = name, State = CharacterButtonState.Default }
+                    CharacterButtonSelected = new CharacterButton{ Name = name, State = _buttonStateTracker[name] }
                 });
         else
             UnityEngine.Debug.LogWarning("_eventBufferQuery not set in CharacterSelectionControler");
