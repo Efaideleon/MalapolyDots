@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Windows.WebCam;
 
 public struct CharacterSelectionContext
 {
@@ -33,7 +34,7 @@ public class CharacterSelectionControler
     private const string MugName = "Mug";
     private const string TucTucName = "TucTuc";
     private readonly Dictionary<FixedString64Bytes, Button> _buttonRegistry; 
-    private readonly Dictionary<CharacterButtonState, StyleColor> _buttonStateToColor; 
+    private readonly Dictionary<CharacterButtonState, FixedString64Bytes> _buttonStateToClassName; 
     private readonly ButtonsStateTracker _buttonStateTracker;
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
@@ -65,11 +66,11 @@ public class CharacterSelectionControler
         _buttonStateTracker.RegisterButton(TucTucName);
 
         _buttonDefaultColor = Screen.AvocadoButton.style.backgroundColor;
-        _buttonStateToColor = new ()
+        _buttonStateToClassName = new ()
         {
-            { CharacterButtonState.Default, _buttonDefaultColor },
-            { CharacterButtonState.Unavailable, new StyleColor(Color.gray) },
-            { CharacterButtonState.Choosing, new StyleColor(Color.red) },
+            { CharacterButtonState.Default, "char-not-picked-btn-container" },
+            { CharacterButtonState.Unavailable, "char-picked-btn-container" },
+            { CharacterButtonState.Choosing, "char-picked-btn-container" },
         };
         SubscribeEvents();
     }
@@ -103,7 +104,24 @@ public class CharacterSelectionControler
         {
             var buttonName = _buttonRegistry.Keys.ElementAt(i);
             _buttonStateTracker.TryGetState(buttonName, out var buttonState);
-            _buttonRegistry[buttonName].Q<Label>("btn-label").style.backgroundColor = _buttonStateToColor[buttonState];
+            switch (buttonState)
+            {
+                case CharacterButtonState.Default:
+                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Unavailable].ToString());
+                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Choosing].ToString());
+                    _buttonRegistry[buttonName].parent.AddToClassList(_buttonStateToClassName[CharacterButtonState.Default].ToString());
+                    break;
+                case CharacterButtonState.Unavailable:
+                    _buttonRegistry[buttonName].parent.AddToClassList(_buttonStateToClassName[CharacterButtonState.Unavailable].ToString());
+                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Choosing].ToString());
+                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Default].ToString());
+                    break;
+                case CharacterButtonState.Choosing:
+                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Unavailable].ToString());
+                    _buttonRegistry[buttonName].parent.AddToClassList(_buttonStateToClassName[CharacterButtonState.Choosing].ToString());
+                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Default].ToString());
+                    break;
+            }
         }
     }
 
