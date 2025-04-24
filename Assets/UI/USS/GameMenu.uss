@@ -7,45 +7,11 @@ button {
     text-align: center;
 }
 
-.button-player-choose {
-    background-color: rgb(255, 215, 0);
-    color: white;
-    border-radius: 10px;
-    width: 180px;
-    height: 180px;
-    border-color: rgb(0, 0, 0);
-    border-width: 5px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    transition: background-color 0.2s, transform 0.1s;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    border-bottom-left-radius: 25px;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-top-width: 6px;
-    border-right-width: 6px;
-    border-bottom-width: 6px;
-    border-left-width: 6px;
-}
-
-.button-player-choose:hover {
+.button-player-choose:hover Label {
     background-color: rgb(255, 255, 0);
 }
 
-.button-player-choose:active {
+.button-player-choose:active Label {
     background-color: rgb(184, 88, 243);
 }
 
@@ -69,12 +35,139 @@ button {
     background-color: rgb(238, 130, 0);
 }
 
-.character-btn-container {
+.char-picked-btn-container {
     margin: 10px;
     align-items: center;
     justify-content: center;
 }
 
+.char-picked-btn-container Button {
+    background-color: rgb(255, 204, 1);
+    color: white;
+    border-radius: 10px;
+    width: 180px;
+    height: 180px;
+    border-color: rgb(0, 0, 0);
+    border-width: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.char-picked-btn-container Label {
+    margin: 0;
+    width: 100%;
+    height: 92%;
+    border-radius: 15px;
+    border-top-width: 1px;
+    background-color: rgb(244, 117, 229);
+    border-bottom-color: rgb(243, 148, 255);
+    border-bottom-width: 1px;
+    border-top-color: rgb(191, 81, 255);
+}
+
+.char-picked-btn-container #highlight {
+    background-color: rgb(252, 161, 255);
+}
+
+.char-picked-btn-container #shadow {
+    background-color: rgb(186, 0, 179);
+}
+
+/* character NOT picked start */
+.char-not-picked-btn-container {
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.char-not-picked-btn-container Button {
+    background-color: rgb(255, 204, 1);
+    color: white;
+    border-radius: 10px;
+    width: 180px;
+    height: 180px;
+    border-color: rgb(0, 0, 0);
+    border-width: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.char-not-picked-btn-container Button:active {
+    scale: 0.9;
+}
+
+.char-not-picked-btn-container Label {
+    background-color: rgb(255, 204, 1);
+    margin: 0;
+    width: 100%;
+    height: 92%;
+    border-radius: 15px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-bottom-color: rgb(255, 236, 59);
+    border-top-color: rgb(255, 255, 0);
+}
+
+.char-not-picked-btn-container Button:hover Label {
+    background-color: rgb(255, 255, 0);
+}
+
+.char-not-picked-btn-container Button:active Label {
+    background-color: rgb(184, 88, 243);
+    border-color: rgb(184, 88, 243);
+}
+
+.char-not-picked-btn-container Button:active #highlight {
+    background-color: rgb(238, 128, 255);
+}
+
+.char-not-picked-btn-container Button:active #shadow {
+    background-color: rgb(110, 29, 170);
+}
+
+.char-not-picked-btn-container #highlight {
+    background-color: rgb(255, 236, 59);
+}
+
+.char-not-picked-btn-container #shadow {
+    background-color: rgb(238, 130, 0);
+}
+
+/* character NOT picked end */
 .medium-panel {
     width: 512px;
     height: 512px;

@@ -1,9 +1,9 @@
 :root {
-    --blue-button-color: rgb(18, 96, 176);
+    --blue-button-color: rgb(0, 118, 238);
     --blue-button-hover-color: rgb(58, 146, 208);
     --blue-button-active-color: rgb(124, 218, 251);
-    --blue-button-shadow-color: rgb(10, 85, 140);
-    --blue-button-highlight-color: rgb(168, 235, 255);
+    --blue-button-shadow-color: rgb(0, 80, 185);
+    --blue-button-highlight-color: rgb(76, 181, 246);
 }
 
 .buy-houses-button {
@@ -337,10 +337,10 @@
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-    border-bottom-right-radius: 14px;
-    border-bottom-left-radius: 14px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
     align-items: center;
     justify-content: center;
 }
@@ -349,10 +349,18 @@
     background-color: var(--blue-button-color);
     align-items: center;
     justify-content: center;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-bottom: 6px;
     flex-grow: 1;
     width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    border-bottom-width: 0;
+    border-bottom-color: rgb(76, 181, 246);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .confirm-button > #highlight {
@@ -360,6 +368,7 @@
     position: absolute;
     top: 0;
     height: 50%;
+    width: 100%;
 }
 
 .confirm-button > #shadow {
@@ -383,6 +392,24 @@
 
 .confirm-button:active Label {
     background-color: var(--blue-button-active-color);
+}
+
+.confirm-btn-container {
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-btn-container > #blur-shadow {
+    background-image: url("project://database/Assets/Textures/shadow_sprite_200px.png?fileID=21300000&guid=9c99d9ad068e72b4c89eaa3245f7a980&type=3#shadow_sprite_200px");
+    width: 100%;
+    height: 115%;
+    position: absolute;
+    top: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-left: 60;
+    -unity-slice-top: 60;
+    -unity-slice-right: 60;
+    -unity-slice-bottom: 60;
 }
 
 .button-label {
