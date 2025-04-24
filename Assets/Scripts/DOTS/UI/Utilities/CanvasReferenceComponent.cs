@@ -6,5 +6,6 @@ namespace DOTS.UI.Utilities
     public class CanvasReferenceComponent : IComponentData
     {
         public GameObject uiDocumentGO;
+        public Sprite[] spaceSprites;
     }
 }

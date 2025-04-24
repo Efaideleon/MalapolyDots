@@ -6,9 +6,17 @@ using UnityEngine.UIElements;
 using DOTS.UI.Panels;
 using UnityEngine;
 using DOTS.EventBuses;
+using System.Collections.Generic;
+using DOTS.Utilities.PropertiesBlob;
+using Unity.Collections;
 
 namespace DOTS.Mediator
 {
+    public class SpriteRegistryComponent : IComponentData
+    {
+        public Dictionary<FixedString64Bytes, Sprite> Value;
+    }
+
     public partial struct PanelControllersInitializer : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -21,9 +29,12 @@ namespace DOTS.Mediator
             state.RequireForUpdate<RollEventBuffer>();
             state.RequireForUpdate<BuyHouseEventBuffer>();
             state.RequireForUpdate<TransactionEventBuffer>();
+            state.RequireForUpdate<PropertiesDataBlobReference>();
+            state.RequireForUpdate<SpriteRegistryComponent>();
 
             state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
+            state.EntityManager.CreateSingleton(new SpriteRegistryComponent { Value = null });
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -32,7 +43,7 @@ namespace DOTS.Mediator
             var canvasRef = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
             if (canvasRef.uiDocumentGO == null)
             {
-                return; // Or disable system state.Enabled = false;
+                return;
             }
 
             // --- Instantiate Prefab ---
@@ -40,37 +51,30 @@ namespace DOTS.Mediator
             var uiDocument = uiGameObject.GetComponent<UIDocument>();
             if (uiDocument == null)
             {
-                UnityEngine.Object.Destroy(uiGameObject); // Clean up useless instance
-                return; // Or disable system
+                UnityEngine.Object.Destroy(uiGameObject);
+                return;
             }
+
+            // Registering the properties sprites to their respective name
+            Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
+            var sprites = canvasRef.spaceSprites;
+
+            UnityEngine.Debug.Log("Loading sprite dictionary");
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                spaceSpriteRegistry.TryAdd(sprites[i].name, sprites[i]);
+                UnityEngine.Debug.Log($"{sprites[i].name}");
+            }
+            SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
 
             var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
             var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
 
-            PurchasePropertyPanelContext purchasePropertyPanelContext = new()
-            {
-                Name = default,
-                Price = default,
-            };
-
-            PurchaseHousePanelContext purchaseHousePanelContext = new()
-            {
-                Name = default,
-                HousesOwned = default,
-                Price = default
-            };
-
-            SpaceActionsPanelContext spaceActionsPanelContext = new()
-            {
-                HasMonopoly = false,
-                IsPlayerOwner = false
-            };
-
-            PayRentPanelContext payRentPanelContext = new()
-            {
-                Rent = default
-            };
+            PurchasePropertyPanelContext purchasePropertyPanelContext = new() { Name = default, Price = default, };
+            PurchaseHousePanelContext purchaseHousePanelContext = new() { Name = default, HousesOwned = default, Price = default };
+            SpaceActionsPanelContext spaceActionsPanelContext = new() { HasMonopoly = false, IsPlayerOwner = false };
+            PayRentPanelContext payRentPanelContext = new() { Rent = default };
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
@@ -92,7 +96,10 @@ namespace DOTS.Mediator
             panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel.Panel);
             panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Panel);
             panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
-            panelControllers.purchasePropertyPanelController = new(purchasePropertyPanel, purchasePropertyPanelContext);
+            panelControllers.purchasePropertyPanelController = new(
+                    purchasePropertyPanel,
+                    purchasePropertyPanelContext,
+                    new ManagedPurchasePropertyPanelContext());
 
             // -- Loading Audio --
             // -- PurchasePropertyPanel --
@@ -137,7 +144,7 @@ namespace DOTS.Mediator
         }
 
         public void OnUpdate(ref SystemState state)
-        {}
+        { }
 
         public void OnStopRunning(ref SystemState state)
         {

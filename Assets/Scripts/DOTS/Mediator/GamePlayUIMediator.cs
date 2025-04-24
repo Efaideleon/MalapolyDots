@@ -2,6 +2,7 @@ using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
+using DOTS.Mediator;
 using DOTS.UI.Controllers;
 using DOTS.UI.Panels;
 using DOTS.UI.Systems;
@@ -87,13 +88,17 @@ public partial struct GamePlayUIMediator : ISystem
                 .WithChangeFilter<PurchasePropertyPanelContextComponent>())
         {
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
+            var spriteRegistry = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>();
+            if (panelControllers != null && spriteRegistry.Value != null)
             {
                 if (panelControllers.purchaseHousePanelController != null)
                 {
                     // TODO: not consistent with the PurhcaseHousePanel.
                     // Here we assigned the Context to the controller instead of the panel itself
-                    panelControllers.purchasePropertyPanelController.Context = purchasePropertyPanelContext.ValueRO.Value;
+                    var context = purchasePropertyPanelContext.ValueRO.Value;
+                    spriteRegistry.Value.TryGetValue(context.Name, out var sprite); 
+                    panelControllers.purchasePropertyPanelController.Context = context;
+                    panelControllers.purchasePropertyPanelController.ManagedContext.sprite = sprite;
                     panelControllers.purchasePropertyPanelController.Update();
                 }
             }
