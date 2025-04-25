@@ -15,7 +15,7 @@
                 <engine:Button name="character-one-button" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
                     <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label text="Avocado" name="btn-label" />
+                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-1706747547&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_0&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
             <engine:VisualElement name="char-two-btn-container" class="char-disabled-btn-container">
@@ -23,7 +23,7 @@
                 <engine:Button name="character-two-button" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
                     <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label text="Bird" name="btn-label" />
+                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-948765451&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_5&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
             <engine:VisualElement name="char-three-btn-container" class="char-not-picked-btn-container">
@@ -31,7 +31,7 @@
                 <engine:Button name="character-three-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
                     <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label text="Coin" name="btn-label" />
+                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=1831299449&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_3&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
             <engine:VisualElement name="char-four-btn-container" class="char-not-picked-btn-container">
@@ -39,7 +39,7 @@
                 <engine:Button name="character-four-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
                     <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label text="Lira" name="btn-label" />
+                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-1823034516&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_2&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
             <engine:VisualElement name="char-five-btn-container" class="char-not-picked-btn-container">
@@ -47,7 +47,7 @@
                 <engine:Button name="character-five-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
                     <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label text="Mug" name="btn-label" />
+                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-650895162&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_1&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
             <engine:VisualElement name="char-six-btn-container" class="char-not-picked-btn-container">
@@ -55,7 +55,7 @@
                 <engine:Button name="character-six-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
                     <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label text="TucTuc" name="btn-label" />
+                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=90515623&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_4&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
         </engine:VisualElement>
