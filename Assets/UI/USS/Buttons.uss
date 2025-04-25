@@ -474,3 +474,232 @@
 .choose-button:checked Label {
     background-color: rgb(177, 39, 177);
 }
+
+.dbr-btn {
+    align-items: center;
+    justify-content: center;
+}
+
+.dbr-btn Button {
+    transition: background-color 0.3s ease, scale 0.2s ease;
+    border-width: 5px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    align-items: center;
+    justify-content: center;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    overflow: visible;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.dbr-btn #gradient-border {
+    width: 100%;
+    height: 100%;
+    background-image: url("project://database/Assets/Textures/light_medium_gradient_4x180.png?fileID=21300000&guid=b482b997437e94645a0cfc5b694857a1&type=3#light_medium_gradient_4x180");
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.dbr-btn-picked {
+    border-color: red;
+}
+
+.dbr-btn Label {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    background-image: url("project://database/Assets/Textures/light_medium_gradient_4x180.png?fileID=21300000&guid=b482b997437e94645a0cfc5b694857a1&type=3#light_medium_gradient_4x180");
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    border-bottom-left-radius: 9px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.dbr-btn #label-container {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+}
+
+.dbr-btn #gradient-border-label-container {
+    width: 100%;
+    height: 100%;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+.dbr-btn #blurred-shadow {
+    position: absolute;
+    width: 130%;
+    height: 150%;
+    top: -12px;
+    background-image: url("project://database/Assets/Textures/shadow_sprite_200px.png?fileID=21300000&guid=9c99d9ad068e72b4c89eaa3245f7a980&type=3#shadow_sprite_200px");
+    align-items: stretch;
+    flex-grow: 1;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.dbr-btn Button:hover {
+    scale: 1.05;
+}
+
+.dbr-btn Button:active {
+    scale: 0.95;
+}
+
+.dbr-btn-picked Button {
+    border-color: red;
+}
+
+.dbr-btn-cyan {
+}
+
+.dbr-btn-cyan Label {
+    -unity-background-image-tint-color: rgb(26, 255, 181);
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(0, 164, 128);
+}
+
+.dbr-btn-cyan #gradient-border {
+    -unity-background-image-tint-color: rgb(95, 255, 217);
+}
+
+.dbr-btn-cyan #gradient-border-label-container {
+    border-color: rgb(25, 133, 96);
+}
+
+.dbr-btn-cyan Button:active Label {
+    -unity-background-image-tint-color: rgb(150, 255, 208);
+}
+
+.dbr-btn-green {
+}
+
+.dbr-btn-green Label {
+    -unity-background-image-tint-color: rgb(68, 196, 34);
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(13, 130, 0);
+}
+
+.dbr-btn-green #gradient-border {
+    -unity-background-image-tint-color: rgb(96, 204, 43);
+}
+
+.dbr-btn-green #gradient-border-label-container {
+    border-color: rgb(109, 205, 102);
+    border-left-color: rgb(22, 116, 29);
+    border-right-color: rgb(22, 116, 29);
+    border-top-color: rgb(22, 116, 29);
+    border-bottom-color: rgb(22, 116, 29);
+}
+
+.dbr-btn-green Button:active Label {
+    -unity-background-image-tint-color: rgb(132, 255, 132);
+}
+
+.dbr-btn-red {
+}
+
+.dbr-btn-red Label {
+    -unity-background-image-tint-color: rgb(223, 48, 28);
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(175, 0, 0);
+}
+
+.dbr-btn-red #gradient-border {
+    -unity-background-image-tint-color: rgb(255, 95, 95);
+}
+
+.dbr-btn-red #gradient-border-label-container {
+    border-color: rgb(205, 102, 102);
+    border-left-color: rgb(170, 19, 21);
+    border-right-color: rgb(170, 19, 21);
+    border-top-color: rgb(170, 19, 21);
+    border-bottom-color: rgb(170, 19, 21);
+}
+
+.dbr-btn-red Button:active Label {
+    -unity-background-image-tint-color: rgb(255, 125, 125);
+}
+
+.dbr-btn-orange {
+}
+
+.dbr-btn-orange Label {
+    -unity-background-image-tint-color: rgb(254, 137, 0);
+    -unity-text-outline-color: rgb(170, 72, 0);
+    -unity-text-outline-width: 4px;
+}
+
+.dbr-btn-orange #gradient-border {
+    -unity-background-image-tint-color: rgb(254, 168, 10);
+}
+
+.dbr-btn-orange #gradient-border-label-container {
+    border-color: rgb(205, 154, 102);
+    border-left-color: rgb(208, 57, 0);
+    border-right-color: rgb(208, 57, 0);
+    border-top-color: rgb(208, 57, 0);
+    border-bottom-color: rgb(208, 57, 0);
+}
+
+.dbr-btn-orange Button:active Label {
+    -unity-background-image-tint-color: rgb(255, 182, 107);
+}
+
+.dbr-btn-purple {
+}
+
+.dbr-btn-purple Label {
+    -unity-background-image-tint-color: rgb(129, 26, 255);
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(12, 0, 141);
+}
+
+.dbr-btn-purple #gradient-border {
+    -unity-background-image-tint-color: rgb(116, 95, 255);
+}
+
+.dbr-btn-purple #gradient-border-label-container {
+    border-color: rgb(56, 9, 176);
+}
+
+.dbr-btn-purple Button:active Label {
+    -unity-background-image-tint-color: rgb(195, 130, 255);
+}
