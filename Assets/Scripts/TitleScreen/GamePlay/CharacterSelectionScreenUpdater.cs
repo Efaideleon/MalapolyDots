@@ -1,8 +1,8 @@
 using Unity.Entities;
 
-public struct CharacterButtonEventBufffer : IBufferElementData
+public struct ConfirmButtonEventBuffer : IBufferElementData
 {
-    public CharacterButton CharacterButton;
+    public Character character;
 }
 
 public partial struct CharacterSelectionScreenUpdater : ISystem
@@ -11,33 +11,12 @@ public partial struct CharacterSelectionScreenUpdater : ISystem
     {
         state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
         state.RequireForUpdate<TitleScreenControllers>();
-        state.RequireForUpdate<CharacterButtonEventBufffer>();
-        state.EntityManager.CreateSingletonBuffer<CharacterButtonEventBufffer>();
+        state.RequireForUpdate<ConfirmButtonEventBuffer>();
+        state.EntityManager.CreateSingletonBuffer<ConfirmButtonEventBuffer>();
     }
 
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var buffer in
-                SystemAPI.Query<
-                DynamicBuffer<CharacterButtonEventBufffer
-                >>()
-                .WithChangeFilter<CharacterButtonEventBufffer>())
-        {
-            var controllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
-            if (controllers == null)
-                break;
-            if (controllers.CharacterSelectionControler == null)
-                break;
-            var tempContext = controllers.CharacterSelectionControler.Context;
-            foreach (var e in buffer)
-            {
-                tempContext.CharacterButton = e.CharacterButton;
-                controllers.CharacterSelectionControler.Context = tempContext;
-                controllers.CharacterSelectionControler.Update();
-            }
-            buffer.Clear();
-        }
-
         foreach (var playerNumber in
                 SystemAPI.Query<
                     RefRO<CurrentPlayerNumberPickingCharacter>

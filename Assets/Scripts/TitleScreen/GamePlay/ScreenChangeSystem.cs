@@ -22,7 +22,8 @@ public partial struct ScreenChangeSystem : ISystem
         state.RequireForUpdate<TitleScreenControllers>();
         state.RequireForUpdate<LoginData>();
         state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
-        state.RequireForUpdate<CharacterButtonEventBufffer>();
+        state.RequireForUpdate<ConfirmButtonEventBuffer>();
+        state.RequireForUpdate<LastCharacterClicked>();
     }
 
     public void OnUpdate(ref SystemState state)
@@ -67,31 +68,17 @@ public partial struct ScreenChangeSystem : ISystem
                         }
                         break;
                     case ScreenType.CharacterSelection:
-                        if (SystemAPI.GetSingleton<IsCharacterAvailable>().Value)
+                        var characterSelected = SystemAPI.GetSingleton<LastCharacterClicked>().Value;
+                        if (characterSelected.State == AvailableState.Available)
                         {
+                            UnityEngine.Debug.Log($"Character Available {characterSelected.Type}");
                             var currentPlayer = SystemAPI.GetSingletonRW<CurrentPlayerNumberPickingCharacter>();
                             var numOfPlayers = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
                             if (currentPlayer.ValueRO.Value < numOfPlayers + 1)
                             {
-                                var charactersSelected = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
-                                var button = SystemAPI.GetSingleton<IsCharacterAvailable>().CharacterSelectedButton;
-                                charactersSelected.Add(new CharacterSelectedNameBuffer { Name = button.Type.ToString() });
                                 currentPlayer.ValueRW.Value += 1;
-
-                                if (button.State != ButtonState.Unavailable)
-                                {
-                                    SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
-                                        .Add(
-                                                new CharacterButtonEventBufffer 
-                                                { 
-                                                    CharacterButton =  new CharacterButton 
-                                                    { 
-                                                        Type = button.Type,
-                                                        State = ButtonState.Unavailable
-                                                    }
-                                                }
-                                            );
-                                }
+                                SystemAPI.GetSingletonBuffer<ConfirmButtonEventBuffer>()
+                                    .Add(new ConfirmButtonEventBuffer{ character = characterSelected.Type });
                             }
                             if (currentPlayer.ValueRW.Value == numOfPlayers + 1)
                             {
