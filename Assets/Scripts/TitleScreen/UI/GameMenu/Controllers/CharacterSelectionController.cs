@@ -12,7 +12,7 @@ public struct CharacterSelectionContext
 public struct CharacterButton
 {
     public Character Type;
-    public ButtonState State;
+    public AvailableState State;
 }
 
 public enum ButtonState
@@ -22,28 +22,8 @@ public enum ButtonState
     Unavailable
 }
 
-public enum Character
-{
-    None,
-    Avocado,
-    Bird,
-    Coin,
-    Lira,
-    Mug,
-    TucTuc
-}
-
 public class CharacterSelectionController
 {
-    private static readonly Character[] allCharButtonTypes = new []
-    {
-        Character.Avocado,
-        Character.Bird,
-        Character.Coin,
-        Character.Lira,
-        Character.Mug,
-        Character.TucTuc,
-    };
     private static readonly Dictionary<ButtonState, string> _stateClasses = new ()
     {
         { ButtonState.Default, "char-not-picked-btn-container" },
@@ -51,7 +31,7 @@ public class CharacterSelectionController
         { ButtonState.Choosing, "char-picked-btn-container" },
     }; 
     private readonly Dictionary<Character, Button> _buttonRegistry = new();
-    private readonly Dictionary<Character, Action> _buttonHandlers = new();
+    private readonly Dictionary<Character, Action> _dispatchEventHandlers = new();
     private readonly ButtonsStateTracker _buttonStateTracker = new();
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
@@ -64,9 +44,9 @@ public class CharacterSelectionController
         Context = context;
 
         for (int i = 0; i < Screen.CharButtons.Length; i++)
-            _buttonRegistry.Add(allCharButtonTypes[i], Screen.CharButtons[i]);
+            _buttonRegistry.Add(CharacterData.AllCharacters[i], Screen.CharButtons[i]);
 
-        foreach (var buttonType in allCharButtonTypes)
+        foreach (var buttonType in CharacterData.AllCharacters)
             _buttonStateTracker.RegisterButton(buttonType);
 
         SubscribeEvents();
@@ -81,10 +61,19 @@ public class CharacterSelectionController
     {
         Screen.PlayerNumberLabel.text = Context.PlayerNumber.ToString();
         var characterButton = Context.CharacterButton;
-        _buttonStateTracker.ResetAvaiblabeButtonsState();
-        _buttonStateTracker.UpdateState(characterButton.Type, characterButton.State);
+        SetButtonUnavailable(characterButton.Type, characterButton.State);
         ResetButtonContext();
-        PaintButtons();
+    }
+
+    public void SetButtonUnavailable(Character type, AvailableState state)
+    {
+        if (state == AvailableState.Unavailable)
+        {
+            UnityEngine.Debug.Log($"Setting button to unavailable {type}");
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], false);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing],false);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], true);
+        }
     }
 
     private void ResetButtonContext()
@@ -95,16 +84,6 @@ public class CharacterSelectionController
         Context = tempContext;
     }
 
-    private void PaintButtons()
-    {
-        foreach(var (buttonType, _) in _buttonRegistry)
-        {
-            _buttonStateTracker.TryGetState(buttonType, out var buttonState);
-            foreach (var (state, className) in _stateClasses)
-                _buttonRegistry[buttonType].parent.EnableInClassList(className, state == buttonState);
-        }
-    }
-
     public void SubscribeEvents()
     {
         foreach (var kvp in _buttonRegistry)
@@ -113,7 +92,7 @@ public class CharacterSelectionController
             var button = kvp.Value;
 
             void handle() => DispatchDataEvent(type);
-            _buttonHandlers.Add(type, handle);
+            _dispatchEventHandlers.Add(type, handle);
             button.clickable.clicked += handle;
         }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
@@ -143,7 +122,7 @@ public class CharacterSelectionController
 
     public void OnDispose()
     {
-        foreach (var kvp in _buttonHandlers)
+        foreach (var kvp in _dispatchEventHandlers)
         {
             var type = kvp.Key;
             var handler = kvp.Value;
