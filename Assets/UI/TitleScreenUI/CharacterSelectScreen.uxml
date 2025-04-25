@@ -10,7 +10,7 @@
             <engine:Label text="Choose Your Character" />
         </engine:VisualElement>
         <engine:VisualElement name="charachter-select-panel-container" class="medium-panel" style="height: 420px; width: 620px; background-color: rgba(196, 29, 33, 0); flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; align-self: auto; align-content: center; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
-            <engine:VisualElement name="char-one-btn-container" class="char-picked-btn-container">
+            <engine:VisualElement name="char-one-btn-container" class="char-picked-btn-container char-not-picked-btn-container char-disabled-btn-container">
                 <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
                 <engine:Button name="character-one-button" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
@@ -18,7 +18,7 @@
                     <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-1706747547&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_0&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
-            <engine:VisualElement name="char-two-btn-container" class="char-disabled-btn-container">
+            <engine:VisualElement name="char-two-btn-container" class="char-disabled-btn-container char-picked-btn-container char-not-picked-btn-container">
                 <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
                 <engine:Button name="character-two-button" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
@@ -26,7 +26,7 @@
                     <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-948765451&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_5&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
-            <engine:VisualElement name="char-three-btn-container" class="char-not-picked-btn-container">
+            <engine:VisualElement name="char-three-btn-container" class="char-not-picked-btn-container char-disabled-btn-container char-picked-btn-container">
                 <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
                 <engine:Button name="character-three-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
@@ -34,7 +34,7 @@
                     <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=1831299449&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_3&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
-            <engine:VisualElement name="char-four-btn-container" class="char-not-picked-btn-container">
+            <engine:VisualElement name="char-four-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
                 <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
                 <engine:Button name="character-four-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
@@ -42,7 +42,7 @@
                     <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-1823034516&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_2&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
-            <engine:VisualElement name="char-five-btn-container" class="char-not-picked-btn-container">
+            <engine:VisualElement name="char-five-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
                 <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
                 <engine:Button name="character-five-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
@@ -50,7 +50,7 @@
                     <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-650895162&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#char_spritessheet_1&quot;); -unity-background-scale-mode: scale-to-fit;" />
                 </engine:Button>
             </engine:VisualElement>
-            <engine:VisualElement name="char-six-btn-container" class="char-not-picked-btn-container">
+            <engine:VisualElement name="char-six-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
                 <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
                 <engine:Button name="character-six-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
                     <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
