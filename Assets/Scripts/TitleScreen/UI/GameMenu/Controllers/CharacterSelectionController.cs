@@ -32,11 +32,13 @@ public class CharacterSelectionController
     }; 
     private readonly Dictionary<Character, Button> _buttonRegistry = new();
     private readonly Dictionary<Character, Action> _dispatchEventHandlers = new();
+    private readonly Dictionary<Character, Action> _colorEventHandlers = new();
     private readonly ButtonsStateTracker _buttonStateTracker = new();
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
     private EntityQuery _dataEventBufferQuery; 
     private EntityQuery _changeScreenQuery;
+    private Character _previousCharacterClicked = Character.None;
 
     public CharacterSelectionController(CharacterSelectionScreen screen, CharacterSelectionContext context)
     {
@@ -71,8 +73,30 @@ public class CharacterSelectionController
         {
             UnityEngine.Debug.Log($"Setting button to unavailable {type}");
             _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing],false);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing], false);
             _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], true);
+        }
+    }
+
+    public void SetButtonChoosing(Character type, AvailableState state)
+    {
+        if (state != AvailableState.Unavailable)
+        {
+            UnityEngine.Debug.Log($"Setting button to choosing {type}");
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], false);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing], true);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], false);
+        }
+    }
+
+    public void ResetButtonColorIfAvailable(Character type, AvailableState state)
+    {
+        if (state != AvailableState.Unavailable)
+        {
+            UnityEngine.Debug.Log($"Setting button to default {type}");
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], true);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing], false);
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], false);
         }
     }
 
@@ -94,8 +118,33 @@ public class CharacterSelectionController
             void handle() => DispatchDataEvent(type);
             _dispatchEventHandlers.Add(type, handle);
             button.clickable.clicked += handle;
+
+            void colorHandle() => UpdateButtonClass(type);
+            _colorEventHandlers.Add(type, handle);
+            button.clickable.clicked += colorHandle;
         }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
+    }
+
+    private void UpdateButtonClass(Character buttonType)
+    {
+        if (_previousCharacterClicked != Character.None)
+        {
+            if (_buttonStateTracker.TryGetState(_previousCharacterClicked, out var state))
+            {
+                if (state != AvailableState.Unavailable)
+                {
+                    UnityEngine.Debug.Log("Resetting color");
+                    ResetButtonColorIfAvailable(_previousCharacterClicked, state);
+                    _previousCharacterClicked = buttonType;
+                    if (_buttonStateTracker.TryGetState(buttonType, out var currentClickedState))
+                    {
+                        UnityEngine.Debug.Log("setting to choosing color");
+                        SetButtonChoosing(buttonType, currentClickedState);
+                    }
+                }
+            }
+        }
     }
 
     private void DispatchDataEvent(Character buttonType)
@@ -123,6 +172,13 @@ public class CharacterSelectionController
     public void OnDispose()
     {
         foreach (var kvp in _dispatchEventHandlers)
+        {
+            var type = kvp.Key;
+            var handler = kvp.Value;
+            _buttonRegistry[type].clickable.clicked -= handler;
+        }
+
+        foreach (var kvp in _colorEventHandlers)
         {
             var type = kvp.Key;
             var handler = kvp.Value;
