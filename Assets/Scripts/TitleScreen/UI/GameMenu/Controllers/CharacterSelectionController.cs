@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.Windows.WebCam;
 
 public struct CharacterSelectionContext
 {
@@ -69,7 +68,7 @@ public class CharacterSelectionControler
         _buttonStateToClassName = new ()
         {
             { CharacterButtonState.Default, "char-not-picked-btn-container" },
-            { CharacterButtonState.Unavailable, "char-picked-btn-container" },
+            { CharacterButtonState.Unavailable, "char-disabled-btn-container" },
             { CharacterButtonState.Choosing, "char-picked-btn-container" },
         };
         SubscribeEvents();
@@ -173,5 +172,6 @@ public class CharacterSelectionControler
         Screen.LiraButton.clickable.clicked -= HandleLiraButton;
         Screen.MugButton.clickable.clicked -= HandleMugButton;
         Screen.TuctucButton.clickable.clicked -= HandleTuctucButton;
+        Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
     }
 }
