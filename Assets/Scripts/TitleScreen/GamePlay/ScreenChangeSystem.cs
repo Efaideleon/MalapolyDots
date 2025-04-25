@@ -75,10 +75,10 @@ public partial struct ScreenChangeSystem : ISystem
                             {
                                 var charactersSelected = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
                                 var button = SystemAPI.GetSingleton<IsCharacterAvailable>().CharacterSelectedButton;
-                                charactersSelected.Add(new CharacterSelectedNameBuffer { Name = button.Name });
+                                charactersSelected.Add(new CharacterSelectedNameBuffer { Name = button.Type.ToString() });
                                 currentPlayer.ValueRW.Value += 1;
 
-                                if (button.State != CharacterButtonState.Unavailable)
+                                if (button.State != ButtonState.Unavailable)
                                 {
                                     SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
                                         .Add(
@@ -86,8 +86,8 @@ public partial struct ScreenChangeSystem : ISystem
                                                 { 
                                                     CharacterButton =  new CharacterButton 
                                                     { 
-                                                        Name = button.Name,
-                                                        State = CharacterButtonState.Unavailable
+                                                        Type = button.Type,
+                                                        State = ButtonState.Unavailable
                                                     }
                                                 }
                                             );

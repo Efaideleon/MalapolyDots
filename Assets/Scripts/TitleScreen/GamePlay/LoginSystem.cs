@@ -102,7 +102,7 @@ public partial struct LoginSystem : ISystem
                     SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.Value = true;
                     SystemAPI.GetSingletonRW<IsCharacterAvailable>().ValueRW.CharacterSelectedButton = e.CharacterButtonSelected;
                     SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>();
-                    if (e.CharacterButtonSelected.State != CharacterButtonState.Choosing)
+                    if (e.CharacterButtonSelected.State != ButtonState.Choosing)
                     {
                         SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
                             .Add(
@@ -110,8 +110,8 @@ public partial struct LoginSystem : ISystem
                                     { 
                                         CharacterButton =  new CharacterButton 
                                         { 
-                                            Name = e.CharacterButtonSelected.Name,
-                                            State = CharacterButtonState.Choosing
+                                            Type = e.CharacterButtonSelected.Type,
+                                            State = ButtonState.Choosing
                                         }
                                     }
                                 );
@@ -121,13 +121,13 @@ public partial struct LoginSystem : ISystem
                 {
                     bool characterAvailable = true;
                     foreach (var character in charactersSelected)
-                        if (e.CharacterButtonSelected.Name == character.Name)
+                        if (e.CharacterButtonSelected.Type.ToString() == character.Name)
                             characterAvailable = false;
 
                     if (characterAvailable)
                     {
                         UnityEngine.Debug.Log("Can add element to name buffers");
-                        if (e.CharacterButtonSelected.State != CharacterButtonState.Choosing)
+                        if (e.CharacterButtonSelected.State != ButtonState.Choosing)
                         {
                             SystemAPI.GetSingletonBuffer<CharacterButtonEventBufffer>()
                                 .Add(
@@ -135,8 +135,8 @@ public partial struct LoginSystem : ISystem
                                         { 
                                             CharacterButton =  new CharacterButton 
                                             { 
-                                                Name = e.CharacterButtonSelected.Name,
-                                                State = CharacterButtonState.Choosing
+                                                Type = e.CharacterButtonSelected.Type,
+                                                State = ButtonState.Choosing
                                             }
                                         }
                                     );

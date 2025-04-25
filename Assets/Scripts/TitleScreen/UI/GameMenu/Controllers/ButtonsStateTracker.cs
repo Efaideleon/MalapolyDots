@@ -1,29 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections;
 
 public class ButtonsStateTracker
 {
-    private readonly Dictionary<FixedString64Bytes, CharacterButtonState> _buttonStateTracker;
+    private readonly Dictionary<Character, ButtonState> _buttonStateTracker;
 
     public ButtonsStateTracker()
     {
         _buttonStateTracker = new();
     }
 
-    public void RegisterButton(FixedString64Bytes name)
+    public void RegisterButton(Character buttonType)
     {
-        _buttonStateTracker.TryAdd(name, CharacterButtonState.Default);
+        _buttonStateTracker.TryAdd(buttonType, ButtonState.Default);
     }
 
-    public void UpdateState(FixedString64Bytes name,  CharacterButtonState state)
+    public void UpdateState(Character buttonType,  ButtonState state)
     {
-        _buttonStateTracker[name] = state; 
+        _buttonStateTracker[buttonType] = state; 
     }
 
-    public bool TryGetState(FixedString64Bytes name, out CharacterButtonState state)
+    public bool TryGetState(Character buttonType, out ButtonState state)
     {
-        if (_buttonStateTracker.TryGetValue(name, out var outState))
+        if (_buttonStateTracker.TryGetValue(buttonType, out var outState))
         {
             state = outState;
             return true;
@@ -37,8 +36,8 @@ public class ButtonsStateTracker
         for (int i = 0; i < _buttonStateTracker.Count; i++)
         {
             var key = _buttonStateTracker.Keys.ElementAt(i);
-            if (_buttonStateTracker[key] != CharacterButtonState.Unavailable)
-                _buttonStateTracker[key] = CharacterButtonState.Default;
+            if (_buttonStateTracker[key] != ButtonState.Unavailable)
+                _buttonStateTracker[key] = ButtonState.Default;
         }
     }
 }

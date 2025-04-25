@@ -1,8 +1,6 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public struct CharacterSelectionContext
@@ -13,64 +11,64 @@ public struct CharacterSelectionContext
 
 public struct CharacterButton
 {
-    public FixedString64Bytes Name;
-    public CharacterButtonState State;
+    public Character Type;
+    public ButtonState State;
 }
 
-public enum CharacterButtonState
+public enum ButtonState
 {
     Default,
     Choosing,
     Unavailable
 }
 
-public class CharacterSelectionControler
+public enum Character
 {
-    private const string AvocadoName = "Avocado";
-    private const string BirdName = "Bird";
-    private const string CoinName = "Coin";
-    private const string LiraName = "Lira";
-    private const string MugName = "Mug";
-    private const string TucTucName = "TucTuc";
-    private readonly Dictionary<FixedString64Bytes, Button> _buttonRegistry; 
-    private readonly Dictionary<CharacterButtonState, FixedString64Bytes> _buttonStateToClassName; 
-    private readonly ButtonsStateTracker _buttonStateTracker;
+    None,
+    Avocado,
+    Bird,
+    Coin,
+    Lira,
+    Mug,
+    TucTuc
+}
+
+public class CharacterSelectionController
+{
+    private static readonly Character[] allCharButtonTypes = new []
+    {
+        Character.Avocado,
+        Character.Bird,
+        Character.Coin,
+        Character.Lira,
+        Character.Mug,
+        Character.TucTuc,
+    };
+    private static readonly Dictionary<ButtonState, string> _stateClasses = new ()
+    {
+        { ButtonState.Default, "char-not-picked-btn-container" },
+        { ButtonState.Unavailable, "char-disabled-btn-container" },
+        { ButtonState.Choosing, "char-picked-btn-container" },
+    }; 
+    private readonly Dictionary<Character, Button> _buttonRegistry = new();
+    private readonly Dictionary<Character, Action> _buttonHandlers = new();
+    private readonly ButtonsStateTracker _buttonStateTracker = new();
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
     private EntityQuery _dataEventBufferQuery; 
     private EntityQuery _changeScreenQuery;
-    private StyleColor _buttonDefaultColor = default;
 
-
-    public CharacterSelectionControler(CharacterSelectionScreen screen, CharacterSelectionContext context)
+    public CharacterSelectionController(CharacterSelectionScreen screen, CharacterSelectionContext context)
     {
         Screen = screen;
         Context = context;
-        _buttonRegistry = new () 
-        {
-            { AvocadoName, Screen.AvocadoButton },
-            { BirdName, Screen.BirdButton },
-            { CoinName, Screen.CoinButton },
-            { LiraName, Screen.LiraButton },
-            { MugName, Screen.MugButton },
-            { TucTucName, Screen.TuctucButton }
-        };
 
-        _buttonStateTracker = new ButtonsStateTracker();
-        _buttonStateTracker.RegisterButton(AvocadoName);
-        _buttonStateTracker.RegisterButton(BirdName);
-        _buttonStateTracker.RegisterButton(CoinName);
-        _buttonStateTracker.RegisterButton(LiraName);
-        _buttonStateTracker.RegisterButton(MugName);
-        _buttonStateTracker.RegisterButton(TucTucName);
+        for (int i = 0; i < Screen.CharButtons.Length; i++)
+            _buttonRegistry.Add(allCharButtonTypes[i], Screen.CharButtons[i]);
 
-        _buttonDefaultColor = Screen.AvocadoButton.style.backgroundColor;
-        _buttonStateToClassName = new ()
-        {
-            { CharacterButtonState.Default, "char-not-picked-btn-container" },
-            { CharacterButtonState.Unavailable, "char-disabled-btn-container" },
-            { CharacterButtonState.Choosing, "char-picked-btn-container" },
-        };
+        foreach (var buttonType in allCharButtonTypes)
+            _buttonStateTracker.RegisterButton(buttonType);
+
         SubscribeEvents();
     }
 
@@ -84,7 +82,7 @@ public class CharacterSelectionControler
         Screen.PlayerNumberLabel.text = Context.PlayerNumber.ToString();
         var characterButton = Context.CharacterButton;
         _buttonStateTracker.ResetAvaiblabeButtonsState();
-        _buttonStateTracker.UpdateState(characterButton.Name, characterButton.State);
+        _buttonStateTracker.UpdateState(characterButton.Type, characterButton.State);
         ResetButtonContext();
         PaintButtons();
     }
@@ -92,65 +90,44 @@ public class CharacterSelectionControler
     private void ResetButtonContext()
     {
         var tempContext = Context;
-        tempContext.CharacterButton.Name = default;
+        tempContext.CharacterButton.Type = Character.None;
         tempContext.CharacterButton.State = default;
         Context = tempContext;
     }
 
     private void PaintButtons()
     {
-        for (int i = 0; i < _buttonRegistry.Count; i++)
+        foreach(var (buttonType, _) in _buttonRegistry)
         {
-            var buttonName = _buttonRegistry.Keys.ElementAt(i);
-            _buttonStateTracker.TryGetState(buttonName, out var buttonState);
-            switch (buttonState)
-            {
-                case CharacterButtonState.Default:
-                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Unavailable].ToString());
-                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Choosing].ToString());
-                    _buttonRegistry[buttonName].parent.AddToClassList(_buttonStateToClassName[CharacterButtonState.Default].ToString());
-                    break;
-                case CharacterButtonState.Unavailable:
-                    _buttonRegistry[buttonName].parent.AddToClassList(_buttonStateToClassName[CharacterButtonState.Unavailable].ToString());
-                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Choosing].ToString());
-                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Default].ToString());
-                    break;
-                case CharacterButtonState.Choosing:
-                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Unavailable].ToString());
-                    _buttonRegistry[buttonName].parent.AddToClassList(_buttonStateToClassName[CharacterButtonState.Choosing].ToString());
-                    _buttonRegistry[buttonName].parent.RemoveFromClassList(_buttonStateToClassName[CharacterButtonState.Default].ToString());
-                    break;
-            }
+            _buttonStateTracker.TryGetState(buttonType, out var buttonState);
+            foreach (var (state, className) in _stateClasses)
+                _buttonRegistry[buttonType].parent.EnableInClassList(className, state == buttonState);
         }
     }
 
     public void SubscribeEvents()
     {
-        Screen.AvocadoButton.clickable.clicked += HandleAvocadoButton;
-        Screen.BirdButton.clickable.clicked += HandleBirdButton;
-        Screen.CoinButton.clickable.clicked += HandleCoinButton;
-        Screen.LiraButton.clickable.clicked += HandleLiraButton;
-        Screen.MugButton.clickable.clicked += HandleMugButton;
-        Screen.TuctucButton.clickable.clicked += HandleTuctucButton;
+        foreach (var kvp in _buttonRegistry)
+        {
+            var type = kvp.Key;
+            var button = kvp.Value;
+
+            void handle() => DispatchDataEvent(type);
+            _buttonHandlers.Add(type, handle);
+            button.clickable.clicked += handle;
+        }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
     }
 
-    private void HandleAvocadoButton() => DispatchDataEvent(AvocadoName);
-    private void HandleBirdButton() => DispatchDataEvent(BirdName);
-    private void HandleCoinButton() => DispatchDataEvent(CoinName);
-    private void HandleLiraButton() => DispatchDataEvent(LiraName);
-    private void HandleMugButton() => DispatchDataEvent(MugName);
-    private void HandleTuctucButton() => DispatchDataEvent(TucTucName);
-
-    private void DispatchDataEvent(string name)
+    private void DispatchDataEvent(Character buttonType)
     {
         if (_dataEventBufferQuery != null)
         {
-            _buttonStateTracker.TryGetState(name, out var buttonState);
+            _buttonStateTracker.TryGetState(buttonType, out var buttonState);
             _dataEventBufferQuery.GetSingletonBuffer<CharacterSelectedEventBuffer>()
                 .Add(new CharacterSelectedEventBuffer 
                 { 
-                    CharacterButtonSelected = new CharacterButton{ Name = name, State = buttonState }
+                    CharacterButtonSelected = new CharacterButton{ Type = buttonType, State = buttonState }
                 });
         }
         else
@@ -166,12 +143,12 @@ public class CharacterSelectionControler
 
     public void OnDispose()
     {
-        Screen.AvocadoButton.clickable.clicked -= HandleAvocadoButton;
-        Screen.BirdButton.clickable.clicked -= HandleBirdButton;
-        Screen.CoinButton.clickable.clicked -= HandleCoinButton;
-        Screen.LiraButton.clickable.clicked -= HandleLiraButton;
-        Screen.MugButton.clickable.clicked -= HandleMugButton;
-        Screen.TuctucButton.clickable.clicked -= HandleTuctucButton;
-        Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
+        foreach (var kvp in _buttonHandlers)
+        {
+            var type = kvp.Key;
+            var handler = kvp.Value;
+            _buttonRegistry[type].clickable.clicked -= handler;
+        }
+        Screen.ConfirmButton.clickable.clicked -= DispatchScreenChangeEvent;
     }
 }
