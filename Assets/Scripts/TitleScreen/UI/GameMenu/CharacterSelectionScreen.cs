@@ -1,26 +1,29 @@
-﻿using UnityEngine.UIElements;
+﻿using Unity.Collections;
+using UnityEngine.UIElements;
 
 public class CharacterSelectionScreen
 {
         private readonly VisualElement _root;
-        public readonly Button AvocadoButton;
-        public readonly Button BirdButton;
-        public readonly Button CoinButton;
-        public readonly Button LiraButton;
-        public readonly Button MugButton;
-        public readonly Button TuctucButton;
+        public Button[] CharButtons = new Button[6];
+        private readonly string[] _characterButtonsClassNames = 
+        {
+            "character-one-button",
+            "character-two-button",
+            "character-three-button",
+            "character-four-button",
+            "character-five-button",
+            "character-six-button"
+        };
         public readonly Label PlayerNumberLabel;
         public Button ConfirmButton { get; private set; }
 
         public CharacterSelectionScreen(VisualElement root)
         {
             _root = root.Q<VisualElement>("CharacterSelectScreen");
-            AvocadoButton = _root.Q<Button>("character-one-button");
-            BirdButton = _root.Q<Button>("character-two-button");
-            CoinButton = _root.Q<Button>("character-three-button");
-            LiraButton = _root.Q<Button>("character-four-button");
-            MugButton = _root.Q<Button>("character-five-button");
-            TuctucButton = _root.Q<Button>("character-six-button");
+            for (int i = 0; i < _characterButtonsClassNames.Length; i++)
+            {
+                CharButtons[i] = _root.Q<Button>(_characterButtonsClassNames[i]);
+            }
             PlayerNumberLabel = _root.Q<Label>("player-number-label");
             ConfirmButton = _root.Q<Button>("character-confirm-button");
         }

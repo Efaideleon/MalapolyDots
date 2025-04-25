@@ -9,7 +9,7 @@ public class TitleScreenControllers : IComponentData
     public TitleScreenController TitleScreenController;
     public NumOfRoundsController NumOfRoundsController;
     public NumOfPlayersController NumOfPlayersController;
-    public CharacterSelectionControler CharacterSelectionControler;
+    public CharacterSelectionController CharacterSelectionControler;
 }
 
 public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
