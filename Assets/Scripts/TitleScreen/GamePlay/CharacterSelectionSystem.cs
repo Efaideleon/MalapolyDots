@@ -56,7 +56,6 @@ public partial struct CharacterSelectionSystem : ISystem
                         var tempContext = controllers.CharacterSelectionControler.Context;
                         if (availableState == AvailableState.Available)
                         {
-                            UnityEngine.Debug.Log($"Confirm button pressed {characterType}");
                             available.ValueRW.Value = AvailableState.Unavailable;
                             tempContext.CharacterButton.Type = characterType.ValueRO.Value;
                             tempContext.CharacterButton.State = available.ValueRO.Value;

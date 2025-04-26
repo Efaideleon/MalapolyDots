@@ -67,37 +67,19 @@ public class CharacterSelectionController
         ResetButtonContext();
     }
 
-    public void SetButtonUnavailable(Character type, AvailableState state)
+    private void SetButtonUnavailable(Character type, AvailableState state)
     {
         if (state == AvailableState.Unavailable)
         {
-            UnityEngine.Debug.Log($"Setting button to unavailable {type}");
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing], false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], true);
+            _buttonStateTracker.UpdateState(type, state);
+            SetButtonColor(type, ButtonState.Unavailable);
         }
     }
 
-    public void SetButtonChoosing(Character type, AvailableState state)
+    public void SetButtonColor(Character type, ButtonState state)
     {
-        if (state != AvailableState.Unavailable)
-        {
-            UnityEngine.Debug.Log($"Setting button to choosing {type}");
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing], true);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], false);
-        }
-    }
-
-    public void ResetButtonColorIfAvailable(Character type, AvailableState state)
-    {
-        if (state != AvailableState.Unavailable)
-        {
-            UnityEngine.Debug.Log($"Setting button to default {type}");
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], true);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing], false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], false);
-        }
+        foreach (ButtonState s in Enum.GetValues(typeof(ButtonState)))
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[s], s == state);
     }
 
     private void ResetButtonContext()
@@ -120,7 +102,7 @@ public class CharacterSelectionController
             button.clickable.clicked += handle;
 
             void colorHandle() => UpdateButtonClass(type);
-            _colorEventHandlers.Add(type, handle);
+            _colorEventHandlers.Add(type, colorHandle);
             button.clickable.clicked += colorHandle;
         }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
@@ -129,22 +111,15 @@ public class CharacterSelectionController
     private void UpdateButtonClass(Character buttonType)
     {
         if (_previousCharacterClicked != Character.None)
-        {
             if (_buttonStateTracker.TryGetState(_previousCharacterClicked, out var state))
-            {
-                if (state != AvailableState.Unavailable)
-                {
-                    UnityEngine.Debug.Log("Resetting color");
-                    ResetButtonColorIfAvailable(_previousCharacterClicked, state);
-                    _previousCharacterClicked = buttonType;
-                    if (_buttonStateTracker.TryGetState(buttonType, out var currentClickedState))
-                    {
-                        UnityEngine.Debug.Log("setting to choosing color");
-                        SetButtonChoosing(buttonType, currentClickedState);
-                    }
-                }
-            }
-        }
+                if (state == AvailableState.Available)
+                    SetButtonColor(_previousCharacterClicked, ButtonState.Default);
+
+        if (_buttonStateTracker.TryGetState(buttonType, out var currentState))
+            if (currentState == AvailableState.Available)
+                SetButtonColor(buttonType, ButtonState.Choosing);
+
+        _previousCharacterClicked = buttonType;
     }
 
     private void DispatchDataEvent(Character buttonType)
