@@ -9,7 +9,7 @@ public partial struct CharacterSelectionScreenUpdater : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
+        state.RequireForUpdate<NumOfPlayerPicking>();
         state.RequireForUpdate<TitleScreenControllers>();
         state.RequireForUpdate<ConfirmButtonEventBuffer>();
         state.EntityManager.CreateSingletonBuffer<ConfirmButtonEventBuffer>();
@@ -19,9 +19,9 @@ public partial struct CharacterSelectionScreenUpdater : ISystem
     {
         foreach (var playerNumber in
                 SystemAPI.Query<
-                    RefRO<CurrentPlayerNumberPickingCharacter>
+                    RefRO<NumOfPlayerPicking>
                 >()
-                .WithChangeFilter<CurrentPlayerNumberPickingCharacter>())
+                .WithChangeFilter<NumOfPlayerPicking>())
         {
             var controllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
             if (controllers == null)

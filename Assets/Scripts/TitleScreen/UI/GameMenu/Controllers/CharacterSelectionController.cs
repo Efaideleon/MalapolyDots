@@ -32,11 +32,13 @@ public class CharacterSelectionController
     }; 
     private readonly Dictionary<Character, Button> _buttonRegistry = new();
     private readonly Dictionary<Character, Action> _dispatchEventHandlers = new();
+    private readonly Dictionary<Character, Action> _colorEventHandlers = new();
     private readonly ButtonsStateTracker _buttonStateTracker = new();
     public CharacterSelectionContext Context { get; set; }
     public CharacterSelectionScreen Screen { get; private set;}
     private EntityQuery _dataEventBufferQuery; 
     private EntityQuery _changeScreenQuery;
+    private Character _previousCharacterClicked = Character.None;
 
     public CharacterSelectionController(CharacterSelectionScreen screen, CharacterSelectionContext context)
     {
@@ -65,15 +67,19 @@ public class CharacterSelectionController
         ResetButtonContext();
     }
 
-    public void SetButtonUnavailable(Character type, AvailableState state)
+    private void SetButtonUnavailable(Character type, AvailableState state)
     {
         if (state == AvailableState.Unavailable)
         {
-            UnityEngine.Debug.Log($"Setting button to unavailable {type}");
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Default], false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Choosing],false);
-            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[ButtonState.Unavailable], true);
+            _buttonStateTracker.UpdateState(type, state);
+            SetButtonColor(type, ButtonState.Unavailable);
         }
+    }
+
+    public void SetButtonColor(Character type, ButtonState state)
+    {
+        foreach (ButtonState s in Enum.GetValues(typeof(ButtonState)))
+            _buttonRegistry[type].parent.EnableInClassList(_stateClasses[s], s == state);
     }
 
     private void ResetButtonContext()
@@ -94,8 +100,26 @@ public class CharacterSelectionController
             void handle() => DispatchDataEvent(type);
             _dispatchEventHandlers.Add(type, handle);
             button.clickable.clicked += handle;
+
+            void colorHandle() => UpdateButtonClass(type);
+            _colorEventHandlers.Add(type, colorHandle);
+            button.clickable.clicked += colorHandle;
         }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
+    }
+
+    private void UpdateButtonClass(Character buttonType)
+    {
+        if (_previousCharacterClicked != Character.None)
+            if (_buttonStateTracker.TryGetState(_previousCharacterClicked, out var state))
+                if (state == AvailableState.Available)
+                    SetButtonColor(_previousCharacterClicked, ButtonState.Default);
+
+        if (_buttonStateTracker.TryGetState(buttonType, out var currentState))
+            if (currentState == AvailableState.Available)
+                SetButtonColor(buttonType, ButtonState.Choosing);
+
+        _previousCharacterClicked = buttonType;
     }
 
     private void DispatchDataEvent(Character buttonType)
@@ -123,6 +147,13 @@ public class CharacterSelectionController
     public void OnDispose()
     {
         foreach (var kvp in _dispatchEventHandlers)
+        {
+            var type = kvp.Key;
+            var handler = kvp.Value;
+            _buttonRegistry[type].clickable.clicked -= handler;
+        }
+
+        foreach (var kvp in _colorEventHandlers)
         {
             var type = kvp.Key;
             var handler = kvp.Value;

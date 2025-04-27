@@ -6,7 +6,7 @@ public struct CharacterSelectedEventBuffer : IBufferElementData
     public CharacterButton CharacterButtonSelected;
 }
 
-public struct CurrentPlayerNumberPickingCharacter : IComponentData
+public struct NumOfPlayerPicking : IComponentData
 {
     public int Value;
 }
@@ -52,7 +52,7 @@ public partial struct LoginSystem : ISystem
         state.EntityManager.CreateSingletonBuffer<NumberOfPlayersEventBuffer>();
         state.EntityManager.CreateSingleton( new IsCharacterAvailable { Value = false, CharacterSelectedButton = default });
         state.EntityManager.CreateSingleton( new LastCharacterClicked { Value = default });
-        state.EntityManager.CreateSingleton( new CurrentPlayerNumberPickingCharacter { Value = 1 });
+        state.EntityManager.CreateSingleton( new NumOfPlayerPicking { Value = 1 });
         var loginEntity = state.EntityManager.CreateEntity( stackalloc ComponentType[] 
         {
             ComponentType.ReadOnly<LoginData>(),
@@ -63,7 +63,7 @@ public partial struct LoginSystem : ISystem
         state.RequireForUpdate<NumberOfRoundsEventBuffer>();
         state.RequireForUpdate<NumberOfPlayersEventBuffer>();
         state.RequireForUpdate<IsCharacterAvailable>();
-        state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
+        state.RequireForUpdate<NumOfPlayerPicking>();
         state.RequireForUpdate<CharacterSelectedNameBuffer>();
         state.RequireForUpdate<ConfirmButtonEventBuffer>();
         state.RequireForUpdate<LastCharacterClicked>();

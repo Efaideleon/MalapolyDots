@@ -21,7 +21,7 @@ public partial struct ScreenChangeSystem : ISystem
         state.RequireForUpdate<ChangeScreenEventBuffer>();
         state.RequireForUpdate<TitleScreenControllers>();
         state.RequireForUpdate<LoginData>();
-        state.RequireForUpdate<CurrentPlayerNumberPickingCharacter>();
+        state.RequireForUpdate<NumOfPlayerPicking>();
         state.RequireForUpdate<ConfirmButtonEventBuffer>();
         state.RequireForUpdate<LastCharacterClicked>();
     }
@@ -61,7 +61,7 @@ public partial struct ScreenChangeSystem : ISystem
                             // TODO: Maybe make all of this into components for entities?
                             titleScreenControllers.CharacterSelectionControler.Context = new CharacterSelectionContext
                             {
-                                PlayerNumber = SystemAPI.GetSingleton<CurrentPlayerNumberPickingCharacter>().Value
+                                PlayerNumber = SystemAPI.GetSingleton<NumOfPlayerPicking>().Value
                             };
                             titleScreenControllers.CharacterSelectionControler.Update();
                             titleScreenControllers.CharacterSelectionControler.ShowScreen();
@@ -71,16 +71,15 @@ public partial struct ScreenChangeSystem : ISystem
                         var characterSelected = SystemAPI.GetSingleton<LastCharacterClicked>().Value;
                         if (characterSelected.State == AvailableState.Available)
                         {
-                            UnityEngine.Debug.Log($"Character Available {characterSelected.Type}");
-                            var currentPlayer = SystemAPI.GetSingletonRW<CurrentPlayerNumberPickingCharacter>();
-                            var numOfPlayers = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
-                            if (currentPlayer.ValueRO.Value < numOfPlayers + 1)
+                            var currPlayerNum = SystemAPI.GetSingletonRW<NumOfPlayerPicking>();
+                            var totalNumOfPlayers = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
+                            if (currPlayerNum.ValueRO.Value < totalNumOfPlayers + 1)
                             {
-                                currentPlayer.ValueRW.Value += 1;
+                                currPlayerNum.ValueRW.Value += 1;
                                 SystemAPI.GetSingletonBuffer<ConfirmButtonEventBuffer>()
                                     .Add(new ConfirmButtonEventBuffer{ character = characterSelected.Type });
                             }
-                            if (currentPlayer.ValueRW.Value == numOfPlayers + 1)
+                            if (currPlayerNum.ValueRW.Value == totalNumOfPlayers + 1)
                             {
                                 titleScreenControllers.CharacterSelectionControler.HideScreen();
                                 titleScreenControllers.NumOfRoundsController.ShowScreen();
