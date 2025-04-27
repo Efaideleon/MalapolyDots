@@ -703,3 +703,25 @@
 .dbr-btn-purple Button:active Label {
     -unity-background-image-tint-color: rgb(195, 130, 255);
 }
+
+.dbr-btn-blue {
+}
+
+.dbr-btn-blue Label {
+    -unity-background-image-tint-color: var(--blue-button-color);
+    /*-unity-text-outline-width: 4px;*/
+    -unity-text-outline-color: rgb(0, 56, 141);
+}
+
+.dbr-btn-blue #gradient-border {
+    -unity-background-image-tint-color: var(--blue-button-highlight-color);
+}
+
+.dbr-btn-blue #gradient-border-label-container {
+    border-color: var(--blue-button-shadow-color);
+}
+
+.dbr-btn-blue Button:active Label {
+    -unity-background-image-tint-color: var(--blue-button-active-color);
+}
+
