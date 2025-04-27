@@ -16,6 +16,11 @@ public struct CharacterType : IComponentData
     public Character Value;
 }
 
+public struct ConfirmButtonEventBuffer : IBufferElementData
+{
+    public Character character;
+}
+
 public partial struct CharacterSelectionSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
@@ -30,10 +35,12 @@ public partial struct CharacterSelectionSystem : ISystem
             SystemAPI.SetComponent(entity, new Available { Value = AvailableState.Available });
             SystemAPI.SetComponent(entity, new CharacterType { Value = characterType });
         }
+        state.EntityManager.CreateSingletonBuffer<ConfirmButtonEventBuffer>();
         state.RequireForUpdate<Available>();
         state.RequireForUpdate<CharacterType>();
         state.RequireForUpdate<TitleScreenControllers>();
         state.RequireForUpdate<ConfirmButtonEventBuffer>();
+        state.RequireForUpdate<CharacterSelectedNameBuffer>();
     }
 
     public void OnUpdate(ref SystemState state)
@@ -56,6 +63,9 @@ public partial struct CharacterSelectionSystem : ISystem
                         var tempContext = controllers.CharacterSelectionControler.Context;
                         if (availableState == AvailableState.Available)
                         {
+                            SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>()
+                                .Add(new CharacterSelectedNameBuffer { Name = characterType.ValueRO.Value.ToString()});
+
                             available.ValueRW.Value = AvailableState.Unavailable;
                             tempContext.CharacterButton.Type = characterType.ValueRO.Value;
                             tempContext.CharacterButton.State = available.ValueRO.Value;

@@ -45,9 +45,9 @@ public partial struct ScreenChangeSystem : ISystem
                 )
                 break;
 
-            foreach (var e in eventBuffer)
+            foreach (var ScreenChangeRequest in eventBuffer)
             {
-                switch (e.ScreenType)
+                switch (ScreenChangeRequest.ScreenType)
                 {
                     case ScreenType.Title:
                         titleScreenControllers.TitleScreenController.HideScreen();
@@ -87,8 +87,15 @@ public partial struct ScreenChangeSystem : ISystem
                         }
                         break;
                     case ScreenType.NumOfRounds:
-                        titleScreenControllers.NumOfRoundsController.HideScreen();
-                        UnityEngine.Debug.Log("Change Scene");
+                        var numOfRoundsClicked = SystemAPI.GetSingleton<LastNumberOfRoundsClicked>().Value;
+                        if (numOfRoundsClicked > 0)
+                        {
+                            SystemAPI.GetSingletonBuffer<NumberOfRoundsConfirmEventBuffer>()
+                                .Add(new NumberOfRoundsConfirmEventBuffer { });
+                            titleScreenControllers.NumOfRoundsController.HideScreen();
+                            SystemAPI.GetSingletonBuffer<SceneChangeEventBuffer>()
+                                .Add(new SceneChangeEventBuffer { SceneID = SceneID.Game });
+                        }
                         break;
                 }
             }
