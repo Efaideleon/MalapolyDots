@@ -511,10 +511,6 @@
     border-bottom-left-radius: 12px;
 }
 
-.dbr-btn-picked {
-    border-color: red;
-}
-
 .dbr-btn Label {
     transition: background-color 0.3s ease;
     width: 100%;
@@ -728,4 +724,13 @@
 
 .dbr-btn-blue Button:active Label {
     background-color: rgba(0, 50, 161, 0.9);
+}
+
+.dbr-btn-picked {
+    transition: background-color 0.3s ease, scale 0.2s ease;
+    border-color: red;
+}
+
+.dbr-btn-picked Label {
+    background-color: rgba(0, 68, 161, 0.8);
 }
