@@ -117,12 +117,13 @@ namespace DOTS.Mediator
             }
 
             panelControllers.statsPanelController = new(new StatsPanelContext());
-            var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
             foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
             {
                 foreach (var character in characterBuffer)
                 {
+                    var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
                     VisualElement playerNameMoneyPanelElement = tree.Instantiate();
+                    UnityEngine.Debug.Log($"container: {playerNameMoneyContainer.name}");
                     playerNameMoneyContainer.Add(playerNameMoneyPanelElement);
                     panelControllers.statsPanelController.RegisterPanel(character.Name.ToString(), new PlayerNameMoneyPanel(playerNameMoneyPanelElement));
                 }
