@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using DOTS.UI.Panels;
 using Unity.Collections;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace DOTS.UI.Controllers
 {
@@ -14,15 +17,18 @@ namespace DOTS.UI.Controllers
     {
         public Dictionary<string, PlayerNameMoneyPanel> StatsPanelRegistry;
         public StatsPanelContext Context { get; set; }
+        public VisualElement Container { get; private set; }
 
-        public StatsPanelController(StatsPanelContext context)
+        public StatsPanelController(VisualElement container, StatsPanelContext context)
         { 
+            Container = container;
             StatsPanelRegistry = new Dictionary<string, PlayerNameMoneyPanel>();
             Context = context;
         }
 
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
         {
+            Container.Add(panel.Root);
             StatsPanelRegistry.Add(character, panel);
         }
 

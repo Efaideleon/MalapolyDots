@@ -73,6 +73,9 @@ namespace DOTS.Mediator
             var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
             var playerNameMoneyContainer = botPanelRoot.Q<VisualElement>("PlayersStatsContainer");
 
+            if (playerNameMoneyContainer == null)
+                return;
+
 
             PurchasePropertyPanelContext purchasePropertyPanelContext = new() { Name = default, Price = default, };
             PurchaseHousePanelContext purchaseHousePanelContext = new() { Name = default, HousesOwned = default, Price = default };
@@ -81,7 +84,6 @@ namespace DOTS.Mediator
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
-            PlayerNameMoneyPanel statsPanel = new(botPanelRoot);
             RollPanel rollPanel = new(botPanelRoot);
             SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
             PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
@@ -116,16 +118,16 @@ namespace DOTS.Mediator
                 panelControllers.purchasePropertyPanelController.SetClickSound(clickSound);
             }
 
-            panelControllers.statsPanelController = new(new StatsPanelContext());
+            panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext());
             foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
             {
                 foreach (var character in characterBuffer)
                 {
                     var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
                     VisualElement playerNameMoneyPanelElement = tree.Instantiate();
-                    UnityEngine.Debug.Log($"container: {playerNameMoneyContainer.name}");
-                    playerNameMoneyContainer.Add(playerNameMoneyPanelElement);
-                    panelControllers.statsPanelController.RegisterPanel(character.Name.ToString(), new PlayerNameMoneyPanel(playerNameMoneyPanelElement));
+                    PlayerNameMoneyPanel panel = new(playerNameMoneyPanelElement);
+                    var characterName = character.Name.ToString();
+                    panelControllers.statsPanelController.RegisterPanel(characterName, panel);
                 }
             }
 
