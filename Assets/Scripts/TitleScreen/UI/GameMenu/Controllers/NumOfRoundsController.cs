@@ -1,14 +1,38 @@
+using System;
+using System.Collections.Generic;
 using Unity.Entities;
+
+public class RoundsButton
+{
+    public NumOfRoundsButtonElement ButtonElement;
+    public Action OnClick;
+    public Action OnBorderChange;
+
+    public RoundsButton(NumOfRoundsButtonElement buttonElement, Action onClick, Action onBorderChange)
+    {
+        ButtonElement = buttonElement;
+        OnClick = onClick;
+        OnBorderChange = onBorderChange;
+    }
+}
 
 public class NumOfRoundsController
 {
     public NumOfRoundsScreen Screen { get; private set; }
     private EntityQuery _dataEventQuery;
     private EntityQuery _changeScreenQuery;
+    private readonly List<RoundsButton> ButtonRegistry = new();
+    private NumOfRoundsButtonElement _previousButton = null;
 
     public NumOfRoundsController(NumOfRoundsScreen screen)
     {
         Screen = screen;
+        foreach (var RoundsButtonElement in Screen.RoundsButtonElements)
+        {
+            void OnClick() => DispatchDataEvent(RoundsButtonElement.Value);
+            void OnBorderChange() => UpdateBorder(RoundsButtonElement);
+            ButtonRegistry.Add(new RoundsButton(RoundsButtonElement, OnClick, OnBorderChange));
+        }
         SubscribeEvents();
     }
 
@@ -17,17 +41,21 @@ public class NumOfRoundsController
     public void ShowScreen() => Screen.Show();
     public void HideScreen() => Screen.Hide();
 
-    private void SubscribeEvents()
+    private void UpdateBorder(NumOfRoundsButtonElement button)
     {
-        Screen.Button8Rounds.clickable.clicked += OnButton8Clicked;
-        Screen.Button12Rounds.clickable.clicked += OnButton12Clicked;
-        Screen.Button16Rounds.clickable.clicked += OnButton16Clicked;
-        Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
+        _previousButton?.DisableBorder();
+        button.EnableBorder();
+        _previousButton = button;
     }
 
-    private void OnButton8Clicked() => DispatchDataEvent(8);
-    private void OnButton12Clicked() => DispatchDataEvent(12);
-    private void OnButton16Clicked() => DispatchDataEvent(16);
+    private void SubscribeEvents()
+    {
+        foreach (var buttonPlayer in ButtonRegistry)
+        {
+            buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnClick;
+            buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnBorderChange;
+        }
+    }
 
     private void DispatchScreenChangeEvent()
     {
@@ -47,9 +75,11 @@ public class NumOfRoundsController
 
     public void OnDispose()
     {
-        Screen.Button8Rounds.clickable.clicked -= OnButton8Clicked;
-        Screen.Button12Rounds.clickable.clicked -= OnButton12Clicked;
-        Screen.Button16Rounds.clickable.clicked -= OnButton16Clicked;
+        foreach (var buttonPlayer in ButtonRegistry)
+        {
+            buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnClick;
+            buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnBorderChange;
+        }
         Screen.ConfirmButton.clickable.clicked -= DispatchScreenChangeEvent;
     }
 }

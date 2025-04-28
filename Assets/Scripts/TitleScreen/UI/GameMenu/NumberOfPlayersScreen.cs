@@ -32,10 +32,10 @@ namespace UI.GameMenu
         public readonly Button Button;
         public readonly int Value; 
 
-        public ButtonPlayerElement(Button button, VisualElement border,  int value)
+        public ButtonPlayerElement(Button button,  int value)
         {
-            Border = border;
             Button = button;
+            Border = button.parent;
             Value = value;
         }
 
@@ -60,7 +60,7 @@ namespace UI.GameMenu
             foreach (var buttonData in NumberOfPlayersScreenData.Buttons)
             {
                 var button = _root.Q<Button>(buttonData.ClassName);
-                ButtonPlayerElements[idx] = new(button, button.parent, buttonData.Value);
+                ButtonPlayerElements[idx] = new(button, buttonData.Value);
                 ButtonPlayerElements[idx].DisableBorder();
                 idx++;
             }
