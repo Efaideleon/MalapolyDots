@@ -2,13 +2,13 @@ using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class StatsPanel
+    public class PlayerNameMoneyPanel
     {
         public VisualElement Parent { get; private set; }
         public Label PlayerNameLabel { get; private set; }
         public Label PlayerMoneyLabel { get; private set; }
 
-        public StatsPanel(VisualElement parent)
+        public PlayerNameMoneyPanel(VisualElement parent)
         {
             Parent = parent;
             if (Parent == null)

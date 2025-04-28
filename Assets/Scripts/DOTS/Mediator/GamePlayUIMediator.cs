@@ -244,29 +244,5 @@ public partial struct GamePlayUIMediator : ISystem
                 }
             }
         }
-
-        foreach (var (playerID, money) in
-                SystemAPI.Query<RefRO<PlayerID>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
-        {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
-            {
-                if (panelControllers.statsPanelController != null)
-                {
-                    var currPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                    if (playerID.ValueRO.Value == currPlayerID.Value)
-                    {
-                        var currContext = panelControllers.statsPanelController.Context;
-                        StatsPanelContext newContext = new()
-                        {
-                            Name = currContext.Name,
-                            Money = money.ValueRO.Value.ToString()
-                        };
-                        panelControllers.statsPanelController.Context = newContext; 
-                        panelControllers.statsPanelController.Update();
-                    }
-                }
-            }
-        }
     }
 }

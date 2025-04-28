@@ -78,7 +78,7 @@ namespace DOTS.Mediator
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
-            StatsPanel statsPanel = new(topPanelRoot);
+            PlayerNameMoneyPanel statsPanel = new(botPanelRoot);
             RollPanel rollPanel = new(botPanelRoot);
             SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
             PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
