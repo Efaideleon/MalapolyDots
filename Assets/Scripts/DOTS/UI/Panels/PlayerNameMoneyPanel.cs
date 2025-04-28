@@ -16,8 +16,8 @@ namespace DOTS.UI.Panels
                 UnityEngine.Debug.Log("Stats panels parent is null");
             }
 
-            PlayerNameLabel = Parent.Q<Label>("player-name-label");
-            PlayerMoneyLabel = Parent.Q<Label>("player-money-label");
+            PlayerNameLabel = Parent.Q<Label>("player-name");
+            PlayerMoneyLabel = Parent.Q<Label>("player-money");
         }
 
         public void UpdatePlayerNameLabelText(string text)
