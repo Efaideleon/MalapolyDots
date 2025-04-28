@@ -20,13 +20,13 @@ namespace DOTS.GamePlay
             // Initializing the Current Player ID
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
             state.RequireForUpdate<PlayerID>();
-            state.RequireForUpdate<IsChangingToGameScene>();
+            state.RequireForUpdate<SceneLoaded>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            if (SystemAPI.GetSingleton<IsChangingToGameScene>().Value)
+            if (SystemAPI.GetSingleton<SceneLoaded>().ID == SceneID.Game)
             {
                 state.Enabled = false;
 
