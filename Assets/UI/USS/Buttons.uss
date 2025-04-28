@@ -1,6 +1,6 @@
 :root {
     --blue-button-color: rgb(0, 118, 238);
-    --blue-button-hover-color: rgb(0, 127, 227);
+    --blue-button-hover-color: rgb(0, 96, 191);
     --blue-button-active-color: rgb(13, 97, 211);
     --blue-button-shadow-color: rgb(0, 80, 185);
     --blue-button-highlight-color: rgb(76, 181, 246);
@@ -481,7 +481,7 @@
 }
 
 .dbr-btn Button {
-    transition: background-color 0.3s ease, scale 0.2s ease;
+    transition: background-color 2s ease, scale 0.2s ease;
     border-width: 5px;
     border-top-left-radius: 22px;
     border-top-right-radius: 22px;
@@ -516,6 +516,7 @@
 }
 
 .dbr-btn Label {
+    transition: background-color 0.3s ease;
     width: 100%;
     height: 100%;
     flex-grow: 1;
@@ -708,9 +709,9 @@
 }
 
 .dbr-btn-blue Label {
-    -unity-background-image-tint-color: var(--blue-button-color);
-    /*-unity-text-outline-width: 4px;*/
     -unity-text-outline-color: rgb(0, 56, 141);
+    background-color: rgba(0, 83, 255, 0.5);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
 }
 
 .dbr-btn-blue #gradient-border {
@@ -722,11 +723,9 @@
 }
 
 .dbr-btn-blue Button:hover Label {
-    -unity-background-image-tint-color: var(--blue-button-hover-color);
+    background-color: rgba(0, 68, 161, 0.8);
 }
-
 
 .dbr-btn-blue Button:active Label {
-    -unity-background-image-tint-color: var(--blue-button-shadow-color);
+    background-color: rgba(0, 50, 161, 0.9);
 }
-
