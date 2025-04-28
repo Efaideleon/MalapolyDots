@@ -1,9 +1,12 @@
+using Unity.Burst;
 using Unity.Entities;
 
 public struct NumberOfRoundsConfirmEventBuffer : IBufferElementData { }
 
+[BurstCompile]
 public partial struct ProcessConfirmNumberOfRoundsSystem : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.EntityManager.CreateSingletonBuffer<NumberOfRoundsConfirmEventBuffer>();
@@ -11,6 +14,7 @@ public partial struct ProcessConfirmNumberOfRoundsSystem : ISystem
         state.RequireForUpdate<LastNumberOfRoundsClicked>();
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         foreach (var buffer in 

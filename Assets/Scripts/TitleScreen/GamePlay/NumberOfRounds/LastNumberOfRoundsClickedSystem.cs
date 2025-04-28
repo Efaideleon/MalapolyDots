@@ -25,7 +25,9 @@ public partial struct LastNumberOfRoundsClickedSystem : ISystem
                 .WithChangeFilter<NumberOfRoundsEventBuffer>())
         {
             foreach (var e in eventBuffer)
+            {
                 SystemAPI.GetSingletonRW<LastNumberOfRoundsClicked>().ValueRW.Value = e.NumberOfRounds;
+            }
             eventBuffer.Clear();
         }
     }
