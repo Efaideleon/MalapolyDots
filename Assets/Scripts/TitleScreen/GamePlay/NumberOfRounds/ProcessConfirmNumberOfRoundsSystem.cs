@@ -19,7 +19,7 @@ public partial struct ProcessConfirmNumberOfRoundsSystem : ISystem
                 >()
                 .WithChangeFilter<NumberOfRoundsConfirmEventBuffer>())
         {
-            foreach (var e in buffer)
+            foreach (var _ in buffer)
             {
                 var numOfRounds = SystemAPI.GetSingleton<LastNumberOfRoundsClicked>().Value;
                 SystemAPI.GetSingletonRW<LoginData>().ValueRW.NumberOfRounds = numOfRounds;

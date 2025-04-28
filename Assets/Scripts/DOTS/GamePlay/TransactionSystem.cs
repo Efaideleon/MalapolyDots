@@ -34,6 +34,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<TransactionEventBuffer>();
             state.RequireForUpdate<ClickedPropertyComponent>();
+            state.RequireForUpdate<CharacterSelectedNameBuffer>();
         }
 
         [BurstCompile]
@@ -44,7 +45,7 @@ namespace DOTS.GamePlay
                 if (transactionBuffer.Length < 1)
                     continue;
 
-                var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
+                var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
                 foreach (var transaction in transactionBuffer)
                 {
                     if (transaction.EventType == TransactionEventType.PayRent)
@@ -115,7 +116,7 @@ namespace DOTS.GamePlay
                                 >()
                                 .WithEntityAccess())
                         {
-                            if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Value == nameComponent.ValueRO.Value)
+                            if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
                             {
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;

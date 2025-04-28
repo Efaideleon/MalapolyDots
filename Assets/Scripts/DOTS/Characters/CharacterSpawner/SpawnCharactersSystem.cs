@@ -18,7 +18,7 @@ namespace DOTS.Characters.CharacterSpawner
     public partial struct SpawnParallelJob : IJobParallelFor
     {
         [ReadOnly]
-        public DynamicBuffer<CharacterSelectedBuffer> charactersSelected;
+        public DynamicBuffer<CharacterSelectedNameBuffer> charactersSelected;
         [ReadOnly]
         public NativeParallelHashMap<FixedString64Bytes, Entity> prefabLookUp;
         [ReadOnly]
@@ -28,7 +28,7 @@ namespace DOTS.Characters.CharacterSpawner
         [BurstCompile]
         public void Execute(int index)
         {
-            if (prefabLookUp.TryGetValue(charactersSelected[index].Value, out var prefab))
+            if (prefabLookUp.TryGetValue(charactersSelected[index].Name, out var prefab))
             {
                 InstantiatePrefab(ecbParallel, prefab, Positions[index], index);
             }
@@ -58,7 +58,8 @@ namespace DOTS.Characters.CharacterSpawner
             state.RequireForUpdate<GameDataComponent>();
             state.RequireForUpdate<CharactersBufferTag>();
             state.RequireForUpdate<WayPointsTag>();
-            state.RequireForUpdate<CharacterSelectedBuffer>();
+            state.RequireForUpdate<IsChangingToGameScene>();
+            state.RequireForUpdate<CharacterSelectedNameBuffer>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
                     {
@@ -71,39 +72,42 @@ namespace DOTS.Characters.CharacterSpawner
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var characterSelectedBuffer = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>();
-            var charactersPrefabBuffer = SystemAPI.GetSingletonBuffer<CharacterEntityBuffer>();
-            var spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
-            var positions = new NativeArray<float3>(characterSelectedBuffer.Length, Allocator.TempJob);
-            var spawnRadius = 4;
-            CalculatePositions(positions, spawnPosition, spawnRadius);
-
-            var prefabLookUp = new NativeParallelHashMap<FixedString64Bytes, Entity>(charactersPrefabBuffer.Length, Allocator.TempJob);
-            for (int i = 0; i < charactersPrefabBuffer.Length; i++)
+            if (SystemAPI.GetSingleton<IsChangingToGameScene>().Value)
             {
-                var prefabName = SystemAPI.GetComponent<NameComponent>(charactersPrefabBuffer[i].Prefab).Value;
-                prefabLookUp.Add(prefabName, charactersPrefabBuffer[i].Prefab);
+                var characterSelectedBuffer = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
+                var charactersPrefabBuffer = SystemAPI.GetSingletonBuffer<CharacterEntityBuffer>();
+                var spawnPosition = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
+                var positions = new NativeArray<float3>(characterSelectedBuffer.Length, Allocator.TempJob);
+                var spawnRadius = 4;
+                CalculatePositions(positions, spawnPosition, spawnRadius);
+
+                var prefabLookUp = new NativeParallelHashMap<FixedString64Bytes, Entity>(charactersPrefabBuffer.Length, Allocator.TempJob);
+                for (int i = 0; i < charactersPrefabBuffer.Length; i++)
+                {
+                    var prefabName = SystemAPI.GetComponent<NameComponent>(charactersPrefabBuffer[i].Prefab).Value;
+                    prefabLookUp.Add(prefabName, charactersPrefabBuffer[i].Prefab);
+                }
+
+                var job = new SpawnParallelJob
+                {
+                    charactersSelected = characterSelectedBuffer,
+                    prefabLookUp = prefabLookUp,
+                    Positions = positions,
+                    ecbParallel = GetEntityCommandBuffer(ref state).AsParallelWriter(),
+                };
+
+                var jobHandle = job.Schedule(characterSelectedBuffer.Length, 5);
+                jobHandle = positions.Dispose(jobHandle);
+                jobHandle = prefabLookUp.Dispose(jobHandle);
+
+                state.Dependency = jobHandle;
+                foreach (var spawnFlag in SystemAPI.Query<RefRW<SpawnFlag>>())
+                {
+                    spawnFlag.ValueRW.Value = true;
+                }
+
+                state.Enabled = false;
             }
-
-            var job = new SpawnParallelJob
-            {
-                charactersSelected = characterSelectedBuffer,
-                prefabLookUp = prefabLookUp,
-                Positions = positions,
-                ecbParallel = GetEntityCommandBuffer(ref state).AsParallelWriter(),
-            };
-
-            var jobHandle = job.Schedule(characterSelectedBuffer.Length, 5);
-            jobHandle = positions.Dispose(jobHandle);
-            jobHandle = prefabLookUp.Dispose(jobHandle);
-
-            state.Dependency = jobHandle;
-            foreach (var spawnFlag in SystemAPI.Query<RefRW<SpawnFlag>>())
-            {
-                spawnFlag.ValueRW.Value = true;
-            }
-
-            state.Enabled = false;
         }
 
         [BurstCompile]

@@ -18,28 +18,32 @@ namespace DOTS.GamePlay
         public void OnCreate(ref SystemState state)
         {
             // Initializing the Current Player ID
-            state.RequireForUpdate<CharacterSelectedBuffer>();
+            state.RequireForUpdate<CharacterSelectedNameBuffer>();
             state.RequireForUpdate<PlayerID>();
+            state.RequireForUpdate<IsChangingToGameScene>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            state.Enabled = false;
-
-            var firstCharacter = SystemAPI.GetSingletonBuffer<CharacterSelectedBuffer>()[0].Value;
-            foreach (var (playerName, playerID, e) in 
-                    SystemAPI.Query<
-                    RefRO<NameComponent>,
-                    RefRW<PlayerID>
-                    >()
-                    .WithEntityAccess())
+            if (SystemAPI.GetSingleton<IsChangingToGameScene>().Value)
             {
-                if (firstCharacter == playerName.ValueRO.Value)
+                state.Enabled = false;
+
+                var firstCharacter = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>()[0].Name;
+                foreach (var (playerName, playerID, e) in 
+                        SystemAPI.Query<
+                        RefRO<NameComponent>,
+                        RefRW<PlayerID>
+                        >()
+                        .WithEntityAccess())
                 {
-                    var currentPlayerID = playerID.ValueRO.Value;
-                    state.EntityManager.CreateSingleton( new CurrentPlayerComponent { entity = e });
-                    state.EntityManager.CreateSingleton( new CurrentPlayerID { Value = currentPlayerID });
+                    if (firstCharacter == playerName.ValueRO.Value)
+                    {
+                        var currentPlayerID = playerID.ValueRO.Value;
+                        state.EntityManager.CreateSingleton( new CurrentPlayerComponent { entity = e });
+                        state.EntityManager.CreateSingleton( new CurrentPlayerID { Value = currentPlayerID });
+                    }
                 }
             }
         }
