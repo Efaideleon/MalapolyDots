@@ -107,22 +107,5 @@ public partial struct LoginSystem : ISystem
             }
             eventBuffer.Clear();
         }
-
-        foreach (var eventBuffer in 
-                SystemAPI.Query<
-                    DynamicBuffer<NumberOfRoundsEventBuffer>
-                >()
-                .WithChangeFilter<NumberOfRoundsEventBuffer>())
-        {
-            var titleScreenControllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
-            if (titleScreenControllers == null)
-                break;
-            if (titleScreenControllers.NumOfRoundsController == null)
-                break;
-            foreach (var e in eventBuffer)
-            {
-            }
-            eventBuffer.Clear();
-        }
     }
 }

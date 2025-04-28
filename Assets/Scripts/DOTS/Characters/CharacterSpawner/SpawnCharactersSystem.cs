@@ -58,6 +58,7 @@ namespace DOTS.Characters.CharacterSpawner
             state.RequireForUpdate<GameDataComponent>();
             state.RequireForUpdate<CharactersBufferTag>();
             state.RequireForUpdate<WayPointsTag>();
+            state.RequireForUpdate<CharacterSelectedBuffer>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
                     {

@@ -2,41 +2,67 @@ using UnityEngine.UIElements;
 
 namespace UI.GameMenu
 {
+    public readonly struct ButtonPlayerData
+    {
+        public readonly string ClassName; 
+        public readonly int Value; 
+        public ButtonPlayerData(string className, int value)
+        {
+            ClassName = className;
+            Value = value;
+        }
+    }
+
+    public static class NumberOfPlayersScreenData
+    {
+        public static ButtonPlayerData[] Buttons = 
+        {
+            new("num-of-players_2-button", 2),
+            new("num-of-players_3-button", 3),
+            new("num-of-players_4-button", 4),
+            new("num-of-players_5-button", 5),
+            new("num-of-players_6-button", 6),
+        };
+    }
+
+    public class ButtonPlayerElement
+    {
+        public const string BorderClassName = "dbr-btn-picked";
+        public readonly VisualElement Border; 
+        public readonly Button Button;
+        public readonly int Value; 
+
+        public ButtonPlayerElement(Button button, VisualElement border,  int value)
+        {
+            Border = border;
+            Button = button;
+            Value = value;
+        }
+
+        public void EnableBorder() => Border?.EnableInClassList(BorderClassName, true); 
+        public void DisableBorder() => Border?.EnableInClassList(BorderClassName, false);
+    }
+
     public class NumberOfPlayersScreen
     {
         private readonly VisualElement _root;
-        public static string[] classNames = 
-        {
-            "num-of-players_2-button",
-            "num-of-players_3-button",
-            "num-of-players_4-button",
-            "num-of-players_5-button",
-            "num-of-players_6-button"
-        };
-        public readonly Button Button2Players;
-        public readonly Button Button3Players;
-        public readonly Button Button4Players;
-        public readonly Button Button5Players;
-        public readonly Button Button6Players;
 
-        public VisualElement[] ButtonsContainer { get; private set; }
-        public Button[] Buttons { get; private set; }
+        public ButtonPlayerElement[] ButtonPlayerElements { get; private set; }
         public Button ConfirmButton { get; private set; }
-        public const string BorderClassName = "dbr-btn-picked";
         
         public NumberOfPlayersScreen(VisualElement root)
         {
             _root = root.Q<VisualElement>("NumOfPlayerScreen");
 
-            Buttons = new Button[classNames.Length];
-            for (int i = 0; i < classNames.Length; i++)
-                Buttons[i] = _root.Q<Button>(classNames[i]);
+            ButtonPlayerElements = new ButtonPlayerElement[NumberOfPlayersScreenData.Buttons.Length];
 
-            ButtonsContainer =  new VisualElement[Buttons.Length];
-            for (int i = 0; i < Buttons.Length; i++)
+            int idx = 0;
+            foreach (var buttonData in NumberOfPlayersScreenData.Buttons)
             {
-                ButtonsContainer[i] = Buttons[i].parent;
-                ButtonsContainer[i].EnableInClassList(BorderClassName, false);
+                var button = _root.Q<Button>(buttonData.ClassName);
+                ButtonPlayerElements[idx] = new(button, button.parent, buttonData.Value);
+                ButtonPlayerElements[idx].DisableBorder();
+                idx++;
             }
 
             ConfirmButton = _root.Q<Button>("num-of-players_confirm-button");
