@@ -1,7 +1,7 @@
 :root {
     --blue-button-color: rgb(0, 118, 238);
-    --blue-button-hover-color: rgb(58, 146, 208);
-    --blue-button-active-color: rgb(124, 218, 251);
+    --blue-button-hover-color: rgb(0, 127, 227);
+    --blue-button-active-color: rgb(13, 97, 211);
     --blue-button-shadow-color: rgb(0, 80, 185);
     --blue-button-highlight-color: rgb(76, 181, 246);
 }
@@ -721,7 +721,12 @@
     border-color: var(--blue-button-shadow-color);
 }
 
+.dbr-btn-blue Button:hover Label {
+    -unity-background-image-tint-color: var(--blue-button-hover-color);
+}
+
+
 .dbr-btn-blue Button:active Label {
-    -unity-background-image-tint-color: var(--blue-button-active-color);
+    -unity-background-image-tint-color: var(--blue-button-shadow-color);
 }
 
