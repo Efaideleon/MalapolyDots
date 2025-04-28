@@ -55,6 +55,7 @@ public class NumOfRoundsController
             buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnClick;
             buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnBorderChange;
         }
+        Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
     }
 
     private void DispatchScreenChangeEvent()
