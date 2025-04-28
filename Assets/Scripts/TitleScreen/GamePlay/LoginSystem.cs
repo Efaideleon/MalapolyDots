@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -56,7 +57,7 @@ public partial struct LoginSystem : ISystem
         var loginEntity = state.EntityManager.CreateEntity( stackalloc ComponentType[] 
         {
             ComponentType.ReadOnly<LoginData>(),
-            ComponentType.ReadOnly<CharacterSelectedNameBuffer>()
+            ComponentType.ReadOnly<CharacterSelectedNameBuffer>(),
         });
         SystemAPI.SetComponent(loginEntity, new LoginData { NumberOfRounds = default, NumberOfPlayers = default});
         state.RequireForUpdate<CharacterSelectedEventBuffer>();
