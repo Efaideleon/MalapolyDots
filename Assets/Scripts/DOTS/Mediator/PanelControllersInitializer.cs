@@ -31,6 +31,7 @@ namespace DOTS.Mediator
             state.RequireForUpdate<TransactionEventBuffer>();
             state.RequireForUpdate<PropertiesDataBlobReference>();
             state.RequireForUpdate<SpriteRegistryComponent>();
+            state.RequireForUpdate<LoginData>();
 
             state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
@@ -70,11 +71,23 @@ namespace DOTS.Mediator
             var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
             var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
+            var playerNameMoneyContainer = botPanelRoot.Q<VisualElement>("PlayersStatsContainer");
+
 
             PurchasePropertyPanelContext purchasePropertyPanelContext = new() { Name = default, Price = default, };
             PurchaseHousePanelContext purchaseHousePanelContext = new() { Name = default, HousesOwned = default, Price = default };
             SpaceActionsPanelContext spaceActionsPanelContext = new() { HasMonopoly = false, IsPlayerOwner = false };
             PayRentPanelContext payRentPanelContext = new() { Rent = default };
+
+            var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
+            var numOfRounds = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
+            PlayerNameMoneyPanel[] playerNameMoneyPanels = new PlayerNameMoneyPanel[numOfRounds];
+            for (int i = 0; i < numOfRounds; i++)
+            {
+                VisualElement playerNameMoneyPanelElement = tree.Instantiate();
+                playerNameMoneyContainer.Add(playerNameMoneyPanelElement);
+                playerNameMoneyPanels[i] = new PlayerNameMoneyPanel(playerNameMoneyPanelElement);
+            }
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
@@ -144,7 +157,9 @@ namespace DOTS.Mediator
         }
 
         public void OnUpdate(ref SystemState state)
-        { }
+        { 
+            state.Enabled = false;
+        }
 
         public void OnStopRunning(ref SystemState state)
         {
