@@ -18,7 +18,7 @@
     <ui:Button name="Backdrop" style="width: 100%; height: 100%; position: absolute; background-color: rgba(71, 80, 212, 0.28);" />
     <ui:VisualElement name="foreground" focusable="false" picking-mode="Ignore" style="flex-grow: 1;">
         <ui:VisualElement name="game-screen-bottom-container" enabled="true" picking-mode="Ignore" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto;">
-            <ui:VisualElement name="PlayersStatsContainer" style="flex-grow: 0; position: absolute; top: 100px; left: 3%; display: flex;" />
+            <ui:VisualElement name="PlayersStatsContainer" picking-mode="Ignore" style="flex-grow: 0; position: absolute; top: 100px; left: 3%; display: flex;" />
             <ui:Instance template="RollPanel" name="RollPanel" picking-mode="Ignore" class="roll_template-container" style="position: relative; display: none; width: 100%; height: 100%;" />
             <ui:Instance template="TaxPanel" name="TaxPanel" picking-mode="Ignore" style="position: absolute; display: none;" />
             <ui:Instance template="JailPanel" name="JailPanel" picking-mode="Ignore" style="position: absolute; display: none;" />

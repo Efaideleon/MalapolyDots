@@ -7,7 +7,7 @@ namespace DOTS.GamePlay
 {
     public struct RollAmountComponent : IComponentData
     {
-        public int AmountRolled;
+        public int Value;
     }
 
     public struct RandomValueComponent : IComponentData
@@ -21,13 +21,13 @@ namespace DOTS.GamePlay
         {
             uint seed = (uint)System.Environment.TickCount;  
             state.EntityManager.CreateSingleton(new RandomValueComponent { Value = new Random(seed) });
-            state.EntityManager.CreateSingleton(new RollAmountComponent { AmountRolled = default });
+            state.EntityManager.CreateSingleton(new RollAmountComponent { Value = default });
             state.RequireForUpdate<RollAmountComponent>();
             state.RequireForUpdate<RollEventBuffer>();
             state.RequireForUpdate<RandomValueComponent>();
         }
 
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<RollEventBuffer>>().WithChangeFilter<RollEventBuffer>()) 
@@ -37,9 +37,10 @@ namespace DOTS.GamePlay
 
                 foreach (var _ in buffer)
                 {
-                    var rollPanelComponent = SystemAPI.GetSingletonRW<RollAmountComponent>();
+                    UnityEngine.Debug.Log("We rolling...");
+                    var rollAmount = SystemAPI.GetSingletonRW<RollAmountComponent>();
                     var randomData = SystemAPI.GetSingletonRW<RandomValueComponent>();
-                    rollPanelComponent.ValueRW.AmountRolled = randomData.ValueRW.Value.NextInt(1, 7);
+                    rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
                 }
 
                 buffer.Clear();

@@ -79,16 +79,6 @@ namespace DOTS.Mediator
             SpaceActionsPanelContext spaceActionsPanelContext = new() { HasMonopoly = false, IsPlayerOwner = false };
             PayRentPanelContext payRentPanelContext = new() { Rent = default };
 
-            var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
-            var numOfRounds = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
-            PlayerNameMoneyPanel[] playerNameMoneyPanels = new PlayerNameMoneyPanel[numOfRounds];
-            for (int i = 0; i < numOfRounds; i++)
-            {
-                VisualElement playerNameMoneyPanelElement = tree.Instantiate();
-                playerNameMoneyContainer.Add(playerNameMoneyPanelElement);
-                playerNameMoneyPanels[i] = new PlayerNameMoneyPanel(playerNameMoneyPanelElement);
-            }
-
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
             PlayerNameMoneyPanel statsPanel = new(botPanelRoot);
@@ -126,7 +116,18 @@ namespace DOTS.Mediator
                 panelControllers.purchasePropertyPanelController.SetClickSound(clickSound);
             }
 
-            panelControllers.statsPanelController = new(statsPanel, new StatsPanelContext());
+            panelControllers.statsPanelController = new(new StatsPanelContext());
+            var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
+            foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
+            {
+                foreach (var character in characterBuffer)
+                {
+                    VisualElement playerNameMoneyPanelElement = tree.Instantiate();
+                    playerNameMoneyContainer.Add(playerNameMoneyPanelElement);
+                    panelControllers.statsPanelController.RegisterPanel(character.Name.ToString(), new PlayerNameMoneyPanel(playerNameMoneyPanelElement));
+                }
+            }
+
             panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
             panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
             panelControllers.changeTurnPanelController = new(changeTurnPanel, changeTurnPanelContext);

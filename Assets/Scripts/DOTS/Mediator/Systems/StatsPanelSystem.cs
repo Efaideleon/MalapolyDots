@@ -1,4 +1,3 @@
-using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.UI.Controllers;
@@ -17,26 +16,21 @@ namespace DOTS.Mediator.Systems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (playerID, money) in
-                    SystemAPI.Query<RefRO<PlayerID>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
+            foreach (var (name, money) in
+                    SystemAPI.Query<RefRO<NameComponent>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
             {
                 PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
                 if (panelControllers != null)
                 {
                     if (panelControllers.statsPanelController != null)
                     {
-                        var currPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                        if (playerID.ValueRO.Value == currPlayerID.Value)
+                        StatsPanelContext newContext = new()
                         {
-                            var currContext = panelControllers.statsPanelController.Context;
-                            StatsPanelContext newContext = new()
-                            {
-                                Name = currContext.Name,
-                                Money = money.ValueRO.Value.ToString()
-                            };
-                            panelControllers.statsPanelController.Context = newContext; 
-                            panelControllers.statsPanelController.Update();
-                        }
+                            Name = name.ValueRO.Value,
+                            Money = money.ValueRO.Value.ToString()
+                        };
+                        panelControllers.statsPanelController.Context = newContext; 
+                        panelControllers.statsPanelController.Update();
                     }
                 }
             }

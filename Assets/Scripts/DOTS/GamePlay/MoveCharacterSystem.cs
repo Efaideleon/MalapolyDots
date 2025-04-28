@@ -58,9 +58,9 @@ namespace DOTS.GamePlay
                     {
                         var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
                         int numOfWayPoints = wayPointsBuffer.Length;
-                        int finalWayPointIndex = (rollAmount.ValueRO.AmountRolled + characterWaypoint.ValueRO.Value) % numOfWayPoints;
+                        int finalWayPointIndex = (rollAmount.ValueRO.Value + characterWaypoint.ValueRO.Value) % numOfWayPoints;
                         SystemAPI.GetSingletonRW<FinalWayPointIndex>().ValueRW.Value = finalWayPointIndex;
-                        SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollAmount.ValueRO.AmountRolled;
+                        SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollAmount.ValueRO.Value;
                     }
                 }
             }

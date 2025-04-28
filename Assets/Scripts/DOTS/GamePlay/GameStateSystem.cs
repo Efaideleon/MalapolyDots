@@ -56,7 +56,7 @@ namespace DOTS.GamePlay
 
             foreach (var rollComponent in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
             {
-                if (rollComponent.ValueRO.AmountRolled > 0)
+                if (rollComponent.ValueRO.Value > 0)
                 {
                     foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                     {
