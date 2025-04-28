@@ -10,9 +10,9 @@ public struct SceneChangeEventBuffer : IBufferElementData
     public SceneID SceneID;
 }
 
-public struct IsChangingToGameScene: IComponentData
+public struct SceneLoaded: IComponentData
 {
-    public bool Value;
+    public SceneID ID;
 }
 
 public partial struct SceneChangeSystem : ISystem, ISystemStartStop
@@ -20,7 +20,7 @@ public partial struct SceneChangeSystem : ISystem, ISystemStartStop
     public void OnCreate(ref SystemState state)
     {
         state.EntityManager.CreateSingleton(new SceneChange { System = null });
-        state.EntityManager.CreateSingleton(new IsChangingToGameScene { Value = false });
+        state.EntityManager.CreateSingleton(new SceneLoaded { ID = SceneID.Default });
         state.EntityManager.CreateSingletonBuffer<SceneChangeEventBuffer>();
     }
 
@@ -41,11 +41,8 @@ public partial struct SceneChangeSystem : ISystem, ISystemStartStop
 
             foreach (var e in buffer)
             {
-                if (e.SceneID == SceneID.Game)
-                {
-                    SystemAPI.GetSingletonRW<IsChangingToGameScene>().ValueRW.Value = true;
-                    sceneChange.System.LoadSceneBySceneIDEnum(e.SceneID);
-                }
+                SystemAPI.GetSingletonRW<SceneLoaded>().ValueRW.ID = e.SceneID;
+                sceneChange.System.LoadSceneBySceneIDEnum(e.SceneID);
             }
             buffer.Clear();
         }

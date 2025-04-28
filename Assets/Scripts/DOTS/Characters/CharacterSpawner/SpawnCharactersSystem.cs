@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using DOTS.GameData;
 using DOTS.DataComponents;
+using UnityEngine;
 
 namespace DOTS.Characters.CharacterSpawner
 {
@@ -58,7 +59,7 @@ namespace DOTS.Characters.CharacterSpawner
             state.RequireForUpdate<GameDataComponent>();
             state.RequireForUpdate<CharactersBufferTag>();
             state.RequireForUpdate<WayPointsTag>();
-            state.RequireForUpdate<IsChangingToGameScene>();
+            state.RequireForUpdate<SceneLoaded>();
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
@@ -72,7 +73,7 @@ namespace DOTS.Characters.CharacterSpawner
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            if (SystemAPI.GetSingleton<IsChangingToGameScene>().Value)
+            if (SystemAPI.GetSingleton<SceneLoaded>().ID == SceneID.Game)
             {
                 var characterSelectedBuffer = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
                 var charactersPrefabBuffer = SystemAPI.GetSingletonBuffer<CharacterEntityBuffer>();

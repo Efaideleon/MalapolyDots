@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public enum SceneID
 {
+    Default = -1,
     Menu = 0,
     Game = 1,
 }
