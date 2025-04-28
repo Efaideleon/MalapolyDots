@@ -51,6 +51,7 @@ public class NumOfRoundsScreen
         foreach (var buttonData in NumOfRoundsButtonData.Buttons)
         {
             RoundsButtonElements[idx] = new NumOfRoundsButtonElement(_root.Q<Button>(buttonData.ClassName), buttonData.Value);
+            RoundsButtonElements[idx].DisableBorder();
             idx++;
         }
         ConfirmButton = _root.Q<Button>("rounds-button-confirm");
