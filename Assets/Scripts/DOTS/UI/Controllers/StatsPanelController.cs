@@ -9,10 +9,10 @@ public struct StatsPanelContext
 
 public class StatsPanelController
 {
-    public StatsPanel StatsPanel { get; private set; }
+    public PlayerNameMoneyPanel StatsPanel { get; private set; }
     public StatsPanelContext Context { get; set; }
 
-    public StatsPanelController(StatsPanel panel, StatsPanelContext context)
+    public StatsPanelController(PlayerNameMoneyPanel panel, StatsPanelContext context)
     {
         Context = context;
         StatsPanel = panel;
