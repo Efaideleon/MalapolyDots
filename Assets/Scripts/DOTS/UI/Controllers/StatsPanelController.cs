@@ -53,11 +53,17 @@ namespace DOTS.UI.Controllers
             panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
         }
 
-        public void Update()
+        public void SelectPanel()
         {
-            UnityEngine.Debug.Log($"Panel to update: {Context.Name}");
+            UnityEngine.Debug.Log($"Selecting panel: {Context.Name}");
             var panel = StatsPanelRegistry[Context.Name.ToString()];
             _selectionHighlighter.Select(panel);
+        }
+
+        public void Update()
+        {
+            var panel = StatsPanelRegistry[Context.Name.ToString()];
+            UnityEngine.Debug.Log($"Updating panel: {Context.Name}");
             panel.UpdatePlayerNameLabelText(Context.Name.ToString());
             panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
         }

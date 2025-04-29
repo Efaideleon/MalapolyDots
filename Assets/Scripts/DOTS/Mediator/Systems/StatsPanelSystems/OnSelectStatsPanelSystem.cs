@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace DOTS.Mediator.Systems.StatsPanelSystems
 {
-    public partial struct StatsPanelSystem : ISystem
+    public partial struct OnSelectStatsPanelSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
@@ -41,7 +41,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                                     Money = money.ValueRO.Value.ToString()
                                 };
                                 panelControllers.statsPanelController.Context = statsPanelContext;
-                                panelControllers.statsPanelController.Update();
+                                panelControllers.statsPanelController.SelectPanel();
                             }
                         }
                     }
