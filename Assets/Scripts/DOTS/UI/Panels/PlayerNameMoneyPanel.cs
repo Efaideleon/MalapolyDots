@@ -7,6 +7,7 @@ namespace DOTS.UI.Panels
         public VisualElement Root { get; private set; }
         public Label PlayerNameLabel { get; private set; }
         public Label PlayerMoneyLabel { get; private set; }
+        private readonly VisualElement _container;
 
         public PlayerNameMoneyPanel(VisualElement root)
         {
@@ -22,6 +23,8 @@ namespace DOTS.UI.Panels
             Root.pickingMode = PickingMode.Ignore;
             PlayerNameLabel = Root.Q<Label>("player-name");
             PlayerMoneyLabel = Root.Q<Label>("player-money");
+            _container = Root.Q<VisualElement>("player-panel");
+
             DisableHighlightActivePlayerPanel();
         }
 
@@ -37,14 +40,14 @@ namespace DOTS.UI.Panels
 
         public void HighlightActivePlayerPanel()
         {
-            var container = Root.Q<VisualElement>("player-panel");
-            container.EnableInClassList("current-player-panel", true);
+            // _container.EnableInClassList("current-player-panel", true);
+            _container.AddToClassList("current-player-panel");
         }
 
         public void DisableHighlightActivePlayerPanel()
         {
-            var container = Root.Q<VisualElement>("player-panel");
-            container.EnableInClassList("current-player-panel", false);
+            // _container.EnableInClassList("current-player-panel", false);
+            _container.RemoveFromClassList("current-player-panel");
         }
     }
 }
