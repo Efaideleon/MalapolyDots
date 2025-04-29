@@ -6,13 +6,13 @@ public class RoundsButton
 {
     public NumOfRoundsButtonElement ButtonElement;
     public Action OnClick;
-    public Action OnBorderChange;
+    public Action OnSelect;
 
-    public RoundsButton(NumOfRoundsButtonElement buttonElement, Action onClick, Action onBorderChange)
+    public RoundsButton(NumOfRoundsButtonElement buttonElement, Action onClick, Action onSelect)
     {
         ButtonElement = buttonElement;
         OnClick = onClick;
-        OnBorderChange = onBorderChange;
+        OnSelect = onSelect;
     }
 }
 
@@ -22,16 +22,17 @@ public class NumOfRoundsController
     private EntityQuery _dataEventQuery;
     private EntityQuery _changeScreenQuery;
     private readonly List<RoundsButton> ButtonRegistry = new();
-    private NumOfRoundsButtonElement _previousButton = null;
+    private readonly SelectionHighlighter<NumOfRoundsButtonElement> _selectionHighlighter;
 
     public NumOfRoundsController(NumOfRoundsScreen screen)
     {
         Screen = screen;
+        _selectionHighlighter = new(e => e.EnableBorder(), e => e.DisableBorder());
         foreach (var RoundsButtonElement in Screen.RoundsButtonElements)
         {
             void OnClick() => DispatchDataEvent(RoundsButtonElement.Value);
-            void OnBorderChange() => UpdateBorder(RoundsButtonElement);
-            ButtonRegistry.Add(new RoundsButton(RoundsButtonElement, OnClick, OnBorderChange));
+            void OnSelect() => _selectionHighlighter.Select(RoundsButtonElement);
+            ButtonRegistry.Add(new RoundsButton(RoundsButtonElement, OnClick, OnSelect));
         }
         SubscribeEvents();
     }
@@ -41,19 +42,12 @@ public class NumOfRoundsController
     public void ShowScreen() => Screen.Show();
     public void HideScreen() => Screen.Hide();
 
-    private void UpdateBorder(NumOfRoundsButtonElement button)
-    {
-        _previousButton?.DisableBorder();
-        button.EnableBorder();
-        _previousButton = button;
-    }
-
     private void SubscribeEvents()
     {
         foreach (var buttonPlayer in ButtonRegistry)
         {
             buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnClick;
-            buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnBorderChange;
+            buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnSelect;
         }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
     }
@@ -79,7 +73,7 @@ public class NumOfRoundsController
         foreach (var buttonPlayer in ButtonRegistry)
         {
             buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnClick;
-            buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnBorderChange;
+            buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnSelect;
         }
         Screen.ConfirmButton.clickable.clicked -= DispatchScreenChangeEvent;
     }

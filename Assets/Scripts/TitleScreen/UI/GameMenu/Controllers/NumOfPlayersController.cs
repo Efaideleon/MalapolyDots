@@ -7,13 +7,13 @@ public class ButtonPlayer
 {
     public ButtonPlayerElement ButtonElement;
     public Action OnClick;
-    public Action OnBorderChange;
+    public Action OnSelect;
 
-    public ButtonPlayer(ButtonPlayerElement buttonElement, Action onClick, Action onBorderChange)
+    public ButtonPlayer(ButtonPlayerElement buttonElement, Action onClick, Action onSelect)
     {
         ButtonElement = buttonElement;
         OnClick = onClick;
-        OnBorderChange = onBorderChange;
+        OnSelect = onSelect;
     }
 }
 
@@ -22,17 +22,18 @@ public class NumOfPlayersController
     public NumberOfPlayersScreen Screen { get; private set; }
     private EntityQuery _dataEventQuery;
     private EntityQuery _changeScreenQuery;
-    private ButtonPlayerElement _previousButton = null;
+    private readonly SelectionHighlighter<ButtonPlayerElement> _selectionHighlighter;
     private readonly List<ButtonPlayer> ButtonRegistry = new();
 
     public NumOfPlayersController(NumberOfPlayersScreen screen)
     {
         Screen = screen;
+        _selectionHighlighter = new(e => e.EnableBorder(), e => e.DisableBorder());
         foreach (var buttonPlayerElement in Screen.ButtonPlayerElements)
         {
             void OnClick() => DispatchDataEvent(buttonPlayerElement.Value);
-            void OnBorderChange() => UpdateBorder(buttonPlayerElement);
-            ButtonRegistry.Add(new ButtonPlayer(buttonPlayerElement, OnClick, OnBorderChange));
+            void OnSelect() => _selectionHighlighter.Select(buttonPlayerElement);
+            ButtonRegistry.Add(new ButtonPlayer(buttonPlayerElement, OnClick, OnSelect));
         }
         SubscribeEvents();
     }
@@ -47,7 +48,7 @@ public class NumOfPlayersController
         foreach (var buttonPlayer in ButtonRegistry)
         {
             buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnClick;
-            buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnBorderChange;
+            buttonPlayer.ButtonElement.Button.clickable.clicked += buttonPlayer.OnSelect;
         }
         Screen.ConfirmButton.clickable.clicked += DispatchScreenChangeEvent;
     }
@@ -59,13 +60,6 @@ public class NumOfPlayersController
                 .Add(new NumberOfPlayersEventBuffer { NumberOfPlayers = num });
         else
             UnityEngine.Debug.LogWarning("_eventBufferQuery not set in NumOfPlayersController");
-    }
-
-    private void UpdateBorder(ButtonPlayerElement button)
-    {
-        _previousButton?.DisableBorder();
-        button.EnableBorder();
-        _previousButton = button;
     }
 
     private void DispatchScreenChangeEvent()
@@ -80,7 +74,7 @@ public class NumOfPlayersController
         foreach (var buttonPlayer in ButtonRegistry)
         {
             buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnClick;
-            buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnBorderChange;
+            buttonPlayer.ButtonElement.Button.clickable.clicked -= buttonPlayer.OnSelect;
         }
         Screen.ConfirmButton.clickable.clicked -= DispatchScreenChangeEvent;
     }
