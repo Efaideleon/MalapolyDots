@@ -19,10 +19,9 @@ namespace DOTS.UI.Controllers
         public VisualElement BigPanelContainer { get; private set; }
         private readonly SelectionHighlighter<PlayerNameMoneyPanel> _selectionHighlighter;
 
-        public StatsPanelController(VisualElement smallPanelsContainer, VisualElement bigPanelContainer, StatsPanelContext context)
+        public StatsPanelController(VisualElement smallPanelsContainer, StatsPanelContext context)
         { 
             SmallPanelsContainer = smallPanelsContainer;
-            BigPanelContainer = bigPanelContainer;
             _selectionHighlighter = new(HighActivePanel, DisableHighActivePanel);
             StatsPanelRegistry = new Dictionary<string, PlayerNameMoneyPanel>();
             Context = context;

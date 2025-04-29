@@ -68,12 +68,8 @@ namespace DOTS.Mediator
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
             var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
             var playerNameMoneyContainer = botPanelRoot.Q<VisualElement>("PlayersStatsContainer");
-            var bigPlayerNameMoneyContainer = botPanelRoot.Q<VisualElement>("current-player-container");
 
             if (playerNameMoneyContainer == null)
-                return;
-
-            if (bigPlayerNameMoneyContainer == null)
                 return;
 
             PurchasePropertyPanelContext purchasePropertyPanelContext = new() { Name = default, Price = default, };
@@ -118,7 +114,7 @@ namespace DOTS.Mediator
             }
 
             // Instantiating the Stats Panel for each player
-            panelControllers.statsPanelController = new(playerNameMoneyContainer, bigPlayerNameMoneyContainer, new StatsPanelContext());
+            panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext());
             foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
             {
                 foreach (var character in characterBuffer)
