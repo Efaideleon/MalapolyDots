@@ -31,13 +31,13 @@ namespace DOTS.UI.Controllers
         private void HighActivePanel(PlayerNameMoneyPanel panel)
         {
             panel.HighlightActivePlayerPanel();
-            BigPanelContainer.Add(panel.Root);
+            // BigPanelContainer.Add(panel.Root);
         }
 
         private void DisableHighActivePanel(PlayerNameMoneyPanel panel)
         {
             panel.DisableHighlightActivePlayerPanel();
-            SmallPanelsContainer.Add(panel.Root);
+            // SmallPanelsContainer.Add(panel.Root);
         }
 
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
