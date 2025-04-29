@@ -50,11 +50,14 @@ public class OptionsController
     private readonly List<SelectableButton> ButtonRegistry = new();
     private readonly SelectionHighlighter<SelectableButtonElement> _selectionHighlighter;
     private readonly Action<int> DispatchDataEvent;
+    private readonly ScreenType _screenType;
 
-    public OptionsController(IOptionsScreen screen, Action<int> dispatchDataEvent)
+    public OptionsController(IOptionsScreen screen, Action<int> dispatchDataEvent, EntityQuery changeScreenQuery, ScreenType screenType)
     {
         Screen = screen;
+        _screenType = screenType;
         DispatchDataEvent = dispatchDataEvent;
+        _changeScreenQuery = changeScreenQuery;
         _selectionHighlighter = new(e => e.EnableBorder(), e => e.DisableBorder());
         foreach (var selectableButtonElement in Screen.GetSelectableButtonElements())
         {
@@ -64,10 +67,6 @@ public class OptionsController
         }
         SubscribeEvents();
     }
-
-    public void SetChangeScreenEventBufferQuery(EntityQuery query) => _changeScreenQuery = query; 
-    public void ShowScreen() => Screen.Show();
-    public void HideScreen() => Screen.Hide();
 
     private void SubscribeEvents()
     {
@@ -83,7 +82,7 @@ public class OptionsController
     {
         if (_changeScreenQuery != null)
             _changeScreenQuery.GetSingletonBuffer<ChangeScreenEventBuffer>()
-                .Add(new ChangeScreenEventBuffer { ScreenType = ScreenType.NumOfRounds });
+                .Add(new ChangeScreenEventBuffer { ScreenType = _screenType });
     }
 
     public void OnDispose()

@@ -21,28 +21,12 @@ public static class NumOfRoundsButtonData
     };
 }
 
-public class NumOfRoundsButtonElement
-{
-    private const string BorderClassName = "dbr-btn-picked";
-    public readonly VisualElement Border; 
-    public readonly Button Button; 
-    public readonly int Value;
-    public NumOfRoundsButtonElement(Button button, int value)
-    {
-        Button = button;
-        Border = Button.parent;
-        Value = value;
-    }
-
-    public void EnableBorder() => Border?.EnableInClassList(BorderClassName, true); 
-    public void DisableBorder() => Border?.EnableInClassList(BorderClassName, false);
-}
-
-public class NumOfRoundsScreen
+public class NumOfRoundsScreen : IOptionsScreen
 {
     private readonly VisualElement _root;
-    public NumOfRoundsButtonElement[] RoundsButtonElements = new NumOfRoundsButtonElement[NumOfRoundsButtonData.Buttons.Length];
+    public SelectableButtonElement[] RoundsButtonElements = new SelectableButtonElement[NumOfRoundsButtonData.Buttons.Length];
     public Button ConfirmButton { get; private set; }
+    Button IOptionsScreen.ConfirmButton { get => ConfirmButton; set => ConfirmButton = value; }
 
     public NumOfRoundsScreen(VisualElement root)
     {
@@ -50,7 +34,7 @@ public class NumOfRoundsScreen
         int idx = 0;
         foreach (var buttonData in NumOfRoundsButtonData.Buttons)
         {
-            RoundsButtonElements[idx] = new NumOfRoundsButtonElement(_root.Q<Button>(buttonData.ClassName), buttonData.Value);
+            RoundsButtonElements[idx] = new SelectableButtonElement(_root.Q<Button>(buttonData.ClassName), buttonData.Value);
             RoundsButtonElements[idx].DisableBorder();
             idx++;
         }
@@ -59,5 +43,7 @@ public class NumOfRoundsScreen
 
     public void Hide() => _root.style.display = DisplayStyle.None;
     public void Show() => _root.style.display = DisplayStyle.Flex;
+
+    public SelectableButtonElement[] GetSelectableButtonElements() => RoundsButtonElements;
 }
 

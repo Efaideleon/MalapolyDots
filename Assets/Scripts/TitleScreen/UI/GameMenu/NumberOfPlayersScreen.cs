@@ -25,36 +25,19 @@ namespace UI.GameMenu
         };
     }
 
-    public class ButtonPlayerElement
-    {
-        public const string BorderClassName = "dbr-btn-picked";
-        public readonly VisualElement Border; 
-        public readonly Button Button;
-        public readonly int Value; 
-
-        public ButtonPlayerElement(Button button,  int value)
-        {
-            Button = button;
-            Border = button.parent;
-            Value = value;
-        }
-
-        public void EnableBorder() => Border?.EnableInClassList(BorderClassName, true); 
-        public void DisableBorder() => Border?.EnableInClassList(BorderClassName, false);
-    }
-
-    public class NumberOfPlayersScreen
+    public class NumberOfPlayersScreen: IOptionsScreen
     {
         private readonly VisualElement _root;
 
-        public ButtonPlayerElement[] ButtonPlayerElements { get; private set; }
+        public SelectableButtonElement[] ButtonPlayerElements { get; private set; }
         public Button ConfirmButton { get; private set; }
-        
+        Button IOptionsScreen.ConfirmButton { get => ConfirmButton; set => ConfirmButton = value; }
+
         public NumberOfPlayersScreen(VisualElement root)
         {
             _root = root.Q<VisualElement>("NumOfPlayerScreen");
 
-            ButtonPlayerElements = new ButtonPlayerElement[NumberOfPlayersScreenData.Buttons.Length];
+            ButtonPlayerElements = new SelectableButtonElement[NumberOfPlayersScreenData.Buttons.Length];
 
             int idx = 0;
             foreach (var buttonData in NumberOfPlayersScreenData.Buttons)
@@ -70,5 +53,7 @@ namespace UI.GameMenu
         
         public void Hide() => _root.style.display = DisplayStyle.None;
         public void Show() => _root.style.display = DisplayStyle.Flex;
+
+        public SelectableButtonElement[] GetSelectableButtonElements() => ButtonPlayerElements;
     }
 }

@@ -49,10 +49,14 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         NumberOfPlayersScreen numberOfPlayersScreen = new(titleScreenRoot);
         CharacterSelectionScreen characterSelectionScreen = new(titleScreenRoot);
 
+        var changeScreenEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<ChangeScreenEventBuffer>().Build();
+        var roundsDataEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<NumberOfRoundsEventBuffer>().Build();
+        var playersDataEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<NumberOfPlayersEventBuffer>().Build();
+
         var titleScreenControllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
         titleScreenControllers.TitleScreenController = new (titleScreen);
-        titleScreenControllers.NumOfRoundsController = new (numOfRoundsScreen);
-        titleScreenControllers.NumOfPlayersController = new (numberOfPlayersScreen);
+        titleScreenControllers.NumOfRoundsController = new (numOfRoundsScreen, changeScreenEventBufferQuery, roundsDataEventBufferQuery);
+        titleScreenControllers.NumOfPlayersController = new (numberOfPlayersScreen, changeScreenEventBufferQuery, playersDataEventBufferQuery);
         titleScreenControllers.CharacterSelectionControler = new (characterSelectionScreen, new CharacterSelectionContext());
         
         titleScreenControllers.TitleScreenController.ShowScreen();
@@ -60,17 +64,10 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         titleScreenControllers.NumOfPlayersController.HideScreen();
         titleScreenControllers.CharacterSelectionControler.HideScreen();
 
-        var changeScreenEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<ChangeScreenEventBuffer>().Build();
         titleScreenControllers.TitleScreenController.SetChangeScreenEventBufferQuery(changeScreenEventBufferQuery);
-        titleScreenControllers.NumOfRoundsController.SetChangeScreenEventBufferQuery(changeScreenEventBufferQuery);
-        titleScreenControllers.NumOfPlayersController.SetChangeScreenEventBufferQuery(changeScreenEventBufferQuery);
         titleScreenControllers.CharacterSelectionControler.SetChangeScreenEventBufferQuery(changeScreenEventBufferQuery);
 
-        var roundsDataEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<NumberOfRoundsEventBuffer>().Build();
-        var playersDataEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<NumberOfPlayersEventBuffer>().Build();
         var charactersDataEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<CharacterSelectedEventBuffer>().Build();
-        titleScreenControllers.NumOfRoundsController.SetDataEventBufferQuery(roundsDataEventBufferQuery);
-        titleScreenControllers.NumOfPlayersController.SetDataEventBufferQuery(playersDataEventBufferQuery);
         titleScreenControllers.CharacterSelectionControler.SetDataEventBufferQuery(charactersDataEventBufferQuery);
     }
 
