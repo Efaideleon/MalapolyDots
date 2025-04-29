@@ -1,11 +1,10 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels" />
     <Style src="project://database/Assets/UI/USS/PlayerNameMoneyPanel.uss?fileID=7433441132597879392&amp;guid=9a8817d3f74ff8b4981de1ffdf7593be&amp;type=3#PlayerNameMoneyPanel" />
-    <engine:VisualElement name="player-panel" class="player-panel">
-        <engine:VisualElement name="player-picture" class="player-picture" style="background-image: url(&quot;project://database/Assets/Textures/GreenHouse128.png?fileID=21300000&amp;guid=67d352eb2cd62ab46b201ceb72182500&amp;type=3#GreenHouse128&quot;); background-size: 100px 100px;" />
-        <engine:VisualElement name="player-name-money-container" style="flex-direction: column;">
-            <engine:Label text="Player Name" name="player-name" class="player-name" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-            <engine:Label text="$Money" name="player-money" class="player-money" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+    <engine:VisualElement name="player-panel" class="player-panel current-player-panel" style="justify-content: space-between;">
+        <engine:VisualElement name="player-picture" class="player-picture" style="background-image: url(&quot;project://database/Assets/Textures/GreenHouse128.png?fileID=21300000&amp;guid=67d352eb2cd62ab46b201ceb72182500&amp;type=3#GreenHouse128&quot;); background-size: 100% 100%; -unity-background-scale-mode: scale-to-fit; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+        <engine:VisualElement name="player-name-money-container" style="flex-direction: column; margin-right: 0;">
+            <engine:Label text="Player Name" name="player-name" enable-rich-text="false" class="player-name" />
+            <engine:Label text="$Money" name="player-money" class="player-money" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
