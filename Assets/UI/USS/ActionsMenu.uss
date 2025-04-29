@@ -1,0 +1,19 @@
+:root {
+
+}
+
+.actions-button {
+    transition: all 0.2s ease-in-out;
+}
+
+.actions-button:hover {
+    /* move button up */
+    translate: 0 -6px;
+    background-color: #ffea00
+}
+
+.actions-button:active {
+    /* move button down */
+    translate: 0 0;
+    background-color: #e4d100
+}
