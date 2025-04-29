@@ -22,6 +22,7 @@ namespace DOTS.UI.Panels
             Root.pickingMode = PickingMode.Ignore;
             PlayerNameLabel = Root.Q<Label>("player-name");
             PlayerMoneyLabel = Root.Q<Label>("player-money");
+            DisableHighlightActivePlayerPanel();
         }
 
         public void UpdatePlayerNameLabelText(string text)
@@ -32,6 +33,18 @@ namespace DOTS.UI.Panels
         public void UpdatePlayerMoneyLabelText(string text)
         {
             PlayerMoneyLabel.text = text;
+        }
+
+        public void HighlightActivePlayerPanel()
+        {
+            var container = Root.Q<VisualElement>("player-panel");
+            container.EnableInClassList("current-player-panel", true);
+        }
+
+        public void DisableHighlightActivePlayerPanel()
+        {
+            var container = Root.Q<VisualElement>("player-panel");
+            container.EnableInClassList("current-player-panel", false);
         }
     }
 }

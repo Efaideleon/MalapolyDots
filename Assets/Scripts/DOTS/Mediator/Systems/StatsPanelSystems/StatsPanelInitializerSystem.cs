@@ -3,9 +3,9 @@ using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
-namespace DOTS.Mediator.Systems
+namespace DOTS.Mediator.Systems.StatsPanelSystems
 {
-    public partial struct StatsPanelSystem : ISystem
+    public partial struct StatsPanelInitializerSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
@@ -30,7 +30,8 @@ namespace DOTS.Mediator.Systems
                             Money = money.ValueRO.Value.ToString()
                         };
                         panelControllers.statsPanelController.Context = newContext; 
-                        panelControllers.statsPanelController.Update();
+                        panelControllers.statsPanelController.InitializePanels();
+                        state.Enabled = false;
                     }
                 }
             }
