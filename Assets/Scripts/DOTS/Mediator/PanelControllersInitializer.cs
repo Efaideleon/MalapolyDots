@@ -56,6 +56,18 @@ namespace DOTS.Mediator
                 return;
             }
 
+            // DEBUG
+            var root = uiDocument.rootVisualElement;
+            static void OnClick(ClickEvent evt)
+            {
+                // evt.target is the element that was clicked
+                var clickedElement = evt.target as VisualElement;
+                Debug.Log($"Clicked on: {clickedElement.name} ({clickedElement.GetType().Name})");
+            }
+            // TrickleDown so you catch it before it's stopped by children
+            root.RegisterCallback<ClickEvent>(OnClick, TrickleDown.TrickleDown);
+            // END DEBUG
+
             // Registering the properties sprites to their respective name
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
             var sprites = canvasRef.spaceSprites;
@@ -68,7 +80,6 @@ namespace DOTS.Mediator
             }
             SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
 
-            var topPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-top-container");
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
             var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
             var playerNameMoneyContainer = botPanelRoot.Q<VisualElement>("PlayersStatsContainer");
@@ -161,9 +172,7 @@ namespace DOTS.Mediator
         }
 
         public void OnUpdate(ref SystemState state)
-        { 
-            state.Enabled = false;
-        }
+        { }
 
         public void OnStopRunning(ref SystemState state)
         {

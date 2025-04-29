@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
@@ -12,6 +11,7 @@ namespace DOTS.UI.Panels
         public PlayerNameMoneyPanel(VisualElement root)
         {
             Root = root;
+            Root.name = "PlayerNameMoneyPanel";
             if (Root == null)
             {
                 UnityEngine.Debug.Log("Stats panels parent is null");
