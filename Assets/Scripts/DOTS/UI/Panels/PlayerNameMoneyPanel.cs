@@ -40,17 +40,11 @@ namespace DOTS.UI.Panels
 
         public void HighlightActivePlayerPanel()
         {
-            Root.style.position = Position.Absolute;
-            Root.style.top = 130;
-            Root.style.left = new Length(2, LengthUnit.Percent);
             _container.AddToClassList("current-player-panel");
         }
 
         public void DisableHighlightActivePlayerPanel()
         {
-            Root.style.position = Position.Relative;
-            Root.style.top = StyleKeyword.Auto;
-            Root.style.left = StyleKeyword.Auto;
             _container.RemoveFromClassList("current-player-panel");
         }
     }
