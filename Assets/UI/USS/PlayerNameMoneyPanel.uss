@@ -3,9 +3,17 @@
     font-size: 36px;
     -unity-font-style: bold;
     color: rgb(255, 255, 255);
-    -unity-text-outline-width: 5px;
+    -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgb(13, 60, 130);
     -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .player-money {
@@ -13,22 +21,30 @@
     font-size: 36px;
     -unity-font-style: bold;
     color: rgb(255, 255, 255);
-    -unity-text-outline-width: 5px;
+    -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgb(110, 189, 10);
     -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
 .player-picture {
     width: 100px;
     height: 100px;
     border-radius: 40px;
-    background-color: rgb(199, 192, 22);
+    background-color: rgb(245, 223, 175);
     background-repeat: space space;
     -unity-background-scale-mode: stretch-to-fill;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-    border-bottom-right-radius: 14px;
-    border-bottom-left-radius: 14px;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
     justify-content: flex-start;
     align-items: auto;
     align-self: auto;
@@ -37,10 +53,10 @@
     margin-right: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
-    border-top-width: 4px;
-    border-right-width: 4px;
-    border-bottom-width: 4px;
-    border-left-width: 4px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
     border-left-color: rgba(231, 230, 255, 0.5);
     border-right-color: rgba(231, 230, 255, 0.5);
     border-top-color: rgba(231, 230, 255, 0.5);
@@ -66,6 +82,51 @@
     flex-shrink: 1;
     flex-grow: 0;
     width: 360px;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.current-player-panel {
+    border-left-color: rgb(254, 250, 234);
+    border-right-color: rgb(254, 250, 234);
+    border-top-color: rgb(254, 250, 234);
+    border-bottom-color: rgb(254, 250, 234);
+    background-color: rgb(253, 241, 212);
+    flex-direction: column;
+    padding-top: 35px;
+    padding-right: 35px;
+    padding-bottom: 35px;
+    padding-left: 35px;
+}
+
+.current-player-panel #player-money {
+    background-color: rgb(225, 228, 192);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    -unity-text-outline-width: 0;
+    color: rgb(43, 149, 103);
+}
+
+.current-player-panel #player-name {
+    margin-top: 20px;
+    font-size: 42px;
+    color: rgb(44, 92, 83);
+    -unity-text-outline-width: 0;
+}
+
+.current-player-panel #player-picture {
+    width: 200px;
+    height: 200px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }

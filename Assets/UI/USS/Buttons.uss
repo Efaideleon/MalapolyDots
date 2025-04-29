@@ -259,6 +259,33 @@
     border-width: 0;
 }
 
+.end-turn-button {
+    transition: background-color 0.3s ease, scale 0.2s ease;
+}
+
+.end-turn-button Label {
+    transition: background-color 0.3s ease;
+    background-color: #0087FF;
+}
+
+.end-turn-button:hover {
+    scale: 1.05;
+}
+
+.end-turn-button:active {
+    scale: 0.95;
+}
+
+.end-turn-button:hover Label {
+    background-color: rgb(40, 164, 244);
+}
+
+.end-turn-button:active Label {
+    background-color: rgb(18, 118, 237);
+}
+
+
+
 .button-shadow {
     background-color: rgba(38, 38, 38, 0.3);
     padding: 0;
