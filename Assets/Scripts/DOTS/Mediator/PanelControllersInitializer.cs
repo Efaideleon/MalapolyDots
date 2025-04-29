@@ -56,28 +56,13 @@ namespace DOTS.Mediator
                 return;
             }
 
-            // DEBUG
-            var root = uiDocument.rootVisualElement;
-            static void OnClick(ClickEvent evt)
-            {
-                // evt.target is the element that was clicked
-                var clickedElement = evt.target as VisualElement;
-                Debug.Log($"Clicked on: {clickedElement.name} ({clickedElement.GetType().Name})");
-            }
-            // TrickleDown so you catch it before it's stopped by children
-            root.RegisterCallback<ClickEvent>(OnClick, TrickleDown.TrickleDown);
-            // END DEBUG
-
             // Registering the properties sprites to their respective name
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
             var sprites = canvasRef.spaceSprites;
 
-            UnityEngine.Debug.Log("Loading sprite dictionary");
             for (int i = 0; i < sprites.Length; i++)
-            {
                 spaceSpriteRegistry.TryAdd(sprites[i].name, sprites[i]);
-                UnityEngine.Debug.Log($"{sprites[i].name}");
-            }
+
             SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
 
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
@@ -129,6 +114,7 @@ namespace DOTS.Mediator
                 panelControllers.purchasePropertyPanelController.SetClickSound(clickSound);
             }
 
+            // Instantiating the Stats Panel for each player
             panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext());
             foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
             {
