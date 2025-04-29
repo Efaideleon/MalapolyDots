@@ -34,8 +34,8 @@ namespace DOTS.UI.Controllers
         private void DisableHighActivePanel(PlayerNameMoneyPanel panel)
         {
             panel.DisableHighlightActivePlayerPanel();
-            SmallPanelsContainer.Remove(panel.Root);
-            SmallPanelsContainer.Add(panel.Root);
+            var count = SmallPanelsContainer.childCount;
+            SmallPanelsContainer.hierarchy.Insert(count - 1, panel.Root);
         }
 
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
