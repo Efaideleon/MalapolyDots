@@ -15,20 +15,34 @@ namespace DOTS.UI.Controllers
     {
         public Dictionary<string, PlayerNameMoneyPanel> StatsPanelRegistry;
         public StatsPanelContext Context { get; set; }
-        public VisualElement Container { get; private set; }
+        public VisualElement SmallPanelsContainer { get; private set; }
+        public VisualElement BigPanelContainer { get; private set; }
         private readonly SelectionHighlighter<PlayerNameMoneyPanel> _selectionHighlighter;
 
-        public StatsPanelController(VisualElement container, StatsPanelContext context)
+        public StatsPanelController(VisualElement smallPanelsContainer, VisualElement bigPanelContainer, StatsPanelContext context)
         { 
-            Container = container;
-            _selectionHighlighter = new(e => e.HighlightActivePlayerPanel(), e => e.DisableHighlightActivePlayerPanel());
+            SmallPanelsContainer = smallPanelsContainer;
+            BigPanelContainer = bigPanelContainer;
+            _selectionHighlighter = new(HighActivePanel, DisableHighActivePanel);
             StatsPanelRegistry = new Dictionary<string, PlayerNameMoneyPanel>();
             Context = context;
         }
 
+        private void HighActivePanel(PlayerNameMoneyPanel panel)
+        {
+            panel.HighlightActivePlayerPanel();
+            BigPanelContainer.Add(panel.Root);
+        }
+
+        private void DisableHighActivePanel(PlayerNameMoneyPanel panel)
+        {
+            panel.DisableHighlightActivePlayerPanel();
+            SmallPanelsContainer.Add(panel.Root);
+        }
+
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
         {
-            Container.Add(panel.Root);
+            SmallPanelsContainer.Add(panel.Root);
             StatsPanelRegistry.Add(character, panel);
         }
 
