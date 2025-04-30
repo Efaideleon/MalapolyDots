@@ -36,9 +36,9 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                 }
             }
 
-            if (panelControllers != null)
-                if (panelControllers.statsPanelController != null)
-                    panelControllers.statsPanelController.SetPanelPositions();
+            // if (panelControllers != null)
+            //     if (panelControllers.statsPanelController != null)
+            //         panelControllers.statsPanelController.SetPanelPositions();
         }
     }
 }

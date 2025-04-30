@@ -27,6 +27,7 @@ namespace DOTS.UI.Panels
             _container = Root.Q<VisualElement>("player-panel");
 
             Root.AddToClassList("default-uxml");
+            AddAnimationProperties();
             DisableHighlightActivePlayerPanel();
         }
 
@@ -38,6 +39,13 @@ namespace DOTS.UI.Panels
         public void UpdatePlayerMoneyLabelText(string text)
         {
             PlayerMoneyLabel.text = text;
+        }
+
+        private void AddAnimationProperties()
+        {
+            Root.style.transitionProperty = new List<StylePropertyName> { "transform" };
+            Root.style.transitionDuration = new List<TimeValue> { new(0.3f, TimeUnit.Second) };
+            Root.style.transitionTimingFunction = new List<EasingFunction> { new(EasingMode.EaseInOut) };
         }
 
         public void HighlightActivePlayerPanel()
