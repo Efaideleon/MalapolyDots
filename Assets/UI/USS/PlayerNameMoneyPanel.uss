@@ -141,23 +141,15 @@
 }
 
 .default-uxml {
-    position: relative; 
-    top: 0px;
-    left: 0px;
+    position: absolute;
     background-color: red;
-    width: 100px;
-    transition-property: position,  width, background-color, top, left;
+    transition-property: background-color, top, right;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
-    flex-grow: 0;
 }
 
 .current-player-uxml {
-    position: relative;
     background-color: blue;
-    width: 500px;
-    top: 130px;
-    left: -850px;
 }
 
 
