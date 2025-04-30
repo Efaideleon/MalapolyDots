@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
@@ -19,12 +20,13 @@ namespace DOTS.UI.Panels
             }
 
             Root.style.width = StyleKeyword.Auto;
-            Root.style.height = StyleKeyword.Auto; 
+            Root.style.height = StyleKeyword.Auto;
             Root.pickingMode = PickingMode.Ignore;
             PlayerNameLabel = Root.Q<Label>("player-name");
             PlayerMoneyLabel = Root.Q<Label>("player-money");
             _container = Root.Q<VisualElement>("player-panel");
 
+            Root.AddToClassList("default-uxml");
             DisableHighlightActivePlayerPanel();
         }
 
@@ -40,11 +42,19 @@ namespace DOTS.UI.Panels
 
         public void HighlightActivePlayerPanel()
         {
+            // Root.style.position = Position.Absolute;
+            // Root.style.top = 130;
+            // Root.style.left = new Length(2, LengthUnit.Percent);
+            Root.AddToClassList("current-player-uxml");
             _container.AddToClassList("current-player-panel");
         }
 
         public void DisableHighlightActivePlayerPanel()
         {
+            // Root.style.position = Position.Relative;
+            // Root.style.top = StyleKeyword.Auto;
+            // Root.style.left = StyleKeyword.Auto;
+            Root.RemoveFromClassList("current-player-uxml");
             _container.RemoveFromClassList("current-player-panel");
         }
     }

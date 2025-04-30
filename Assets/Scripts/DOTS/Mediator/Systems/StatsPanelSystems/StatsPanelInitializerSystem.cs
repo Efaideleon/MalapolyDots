@@ -16,10 +16,10 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
 
         public void OnUpdate(ref SystemState state)
         {
+            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
             foreach (var (name, money) in
                     SystemAPI.Query<RefRO<NameComponent>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
             {
-                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
                 if (panelControllers != null)
                 {
                     if (panelControllers.statsPanelController != null)
@@ -35,6 +35,10 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                     }
                 }
             }
+
+            if (panelControllers != null)
+                if (panelControllers.statsPanelController != null)
+                    panelControllers.statsPanelController.SetPanelPositions();
         }
     }
 }
