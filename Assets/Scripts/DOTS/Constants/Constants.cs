@@ -4,4 +4,9 @@ namespace DOTS.Constants
     {
         public const int Vacant = -1;
     }
+
+    public class Constants
+    {
+        public const int Uninitialized = -1;
+    }
 }

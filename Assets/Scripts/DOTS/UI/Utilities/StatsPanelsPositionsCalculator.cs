@@ -37,7 +37,7 @@ public class StatsPanelsPositionsCalculator
         return _container.resolvedStyle.width;
     }
 
-    public PanelPositionTopRight GetPanelPosition(int idx, VisualElement panel)
+    public PanelPositionTopRight GetPanelPosition(int idx)
     {
         return new PanelPositionTopRight { Top = 0, Right = SmallPanelsPositions[idx] };
     }

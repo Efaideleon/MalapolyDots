@@ -13,21 +13,17 @@ namespace DOTS.GamePlay
         public int Index;
     }
 
+    public struct ChangeTurnBufferEvent : IBufferElementData
+    {}
+
     [BurstCompile]
     public partial struct TransactionSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            var currentPlayerIndexEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-                    {
-                    ComponentType.ReadOnly<CharacterNameIndex>()
-                    });
-
-            SystemAPI.SetComponent(currentPlayerIndexEntity, new CharacterNameIndex
-                    {
-                    Index = 0
-                    });
+            state.EntityManager.CreateSingleton(new CharacterNameIndex { Index = 0 });
+            state.EntityManager.CreateSingletonBuffer<ChangeTurnBufferEvent>();
 
             state.RequireForUpdate<GameDataComponent>();
             state.RequireForUpdate<CurrentPlayerID>();
@@ -119,6 +115,7 @@ namespace DOTS.GamePlay
                             if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
                             {
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
+                                SystemAPI.GetSingletonBuffer<ChangeTurnBufferEvent>().Add(new ChangeTurnBufferEvent{});
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
                             }
                         }

@@ -6,6 +6,7 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
+
     public struct CurrentPlayerID : IComponentData
     {
         public int Value;

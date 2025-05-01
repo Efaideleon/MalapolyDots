@@ -17,6 +17,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
         public void OnUpdate(ref SystemState state)
         {
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+            bool allPanelsInitialized = false;
             foreach (var (name, money) in
                     SystemAPI.Query<RefRO<NameComponent>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
             {
@@ -30,15 +31,21 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                             Money = money.ValueRO.Value.ToString()
                         };
                         panelControllers.statsPanelController.Context = newContext; 
-                        panelControllers.statsPanelController.InitializePanels();
-                        state.Enabled = false;
+                        panelControllers.statsPanelController.InitializePanel();
+                        allPanelsInitialized = true;
                     }
                 }
             }
 
-            // if (panelControllers != null)
-            //     if (panelControllers.statsPanelController != null)
-            //         panelControllers.statsPanelController.SetPanelPositions();
+            if (allPanelsInitialized)
+                if (panelControllers != null)
+                    if (panelControllers.statsPanelController != null)
+                    {
+                        panelControllers.statsPanelController.SelectPanel(0);
+                        panelControllers.statsPanelController.SetPanelsInitialPositions();
+                        panelControllers.statsPanelController.ShiftPanelsPositions();
+                        state.Enabled = false;
+                    }
         }
     }
 }

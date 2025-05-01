@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DOTS.UI.Panels;
@@ -46,7 +47,7 @@ namespace DOTS.UI.Controllers
             StatsPanelRegistry.Add(character, panel);
         }
 
-        public void InitializePanels()
+        public void InitializePanel()
         {
             var panel = StatsPanelRegistry[Context.Name.ToString()];
             _statsPanelsPositionsCalculator.CalculatePanelPosition(panel.Root);
@@ -54,50 +55,93 @@ namespace DOTS.UI.Controllers
             panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
         }
 
-        public void TranslatePanelsPosition()
+        public void SetPanelsInitialPositions()
         {
-            int idx =  StatsPanelRegistry.Count - 1;
+            PrintStatsPanelRegistry();
+            int idx = StatsPanelRegistry.Count - 1;
             foreach (var kvp in StatsPanelRegistry)
             {
                 var panel = kvp.Value;
                 if (idx == StatsPanelRegistry.Count - 1)
                 {
-                    var position = _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition(panel.Root);
-                    panel.Root.style.translate = new Translate(-position.Right, position.Top);
-                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
+                    TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
                 }
                 else
                 {
-                    var position = _statsPanelsPositionsCalculator.GetPanelPosition(idx, panel.Root);
-                    panel.Root.style.translate = new Translate(-position.Right, position.Top);
-                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
+                    TranslatePanel(panel, idx, _statsPanelsPositionsCalculator.GetPanelPosition);
                 }
                 idx--;
             }
 
             SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
-        
-        private void ShiftPanelsPositions()
+
+        public void TranslatePanelsPosition()
+        {
+            int idx = StatsPanelRegistry.Count - 1;
+            foreach (var kvp in StatsPanelRegistry)
+            {
+                var panel = kvp.Value;
+                if (idx == StatsPanelRegistry.Count - 1)
+                {
+                    panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
+                    TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
+                    UnityEngine.Debug.Log($"Moving to LargePanel: Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
+                }
+                if (idx == 0)
+                {
+                    // panel.Root.style.top = new Length(0, LengthUnit.Pixel);
+                    // panel.Root.style.right = new Length(_statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition(panel.Root).Right, LengthUnit.Pixel);
+                    UnityEngine.Debug.Log($"Moving to SmallPanel: Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
+                    panel.Root.style.transitionDuration = new List<TimeValue> { new(0f, TimeUnit.Second) };
+                    panel.Root.style.translate = new Translate(0, 0);
+                }
+                if ((idx != StatsPanelRegistry.Count -1)&& (idx != 0))
+                {
+                    panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
+                    TranslatePanel(panel, idx, _statsPanelsPositionsCalculator.GetPanelPosition);
+                    UnityEngine.Debug.Log($"Slidng small panel Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
+                }
+                idx--;
+            }
+
+            SmallPanelsContainer.style.visibility = Visibility.Visible;
+        }
+
+        private void TranslatePanel<T>(PlayerNameMoneyPanel panel, T value, Func<T, PanelPositionTopRight> GetPosition)
+        {
+            PanelPositionTopRight position = GetPosition(value);
+            panel.Root.style.translate = new Translate(-position.Right, position.Top);
+        }
+
+        public void ShiftPanelsPositions()
         {
             var entries = StatsPanelRegistry.ToList();
-            if (entries.Count == 0) 
+            if (entries.Count == 0)
                 return;
 
             var firstEntry = entries.First();
             entries.RemoveAt(0);
-            entries.Insert(entries.Count , firstEntry);
+            entries.Insert(entries.Count, firstEntry);
 
             StatsPanelRegistry = entries.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
         // TODO: this is hard to follow, the user needs to know that the context comes first and then select the panel
         // based on the context; it would be easier if the user just selected the panel based on something at the same time.
-        public void SelectPanel()
+        public void SelectPanel(int idx)
         {
-            UnityEngine.Debug.Log($"Selecting panel: {Context.Name}");
-            var panel = StatsPanelRegistry[Context.Name.ToString()];
+            var panel = StatsPanelRegistry.Values.ToArray()[idx];
             _selectionHighlighter.Select(panel);
+        }
+        public void SelectPanel(FixedString64Bytes characterName)
+        {
+            var panel = StatsPanelRegistry[characterName.ToString()];
+            _selectionHighlighter.Select(panel);
+        }
+
+        public void TranslatePanels()
+        {
             TranslatePanelsPosition();
             ShiftPanelsPositions();
         }

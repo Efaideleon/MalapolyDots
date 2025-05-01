@@ -19,33 +19,35 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var currPlayerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<ChangeTurnBufferEvent>>().WithChangeFilter<ChangeTurnBufferEvent>())
             {
-                foreach (var (playerID, name, money) in
-                        SystemAPI.Query<
-                        RefRO<PlayerID>,
-                        RefRO<NameComponent>,
-                        RefRO<MoneyComponent>
-                        >())
+                foreach (var e in buffer)
                 {
-                    PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                    if (panelControllers != null)
+                    foreach (var (playerID, name) in
+                            SystemAPI.Query<
+                            RefRO<PlayerID>,
+                            RefRO<NameComponent>
+                            >())
                     {
-                        if (panelControllers.statsPanelController != null)
+                        PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                        if (panelControllers != null)
                         {
-                            if (playerID.ValueRO.Value == currPlayerID.ValueRO.Value)
+                            if (panelControllers.statsPanelController != null)
                             {
-                                StatsPanelContext statsPanelContext = new() 
-                                { 
-                                    Name = name.ValueRO.Value.ToString(),
-                                    Money = money.ValueRO.Value.ToString()
-                                };
-                                panelControllers.statsPanelController.Context = statsPanelContext;
-                                panelControllers.statsPanelController.SelectPanel();
+                                var currPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                                if (playerID.ValueRO.Value == currPlayerID.Value)
+                                {
+                                    var playerName = name.ValueRO.Value;
+                                    panelControllers.statsPanelController.SelectPanel(playerName);
+                                    panelControllers.statsPanelController.TranslatePanelsPosition();
+                                    panelControllers.statsPanelController.ShiftPanelsPositions();
+
+                                }
                             }
                         }
                     }
                 }
+                buffer.Clear();
             }
         }
     }
