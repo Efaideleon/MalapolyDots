@@ -66,42 +66,27 @@ namespace DOTS.UI.Controllers
                 {
                     var position = _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition(panel.Root);
                     panel.Root.style.translate = new Translate(-position.Right, position.Top);
-                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value}");
+                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
+                }
+
+                if (idx == 0)
+                {
+                    panel.Root.style.translate = new Translate(100, 500);
+                    UnityEngine.Debug.Log($"Translate right 100 {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
                 }
                 else
                 {
                     var position = _statsPanelsPositionsCalculator.GetPanelPosition(idx, kvp.Value.Root);
                     panel.Root.style.translate = new Translate(-position.Right, 0);
-                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value}");
+                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
                 }
                 idx--;
             }
 
             SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
-
-        public void SetPanelPositions()
-        {
-            int idx =  StatsPanelRegistry.Count - 1;
-            foreach (var kvp in StatsPanelRegistry)
-            {
-                var panel = kvp.Value;
-                if (idx == StatsPanelRegistry.Count - 1)
-                {
-                    var position = _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition(panel.Root);
-                    panel.Root.style.right = position.Right;
-                    panel.Root.style.top = position.Top;
-                }    
-                else 
-                {
-                    panel.Root.style.right = _statsPanelsPositionsCalculator.GetPanelPosition(idx, kvp.Value.Root).Right;
-                    panel.Root.style.top = _statsPanelsPositionsCalculator.GetPanelPosition(idx, kvp.Value.Root).Top;
-                }
-                idx--;
-            }
-            SmallPanelsContainer.style.visibility = Visibility.Visible;
-        }
-
+        
+        
         private void ShiftPanelsPositions()
         {
             var entries = StatsPanelRegistry.ToList();
