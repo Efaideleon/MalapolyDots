@@ -85,37 +85,28 @@ namespace DOTS.UI.Controllers
                 int capturedIndex = idx;
                 if (idx == 0)
                 {
-                    // panel.Root.style.top = new Length(0, LengthUnit.Pixel);
-                    // panel.Root.style.right = new Length(_statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition(panel.Root).Right, LengthUnit.Pixel);
-                    UnityEngine.Debug.Log($"Moving to SmallPanel: Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
                     panel.Root.style.transitionDuration = new List<TimeValue> { new(0f, TimeUnit.Second) };
                     panel.Root.style.translate = new Translate(350, 0);
                     panel.Root.schedule.Execute((_) =>
                     {
-                        UnityEngine.Debug.Log($"CapturedIndex: {capturedIndex}");
                         panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
                         TranslatePanel(panel, capturedIndex, _statsPanelsPositionsCalculator.GetPanelPosition);
-                        UnityEngine.Debug.Log($"Slidng small panel Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {capturedIndex}");
                     }).ExecuteLater(0);
                 }
                 if (capturedIndex == StatsPanelRegistry.Count - 1)
                 {
                     panel.Root.schedule.Execute((_) =>
                     {
-                        UnityEngine.Debug.Log($"CapturedIndex: {capturedIndex}");
                         panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
                         TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
-                        UnityEngine.Debug.Log($"Moving to LargePanel: Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {capturedIndex}");
                     }).ExecuteLater(0);
                 }
                 if ((capturedIndex != StatsPanelRegistry.Count -1)&& (capturedIndex != 0))
                 {
                     panel.Root.schedule.Execute((_) =>
                     {
-                        UnityEngine.Debug.Log($"CapturedIndex: {capturedIndex}");
                         panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
                         TranslatePanel(panel, capturedIndex, _statsPanelsPositionsCalculator.GetPanelPosition);
-                        UnityEngine.Debug.Log($"Slidng small panel Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {capturedIndex}");
                     }).ExecuteLater(0);
                 }
                 idx--;
