@@ -4,7 +4,7 @@
         <engine:VisualElement name="player-picture" class="player-picture" style="background-image: url(&quot;project://database/Assets/Textures/GreenHouse128.png?fileID=21300000&amp;guid=67d352eb2cd62ab46b201ceb72182500&amp;type=3#GreenHouse128&quot;); background-size: 100% 100%; -unity-background-scale-mode: scale-to-fit; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
         <engine:VisualElement name="player-name-money-container" style="flex-direction: column; margin-right: 0; flex-grow: 0; align-items: center;">
             <engine:Label text="Player" name="player-name" enable-rich-text="false" class="player-name" />
-            <engine:Label text="500000" name="player-money" class="player-money" style="padding-top: 5px; padding-right: 10px; padding-bottom: 5px; padding-left: 10px;" />
+            <engine:Label text="$1,000,000" name="player-money" class="player-money" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
