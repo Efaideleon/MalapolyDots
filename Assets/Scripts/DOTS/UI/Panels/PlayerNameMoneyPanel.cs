@@ -53,7 +53,7 @@ namespace DOTS.UI.Panels
             // Root.style.position = Position.Absolute;
             // Root.style.top = 130;
             // Root.style.left = new Length(2, LengthUnit.Percent);
-            Root.AddToClassList("current-player-uxml");
+            // Root.AddToClassList("current-player-uxml");
             _container.AddToClassList("current-player-panel");
         }
 
@@ -62,7 +62,7 @@ namespace DOTS.UI.Panels
             // Root.style.position = Position.Relative;
             // Root.style.top = StyleKeyword.Auto;
             // Root.style.left = StyleKeyword.Auto;
-            Root.RemoveFromClassList("current-player-uxml");
+            // Root.RemoveFromClassList("current-player-uxml");
             _container.RemoveFromClassList("current-player-panel");
         }
     }

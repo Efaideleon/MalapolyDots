@@ -38,8 +38,6 @@ namespace DOTS.UI.Controllers
         private void DisableHighlightActivePanel(PlayerNameMoneyPanel panel)
         {
             panel.DisableHighlightActivePlayerPanel();
-            var count = SmallPanelsContainer.childCount;
-            SmallPanelsContainer.hierarchy.Insert(count - 1, panel.Root);
         }
 
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
@@ -68,16 +66,10 @@ namespace DOTS.UI.Controllers
                     panel.Root.style.translate = new Translate(-position.Right, position.Top);
                     UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
                 }
-
-                if (idx == 0)
-                {
-                    panel.Root.style.translate = new Translate(100, 500);
-                    UnityEngine.Debug.Log($"Translate right 100 {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
-                }
                 else
                 {
-                    var position = _statsPanelsPositionsCalculator.GetPanelPosition(idx, kvp.Value.Root);
-                    panel.Root.style.translate = new Translate(-position.Right, 0);
+                    var position = _statsPanelsPositionsCalculator.GetPanelPosition(idx, panel.Root);
+                    panel.Root.style.translate = new Translate(-position.Right, position.Top);
                     UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value} name: {kvp.Key} index: {idx}");
                 }
                 idx--;
@@ -85,7 +77,6 @@ namespace DOTS.UI.Controllers
 
             SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
-        
         
         private void ShiftPanelsPositions()
         {
@@ -107,11 +98,8 @@ namespace DOTS.UI.Controllers
             UnityEngine.Debug.Log($"Selecting panel: {Context.Name}");
             var panel = StatsPanelRegistry[Context.Name.ToString()];
             _selectionHighlighter.Select(panel);
-            // SetPanelPositions();
             TranslatePanelsPosition();
-            PrintStatsPanelRegistry();
             ShiftPanelsPositions();
-            PrintStatsPanelRegistry();
         }
 
         private void PrintStatsPanelRegistry()
