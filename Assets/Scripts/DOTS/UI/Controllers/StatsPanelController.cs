@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DOTS.UI.Panels;
 using Unity.Collections;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Controllers
@@ -20,11 +21,13 @@ namespace DOTS.UI.Controllers
         public VisualElement SmallPanelsContainer { get; private set; }
         private readonly StatsPanelsPositionsCalculator _statsPanelsPositionsCalculator;
         private readonly SelectionHighlighter<PlayerNameMoneyPanel> _selectionHighlighter;
+        private readonly Dictionary<FixedString64Bytes, Sprite> _characterSpriteRegistry;
 
-        public StatsPanelController(VisualElement smallPanelsContainer, StatsPanelContext context)
+        public StatsPanelController(VisualElement smallPanelsContainer, StatsPanelContext context, Dictionary<FixedString64Bytes, Sprite> characterSpritesRegistry)
         {
             SmallPanelsContainer = smallPanelsContainer;
             SmallPanelsContainer.style.visibility = Visibility.Hidden;
+            _characterSpriteRegistry = characterSpritesRegistry;
             _selectionHighlighter = new(HighlightActivePanel, DisableHighlightActivePanel);
             _statsPanelsPositionsCalculator = new(SmallPanelsContainer);
             StatsPanelRegistry = new Dictionary<string, PlayerNameMoneyPanel>();
@@ -50,7 +53,9 @@ namespace DOTS.UI.Controllers
         public void InitializePanel()
         {
             var panel = StatsPanelRegistry[Context.Name.ToString()];
+            var sprite = _characterSpriteRegistry[Context.Name.ToString()];
             _statsPanelsPositionsCalculator.CalculatePanelPosition(panel.Root);
+            panel.SetSprite(sprite);
             panel.UpdatePlayerNameLabelText(Context.Name.ToString());
             panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
         }

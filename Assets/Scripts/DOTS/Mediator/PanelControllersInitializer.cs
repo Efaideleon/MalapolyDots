@@ -58,10 +58,15 @@ namespace DOTS.Mediator
 
             // Registering the properties sprites to their respective name
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
+            Dictionary<FixedString64Bytes, Sprite> characterSpriteRegistry = new();
             var sprites = canvasRef.spaceSprites;
+            var characterSprites = canvasRef.characterSprites;
 
             for (int i = 0; i < sprites.Length; i++)
                 spaceSpriteRegistry.TryAdd(sprites[i].name, sprites[i]);
+
+            for (int i = 0; i < characterSprites.Length; i++)
+                characterSpriteRegistry.TryAdd(characterSprites[i].name, characterSprites[i]);
 
             SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
 
@@ -114,7 +119,7 @@ namespace DOTS.Mediator
             }
 
             // Instantiating the Stats Panel for each player
-            panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext());
+            panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext(), characterSpriteRegistry);
             foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
             {
                 foreach (var character in characterBuffer)

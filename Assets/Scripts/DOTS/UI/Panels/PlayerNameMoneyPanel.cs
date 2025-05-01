@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
@@ -8,6 +10,7 @@ namespace DOTS.UI.Panels
         public VisualElement Root { get; private set; }
         public Label PlayerNameLabel { get; private set; }
         public Label PlayerMoneyLabel { get; private set; }
+        public VisualElement Icon { get; private set; }
         private readonly VisualElement _container;
 
         public PlayerNameMoneyPanel(VisualElement root)
@@ -22,6 +25,7 @@ namespace DOTS.UI.Panels
             Root.style.width = StyleKeyword.Auto;
             Root.style.height = StyleKeyword.Auto;
             Root.pickingMode = PickingMode.Ignore;
+            Icon = Root.Q<VisualElement>("player-picture");
             PlayerNameLabel = Root.Q<Label>("player-name");
             PlayerMoneyLabel = Root.Q<Label>("player-money");
             _container = Root.Q<VisualElement>("player-panel");
@@ -56,6 +60,11 @@ namespace DOTS.UI.Panels
         public void DisableHighlightActivePlayerPanel()
         {
             _container.RemoveFromClassList("current-player-panel");
+        }
+
+        public void SetSprite(Sprite sprite)
+        {
+            Icon.style.backgroundImage = new StyleBackground(sprite);
         }
     }
 }

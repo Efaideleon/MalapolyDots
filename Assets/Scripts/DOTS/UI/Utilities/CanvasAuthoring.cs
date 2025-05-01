@@ -8,6 +8,7 @@ namespace DOTS.UI.Utilities
     {
         [SerializeField] public UIDocument documentGO;
         [SerializeField] public Sprite[] spaceSprites;
+        [SerializeField] public Sprite[] characterSprites;
 
         public class CanvasBaker : Baker<CanvasAuthoring>
         {
@@ -17,7 +18,8 @@ namespace DOTS.UI.Utilities
                 AddComponentObject(entity, new CanvasReferenceComponent
                 {
                     uiDocumentGO = authoring.documentGO.gameObject,
-                    spaceSprites = authoring.spaceSprites
+                    spaceSprites = authoring.spaceSprites,
+                    characterSprites = authoring.characterSprites
                 });
             }
         }

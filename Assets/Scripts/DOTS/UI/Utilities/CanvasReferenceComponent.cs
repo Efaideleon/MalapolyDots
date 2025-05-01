@@ -7,5 +7,6 @@ namespace DOTS.UI.Utilities
     {
         public GameObject uiDocumentGO;
         public Sprite[] spaceSprites;
+        public Sprite[] characterSprites;
     }
 }
