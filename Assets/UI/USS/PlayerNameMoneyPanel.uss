@@ -18,7 +18,7 @@
 
 .player-money {
     -unity-text-align: upper-center;
-    font-size: 36px;
+    font-size: 34px;
     -unity-font-style: bold;
     color: rgb(255, 255, 255);
     -unity-text-outline-width: 3px;
@@ -38,7 +38,7 @@
     width: 100px;
     height: 100px;
     border-radius: 40px;
-    background-color: rgb(245, 223, 175);
+    background-color: rgba(245, 223, 175, 0);
     background-repeat: space space;
     -unity-background-scale-mode: stretch-to-fill;
     border-top-left-radius: 50%;
@@ -53,28 +53,28 @@
     margin-right: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    border-left-color: rgba(231, 230, 255, 0.5);
-    border-right-color: rgba(231, 230, 255, 0.5);
-    border-top-color: rgba(231, 230, 255, 0.5);
-    border-bottom-color: rgba(231, 230, 255, 0.5);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
 }
 
 .player-panel {
-    width: 330px;
+    width: 300px;
     height: 120px;
-    background-color: rgb(96, 150, 229);
+    background-color: rgba(96, 150, 229, 0);
     border-radius: 10px;
     border-width: 5px;
     border-color: rgb(38, 123, 250);
     padding: 0;
-    border-left-color: rgb(117, 168, 244);
-    border-right-color: rgb(117, 168, 244);
-    border-top-color: rgb(117, 168, 244);
-    border-bottom-color: rgb(117, 168, 244);
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
@@ -85,12 +85,16 @@
     flex-grow: 0;
     justify-content: flex-start;
     margin-bottom: 0;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: 0;
     margin-right: 10px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
 }
 
 .current-player-panel #player-money {
@@ -146,4 +150,3 @@
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
 }
-
