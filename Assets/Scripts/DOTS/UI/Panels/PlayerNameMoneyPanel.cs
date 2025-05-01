@@ -43,8 +43,8 @@ namespace DOTS.UI.Panels
 
         private void AddAnimationProperties()
         {
-            Root.style.transitionProperty = new List<StylePropertyName> { "transform" };
-            Root.style.transitionDuration = new List<TimeValue> { new(0.3f, TimeUnit.Second) };
+            Root.style.transitionProperty = new List<StylePropertyName> { "translate" };
+            Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
             Root.style.transitionTimingFunction = new List<EasingFunction> { new(EasingMode.EaseInOut) };
         }
 

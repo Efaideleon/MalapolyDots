@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DOTS.UI.Panels;
 using Unity.Collections;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Controllers
@@ -63,9 +62,18 @@ namespace DOTS.UI.Controllers
             foreach (var kvp in StatsPanelRegistry)
             {
                 var panel = kvp.Value;
-                var position = _statsPanelsPositionsCalculator.GetPanelPosition(idx, kvp.Value.Root);
-                panel.Root.style.translate = new Translate(-position.Right, 0);
-                UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value}");
+                if (idx == StatsPanelRegistry.Count - 1)
+                {
+                    var position = _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition(panel.Root);
+                    panel.Root.style.translate = new Translate(-position.Right, position.Top);
+                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value}");
+                }
+                else
+                {
+                    var position = _statsPanelsPositionsCalculator.GetPanelPosition(idx, kvp.Value.Root);
+                    panel.Root.style.translate = new Translate(-position.Right, 0);
+                    UnityEngine.Debug.Log($"Translate {panel.Root.style.translate.value.x.value}");
+                }
                 idx--;
             }
 
