@@ -66,7 +66,7 @@
 .player-panel {
     width: 300px;
     height: 120px;
-    background-color: rgba(96, 150, 229, 0);
+    background-color: rgba(64, 64, 64, 0.5);
     border-radius: 10px;
     border-width: 5px;
     border-color: rgb(38, 123, 250);
@@ -83,7 +83,7 @@
     flex-direction: row;
     flex-shrink: 1;
     flex-grow: 0;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin-bottom: 0;
     padding-right: 10px;
     padding-left: 10px;
@@ -107,6 +107,8 @@
     margin-bottom: 0;
     -unity-text-outline-width: 0;
     color: rgb(43, 149, 103);
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .current-player-panel #player-name {
@@ -124,6 +126,21 @@
     margin-bottom: 0;
     margin-left: 0;
     flex-grow: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.default-uxml {
+    position: absolute;
+    transition-property: translate;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
 .current-player-panel {
@@ -132,21 +149,19 @@
     transition-property: height;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
-    border-left-color: rgb(254, 250, 234);
-    border-right-color: rgb(254, 250, 234);
-    border-top-color: rgb(254, 250, 234);
-    border-bottom-color: rgb(254, 250, 234);
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
     background-color: rgb(253, 241, 212);
     flex-direction: flex-start;
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-}
-
-.default-uxml {
-    position: absolute;
-    transition-property: translate;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
+    justify-content: center;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
 }
