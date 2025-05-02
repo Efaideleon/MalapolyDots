@@ -91,7 +91,7 @@ public partial struct GamePlayUIMediator : ISystem
             var spriteRegistry = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>();
             if (panelControllers != null && spriteRegistry.Value != null)
             {
-                if (panelControllers.purchaseHousePanelController != null)
+                if (panelControllers.purchasePropertyPanelController != null)
                 {
                     // TODO: not consistent with the PurhcaseHousePanel.
                     // Here we assigned the Context to the controller instead of the panel itself
@@ -156,9 +156,9 @@ public partial struct GamePlayUIMediator : ISystem
                         {
                             case InputActionPhase.Started:
                                 panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
-                                panelControllers.backdropController.ShowBackdropWithDelay();
                                 break;
                             case InputActionPhase.Canceled:
+                                panelControllers.backdropController.ShowBackdropWithDelay();
                                 break;
                         }
                         // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
