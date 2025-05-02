@@ -154,10 +154,8 @@ public partial struct GamePlayUIMediator : ISystem
 
                         switch (clickData.Phase)
                         {
-                            case InputActionPhase.Started:
-                                panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
-                                break;
                             case InputActionPhase.Canceled:
+                                panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
                                 panelControllers.backdropController.ShowBackdropWithDelay();
                                 break;
                         }
