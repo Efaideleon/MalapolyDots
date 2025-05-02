@@ -56,6 +56,28 @@ namespace DOTS.UI.Systems
                     SystemAPI.SetSingleton(new SpaceActionsPanelContextComponent { Value = spaceActionsContext });
                 }
             }
+
+            foreach (var onLandEntity in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
+            {
+                if (onLandEntity.ValueRO.entity != Entity.Null)
+                {
+                    if (SystemAPI.HasComponent<PropertySpaceTag>(onLandEntity.ValueRO.entity))
+                    {
+                        var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(onLandEntity.ValueRO.entity);
+                        var owner = SystemAPI.GetComponent<OwnerComponent>(onLandEntity.ValueRO.entity);
+                        var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
+                        bool isCurrentOwner = currentPlayerID.Value == owner.ID;
+                        SpaceActionsPanelContext spaceActionsContext = new()
+                        {
+                            HasMonopoly = hasMonopoly.Value,
+                            IsPlayerOwner = isCurrentOwner
+                        };
+
+                        SystemAPI.SetSingleton(new SpaceActionsPanelContextComponent { Value = spaceActionsContext });
+                    }
+                }
+            }
         }
     }
 }

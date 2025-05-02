@@ -39,8 +39,8 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                                 {
                                     var playerName = name.ValueRO.Value;
                                     panelControllers.statsPanelController.SelectPanel(playerName);
-                                    panelControllers.statsPanelController.TranslatePanelsPosition();
-                                    panelControllers.statsPanelController.ShiftPanelsPositions();
+                                    panelControllers.statsPanelController.TranslateAllPanels();
+                                    panelControllers.statsPanelController.ShiftPanelsRegistry();
 
                                 }
                             }

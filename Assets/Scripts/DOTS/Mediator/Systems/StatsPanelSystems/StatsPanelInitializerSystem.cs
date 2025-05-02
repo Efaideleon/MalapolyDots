@@ -43,7 +43,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                     {
                         panelControllers.statsPanelController.SelectPanel(0);
                         panelControllers.statsPanelController.SetPanelsInitialPositions();
-                        panelControllers.statsPanelController.ShiftPanelsPositions();
+                        panelControllers.statsPanelController.ShiftPanelsRegistry();
                         state.Enabled = false;
                     }
         }

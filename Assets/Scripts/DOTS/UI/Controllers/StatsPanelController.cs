@@ -34,15 +34,8 @@ namespace DOTS.UI.Controllers
             Context = context;
         }
 
-        private void HighlightActivePanel(PlayerNameMoneyPanel panel)
-        {
-            panel.HighlightActivePlayerPanel();
-        }
-
-        private void DisableHighlightActivePanel(PlayerNameMoneyPanel panel)
-        {
-            panel.DisableHighlightActivePlayerPanel();
-        }
+        private void HighlightActivePanel(PlayerNameMoneyPanel panel) => panel.HighlightActivePlayerPanel(); 
+        private void DisableHighlightActivePanel(PlayerNameMoneyPanel panel) => panel.DisableHighlightActivePlayerPanel();
 
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
         {
@@ -62,26 +55,21 @@ namespace DOTS.UI.Controllers
 
         public void SetPanelsInitialPositions()
         {
-            PrintStatsPanelRegistry();
             int idx = StatsPanelRegistry.Count - 1;
             foreach (var kvp in StatsPanelRegistry)
             {
                 var panel = kvp.Value;
                 if (idx == StatsPanelRegistry.Count - 1)
-                {
                     TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
-                }
                 else
-                {
                     TranslatePanel(panel, idx, _statsPanelsPositionsCalculator.GetPanelPosition);
-                }
                 idx--;
             }
 
             SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
 
-        public void TranslatePanelsPosition()
+        public void TranslateAllPanels()
         {
             int idx = StatsPanelRegistry.Count - 1;
             foreach (var kvp in StatsPanelRegistry)
@@ -126,7 +114,7 @@ namespace DOTS.UI.Controllers
             panel.Root.style.translate = new Translate(-position.Right, position.Top);
         }
 
-        public void ShiftPanelsPositions()
+        public void ShiftPanelsRegistry()
         {
             var entries = StatsPanelRegistry.ToList();
             if (entries.Count == 0)
@@ -139,8 +127,6 @@ namespace DOTS.UI.Controllers
             StatsPanelRegistry = entries.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        // TODO: this is hard to follow, the user needs to know that the context comes first and then select the panel
-        // based on the context; it would be easier if the user just selected the panel based on something at the same time.
         public void SelectPanel(int idx)
         {
             var panel = StatsPanelRegistry.Values.ToArray()[idx];
@@ -152,19 +138,10 @@ namespace DOTS.UI.Controllers
             _selectionHighlighter.Select(panel);
         }
 
-        public void TranslatePanels()
+        public void TranslatePanelsAndShiftRegistry()
         {
-            TranslatePanelsPosition();
-            ShiftPanelsPositions();
-        }
-
-        private void PrintStatsPanelRegistry()
-        {
-            UnityEngine.Debug.Log($"printing panels dictionary");
-            foreach (var kvp in StatsPanelRegistry)
-            {
-                UnityEngine.Debug.Log($"{kvp.Key}");
-            }
+            TranslateAllPanels();
+            ShiftPanelsRegistry();
         }
 
         public void Update()

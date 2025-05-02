@@ -43,6 +43,23 @@ namespace DOTS.UI.Systems
                     SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
                 }
             }
+
+            foreach (var onLandSpace in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
+            {
+                if (SystemAPI.HasComponent<PropertySpaceTag>(onLandSpace.ValueRO.entity))
+                {
+                    var onLandProperty = onLandSpace.ValueRO.entity;
+                    if (onLandProperty != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(onLandProperty))
+                    {
+                        PurchasePropertyPanelContext purchasePropertyPanelContext = new()
+                        {
+                            Name = SystemAPI.GetComponent<NameComponent>(onLandProperty).Value,
+                            Price = SystemAPI.GetComponent<PriceComponent>(onLandProperty).Value
+                        };
+                        SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
+                    }
+                }
+            }
         }
     }
 }
