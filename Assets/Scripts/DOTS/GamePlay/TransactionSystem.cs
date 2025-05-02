@@ -83,12 +83,11 @@ namespace DOTS.GamePlay
                             var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
                             if (playerID.ValueRO.Value == currentPlayerID.Value)
                             {
-                                var property = SystemAPI.GetSingleton<LastPropertyClicked>();
+                                var property = SystemAPI.GetSingleton<PropertyEventComponent>();
                                 // TODO: Check if the player is on the this entity to be able to buy it
                                 if (property.entity != Entity.Null && 
                                         SystemAPI.HasComponent<PropertySpaceTag>(property.entity))
                                 {
-                                    UnityEngine.Debug.Log("Buying Property");
                                     var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
                                     playerMoney.ValueRW.Value -= price.Value;
                                     var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);

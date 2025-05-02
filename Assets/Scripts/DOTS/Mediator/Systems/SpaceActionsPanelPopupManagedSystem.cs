@@ -25,6 +25,7 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                 panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
                 panelControllers.backdropController.ShowBackdrop();
             }
+            buffer.Clear();
         }
     }
 }

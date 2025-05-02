@@ -39,6 +39,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                                 Name = name.ValueRO.Value.ToString(),
                                 Money = money.ValueRO.Value.ToString()
                             };
+                            UnityEngine.Debug.Log($"new money: {statsPanelContext.Money}");
                             panelControllers.statsPanelController.Context = statsPanelContext;
                             panelControllers.statsPanelController.Update();
                         }

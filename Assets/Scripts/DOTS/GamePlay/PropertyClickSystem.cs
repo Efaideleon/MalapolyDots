@@ -50,7 +50,8 @@ namespace DOTS.GamePlay
                 {
                     if (SystemAPI.HasComponent<PropertySpaceTag>(hit.Entity))
                     {
-                        SystemAPI.SetSingleton(new ClickedPropertyComponent { entity = hit.Entity });
+                        var panelContext = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                        panelContext.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
                     }
                 }
             }

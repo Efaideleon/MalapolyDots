@@ -1,12 +1,15 @@
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
+using Unity.Burst;
 using Unity.Entities;
 
 public struct ShowActionsPanelBuffer : IBufferElementData
 { }
 
+[BurstCompile]
 public partial struct SpaceActionsPanelPopupSystem : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.EntityManager.CreateSingletonBuffer<ShowActionsPanelBuffer>();
@@ -15,6 +18,7 @@ public partial struct SpaceActionsPanelPopupSystem : ISystem
         state.RequireForUpdate<PropertySpaceTag>();
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
