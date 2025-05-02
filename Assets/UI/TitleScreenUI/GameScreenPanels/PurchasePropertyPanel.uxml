@@ -3,7 +3,7 @@
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
     <engine:VisualElement name="purchase-property-container" class="panel-simple-1" style="height: 619px; width: 369px; background-color: rgb(231, 202, 167); align-items: center; justify-content: flex-start; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-width: -36px; border-right-width: -36px; border-bottom-width: -36px; border-left-width: -36px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
         <engine:VisualElement style="align-items: center; justify-content: flex-end; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 35px; border-top-right-radius: 35px; border-bottom-right-radius: 35px; border-bottom-left-radius: 35px; height: 100%; width: 100%; overflow: hidden;">
-            <engine:VisualElement name="property-image" style="background-image: url(&quot;project://database/Assets/Textures/Properties%20Images/sheet.png?fileID=1018475718&amp;guid=c3d33d6d837f66441855a95861a8b69d&amp;type=3#mercado&quot;); background-size: 340px 340px; width: 340px; height: 340px; border-top-left-radius: 25px; border-top-right-radius: 25px; top: 0; position: absolute;" />
+            <engine:VisualElement name="property-image" style="background-image: url(&quot;project://database/Assets/Textures/Properties%20Images/sheet.png?fileID=1018475718&amp;guid=c3d33d6d837f66441855a95861a8b69d&amp;type=3#Mercado&quot;); background-size: 340px 340px; width: 340px; height: 340px; border-top-left-radius: 25px; border-top-right-radius: 25px; top: 0; position: absolute;" />
             <engine:VisualElement style="width: 100%; border-top-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); align-items: center; height: 249px; padding-top: 10px;">
                 <engine:VisualElement name="name-label-container" style="justify-content: center; align-self: auto; flex-shrink: 1; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); -unity-font-style: bold; -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(254, 184, 35); font-size: 18px;">
                     <engine:Label text="Name Of Property" name="name-label" style="font-size: 36%; -unity-font-style: bold; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
@@ -12,24 +12,28 @@
                     <engine:Label text="price" name="price-label" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 48px; color: rgb(88, 234, 113);" />
                 </engine:VisualElement>
                 <engine:VisualElement name="purchase-buttons" style="flex-direction: column; justify-content: center; align-self: auto; font-size: 22px; align-content: flex-start; align-items: center; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); -unity-font-style: bold; -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0);">
-                    <engine:Button name="purchase-button" class="black-button button-with-border shrinkable-button button-with-border-shell" style="width: auto; height: auto; background-color: rgba(30, 151, 200, 0); margin-top: 0; margin-right: 0; margin-bottom: 10px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; flex-shrink: 1; overflow: visible;">
-                        <engine:VisualElement name="shadow" enabled="false" class="button-shadow" style="display: flex;" />
-                        <engine:VisualElement name="border" class="button-border" style="display: flex;">
-                            <engine:VisualElement name="border-top-space" class="button-border-top-space">
-                                <engine:VisualElement name="border-shadow-element" class="button-border-shadow-element" style="background-color: rgba(0, 49, 154, 0.63);" />
-                                <engine:Label text="Purchase Property" class="button-label" />
+                    <engine:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
+                        <engine:Button text="8" name="purchase-property" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                            <engine:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;" />
+                            <engine:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
+                                <engine:VisualElement name="gradient-border" style="position: absolute; width: 100%;" />
+                                <engine:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
+                                    <engine:Label text="Purchase" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);" />
+                                </engine:VisualElement>
                             </engine:VisualElement>
-                        </engine:VisualElement>
-                    </engine:Button>
-                    <engine:Button name="decline-button" class="simple-button" style="width: auto; margin-top: 3px; margin-right: 3px; margin-bottom: 15px; margin-left: 3px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(255, 120, 120); border-right-color: rgb(255, 120, 120); border-top-color: rgb(255, 120, 120); border-bottom-color: rgb(193, 47, 47); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-shrink: 1; background-color: rgba(244, 60, 60, 0); overflow: visible;">
-                        <engine:VisualElement name="shadow" enabled="false" class="button-shadow" style="display: flex;" />
-                        <engine:VisualElement name="border" class="button-border" style="display: flex; background-color: rgb(255, 107, 59);">
-                            <engine:VisualElement name="border-top-space" class="button-border-top-space">
-                                <engine:VisualElement name="border-shadow-element" class="button-border-shadow-element" style="background-color: rgba(135, 0, 0, 0.63);" />
-                                <engine:Label text="Decline" class="button-label" style="background-color: rgb(229, 42, 22);" />
+                        </engine:Button>
+                    </engine:VisualElement>
+                    <engine:VisualElement name="decline-btn-container" class="dbr-btn dbr-btn-red" style="flex-grow: 0;">
+                        <engine:Button text="8" name="decline-button" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                            <engine:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%;" />
+                            <engine:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
+                                <engine:VisualElement name="gradient-border" style="position: absolute; width: 100%;" />
+                                <engine:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
+                                    <engine:Label text="Decline" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);" />
+                                </engine:VisualElement>
                             </engine:VisualElement>
-                        </engine:VisualElement>
-                    </engine:Button>
+                        </engine:Button>
+                    </engine:VisualElement>
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
