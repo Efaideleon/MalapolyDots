@@ -43,8 +43,6 @@ namespace DOTS.UI.Controllers
 
         public void Update()
         {
-            PurchasePropertyPanel.NameLabel.text = Context.Name.ToString();
-            PurchasePropertyPanel.PriceLabel.text = Context.Price.ToString();
             PurchasePropertyPanel.Image.style.backgroundImage = new StyleBackground(ManagedContext.sprite);
         }
 

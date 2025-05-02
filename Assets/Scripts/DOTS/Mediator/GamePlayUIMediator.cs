@@ -156,9 +156,9 @@ public partial struct GamePlayUIMediator : ISystem
                         {
                             case InputActionPhase.Started:
                                 panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                                panelControllers.backdropController.ShowBackdropWithDelay();
                                 break;
                             case InputActionPhase.Canceled:
-                                panelControllers.backdropController.ShowBackdrop();
                                 break;
                         }
                         // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
