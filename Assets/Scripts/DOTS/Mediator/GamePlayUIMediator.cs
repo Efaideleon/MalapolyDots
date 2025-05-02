@@ -149,7 +149,8 @@ public partial struct GamePlayUIMediator : ISystem
                     if (clickedProperty.ValueRO.entity != Entity.Null)
                     {
                         var clickData = SystemAPI.GetSingleton<ClickData>();
-                        SystemAPI.SetSingleton(new LastPropertyClicked { entity = clickedProperty.ValueRO.entity });
+                        var lastPropertyClicked = SystemAPI.GetSingletonRW<LastPropertyClicked>();
+                        lastPropertyClicked.ValueRW.entity = clickedProperty.ValueRO.entity;
 
                         switch (clickData.Phase)
                         {
@@ -161,7 +162,8 @@ public partial struct GamePlayUIMediator : ISystem
                                 break;
                         }
                         // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
-                        SystemAPI.SetSingleton(new ClickedPropertyComponent { entity = Entity.Null });
+                        var clickedPropertyComp = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                        clickedPropertyComp.ValueRW.entity = Entity.Null;
                     }
                 }
             }

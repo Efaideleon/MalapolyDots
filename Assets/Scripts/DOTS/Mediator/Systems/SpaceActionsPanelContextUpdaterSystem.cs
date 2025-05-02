@@ -21,6 +21,7 @@ namespace DOTS.UI.Systems
             state.EntityManager.CreateSingleton(new SpaceActionsPanelContextComponent { Value = default });
             state.RequireForUpdate<SpaceActionsPanelContextComponent>();
             state.RequireForUpdate<LastPropertyClicked>();
+            state.RequireForUpdate<PropertyEventComponent>();
         }
 
         [BurstCompile]
@@ -28,14 +29,7 @@ namespace DOTS.UI.Systems
         {
             bool shouldUpdate = false;
             foreach ( var _ in SystemAPI.Query<RefRO<MonopolyFlagComponent>>().WithChangeFilter<MonopolyFlagComponent>())
-            {
                 shouldUpdate = true;
-            }
-
-            foreach ( var _ in SystemAPI.Query<RefRO<LastPropertyClicked>>().WithChangeFilter<LastPropertyClicked>())
-            {
-                shouldUpdate = true;
-            }
 
             if (shouldUpdate)
             {
@@ -53,29 +47,29 @@ namespace DOTS.UI.Systems
                         IsPlayerOwner = isCurrentOwner
                     };
 
-                    SystemAPI.SetSingleton(new SpaceActionsPanelContextComponent { Value = spaceActionsContext });
+                    var panelContext = SystemAPI.GetSingletonRW<SpaceActionsPanelContextComponent>();
+                    panelContext.ValueRW = new SpaceActionsPanelContextComponent { Value = spaceActionsContext };
                 }
             }
 
-            foreach (var onLandEntity in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
+            foreach (var property in SystemAPI.Query<RefRO<PropertyEventComponent>>().WithChangeFilter<PropertyEventComponent>())
             {
-                if (onLandEntity.ValueRO.entity != Entity.Null)
+                var propertyEntity = property.ValueRO.entity;
+                if (propertyEntity != Entity.Null)
                 {
-                    if (SystemAPI.HasComponent<PropertySpaceTag>(onLandEntity.ValueRO.entity))
+                    var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(propertyEntity);
+                    var owner = SystemAPI.GetComponent<OwnerComponent>(propertyEntity);
+                    var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
+                    bool isCurrentOwner = currentPlayerID.Value == owner.ID;
+                    SpaceActionsPanelContext spaceActionsContext = new()
                     {
-                        var hasMonopoly = SystemAPI.GetComponent<MonopolyFlagComponent>(onLandEntity.ValueRO.entity);
-                        var owner = SystemAPI.GetComponent<OwnerComponent>(onLandEntity.ValueRO.entity);
-                        var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                        HasMonopoly = hasMonopoly.Value,
+                        IsPlayerOwner = isCurrentOwner
+                    };
 
-                        bool isCurrentOwner = currentPlayerID.Value == owner.ID;
-                        SpaceActionsPanelContext spaceActionsContext = new()
-                        {
-                            HasMonopoly = hasMonopoly.Value,
-                            IsPlayerOwner = isCurrentOwner
-                        };
-
-                        SystemAPI.SetSingleton(new SpaceActionsPanelContextComponent { Value = spaceActionsContext });
-                    }
+                    var panelContext = SystemAPI.GetSingletonRW<SpaceActionsPanelContextComponent>();
+                    panelContext.ValueRW = new SpaceActionsPanelContextComponent { Value = spaceActionsContext };
                 }
             }
         }

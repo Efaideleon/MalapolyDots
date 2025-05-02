@@ -20,44 +20,28 @@ namespace DOTS.UI.Systems
         {
             state.EntityManager.CreateSingleton(new PurchasePropertyPanelContextComponent { Value = default });
             state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
-            state.RequireForUpdate<LastPropertyClicked>();
+            state.RequireForUpdate<PropertyEventComponent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach ( var clickedProperty in 
+            foreach ( var property in 
                     SystemAPI.Query<
-                    RefRO<LastPropertyClicked>
+                    RefRO<PropertyEventComponent>
                     >().
-                    WithChangeFilter<LastPropertyClicked>())
+                    WithChangeFilter<PropertyEventComponent>())
             {
-                var clickedPropertyEntity = clickedProperty.ValueRO.entity;
-                if (clickedPropertyEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(clickedPropertyEntity))
+                var propertyEntity = property.ValueRO.entity;
+                if (propertyEntity != Entity.Null)
                 {
                     PurchasePropertyPanelContext purchasePropertyPanelContext = new()
                     {
-                        Name = SystemAPI.GetComponent<NameComponent>(clickedPropertyEntity).Value,
-                        Price = SystemAPI.GetComponent<PriceComponent>(clickedPropertyEntity).Value
+                        Name = SystemAPI.GetComponent<NameComponent>(propertyEntity).Value,
+                        Price = SystemAPI.GetComponent<PriceComponent>(propertyEntity).Value
                     };
-                    SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
-                }
-            }
-
-            foreach (var onLandSpace in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
-            {
-                if (SystemAPI.HasComponent<PropertySpaceTag>(onLandSpace.ValueRO.entity))
-                {
-                    var onLandProperty = onLandSpace.ValueRO.entity;
-                    if (onLandProperty != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(onLandProperty))
-                    {
-                        PurchasePropertyPanelContext purchasePropertyPanelContext = new()
-                        {
-                            Name = SystemAPI.GetComponent<NameComponent>(onLandProperty).Value,
-                            Price = SystemAPI.GetComponent<PriceComponent>(onLandProperty).Value
-                        };
-                        SystemAPI.SetSingleton(new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext });
-                    }
+                    var panelContext = SystemAPI.GetSingletonRW<PurchasePropertyPanelContextComponent>();
+                    panelContext.ValueRW = new PurchasePropertyPanelContextComponent { Value = purchasePropertyPanelContext };
                 }
             }
         }

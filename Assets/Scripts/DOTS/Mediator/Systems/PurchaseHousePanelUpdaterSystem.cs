@@ -62,7 +62,8 @@ namespace DOTS.UI.Systems
                         HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedPropertyEntity).Value,
                         Price = 10,
                     };
-                    SystemAPI.SetSingleton(new PurhcaseHousePanelContextComponent { Value = purchaseHouseContext});
+                    var panelContext = SystemAPI.GetSingletonRW<PurhcaseHousePanelContextComponent>();
+                    panelContext.ValueRW = new PurhcaseHousePanelContextComponent { Value = purchaseHouseContext};
                 }
             }
         }

@@ -38,7 +38,8 @@ namespace DOTS.UI.Systems
                     {
                         Rent = SystemAPI.GetComponent<RentComponent>(clickedProperty.ValueRO.entity).Value,
                     };
-                    SystemAPI.SetSingleton(new PayRentPanelContextComponent { Value = payRentPanelContext });
+                    var panelContext = SystemAPI.GetSingletonRW<PayRentPanelContextComponent>();
+                    panelContext.ValueRW = new PayRentPanelContextComponent { Value = payRentPanelContext };
                 }
             }
 
@@ -55,7 +56,8 @@ namespace DOTS.UI.Systems
                     {
                         Rent = SystemAPI.GetComponent<RentComponent>(landedOnSpaceEntity).Value,
                     };
-                    SystemAPI.SetSingleton(new PayRentPanelContextComponent { Value = payRentPanelContext });
+                    var panelContext = SystemAPI.GetSingletonRW<PayRentPanelContextComponent>();
+                    panelContext.ValueRW = new PayRentPanelContextComponent { Value = payRentPanelContext };
                 }
             }
         }
