@@ -659,7 +659,7 @@
 }
 
 .dbr-btn-red Label {
-    -unity-background-image-tint-color: rgb(223, 48, 28);
+    -unity-background-image-tint-color: rgb(255, 55, 34);
     -unity-text-outline-width: 4px;
     -unity-text-outline-color: rgb(175, 0, 0);
 }
@@ -676,8 +676,12 @@
     border-bottom-color: rgb(170, 19, 21);
 }
 
+.dbr-btn-red Button:hover Label {
+    -unity-background-image-tint-color: rgb(10, 234, 227);
+}
+
 .dbr-btn-red Button:active Label {
-    -unity-background-image-tint-color: rgb(255, 125, 125);
+    -unity-background-image-tint-color: rgb(186, 30, 30);
 }
 
 .dbr-btn-orange {
