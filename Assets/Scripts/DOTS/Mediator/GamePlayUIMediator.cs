@@ -185,6 +185,7 @@ public partial struct GamePlayUIMediator : ISystem
                             if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLanded.entity))
                             {
                                 var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
+                                UnityEngine.Debug.Log("Triggering popup");
                                 popupManagers.propertyPopupManager.TriggerPopup();
                             }
                             break;
@@ -210,6 +211,7 @@ public partial struct GamePlayUIMediator : ISystem
                             OwnerID = SystemAPI.GetComponent<OwnerComponent>(landOnPropertyEntity).ID,
                             CurrentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
                         };
+                        UnityEngine.Debug.Log($"Loading popup manager context {propertyPopupManagerContext.OwnerID}");
                         popupManagers.propertyPopupManager.Context = propertyPopupManagerContext;
                     }
                 }

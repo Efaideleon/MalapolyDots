@@ -7,8 +7,9 @@ namespace DOTS.GamePlay
 {
     [BurstCompile]
     // [UpdateBefore(typeof(GameUICanvasSystem))]
-        public partial struct SpaceDetectorSystem : ISystem
+    public partial struct SpaceDetectorSystem : ISystem
     {
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {   
             state.RequireForUpdate<BoardIndexComponent>(); 
@@ -24,23 +25,46 @@ namespace DOTS.GamePlay
             SystemAPI.SetComponent(entity, new LandedOnSpace { entity = Entity.Null });
         }
 
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (playerID, playerWaypointIndex) in 
-                    SystemAPI.Query<RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>()
-                    .WithChangeFilter<PlayerWaypointIndex>())
+            foreach (var flag in SystemAPI.Query<RefRO<ArrivedFlag>>().WithChangeFilter<ArrivedFlag>())
             {
-                var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                foreach (var (boardIndex, spaceEntity) in SystemAPI.Query<RefRO<BoardIndexComponent>>().WithEntityAccess())
+                if (!flag.ValueRO.Arrived)
+                    break;
+                // TODO: delete name Ref here
+                foreach (var (name, playerID, playerWaypointIndex) in 
+                        SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>())
                 {
-                    if (playerID.ValueRO.Value == currentPlayerID.Value 
-                            && playerWaypointIndex.ValueRO.Value == boardIndex.ValueRO.Value)
+                    var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                    UnityEngine.Debug.Log($"name: {name.ValueRO.Value} playerID: {playerID.ValueRO.Value} currentPlayerIDf: {currentPlayerID.Value}");
+                    foreach (var (boardIndex, spaceEntity) in SystemAPI.Query<RefRO<BoardIndexComponent>>().WithEntityAccess())
                     {
-                        var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
-                        spaceLandedEntity.ValueRW.entity = spaceEntity;
+                        if (playerID.ValueRO.Value == currentPlayerID.Value 
+                                && playerWaypointIndex.ValueRO.Value == boardIndex.ValueRO.Value)
+                        {
+                            var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
+                            spaceLandedEntity.ValueRW.entity = spaceEntity;
+                            UnityEngine.Debug.Log("LandedOnSpace!");
+                        }
                     }
                 }
             }
+            // foreach (var (playerID, playerWaypointIndex) in 
+            //         SystemAPI.Query<RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>()
+            //         .WithChangeFilter<PlayerWaypointIndex>())
+            // {
+            //     var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+            //     foreach (var (boardIndex, spaceEntity) in SystemAPI.Query<RefRO<BoardIndexComponent>>().WithEntityAccess())
+            //     {
+            //         if (playerID.ValueRO.Value == currentPlayerID.Value 
+            //                 && playerWaypointIndex.ValueRO.Value == boardIndex.ValueRO.Value)
+            //         {
+            //             var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
+            //             spaceLandedEntity.ValueRW.entity = spaceEntity;
+            //         }
+            //     }
+            // }
         }
     }
 

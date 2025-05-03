@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using DOTS.Characters;
-using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
-using TMPro;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
