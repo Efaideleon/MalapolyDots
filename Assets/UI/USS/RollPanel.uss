@@ -1,4 +1,3 @@
-/* Main container style */
 .container {
     width: 300px;
     height: 400px;
@@ -6,22 +5,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #7cb4d9;
+    background-color: rgb(124, 180, 217);
     border-width: 1px;
-    border-color: #bdf7ff;
+    border-color: rgb(189, 247, 255);
     border-radius: 5px;
     padding: 20px;
 }
 
-/* Smaller container for displaying the rolled number */
 .number-display {
     width: 150px;
     height: 150px;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     border-width: 1px;
-    border-color: #ccc;
+    border-color: rgb(204, 204, 204);
     font-size: 48px;
-    color: #333;
+    color: rgb(51, 51, 51);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,19 +27,22 @@
     border-radius: 5px;
 }
 
-/* Roll button styling */
 .roll-button {
     width: 150px;
     height: 50px;
-    background-color: #0078d7;
-    color: #fff;
+    background-color: rgb(255, 152, 0);
+    color: rgb(255, 255, 255);
     border-radius: 5px;
     font-size: 18px;
     transition: background-color 0.3s ease;
     border-width: 1px;
-    border-color: #fffad8;
+    border-color: rgb(255, 250, 216);
 }
 
 .roll-button:hover {
-    background-color: #005ea2;
+    background-color: rgb(255, 180, 69);
+}
+
+.roll-button:active {
+    background-color: rgb(255, 132, 0);
 }
