@@ -1,28 +1,21 @@
-using DOTS.DataComponents;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class TaxPanel : OnLandPanel
+    public class TaxPanel
     {
-        public TaxPanel(VisualElement parent) : base (parent.Q<VisualElement>("TaxPanel"))
+        public Button OkButton { get; private set; }
+        public Label AmountLabel { get; private set; }
+        public VisualElement Root { get; private set; }
+        public TaxPanel(VisualElement parent) 
         {
-            PanelType = SpaceType.Tax;
-            UpdateAcceptButtonReference("tax-panel-button");
-            UpdateLabelReference("tax-panel-label");
+            Root = parent.Q<VisualElement>("TaxPanel");
+            OkButton = Root.Q<Button>("tax-panel-button");
+            AmountLabel = Root.Q<Label>("tax-panel-label");
             Hide();
         }
 
-        public override void Show(ShowPanelContext context)
-        {
-            var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
-            UpdateTitleLabelText($"{name.Value}");
-            Show();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-        }
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
     }
 }

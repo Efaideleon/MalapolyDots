@@ -44,7 +44,7 @@ namespace DOTS.UI.Controllers
             HideBackdrop();
         }
 
-        public void ShowBackdropWithDelay() 
+        public void ShowBackdrop() 
         {
             UnityEngine.Debug.Log("Showing backdrop");
             Backdrop.style.display = DisplayStyle.Flex;

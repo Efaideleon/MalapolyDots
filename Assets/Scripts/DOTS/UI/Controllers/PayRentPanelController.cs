@@ -52,5 +52,4 @@ namespace DOTS.UI.Controllers
             Panel.AcceptButton.clickable.clicked -= Panel.Hide;
         }
     }
-
 }

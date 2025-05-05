@@ -17,6 +17,11 @@ namespace DOTS.Mediator
         public Dictionary<FixedString64Bytes, Sprite> Value;
     }
 
+    public class CharacterSpriteDictionary : IComponentData
+    {
+        public Dictionary<FixedString64Bytes, Sprite> Value;
+    }
+
     public partial struct PanelControllersInitializer : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -36,6 +41,7 @@ namespace DOTS.Mediator
             state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
             state.EntityManager.CreateSingleton(new SpriteRegistryComponent { Value = null });
+            state.EntityManager.CreateSingleton(new CharacterSpriteDictionary { Value = new() });
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -68,6 +74,7 @@ namespace DOTS.Mediator
             for (int i = 0; i < characterSprites.Length; i++)
                 characterSpriteRegistry.TryAdd(characterSprites[i].name, characterSprites[i]);
 
+            SystemAPI.ManagedAPI.GetSingleton<CharacterSpriteDictionary>().Value = characterSpriteRegistry;
             SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
 
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
@@ -81,6 +88,7 @@ namespace DOTS.Mediator
             PurchaseHousePanelContext purchaseHousePanelContext = new() { Name = default, HousesOwned = default, Price = default };
             SpaceActionsPanelContext spaceActionsPanelContext = new() { HasMonopoly = false, IsPlayerOwner = false };
             PayRentPanelContext payRentPanelContext = new() { Rent = default };
+            PayTaxPanelContext payTaxPanelContext  = new() { Amount = default };
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
@@ -91,6 +99,7 @@ namespace DOTS.Mediator
             PurchasePropertyPanel purchasePropertyPanel = new(botPanelRoot);
             PayRentPanel payRentPanel = new(botPanelRoot);
             ChangeTurnPanel changeTurnPanel = new(botPanelRoot);
+            TaxPanel payTaxPanel = new(botPanelRoot);
 
             // Loading Controllers
             var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
@@ -133,6 +142,7 @@ namespace DOTS.Mediator
             }
 
             panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
+            panelControllers.payTaxPanelController = new(payTaxPanel, payTaxPanelContext);
             panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
             panelControllers.changeTurnPanelController = new(changeTurnPanel, changeTurnPanelContext);
             panelControllers.spaceActionsPanelController = new(
@@ -157,6 +167,7 @@ namespace DOTS.Mediator
             panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.payRentPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.payTaxPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
             panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery);
         }
