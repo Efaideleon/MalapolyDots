@@ -2,8 +2,8 @@
     --blue-button-color: rgb(0, 118, 238);
     --blue-button-hover-color: rgb(0, 96, 191);
     --blue-button-active-color: rgb(13, 97, 211);
-    --blue-button-shadow-color: rgb(0, 80, 185);
-    --blue-button-highlight-color: rgb(76, 181, 246);
+    --blue-button-shadow-color: rgb(0, 74, 185);
+    --blue-button-highlight-color: rgb(76, 155, 246);
 }
 
 .buy-houses-button {
@@ -765,4 +765,36 @@
 }
 
 .dbr-btn-green {
+}
+
+.dbr-btn-yellow {
+}
+
+.dbr-btn-yellow Label {
+    -unity-text-outline-color: rgb(141, 101, 0);
+    background-color: rgba(241, 177, 24, 0.5);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+}
+
+.dbr-btn-yellow #gradient-border {
+    -unity-background-image-tint-color: rgb(253, 201, 49);
+}
+
+.dbr-btn-yellow #gradient-border-label-container {
+    border-color: yellow;
+    border-left-color: rgb(168, 83, 2);
+    border-right-color: rgb(168, 83, 2);
+    border-top-color: rgb(168, 83, 2);
+    border-bottom-color: rgb(168, 83, 2);
+}
+
+.dbr-btn-yellow Button:hover Label {
+    background-color: rgba(161, 134, 0, 0.8);
+}
+
+.dbr-btn-yellow Button:active Label {
+    background-color: rgba(161, 148, 0, 0.9);
+}
+
+.dbr-btn-yellow {
 }
