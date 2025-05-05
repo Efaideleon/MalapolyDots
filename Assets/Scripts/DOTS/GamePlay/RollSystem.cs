@@ -27,7 +27,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<RandomValueComponent>();
         }
 
-        //[BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<RollEventBuffer>>().WithChangeFilter<RollEventBuffer>()) 
@@ -37,10 +37,10 @@ namespace DOTS.GamePlay
 
                 foreach (var _ in buffer)
                 {
-                    UnityEngine.Debug.Log("We rolling...");
                     var rollAmount = SystemAPI.GetSingletonRW<RollAmountComponent>();
                     var randomData = SystemAPI.GetSingletonRW<RandomValueComponent>();
-                    rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
+                    //rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
+                    rollAmount.ValueRW.Value = 2;
                 }
 
                 buffer.Clear();

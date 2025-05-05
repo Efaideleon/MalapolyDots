@@ -18,6 +18,7 @@ namespace DOTS.EventBuses
         ChangeTurn,
         PayRent,
         UpgradeHouse,
+        PayTaxes,
         Default
     }
     public struct TransactionEventBuffer : IBufferElementData

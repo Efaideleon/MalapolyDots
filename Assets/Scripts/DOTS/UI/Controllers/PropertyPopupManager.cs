@@ -26,7 +26,6 @@ namespace DOTS.UI.Panels
         {
             var ownerID = Context.OwnerID;
             var currentPlayerID = Context.CurrentPlayerID;
-            UnityEngine.Debug.Log($"OwnerID : {ownerID}, currentPlayerID: {currentPlayerID}");
             if (!IsSpaceFree(ownerID) && !IsPlayerOwner(ownerID, currentPlayerID)) 
                 PayRentPanel.Show(); 
         }

@@ -50,7 +50,7 @@ namespace DOTS.UI.Systems
                     WithChangeFilter<LandedOnSpace>())
             {
                 var landedOnSpaceEntity = landedOnSpace.ValueRO.entity;
-                if (landedOnSpaceEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(landedOnSpaceEntity))
+                if (landedOnSpaceEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(landedOnSpaceEntity)) 
                 {
                     PayRentPanelContext payRentPanelContext = new()
                     {

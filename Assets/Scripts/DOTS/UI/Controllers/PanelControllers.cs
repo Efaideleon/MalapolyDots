@@ -9,6 +9,7 @@ namespace DOTS.UI.Controllers
         public BackdropController backdropController;
         public PurchasePropertyPanelController purchasePropertyPanelController;
         public PayRentPanelController payRentPanelController;
+        public PayTaxPanelController payTaxPanelController;
         public RollPanelController rollPanelController;
         public ChangeTurnPanelController changeTurnPanelController;
         public StatsPanelController statsPanelController;

@@ -2,10 +2,11 @@ using DOTS.Characters;
 using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
-using TMPro;
+using DOTS.Mediator;
 using Unity.Entities;
+using UnityEngine.UI;
 
-public partial struct OwnerShipLabelTextUpdateSystem : ISystem
+public partial struct OwnerShipLabelImageUpdateSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
@@ -14,6 +15,7 @@ public partial struct OwnerShipLabelTextUpdateSystem : ISystem
         state.RequireForUpdate<CanvasGORef>();
         state.RequireForUpdate<OwnerComponent>();
         state.RequireForUpdate<NameComponent>();
+        state.RequireForUpdate<CharacterSpriteDictionary>();
     }
 
     public void OnUpdate(ref SystemState state)
@@ -29,8 +31,18 @@ public partial struct OwnerShipLabelTextUpdateSystem : ISystem
                 if (ownerID.ValueRO.ID == playerID.ValueRO.Value)
                 {
                     var labelGOs = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>().GameObjects;
-                    var text = labelGOs[propertyName.ValueRO.Value].GetComponentInChildren<TextMeshProUGUI>();
-                    text.text = $"Owner: {playerName.ValueRO.Value}";
+                    var imagePanel = labelGOs[propertyName.ValueRO.Value].transform.GetChild(0).GetComponentInChildren<Image>();
+                    var characterSpriteDictionary = SystemAPI.ManagedAPI.GetSingleton<CharacterSpriteDictionary>();
+                    UnityEngine.Debug.Log($"Looking up sprite for {playerName.ValueRO.Value}");
+                    if (characterSpriteDictionary.Value.TryGetValue(playerName.ValueRO.Value, out var test))
+                    {
+                        UnityEngine.Debug.Log($"Found sprite {playerName.ValueRO.Value}");
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.Log($"Did not find sprite {playerName.ValueRO.Value}");
+                    }
+                    imagePanel.sprite = characterSpriteDictionary.Value[playerName.ValueRO.Value];
                     labelGOs[propertyName.ValueRO.Value].SetActive(true);
                 }
                 if (ownerID.ValueRO.ID == PropertyConstants.Vacant)

@@ -104,22 +104,6 @@ public partial struct GamePlayUIMediator : ISystem
             }
         }
 
-        foreach (var payRentPanelContext in SystemAPI.Query<
-                RefRO<PayRentPanelContextComponent>
-                >()
-                .WithChangeFilter<PayRentPanelContextComponent>())
-        {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
-            {
-                if (panelControllers.payRentPanelController != null)
-                {
-                    panelControllers.payRentPanelController.Context = payRentPanelContext.ValueRO.Value;
-                    panelControllers.payRentPanelController.Update();
-                }
-            }
-        }
-
         foreach (var rollAmount in SystemAPI.Query<RefRO<RollAmountCountDown>>().WithChangeFilter<RollAmountCountDown>())
         {
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
@@ -156,7 +140,7 @@ public partial struct GamePlayUIMediator : ISystem
                         {
                             case InputActionPhase.Canceled:
                                 panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
-                                panelControllers.backdropController.ShowBackdropWithDelay();
+                                panelControllers.backdropController.ShowBackdrop();
                                 break;
                         }
                         // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
@@ -167,53 +151,18 @@ public partial struct GamePlayUIMediator : ISystem
             }
         }
 
-        foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
+        foreach (var payRentPanelContext in SystemAPI.Query<
+                RefRO<PayRentPanelContextComponent>
+                >()
+                .WithChangeFilter<PayRentPanelContextComponent>())
         {
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
             if (panelControllers != null)
             {
-                if (panelControllers.rollPanelController != null)
+                if (panelControllers.payRentPanelController != null)
                 {
-                    switch (gameState.ValueRO.State)
-                    {
-                        case GameState.Rolling:
-                            panelControllers.rollPanelController.ShowPanel();
-                            break;
-                        case GameState.Landing:
-                            panelControllers.rollPanelController.HidePanel();
-                            var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
-                            if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLanded.entity))
-                            {
-                                var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
-                                UnityEngine.Debug.Log("Triggering popup");
-                                popupManagers.propertyPopupManager.TriggerPopup();
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-
-        // Updates the context for the popup when the player lands on a property space.
-        foreach (var landOnProperty in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
-        {
-            var landOnPropertyEntity = landOnProperty.ValueRO.entity;
-            if (landOnPropertyEntity != null && SystemAPI.HasComponent<PropertySpaceTag>(landOnPropertyEntity))
-            {
-                var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
-
-                if (popupManagers != null)
-                {
-                    if (popupManagers.propertyPopupManager != null)
-                    {
-                        PropertyPopupManagerContext propertyPopupManagerContext = new ()
-                        {
-                            OwnerID = SystemAPI.GetComponent<OwnerComponent>(landOnPropertyEntity).ID,
-                            CurrentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
-                        };
-                        UnityEngine.Debug.Log($"Loading popup manager context {propertyPopupManagerContext.OwnerID}");
-                        popupManagers.propertyPopupManager.Context = propertyPopupManagerContext;
-                    }
+                    panelControllers.payRentPanelController.Context = payRentPanelContext.ValueRO.Value;
+                    panelControllers.payRentPanelController.Update();
                 }
             }
         }

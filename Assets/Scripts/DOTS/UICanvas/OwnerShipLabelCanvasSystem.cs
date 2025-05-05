@@ -66,7 +66,9 @@ public partial struct OwnerShipLabelCanvasSystem : ISystem, ISystemStartStop
                         canvasRect, Camera.main.WorldToScreenPoint(transfrom.ValueRO.Position),
                         canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
                         out var localPoint);
-                labelRect.anchoredPosition = localPoint;
+                var currentLocalPoint = localPoint;
+                labelRect.anchoredPosition = new Vector2(currentLocalPoint.x, currentLocalPoint.y + 30);
+                // labelRect.anchoredPosition = localPoint; 
             }
             state.Enabled = false; // TODO: enable when the camera follows the player
         }
