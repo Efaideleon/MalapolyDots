@@ -4,18 +4,18 @@ using Unity.Entities;
 
 namespace DOTS.UI.Controllers
 {
-    public struct PayTaxPanelContext
+    public struct ParkingPanelContext
     {
-        public int Amount;
+        public string Title;
     }
 
-    public class PayTaxPanelController
+    public class ParkingPanelController
     {
-        public TaxPanel Panel { get; private set; }
+        public ParkingPanel Panel { get; private set; }
         public EntityQuery TransactionEventBusQuery { get; private set; }
-        public PayTaxPanelContext Context { get; set; }
+        public ParkingPanelContext Context { get; set; }
 
-        public PayTaxPanelController(TaxPanel panel, PayTaxPanelContext context)
+        public ParkingPanelController(ParkingPanel panel, ParkingPanelContext context)
         {
             Panel = panel;
             Context = context;
@@ -33,7 +33,7 @@ namespace DOTS.UI.Controllers
 
         public void Update()
         {
-            Panel.AmountLabel.text = Context.Amount.ToString();
+            Panel.TitleLabel.text = Context.Title;
         }
 
         public void SetEventBufferQuery(EntityQuery query)
@@ -44,7 +44,7 @@ namespace DOTS.UI.Controllers
         private void DispatchEvents()
         {
             var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.PayTaxes });
+            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.Parking });
             // TODO: Remove this, we don't want to change turns after paying taxes.
             eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.ChangeTurn });
         }

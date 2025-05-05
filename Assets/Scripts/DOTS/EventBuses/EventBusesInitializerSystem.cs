@@ -19,6 +19,12 @@ namespace DOTS.EventBuses
         PayRent,
         UpgradeHouse,
         PayTaxes,
+        Chance,
+        Treasure,
+        Go,
+        Parking,
+        GoToJail,
+        Jail,
         Default
     }
     public struct TransactionEventBuffer : IBufferElementData

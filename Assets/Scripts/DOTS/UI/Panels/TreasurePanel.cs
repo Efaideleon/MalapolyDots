@@ -1,29 +1,21 @@
-using DOTS.DataComponents;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class TreasurePanel : OnLandPanel
+    public class TreasurePanel
     {
-        public TreasurePanel(VisualElement parent) : base(parent.Q<VisualElement>("TreasurePanel"))
+        public VisualElement Root { get; private set; }
+        public Button OkButton { get; private set; }
+        public Label TitleLabel { get; private set; }
+        public TreasurePanel(VisualElement parent) 
         {
-            PanelType = SpaceType.Treasure;
-            UpdateAcceptButtonReference("treasure-panel-button");
-            UpdateLabelReference("treasure-panel-label");
+            Root = parent.Q<VisualElement>("TreasurePanel");
+            OkButton = Root.Q<Button>("treasure-panel-button");
+            TitleLabel = Root.Q<Label>("treasure-panel-button");
             Hide();
         }
 
-        // Move to the parent class and only call a class that will be overridden
-        public override void Show(ShowPanelContext context)
-        {
-            var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
-            UpdateTitleLabelText($"{name.Value}");
-            Show();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-        }
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
     }
 }

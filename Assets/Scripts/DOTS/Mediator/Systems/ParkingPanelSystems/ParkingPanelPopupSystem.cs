@@ -1,23 +1,24 @@
+using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
 
-namespace DOTS.Mediator.Systems.PayTaxSystems
+namespace DOTS.UI.Mediator.Systems.ParkingPanelSystems
 {
-    public struct ShowPayTaxPanelBuffer : IBufferElementData
+    public struct ShowParkingPanelBuffer : IBufferElementData
     { }
 
     [BurstCompile]
-    public partial struct PayTaxPanelPopupSystem : ISystem
+    public partial struct ParkingPanelPopupSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingletonBuffer<ShowPayTaxPanelBuffer>();
+            state.EntityManager.CreateSingletonBuffer<ShowParkingPanelBuffer>();
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<LandedOnSpace>();
-            state.RequireForUpdate<TaxSpaceTag>();
+            state.RequireForUpdate<ParkingSpaceTag>();
         }
 
         [BurstCompile]
@@ -27,8 +28,8 @@ namespace DOTS.Mediator.Systems.PayTaxSystems
                 if (gameState.ValueRO.State == GameState.Landing)
                 {
                     var landedOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
-                    if (SystemAPI.HasComponent<TaxSpaceTag>(landedOnEntity.entity))
-                        SystemAPI.GetSingletonBuffer<ShowPayTaxPanelBuffer>().Add(new ShowPayTaxPanelBuffer { });
+                    if (SystemAPI.HasComponent<ParkingSpaceTag>(landedOnEntity.entity))
+                        SystemAPI.GetSingletonBuffer<ShowParkingPanelBuffer>().Add(new ShowParkingPanelBuffer { });
                 }
         }
     }

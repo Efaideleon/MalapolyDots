@@ -10,6 +10,12 @@ namespace DOTS.UI.Controllers
         public PurchasePropertyPanelController purchasePropertyPanelController;
         public PayRentPanelController payRentPanelController;
         public PayTaxPanelController payTaxPanelController;
+        public TreasurePanelController treasurePanelController;
+        public ChancePanelController chancePanelController;
+        public JailPanelController jailPanelController;
+        public ParkingPanelController parkingPanelController;
+        public GoToJailPanelController goToJailPanelController;
+        public GoPanelController goPanelController;
         public RollPanelController rollPanelController;
         public ChangeTurnPanelController changeTurnPanelController;
         public StatsPanelController statsPanelController;

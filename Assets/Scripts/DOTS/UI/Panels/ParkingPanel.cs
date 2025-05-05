@@ -1,28 +1,22 @@
-using DOTS.DataComponents;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class ParkingPanel : OnLandPanel
+    public class ParkingPanel 
     {
-        public ParkingPanel(VisualElement parent) : base(parent.Q<VisualElement>("ParkingPanel"))
+        public VisualElement Root { get; private set; }
+        public Button OkButton { get; private set; }
+        public Label TitleLabel { get; private set; }
+
+        public ParkingPanel(VisualElement parent) 
         {
-            PanelType = SpaceType.Parking;
-            UpdateAcceptButtonReference("parking-panel-button");
-            UpdateLabelReference("parking-panel-label");
+            Root = parent.Q<VisualElement>("ParkingPanel");
+            OkButton = Root.Q<Button>("parking-panel-button");
+            TitleLabel = Root.Q<Label>("parking-panel-label");
             Hide();
         }
 
-        public override void Show(ShowPanelContext context)
-        {
-            var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
-            UpdateTitleLabelText($"{name.Value}");
-            Show();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-        }
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
     }
 }
