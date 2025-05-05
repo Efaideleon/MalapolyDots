@@ -1,28 +1,22 @@
-using DOTS.DataComponents;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class ChancePanel : OnLandPanel
+    public class ChancePanel
     {
-        public ChancePanel(VisualElement parent) : base(parent.Q<VisualElement>("ChancePanel"))
+        public VisualElement Root { get; private set; }
+        public Button OkButton { get; private set; } 
+        public Label TitleLabel { get; private set; } 
+
+        public ChancePanel(VisualElement parent) 
         {
-            PanelType = SpaceType.Chance;
-            UpdateAcceptButtonReference("chance-panel-button");
-            UpdateLabelReference("chance-panel-label");
+            Root = parent.Q<VisualElement>("ChancePanel");
+            OkButton = Root.Q<Button>("chance-panel-button");
+            TitleLabel = Root.Q<Label>("chance-panel-label");
             Hide();
         }
-
-        public override void Show(ShowPanelContext context)
-        {
-            var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
-            UpdateTitleLabelText($"{name.Value}");
-            Show();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-        }
+        
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
     }
 }

@@ -1,26 +1,22 @@
-using DOTS.DataComponents;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class GoPanel : OnLandPanel
+    public class GoPanel
     {
-        public GoPanel(VisualElement parent) : base (parent.Q<VisualElement>("GoPanel"))
+        public VisualElement Root { get; private set; }
+        public Button OkButton { get; private set; }
+        public Label TitleLabel { get; private set; }
+
+        public GoPanel(VisualElement parent)
         {
-            PanelType = SpaceType.Go;
-            UpdateAcceptButtonReference("go-panel-button");
-            UpdateLabelReference("go-panel-label");
+            Root = parent.Q<VisualElement>("GoPanel");
+            OkButton = Root.Q<Button>("go-panel-button");
+            TitleLabel = Root.Q<Label>("go-panel-label");
             Hide();
         }
 
-        public override void Show(ShowPanelContext context)
-        {
-            Show();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-        }
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
     }
 }

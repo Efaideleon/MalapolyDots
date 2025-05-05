@@ -89,9 +89,16 @@ namespace DOTS.Mediator
             SpaceActionsPanelContext spaceActionsPanelContext = new() { HasMonopoly = false, IsPlayerOwner = false };
             PayRentPanelContext payRentPanelContext = new() { Rent = default };
             PayTaxPanelContext payTaxPanelContext  = new() { Amount = default };
+            TreasurePanelContext treasurePanelContext  = new() { Title = "Treasure" };
+            ChancePanelContext chancePanelContext = new() { Title = "Chance" };
+            JailPanelContext jailPanelContext = new() { Title = "Jail" };
+            ParkingPanelContext parkingPanelContext = new () { Title = "Parking" };
+            GoToJailPanelContext goToJailPanelContext = new () { Title = "GoToJail" };
+            GoPanelContext goPanelContext = new () { Title = "Go" };
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
+
             RollPanel rollPanel = new(botPanelRoot);
             SpaceActionsPanel spaceActionsPanel = new(botPanelRoot);
             PurchaseHousePanel purchaseHousePanel = new(botPanelRoot, purchaseHousePanelContext);
@@ -100,6 +107,12 @@ namespace DOTS.Mediator
             PayRentPanel payRentPanel = new(botPanelRoot);
             ChangeTurnPanel changeTurnPanel = new(botPanelRoot);
             TaxPanel payTaxPanel = new(botPanelRoot);
+            TreasurePanel treasurePanel = new(botPanelRoot);
+            ChancePanel chancePanel = new(botPanelRoot);
+            JailPanel jailPanel = new(botPanelRoot);
+            ParkingPanel parkingPanel = new(botPanelRoot);
+            GoToJailPanel goToJailPanel = new(botPanelRoot);
+            GoPanel goPanel = new(botPanelRoot);
 
             // Loading Controllers
             var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
@@ -143,6 +156,12 @@ namespace DOTS.Mediator
 
             panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
             panelControllers.payTaxPanelController = new(payTaxPanel, payTaxPanelContext);
+            panelControllers.treasurePanelController = new(treasurePanel, treasurePanelContext);
+            panelControllers.chancePanelController = new(chancePanel, chancePanelContext);
+            panelControllers.jailPanelController = new(jailPanel, jailPanelContext);
+            panelControllers.parkingPanelController = new(parkingPanel, parkingPanelContext);
+            panelControllers.goToJailPanelController = new(goToJailPanel, goToJailPanelContext);
+            panelControllers.goPanelController = new(goPanel, goPanelContext);
             panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
             panelControllers.changeTurnPanelController = new(changeTurnPanel, changeTurnPanelContext);
             panelControllers.spaceActionsPanelController = new(
@@ -168,6 +187,12 @@ namespace DOTS.Mediator
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.payRentPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.payTaxPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.treasurePanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.chancePanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.jailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.parkingPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.goToJailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
             panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery);
         }

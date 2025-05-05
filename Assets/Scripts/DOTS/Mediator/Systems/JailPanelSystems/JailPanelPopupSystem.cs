@@ -1,35 +1,34 @@
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
-using Unity.Burst;
 using Unity.Entities;
 
-namespace DOTS.Mediator.Systems.PayTaxSystems
+namespace DOTS.Mediator.Systems.JailPanelSystems
 {
-    public struct ShowPayTaxPanelBuffer : IBufferElementData
+    public struct ShowJailPanelBuffer : IBufferElementData
     { }
 
-    [BurstCompile]
-    public partial struct PayTaxPanelPopupSystem : ISystem
+    public partial struct JailPanelPopupSystem : ISystem
     {
-        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingletonBuffer<ShowPayTaxPanelBuffer>();
+            state.EntityManager.CreateSingletonBuffer<ShowJailPanelBuffer>();
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<LandedOnSpace>();
-            state.RequireForUpdate<TaxSpaceTag>();
+            state.RequireForUpdate<JailSpaceTag>();
         }
 
-        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
                 if (gameState.ValueRO.State == GameState.Landing)
                 {
                     var landedOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
-                    if (SystemAPI.HasComponent<TaxSpaceTag>(landedOnEntity.entity))
-                        SystemAPI.GetSingletonBuffer<ShowPayTaxPanelBuffer>().Add(new ShowPayTaxPanelBuffer { });
+                    if (SystemAPI.HasComponent<JailSpaceTag>(landedOnEntity.entity))
+                    {
+                        SystemAPI.GetSingletonBuffer<ShowJailPanelBuffer>().Add(new ShowJailPanelBuffer { });
+                    }
                 }
+
         }
     }
 }

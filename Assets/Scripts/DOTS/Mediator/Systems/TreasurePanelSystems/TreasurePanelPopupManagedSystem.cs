@@ -1,32 +1,32 @@
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
-namespace DOTS.Mediator.Systems.PayTaxSystems
+namespace DOTS.Mediator.Systems.TreasurePanelSystems
 {
-    public partial struct PayTaxPanelPopupManagedSystem : ISystem
+    public partial struct TreasurePanelPopupManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<ShowPayTaxPanelBuffer>();
+            state.RequireForUpdate<ShowTreasurePanelBuffer>();
             state.RequireForUpdate<PanelControllers>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var buffer in SystemAPI.Query<DynamicBuffer<ShowPayTaxPanelBuffer>>().WithChangeFilter<ShowPayTaxPanelBuffer>())
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<ShowTreasurePanelBuffer>>().WithChangeFilter<ShowTreasurePanelBuffer>())
             {
                 foreach (var e in buffer)
                 {
                     var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
                     if (panelControllers == null)
                         break;
-                    if (panelControllers.payTaxPanelController == null)
+                    if (panelControllers.treasurePanelController == null)
                         break;
                     if (panelControllers.backdropController == null)
                         break;
 
-                    UnityEngine.Debug.Log("Shwoing Tax Panel!");
-                    panelControllers.payTaxPanelController.ShowPanel();
+                    UnityEngine.Debug.Log("Shwoing Treasure Panel!");
+                    panelControllers.treasurePanelController.ShowPanel();
                     panelControllers.backdropController.ShowBackdrop();
                 }
                 buffer.Clear();

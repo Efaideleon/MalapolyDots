@@ -1,28 +1,21 @@
-using DOTS.DataComponents;
-using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class JailPanel : OnLandPanel
+    public class JailPanel
     {
-        public JailPanel(VisualElement parent) : base(parent.Q<VisualElement>("JailPanel"))
+        public VisualElement Root { get; private set; }
+        public Button OkButton { get; private set; }
+        public Label TitleLabel { get; private set; }
+        public JailPanel(VisualElement parent)
         {
-            PanelType = SpaceType.Jail;
-            UpdateAcceptButtonReference("jail-panel-button");
-            UpdateLabelReference("jail-panel-label");
+            Root = parent.Q<VisualElement>("JailPanel");
+            OkButton = parent.Q<Button>("jail-panel-button");
+            TitleLabel = parent.Q<Label>("jail-panel-label");
             Hide();
         }
 
-        public override void Show(ShowPanelContext context)
-        {
-            var name = context.entityManager.GetComponentData<NameComponent>(context.spaceEntity);
-            UpdateTitleLabelText($"{name.Value}");
-            Show();
-        }
-
-        public override void AddAcceptButtonAction(EntityQuery entityQuery)
-        {
-        }
+        public void Show() => Root.style.display = DisplayStyle.Flex;
+        public void Hide() => Root.style.display = DisplayStyle.None;
     }
 }

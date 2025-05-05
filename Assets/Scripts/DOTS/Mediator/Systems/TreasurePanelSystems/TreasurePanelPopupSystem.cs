@@ -3,21 +3,21 @@ using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
 
-namespace DOTS.Mediator.Systems.PayTaxSystems
+namespace DOTS.Mediator.Systems.TreasurePanelSystems
 {
-    public struct ShowPayTaxPanelBuffer : IBufferElementData
+    public struct ShowTreasurePanelBuffer : IBufferElementData
     { }
 
     [BurstCompile]
-    public partial struct PayTaxPanelPopupSystem : ISystem
+    public partial struct TreasurePanelPopupSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingletonBuffer<ShowPayTaxPanelBuffer>();
+            state.EntityManager.CreateSingletonBuffer<ShowTreasurePanelBuffer>();
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<LandedOnSpace>();
-            state.RequireForUpdate<TaxSpaceTag>();
+            state.RequireForUpdate<TreasureSpaceTag>();
         }
 
         [BurstCompile]
@@ -27,8 +27,8 @@ namespace DOTS.Mediator.Systems.PayTaxSystems
                 if (gameState.ValueRO.State == GameState.Landing)
                 {
                     var landedOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
-                    if (SystemAPI.HasComponent<TaxSpaceTag>(landedOnEntity.entity))
-                        SystemAPI.GetSingletonBuffer<ShowPayTaxPanelBuffer>().Add(new ShowPayTaxPanelBuffer { });
+                    if (SystemAPI.HasComponent<TreasureSpaceTag>(landedOnEntity.entity))
+                        SystemAPI.GetSingletonBuffer<ShowTreasurePanelBuffer>().Add(new ShowTreasurePanelBuffer { });
                 }
         }
     }
