@@ -18,31 +18,21 @@ public partial struct OwnerShipLabelImageUpdateSystem : ISystem
         state.RequireForUpdate<CharacterSpriteDictionary>();
     }
 
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var (propertyName, ownerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<OwnerComponent>>().WithChangeFilter<OwnerComponent>())
+        public void OnUpdate(ref SystemState state)
         {
-            var canvasGO = SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>();
-            if (canvasGO.CanvasGO == null)
-                break;
+            foreach (var (propertyName, ownerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<OwnerComponent>>().WithChangeFilter<OwnerComponent>())
+            {
+                var canvasGO = SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>();
+                if (canvasGO.CanvasGO == null)
+                    break;
 
             foreach (var (playerName, playerID) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>>())
             {
                 if (ownerID.ValueRO.ID == playerID.ValueRO.Value)
                 {
                     var labelGOs = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>().GameObjects;
-                    var imagePanel = labelGOs[propertyName.ValueRO.Value].transform.GetChild(0).GetComponentInChildren<Image>();
-                    var characterSpriteDictionary = SystemAPI.ManagedAPI.GetSingleton<CharacterSpriteDictionary>();
-                    UnityEngine.Debug.Log($"Looking up sprite for {playerName.ValueRO.Value}");
-                    if (characterSpriteDictionary.Value.TryGetValue(playerName.ValueRO.Value, out var test))
-                    {
-                        UnityEngine.Debug.Log($"Found sprite {playerName.ValueRO.Value}");
-                    }
-                    else
-                    {
-                        UnityEngine.Debug.Log($"Did not find sprite {playerName.ValueRO.Value}");
-                    }
-                    imagePanel.sprite = characterSpriteDictionary.Value[playerName.ValueRO.Value];
+                    var text = labelGOs[propertyName.ValueRO.Value].GetComponentInChildren<TextMeshProUGUI>();
+                    text.text = $"Owner: {playerName.ValueRO.Value}";
                     labelGOs[propertyName.ValueRO.Value].SetActive(true);
                 }
                 if (ownerID.ValueRO.ID == PropertyConstants.Vacant)
