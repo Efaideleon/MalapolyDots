@@ -796,5 +796,135 @@
     background-color: rgba(161, 148, 0, 0.9);
 }
 
-.dbr-btn-yellow {
+.dbr-btn-with-icons {
+    align-items: center;
+    justify-content: center;
+}
+
+.dbr-btn-with-icons Button {
+    transition: background-color 2s ease, scale 0.2s ease;
+    border-width: 5px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    align-items: center;
+    justify-content: center;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    overflow: visible;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.dbr-btn-with-icons #gradient-border {
+    width: 100%;
+    height: 100%;
+    /*background-image: url("project://database/Assets/Textures/light_gradient_4x180.png?fileID=21300000&guid=f43950ad9f6b9a24dbe5a6c98da6d741&type=3#light_gradient_4x180");*/
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.dbr-btn-with-icons Label {
+    margin: 0;
+}
+
+.dbr-btn-with-icons #label-container {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+}
+
+.dbr-btn-with-icons #gradient-border-label-container {
+    width: 100%;
+    height: 100%;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    border-bottom-left-radius: 13px;
+}
+
+.dbr-btn-with-icons #button-content {
+    transition: background-color 0.3s ease;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    background-image: url("project://database/Assets/Textures/light_gradient_4x180.png?fileID=21300000&guid=f43950ad9f6b9a24dbe5a6c98da6d741&type=3#light_gradient_4x180");
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.dbr-btn-with-icons #blurred-shadow {
+    position: absolute;
+    width: 130%;
+    height: 150%;
+    top: -12px;
+    background-image: url("project://database/Assets/Textures/shadow_sprite_200px.png?fileID=21300000&guid=9c99d9ad068e72b4c89eaa3245f7a980&type=3#shadow_sprite_200px");
+    align-items: stretch;
+    flex-grow: 1;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.dbr-btn-with-icons Button:hover {
+    scale: 1.05;
+}
+
+.dbr-btn-with-icons Button:active {
+    scale: 0.95;
+}
+
+.dbr-btn-with-icons-yellow {
+}
+
+.dbr-btn-with-icons-yellow #button-content {
+    -unity-text-outline-color: rgb(141, 101, 0);
+    -unity-background-image-tint-color: rgb(255, 217, 0);
+}
+
+.dbr-btn-with-icons-yellow #gradient-border {
+    background-color: rgb(255, 244, 174);
+    -unity-background-image-tint-color: rgb(255, 244, 174);
+}
+
+.dbr-btn-with-icons-yellow #gradient-border-label-container {
+    border-color: yellow;
+    border-left-color: rgb(162, 132, 0);
+    border-right-color: rgb(162, 132, 0);
+    border-top-color: rgb(162, 132, 0);
+    border-bottom-color: rgb(162, 132, 0);
+}
+
+.dbr-btn-with-icons-yellow Button:hover #button-content {
+    -unity-background-image-tint-color: rgb(255, 235, 11);
+}
+
+.dbr-btn-with-icons-yellow Button:active #button-content {
+    -unity-background-image-tint-color: rgba(225, 204, 0, 0.9);
+}
+
+.dbr-btn-with-icons-yellow {
 }

@@ -35,16 +35,16 @@
 }
 
 .player-picture {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 40px;
-    background-color: rgba(245, 223, 175, 0);
+    background-color: rgb(41, 113, 119);
     background-repeat: space space;
     -unity-background-scale-mode: stretch-to-fill;
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
-    border-bottom-left-radius: 50%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
     justify-content: flex-start;
     align-items: auto;
     align-self: auto;
@@ -53,14 +53,15 @@
     margin-right: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
+    left: -2px;
 }
 
 .player-panel {
@@ -86,15 +87,15 @@
     justify-content: space-between;
     margin-bottom: 0;
     padding-right: 10px;
-    padding-left: 10px;
+    padding-left: 0;
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: 30px;
     margin-right: 10px;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
 }
 
 .current-player-panel #player-money {
@@ -134,6 +135,7 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .default-uxml {
