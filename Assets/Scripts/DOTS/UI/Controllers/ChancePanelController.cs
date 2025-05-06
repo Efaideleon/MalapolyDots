@@ -44,8 +44,6 @@ namespace DOTS.UI.Controllers
         {
             var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
             eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.Chance });
-            // TODO: Remove this, we don't want to change turns after paying chance.
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.ChangeTurn });
         }
 
         public void Dispose()

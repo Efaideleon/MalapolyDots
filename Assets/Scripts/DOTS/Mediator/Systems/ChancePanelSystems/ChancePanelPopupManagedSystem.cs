@@ -24,9 +24,7 @@ public partial struct ChancePanelPopupManagedSystem : ISystem
                 if (panelControllers.backdropController == null)
                     break;
 
-                UnityEngine.Debug.Log("Shwoing Chance Panel!");
                 panelControllers.chancePanelController.ShowPanel();
-                panelControllers.backdropController.ShowBackdrop();
             }
             buffer.Clear();
         }
