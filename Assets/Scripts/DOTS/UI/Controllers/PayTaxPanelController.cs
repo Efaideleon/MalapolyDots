@@ -1,6 +1,6 @@
-using DOTS.EventBuses;
+using System.Collections.Generic;
 using DOTS.UI.Panels;
-using Unity.Entities;
+using DOTS.UI.Utilities.UIButtonEvents;
 
 namespace DOTS.UI.Controllers
 {
@@ -12,13 +12,14 @@ namespace DOTS.UI.Controllers
     public class PayTaxPanelController
     {
         public TaxPanel Panel { get; private set; }
-        public EntityQuery TransactionEventBusQuery { get; private set; }
+        private readonly List<IButtonEvent> _buttonEvents;
         public PayTaxPanelContext Context { get; set; }
 
-        public PayTaxPanelController(TaxPanel panel, PayTaxPanelContext context)
+        public PayTaxPanelController(TaxPanel panel, PayTaxPanelContext context, List<IButtonEvent> buttonEvents)
         {
             Panel = panel;
             Context = context;
+            _buttonEvents = buttonEvents;
             SubscribeEvents();
         }
 
@@ -27,7 +28,8 @@ namespace DOTS.UI.Controllers
 
         private void SubscribeEvents()
         {
-            Panel.OkButton.clickable.clicked += DispatchEvents;
+            foreach(var buttonEvent in _buttonEvents)
+                Panel.OkButton.clickable.clicked += buttonEvent.DispatchEvent;
             Panel.OkButton.clickable.clicked += Panel.Hide;
         }
 
@@ -36,20 +38,10 @@ namespace DOTS.UI.Controllers
             Panel.AmountLabel.text = Context.Amount.ToString();
         }
 
-        public void SetEventBufferQuery(EntityQuery query)
-        {
-            TransactionEventBusQuery = query;
-        }
-
-        private void DispatchEvents()
-        {
-            var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.PayTaxes });
-        }
-
         public void Dispose()
         {
-            Panel.OkButton.clickable.clicked -= DispatchEvents;
+            foreach(var buttonEvent in _buttonEvents)
+                Panel.OkButton.clickable.clicked += buttonEvent.DispatchEvent;
             Panel.OkButton.clickable.clicked -= Panel.Hide;
         }
     }

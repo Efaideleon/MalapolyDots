@@ -1,6 +1,5 @@
 using DOTS.Characters;
 using DOTS.DataComponents;
-using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
@@ -18,9 +17,8 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (playerID, name, money) in
+            foreach (var (name, money) in
                     SystemAPI.Query<
-                    RefRO<PlayerID>,
                     RefRO<NameComponent>,
                     RefRO<MoneyComponent>
                     >()
@@ -36,8 +34,6 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                             Name = name.ValueRO.Value.ToString(),
                             Money = money.ValueRO.Value.ToString()
                         };
-                        UnityEngine.Debug.Log($"panel name: {statsPanelContext.Name}");
-                        UnityEngine.Debug.Log($"new money: {statsPanelContext.Money}");
                         panelControllers.statsPanelController.Context = statsPanelContext;
                         panelControllers.statsPanelController.Update();
                     }

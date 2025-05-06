@@ -1,6 +1,6 @@
-using DOTS.EventBuses;
+using System.Collections.Generic;
 using DOTS.UI.Panels;
-using Unity.Entities;
+using DOTS.UI.Utilities.UIButtonEvents;
 
 namespace DOTS.UI.Controllers
 {
@@ -12,19 +12,21 @@ namespace DOTS.UI.Controllers
     public class PayRentPanelController
     {
         public PayRentPanel Panel { get; private set; }
-        public EntityQuery TransactionEventBusQuery { get; private set; }
+        private readonly List<IButtonEvent> _buttonEvents;
         public PayRentPanelContext Context { get; set; }
 
-        public PayRentPanelController(PayRentPanel panel, PayRentPanelContext context)
+        public PayRentPanelController(PayRentPanel panel, PayRentPanelContext context, List<IButtonEvent> buttonEvents)
         {
             Panel = panel;
             Context = context;
+            _buttonEvents = buttonEvents;
             SubscribeEvents();
         }
 
         private void SubscribeEvents()
         {
-            Panel.AcceptButton.clickable.clicked += DispatchEvents;
+            foreach (var buttonEvent in _buttonEvents)
+                Panel.AcceptButton.clickable.clicked += buttonEvent.DispatchEvent;
             Panel.AcceptButton.clickable.clicked += Panel.Hide;
         }
 
@@ -33,20 +35,10 @@ namespace DOTS.UI.Controllers
             Panel.UpdateRentAmountLabel(Context.Rent.ToString());
         }
 
-        public void SetEventBufferQuery(EntityQuery query)
-        {
-            TransactionEventBusQuery = query;
-        }
-
-        private void DispatchEvents()
-        {
-            var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.PayRent });
-        }
-
         public void Dispose()
         {
-            Panel.AcceptButton.clickable.clicked -= DispatchEvents;
+            foreach (var buttonEvent in _buttonEvents)
+                Panel.AcceptButton.clickable.clicked += buttonEvent.DispatchEvent;
             Panel.AcceptButton.clickable.clicked -= Panel.Hide;
         }
     }

@@ -9,6 +9,7 @@ using DOTS.EventBuses;
 using System.Collections.Generic;
 using DOTS.Utilities.PropertiesBlob;
 using Unity.Collections;
+using DOTS.UI.Utilities.UIButtonEvents;
 
 namespace DOTS.Mediator
 {
@@ -154,8 +155,17 @@ namespace DOTS.Mediator
                 }
             }
 
-            panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext);
-            panelControllers.payTaxPanelController = new(payTaxPanel, payTaxPanelContext);
+            var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            var hideBackDropEvent = new HideBackDropEvent(panelControllers.backdropController);
+
+            var payRentTransactionEvent = new TransactionEvent(transactionEventBufferQuery, TransactionEventType.PayRent);
+            var payRentButtonEvents = new List<IButtonEvent> { payRentTransactionEvent, hideBackDropEvent };
+            panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext, payRentButtonEvents);
+
+            var payTaxTransactionEvent = new TransactionEvent(transactionEventBufferQuery, TransactionEventType.PayTaxes);
+            var payTaxButtonEvents = new List<IButtonEvent> { payTaxTransactionEvent, hideBackDropEvent };
+            panelControllers.payTaxPanelController = new(payTaxPanel, payTaxPanelContext, payTaxButtonEvents);
+
             panelControllers.treasurePanelController = new(treasurePanel, treasurePanelContext);
             panelControllers.chancePanelController = new(chancePanel, chancePanelContext);
             panelControllers.jailPanelController = new(jailPanel, jailPanelContext);
@@ -181,12 +191,9 @@ namespace DOTS.Mediator
 
             // Button Actions
             var rollEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<RollEventBuffer>().Build();
-            var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
             panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
-            panelControllers.payRentPanelController.SetEventBufferQuery(transactionEventBufferQuery);
-            panelControllers.payTaxPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.treasurePanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.chancePanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.jailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
