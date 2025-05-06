@@ -43,7 +43,7 @@ namespace DOTS.GamePlay
         public void OnUpdate(ref SystemState state)
         {
             var dt = SystemAPI.Time.DeltaTime;
-            var moveSpeed = dt * 5f;
+            var moveSpeed = dt * 10f;
 
             foreach (var rollAmount in 
                     SystemAPI.Query<

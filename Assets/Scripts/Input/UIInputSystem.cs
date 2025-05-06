@@ -1,4 +1,5 @@
 using System;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -25,6 +26,12 @@ public struct ClickRayCastData : IComponentData
 public class ClickCallback : IComponentData
 {
     public Action<InputAction.CallbackContext> leftClickCallback;
+}
+
+public struct RayData
+{
+    public float3 origin;
+    public float3 direction;
 }
 
 [UpdateInGroup(typeof(InitializationSystemGroup), OrderLast = true)]
@@ -76,7 +83,6 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
 
     public void OnStartRunning(ref SystemState state)
     {
-        UnityEngine.Debug.Log("UIInputSystem OnStartRunning getting called");
         var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
         
         var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
@@ -89,32 +95,52 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
             switch(ctx.phase)
             {
                 case InputActionPhase.Started:
-                    var clickPositionVector = Mouse.current.position.ReadValue();
-                    UnityEngine.Debug.Log("Mouse button pressed");
-                    float2 clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
-                    Ray ray = Camera.main.ScreenPointToRay(clickPositionVector);
-                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayOrigin = ray.origin;  
-                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayDirection = ray.direction;  
-                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayEnd = ray.origin + (ray.direction * rayLenght);  
-                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Position = clickPositionFloat2;  
-                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Phase = InputActionPhase.Started;  
+                    var (clickPosition, rayData) = GetClickPositionAndRay();
+                    SetClickData(
+                            ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
+                            ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
+                            rayLenght,
+                            clickPosition,
+                            rayData);
                     break;
                 case InputActionPhase.Canceled:
-                    UnityEngine.Debug.Log("Mouse button released");
-                    clickPositionVector = Mouse.current.position.ReadValue();
-                    clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
-                    ray = Camera.main.ScreenPointToRay(clickPositionVector);
-                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayOrigin = ray.origin;  
-                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayDirection = ray.direction;  
-                    clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW.RayEnd = ray.origin + (ray.direction * rayLenght);  
-                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Position = clickPositionFloat2;  
-                    clickDataQuery.GetSingletonRW<ClickData>().ValueRW.Phase = InputActionPhase.Canceled;  
+                    var (clickPosition2, rayData2) = GetClickPositionAndRay();
+                    SetClickData ( 
+                            ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
+                            ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
+                            rayLenght,
+                            clickPosition2,
+                            rayData2);
                     break;
             }
         };
         inputActionsComponent.Value.Mouse.LeftClick.started += clickCallback.leftClickCallback;
         inputActionsComponent.Value.Mouse.LeftClick.canceled += clickCallback.leftClickCallback;
         inputActionsComponent.Value.Enable();
+    }
+
+    private static (float2, RayData) GetClickPositionAndRay()
+    {
+        var clickPositionVector = Mouse.current.position.ReadValue();
+        float2 clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
+        Ray ray = Camera.main.ScreenPointToRay(clickPositionVector);
+        RayData rayData = new() { origin = ray.origin, direction = ray.direction };
+        return (clickPositionFloat2, rayData);
+    }
+
+    [BurstCompile]
+    private static void SetClickData(
+            ref ClickRayCastData clickRayCastData,
+            ref ClickData clickData,
+            float rayLenght,
+            float2 clickPosition,
+            RayData rayData)
+    {
+        clickRayCastData.RayOrigin = rayData.origin;
+        clickRayCastData.RayDirection = rayData.direction;
+        clickRayCastData.RayEnd = rayData.origin + (rayData.direction * rayLenght);
+        clickData.Position = clickPosition;  
+        clickData.Phase = InputActionPhase.Canceled;  
     }
 
     public void OnUpdate(ref SystemState state) { }

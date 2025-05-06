@@ -2,6 +2,7 @@ using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.EventBuses;
 using DOTS.GameData;
+using DOTS.GameData.PlacesData;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
@@ -116,6 +117,25 @@ namespace DOTS.GamePlay
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
                                 SystemAPI.GetSingletonBuffer<ChangeTurnBufferEvent>().Add(new ChangeTurnBufferEvent{});
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
+                            }
+                        }
+                    }
+
+                    if (transaction.EventType == TransactionEventType.PayTaxes)
+                    {
+                        foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
+                        {
+                            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                            if (playerID.ValueRO.Value == currentPlayerID.Value)
+                            {
+                                var space = SystemAPI.GetSingleton<LandedOnSpace>();
+                                if (space.entity != Entity.Null && 
+                                        SystemAPI.HasComponent<TaxSpaceTag>(space.entity))
+                                {
+                                    // TODO: this value should come from a component in the tax
+                                    var tax = 100_000; 
+                                    playerMoney.ValueRW.Value -= tax;
+                                }
                             }
                         }
                     }
