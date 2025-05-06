@@ -25,9 +25,7 @@ namespace DOTS.Mediator.Systems.PayTaxSystems
                     if (panelControllers.backdropController == null)
                         break;
 
-                    UnityEngine.Debug.Log("Shwoing Tax Panel!");
                     panelControllers.payTaxPanelController.ShowPanel();
-                    panelControllers.backdropController.ShowBackdrop();
                 }
                 buffer.Clear();
             }

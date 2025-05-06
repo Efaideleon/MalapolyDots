@@ -45,8 +45,6 @@ namespace DOTS.UI.Controllers
         {
             var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
             eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.Treasure });
-            // TODO: Remove this, we don't want to change turns after paying taxes.
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.ChangeTurn });
         }
 
         public void Dispose()

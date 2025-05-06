@@ -42,8 +42,6 @@ namespace DOTS.UI.Controllers
         {
             var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
             eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.PayRent });
-            // TODO: Remove this, we don't want to change turns after paying rent.
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.ChangeTurn });
         }
 
         public void Dispose()

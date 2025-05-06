@@ -25,9 +25,7 @@ namespace DOTS.UI.Mediator.Systems.ParkingPanelSystems
                     if (panelControllers.backdropController == null)
                         break;
 
-                    UnityEngine.Debug.Log("Shwoing Parking Panel!");
                     panelControllers.parkingPanelController.ShowPanel();
-                    panelControllers.backdropController.ShowBackdrop();
                 }
                 buffer.Clear();
             }
