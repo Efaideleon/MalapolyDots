@@ -7,6 +7,7 @@ namespace DOTS.UI.Controllers
     public struct RollPanelContext : IComponentData
     {
         public int AmountRolled;
+        public bool IsVisible;
     }
 
     public class RollPanelController
@@ -28,8 +29,17 @@ namespace DOTS.UI.Controllers
             Panel.RollButton.clickable.clicked += Panel.HideRollButton;
         }
 
-        public void ShowPanel() => Panel.Show();
-        public void HidePanel() => Panel.Hide();
+        public void ShowPanel()
+        {
+            Panel.Show();
+            Context = new RollPanelContext { AmountRolled = Context.AmountRolled, IsVisible = true };
+        }
+
+        public void HidePanel() 
+        {
+            Panel.Hide();
+            Context = new RollPanelContext { AmountRolled = Context.AmountRolled, IsVisible = false };
+        }
 
         public void Update()
         {

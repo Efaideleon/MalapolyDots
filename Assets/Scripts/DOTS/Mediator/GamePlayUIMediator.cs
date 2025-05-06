@@ -28,26 +28,6 @@ public partial struct GamePlayUIMediator : ISystem
     
     public void OnUpdate(ref SystemState state)
     {
-
-        foreach (var isCurrentCharacterMoving in 
-                SystemAPI.Query<
-                RefRO<IsCurrentCharacterMoving>
-                >()
-                .WithChangeFilter<IsCurrentCharacterMoving>())
-        {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
-            {
-                var isVisible = !isCurrentCharacterMoving.ValueRO.Value;
-                ChangeTurnPanelContext changeTurnPanelContext = new(){ IsVisible = isVisible };
-                if (panelControllers.changeTurnPanelController != null)
-                {
-                    panelControllers.changeTurnPanelController.Context = changeTurnPanelContext;
-                    panelControllers.changeTurnPanelController.UpdateVisibility();
-                }
-            }
-        }
-
         foreach (var spaceActionsContext in
                 SystemAPI.Query<
                 RefRO<SpaceActionsPanelContextComponent>

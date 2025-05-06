@@ -12,7 +12,6 @@ namespace DOTS.Mediator.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<GameStateComponent>();
-            state.RequireForUpdate<PanelControllers>();
             state.RequireForUpdate<PropertySpaceTag>();
             state.RequireForUpdate<LandedOnSpace>();
             state.RequireForUpdate<PopupManagers>();
@@ -22,22 +21,17 @@ namespace DOTS.Mediator.Systems
         {
             foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
             {
-                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                if (panelControllers != null)
+                var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
+                if (popupManagers != null)
                 {
-                    if (panelControllers.rollPanelController != null)
+                    if (popupManagers.propertyPopupManager != null)
                     {
                         switch (gameState.ValueRO.State)
                         {
-                            case GameState.Rolling:
-                                panelControllers.rollPanelController.ShowPanel();
-                                break;
                             case GameState.Landing:
-                                panelControllers.rollPanelController.HidePanel();
                                 var spaceLanded = SystemAPI.GetSingleton<LandedOnSpace>();
                                 if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLanded.entity))
                                 {
-                                    var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
                                     PropertyPopupManagerContext propertyPopupManagerContext = new ()
                                     {
                                         OwnerID = SystemAPI.GetComponent<OwnerComponent>(spaceLanded.entity).ID,
