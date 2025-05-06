@@ -25,9 +25,7 @@ namespace DOTS.Mediator.Systems.TreasurePanelSystems
                     if (panelControllers.backdropController == null)
                         break;
 
-                    UnityEngine.Debug.Log("Shwoing Treasure Panel!");
                     panelControllers.treasurePanelController.ShowPanel();
-                    panelControllers.backdropController.ShowBackdrop();
                 }
                 buffer.Clear();
             }

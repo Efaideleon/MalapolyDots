@@ -25,9 +25,7 @@ namespace DOTS.Mediator.Systems.JailPanelSystems
                     if (panelControllers.backdropController == null)
                         break;
 
-                    UnityEngine.Debug.Log("Shwoing Jail Panel!");
                     panelControllers.jailPanelController.ShowPanel();
-                    panelControllers.backdropController.ShowBackdrop();
                 }
                 buffer.Clear();
             }

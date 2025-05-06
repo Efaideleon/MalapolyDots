@@ -31,18 +31,15 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                 {
                     if (panelControllers.statsPanelController != null)
                     {
-                        var currPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                        if (playerID.ValueRO.Value == currPlayerID.Value)
-                        {
-                            StatsPanelContext statsPanelContext = new() 
-                            { 
-                                Name = name.ValueRO.Value.ToString(),
-                                Money = money.ValueRO.Value.ToString()
-                            };
-                            UnityEngine.Debug.Log($"new money: {statsPanelContext.Money}");
-                            panelControllers.statsPanelController.Context = statsPanelContext;
-                            panelControllers.statsPanelController.Update();
-                        }
+                        StatsPanelContext statsPanelContext = new() 
+                        { 
+                            Name = name.ValueRO.Value.ToString(),
+                            Money = money.ValueRO.Value.ToString()
+                        };
+                        UnityEngine.Debug.Log($"panel name: {statsPanelContext.Name}");
+                        UnityEngine.Debug.Log($"new money: {statsPanelContext.Money}");
+                        panelControllers.statsPanelController.Context = statsPanelContext;
+                        panelControllers.statsPanelController.Update();
                     }
                 }
             }
