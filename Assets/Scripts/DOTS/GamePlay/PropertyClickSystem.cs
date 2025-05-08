@@ -43,16 +43,6 @@ namespace DOTS.GamePlay
                 collisionWorld.CastRay(input, out RaycastHit hit);
                 var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
                 clickedProperty.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
-                    // if (SystemAPI.HasComponent<PropertySpaceTag>(hit.Entity))
-                    // {
-                    //     var panelContext = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                    //     panelContext.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
-                    // }
-                    // else
-                    // {
-                    //     var panelContext = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                    //     panelContext.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
-                    // }
             }
         }
     }
