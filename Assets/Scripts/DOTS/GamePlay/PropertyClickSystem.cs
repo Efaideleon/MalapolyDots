@@ -10,11 +10,6 @@ namespace DOTS.GamePlay
         public Entity entity;
     }
 
-    public struct LastPropertyClicked : IComponentData
-    {
-        public Entity entity;
-    }
-
     [BurstCompile]
     public partial struct PropertyClickSystem : ISystem
     {
@@ -45,14 +40,19 @@ namespace DOTS.GamePlay
                         GroupIndex = 0
                     }
                 };
-                if (collisionWorld.CastRay(input, out RaycastHit hit))
-                {
-                    if (SystemAPI.HasComponent<PropertySpaceTag>(hit.Entity))
-                    {
-                        var panelContext = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                        panelContext.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
-                    }
-                }
+                collisionWorld.CastRay(input, out RaycastHit hit);
+                var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                clickedProperty.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
+                    // if (SystemAPI.HasComponent<PropertySpaceTag>(hit.Entity))
+                    // {
+                    //     var panelContext = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                    //     panelContext.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
+                    // }
+                    // else
+                    // {
+                    //     var panelContext = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                    //     panelContext.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
+                    // }
             }
         }
     }

@@ -26,6 +26,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<ChangeMaterialTag>();
             state.RequireForUpdate<LastPropertyClicked>();
             state.RequireForUpdate<SelectionMaterialsID>();
+            state.RequireForUpdate<ClickedPropertyComponent>();
             state.EntityManager.CreateSingleton<LastSelectionChanged>();
             changeMaterialTags = state.GetComponentLookup<ChangeMaterialTag>(true); 
             materialMeshInfos = state.GetComponentLookup<MaterialMeshInfo>(true); 
@@ -37,57 +38,56 @@ namespace DOTS.GamePlay
         {
             foreach (var propertyClicked in 
                     SystemAPI.Query<
-                    RefRO<LastPropertyClicked>
+                    RefRO<ClickedPropertyComponent>
                     >()
-                    .WithChangeFilter<LastPropertyClicked>())
+                    .WithChangeFilter<ClickedPropertyComponent>())
             {
                 changeMaterialTags.Update(ref state);
                 materialMeshInfos.Update(ref state);
                 linkedEntityGroups.Update(ref state);
 
                 var entityClicked = propertyClicked.ValueRO.entity;
-                if (SystemAPI.HasBuffer<LinkedEntityGroup>(entityClicked))
-                {
-                    var materials = SystemAPI.GetSingleton<SelectionMaterialsID>();
-                    var selectionMatID = materials.SelectionMaterialID;
-                    var noSelectionMatID = materials.NoSelectionMaterialID;
+                var materials = SystemAPI.GetSingleton<SelectionMaterialsID>();
+                var selectionMatID = materials.SelectionMaterialID;
+                var noSelectionMatID = materials.NoSelectionMaterialID;
 
-                    var lastSelectionChanged = SystemAPI.GetSingleton<LastSelectionChanged>();
-                    JobHandle stateDeps = state.Dependency;
-                    JobHandle chainedHandle = stateDeps;
-                    if (lastSelectionChanged.entity != entityClicked && lastSelectionChanged.entity != Entity.Null)
+                var lastSelectionChanged = SystemAPI.GetSingletonRW<LastSelectionChanged>();
+                JobHandle stateDeps = state.Dependency;
+                JobHandle chainedHandle = stateDeps;
+                if (lastSelectionChanged.ValueRO.entity != entityClicked && lastSelectionChanged.ValueRO.entity != Entity.Null)
+                {
+                    var linkedEntities = linkedEntityGroups[lastSelectionChanged.ValueRO.entity];
+                    var count = linkedEntities.Length;
+                    var job = new ChangeMaterialJob
                     {
-                        var linkedEntities = linkedEntityGroups[lastSelectionChanged.entity];
-                        var count = linkedEntities.Length;
-                        var job = new ChangeMaterialJob
-                        {
-                            EntityClicked = lastSelectionChanged.entity,
-                            LinkedEntities = linkedEntityGroups,
-                            MaterialID = noSelectionMatID,
-                            ChangeMaterialTags = changeMaterialTags,
-                            MaterialMeshInfos = materialMeshInfos,
-                            ecbParallel = GetECB(ref state).AsParallelWriter()
-                        };
-                        chainedHandle = job.Schedule(count, 2, chainedHandle);
-                    }
-                    if (entityClicked != Entity.Null)
-                    {
-                        var linkedEntities = linkedEntityGroups[entityClicked];
-                        var count = linkedEntities.Length;
-                        var job = new ChangeMaterialJob
-                        {
-                            EntityClicked = entityClicked,
-                            LinkedEntities = linkedEntityGroups,
-                            MaterialID = selectionMatID,
-                            ChangeMaterialTags = changeMaterialTags,
-                            MaterialMeshInfos = materialMeshInfos,
-                            ecbParallel = GetECB(ref state).AsParallelWriter()
-                        };
-                        SystemAPI.GetSingletonRW<LastSelectionChanged>().ValueRW.entity = entityClicked;
-                        chainedHandle = job.Schedule(count, 2, chainedHandle);
-                    }
-                    state.Dependency = chainedHandle;
+                        EntityClicked = lastSelectionChanged.ValueRO.entity,
+                        LinkedEntities = linkedEntityGroups,
+                        MaterialID = noSelectionMatID,
+                        ChangeMaterialTags = changeMaterialTags,
+                        MaterialMeshInfos = materialMeshInfos,
+                        ecbParallel = GetECB(ref state).AsParallelWriter()
+                    };
+                    chainedHandle = job.Schedule(count, 2, chainedHandle);
+                    lastSelectionChanged.ValueRW.entity = entityClicked;
                 }
+                if (entityClicked != Entity.Null)
+                {
+                    var linkedEntities = linkedEntityGroups[entityClicked];
+                    lastSelectionChanged.ValueRW.entity = entityClicked;
+                    var count = linkedEntities.Length;
+                    var job = new ChangeMaterialJob
+                    {
+                        EntityClicked = entityClicked,
+                        LinkedEntities = linkedEntityGroups,
+                        MaterialID = selectionMatID,
+                        ChangeMaterialTags = changeMaterialTags,
+                        MaterialMeshInfos = materialMeshInfos,
+                        ecbParallel = GetECB(ref state).AsParallelWriter()
+                    };
+                    SystemAPI.GetSingletonRW<LastSelectionChanged>().ValueRW.entity = entityClicked;
+                    chainedHandle = job.Schedule(count, 2, chainedHandle);
+                }
+                state.Dependency = chainedHandle;
             }
         }
 
