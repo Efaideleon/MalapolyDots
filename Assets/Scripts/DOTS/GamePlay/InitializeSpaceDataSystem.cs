@@ -197,6 +197,7 @@ namespace DOTS.GamePlay
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PropertiesDataBlobReference>();
+            state.RequireForUpdate<PropertySpaceTag>();
         }
 
         [BurstCompile]
