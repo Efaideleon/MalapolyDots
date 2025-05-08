@@ -103,9 +103,7 @@ namespace DOTS.Characters.CharacterSpawner
 
                 state.Dependency = jobHandle;
                 foreach (var spawnFlag in SystemAPI.Query<RefRW<SpawnFlag>>())
-                {
                     spawnFlag.ValueRW.Value = true;
-                }
 
                 state.Enabled = false;
             }

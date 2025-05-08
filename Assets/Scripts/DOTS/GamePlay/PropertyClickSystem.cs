@@ -18,7 +18,6 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct PropertyClickSystem : ISystem
     {
-        [BurstCompile]
         public void OnCreate(ref SystemState state) 
         {
             state.EntityManager.CreateSingleton<ClickedPropertyComponent>();

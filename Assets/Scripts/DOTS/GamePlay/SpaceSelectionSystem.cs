@@ -1,19 +1,36 @@
-using DOTS.DataComponents;
 using DOTS.GameSpaces.Selection;
+using Unity.Burst;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Rendering;
+using Unity.Collections;
+using UnityEngine.Rendering;
 
 namespace DOTS.GamePlay
 {
+    public struct LastSelectionChanged : IComponentData
+    {
+        public Entity entity;
+        public BatchMaterialID materialID;
+    }
+
+    [BurstCompile]
     public partial struct SpaceSelectionSystem : ISystem
     {
+        private ComponentLookup<ChangeMaterialTag> changeMaterialTags;
+        private ComponentLookup<MaterialMeshInfo> materialMeshInfos;
+
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<ChangeMaterialTag>();
             state.RequireForUpdate<LastPropertyClicked>();
-            state.RequireForUpdate<SelectionMaterials>();
+            state.RequireForUpdate<SelectionMaterialsID>();
+            changeMaterialTags = state.GetComponentLookup<ChangeMaterialTag>(true); 
+            materialMeshInfos = state.GetComponentLookup<MaterialMeshInfo>(true); 
         }
 
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             foreach (var propertyClicked in 
@@ -22,34 +39,64 @@ namespace DOTS.GamePlay
                     >()
                     .WithChangeFilter<LastPropertyClicked>())
             {
+                changeMaterialTags.Update(ref state);
+                materialMeshInfos.Update(ref state);
+
                 var entityClicked = propertyClicked.ValueRO.entity;
                 if (SystemAPI.HasBuffer<LinkedEntityGroup>(entityClicked))
                 {
-                    UnityEngine.Debug.Log("property has linked entity group clicked");
-                    var linkedEntities = SystemAPI.GetBuffer<LinkedEntityGroup>(entityClicked);
-                    if (SystemAPI.HasComponent<NameComponent>(propertyClicked.ValueRO.entity))
-                    {
-                        var nameComp = SystemAPI.GetComponent<NameComponent>(propertyClicked.ValueRO.entity);
-                        UnityEngine.Debug.Log($"selected name: {nameComp.Value}");
-                    }
-                    UnityEngine.Debug.Log($"linked count: {linkedEntities.Length}");
-                    foreach (var linkedEntity in linkedEntities)
-                    {
-                        UnityEngine.Debug.Log("has child entity");
-                        Entity childCandidate = linkedEntity.Value;
-                        if (childCandidate == entityClicked)
-                            continue;
+                    var materials = SystemAPI.GetSingleton<SelectionMaterialsID>();
+                    var selectionMatID = materials.SelectionMaterialID;
 
-                        if (SystemAPI.HasComponent<ChangeMaterialTag>(childCandidate))
-                        {
-                            var renderMesh = SystemAPI.GetComponentRW<RenderMeshUnmanaged>(childCandidate);
-                            var materials = SystemAPI.ManagedAPI.GetSingleton<SelectionMaterials>();
-                            UnityEngine.Debug.Log("Change the material to no selection");
-                            renderMesh.ValueRW.materialForSubMesh = materials.NoSelection;
-                        }
-                    }
+                    var linkedEntities = SystemAPI.GetBuffer<LinkedEntityGroup>(entityClicked);
+
+                    var job = new ChangeMaterialJob
+                    {
+                        EntityClicked = entityClicked,
+                        LinkedEntities = linkedEntities,
+                        MaterialID = selectionMatID,
+                        ChangeMaterialTags = changeMaterialTags,
+                        MaterialMeshInfos = materialMeshInfos,
+                        ecbParallel = GetECB(ref state).AsParallelWriter()
+                    };
+
+                    var jobHandle = job.Schedule(linkedEntities.Length, 2);
+                    state.Dependency = jobHandle;
                 }
             }
+        }
+
+        [BurstCompile]
+        public readonly EntityCommandBuffer GetECB(ref SystemState state)
+        {
+            var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            return ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+        }
+    }
+
+    [BurstCompile]
+    public partial struct ChangeMaterialJob : IJobParallelFor
+    {
+        public Entity EntityClicked;
+        [ReadOnly] public DynamicBuffer<LinkedEntityGroup> LinkedEntities;
+        [ReadOnly] public BatchMaterialID MaterialID;
+        [ReadOnly] public ComponentLookup<ChangeMaterialTag> ChangeMaterialTags;
+        [ReadOnly] public ComponentLookup<MaterialMeshInfo> MaterialMeshInfos;
+        public EntityCommandBuffer.ParallelWriter ecbParallel;
+
+        public void Execute(int index)
+        {
+            Entity childCandidate = LinkedEntities[index].Value;
+            if (childCandidate != EntityClicked)
+                if (ChangeMaterialTags.HasComponent(childCandidate))
+                {
+                    ecbParallel.SetComponent(index, childCandidate, new MaterialMeshInfo 
+                    {
+                        MaterialID = MaterialID,
+                        MeshID = MaterialMeshInfos[childCandidate].MeshID,
+                        SubMesh = MaterialMeshInfos[childCandidate].SubMesh
+                    });
+                }
         }
     }
 }
