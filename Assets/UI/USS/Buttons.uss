@@ -825,7 +825,6 @@
 .dbr-btn-with-icons #gradient-border {
     width: 100%;
     height: 100%;
-    /*background-image: url("project://database/Assets/Textures/light_gradient_4x180.png?fileID=21300000&guid=f43950ad9f6b9a24dbe5a6c98da6d741&type=3#light_gradient_4x180");*/
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -927,4 +926,42 @@
 }
 
 .dbr-btn-with-icons-yellow {
+}
+
+.animation-from-bottom-initial-1 {
+    transition: transform 0.3s ease;
+    transition-property: translate;
+    translate: 0 250px;
+}
+
+.animation-from-bottom-initial-2 {
+    transition: transform 0.3s ease;
+    transition-property: translate;
+    translate: 0 250px;
+    transition-delay: 0.1s;
+}
+
+.animation-from-bottom-initial-3 {
+    transition: transform 0.3s ease;
+    transition-property: translate;
+    translate: 0 250px;
+    transition-delay: 0.2s;
+}
+
+.animation-from-bottom-initial-4 {
+    transition: transform 0.3s ease;
+    transition-property: translate;
+    translate: 0 250px;
+    transition-delay: 0.3s;
+}
+
+.animation-translation-from-bottom {
+    transition-property: translate;
+    translate: 0 0;
+}
+
+.animation-from-bottom-initial-4 {
+    transition: transform 0.3s ease;
+    transition-property: translate;
+    translate: 0 250px;
 }
