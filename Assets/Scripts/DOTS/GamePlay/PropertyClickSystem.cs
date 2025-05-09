@@ -1,4 +1,3 @@
-using DOTS.EventBuses;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Physics;
@@ -11,7 +10,11 @@ namespace DOTS.GamePlay
         public Entity entity;
     }
 
-    //[UpdateAfter(typeof(UIEventBusSystem))]
+    public struct IsSamePropertyClicked : IComponentData
+    {
+        public bool Value;
+    }
+
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     [BurstCompile]
     public partial struct PropertyClickSystem : ISystem
@@ -20,12 +23,13 @@ namespace DOTS.GamePlay
         {
             state.EntityManager.CreateSingleton<ClickedPropertyComponent>();
             state.EntityManager.CreateSingleton(new UIButtonDirtyFlag { Value = false }); // might need to move this somewhere else
+            state.EntityManager.CreateSingleton(new IsSamePropertyClicked { Value = false });
             state.RequireForUpdate<ClickRayCastData>();
             state.RequireForUpdate<ClickData>();
             state.RequireForUpdate<ClickedPropertyComponent>();
         }
 
-        //[BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state) 
         {
             PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
@@ -34,9 +38,6 @@ namespace DOTS.GamePlay
             // doesn't handle double tapping the same stop
             foreach (var clickData in SystemAPI.Query<RefRO<ClickData>>().WithChangeFilter<ClickData>())
             {
-                if (clickData.ValueRO.Phase != InputActionPhase.Canceled)
-                    break;
-
                 var clickRayCastData = SystemAPI.GetSingleton<ClickRayCastData>();
                 RaycastInput input = new()
                 {
@@ -53,13 +54,24 @@ namespace DOTS.GamePlay
                 if (!isButtonDirty.ValueRO.Value)
                 {
                     collisionWorld.CastRay(input, out RaycastHit hit);
+
                     var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                    clickedProperty.ValueRW = new ClickedPropertyComponent { entity = hit.Entity };
+                    if (clickData.ValueRO.Phase == InputActionPhase.Started)
+                    {
+                        if (hit.Entity == clickedProperty.ValueRO.entity && hit.Entity != Entity.Null)
+                        {
+                            SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = true;
+                            clickedProperty.ValueRW.entity = Entity.Null; 
+                        }
+                        else
+                        {
+                            SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = false;
+                            clickedProperty.ValueRW.entity = hit.Entity; 
+                        }
+                    }
                 }
                 else
-                {
                     isButtonDirty.ValueRW.Value = false;
-                }
             }
         }
     }

@@ -38,7 +38,7 @@ namespace DOTS.UI.Controllers
             Backdrop.clickable.clicked -= HidePanelsAndButton;
         }
 
-        private void HidePanelsAndButton()
+        public void HidePanelsAndButton()
         {
             HideRegisteredPanels();
             HideBackdrop();

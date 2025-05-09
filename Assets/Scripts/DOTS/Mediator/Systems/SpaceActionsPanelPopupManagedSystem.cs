@@ -57,9 +57,6 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                                 panelControllers.backdropController.ShowBackdrop();
                                 break;
                         }
-                        // TODO: The backdrop panel should appear whenever one of the hideable panels is appears.
-                        //var clickedPropertyComp = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                        //clickedPropertyComp.ValueRW.entity = Entity.Null;
                     }
                 }
             }

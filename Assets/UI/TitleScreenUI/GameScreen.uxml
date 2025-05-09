@@ -36,7 +36,7 @@
                     <ui:Instance template="BuyHouseNameAndCounterElement" name="PurchaseHousePanel" picking-mode="Ignore" style="position: absolute; display: none; height: auto; width: auto;" />
                     <ui:Instance template="NoMonopoloyYetPanel" name="NoMonopolyYetPanel" style="position: absolute; width: 400px; display: none;" />
                 </ui:VisualElement>
-                <ui:VisualElement picking-mode="Ignore" name="space-actions-container" style="display: flex; position: relative; scale: 1 1; width: 370px; height: 25%;">
+                <ui:VisualElement name="space-actions-container" picking-mode="Ignore" style="display: flex; position: relative; scale: 1 1; width: 370px; height: 25%;">
                     <ui:Instance template="SpaceActions" name="SpaceActions" picking-mode="Ignore" style="display: flex; position: relative; height: 25%;" />
                 </ui:VisualElement>
             </ui:VisualElement>

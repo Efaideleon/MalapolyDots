@@ -1,5 +1,6 @@
 using DOTS.UI.Panels;
 using DOTS.UI.Utilities.UIButtonEvents;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Controllers
@@ -48,11 +49,29 @@ namespace DOTS.UI.Controllers
 
         private void SubscribeEvents()
         {
-            SpaceActionsPanel.BuyHouseButton.clickable.clicked += HandleBuyHouseButtonClick;
-            SpaceActionsPanel.BuyPropertyButton.clickable.clicked += PurchasePropertyPanelController.ShowPanel;
-            SpaceActionsPanel.BuyHouseButton.clickable.clicked += _setUIButtonFlag.DispatchEvent;
-            SpaceActionsPanel.BuyPropertyButton.clickable.clicked += _setUIButtonFlag.DispatchEvent;
+            // Need a better way to add setUIButtonFlag event to all ui buttons
+            SpaceActionsPanel.BuyHouseButton.RegisterCallback<MouseUpEvent>(HandleBuyHouseButton, TrickleDown.TrickleDown);
+            SpaceActionsPanel.BuyPropertyButton.RegisterCallback<MouseUpEvent>(ShowPropertyPanel, TrickleDown.TrickleDown);
+            SpaceActionsPanel.BuyHouseButton.RegisterCallback<MouseDownEvent>(SetUIButtonFlag, TrickleDown.TrickleDown);
+            SpaceActionsPanel.BuyPropertyButton.RegisterCallback<MouseDownEvent>(SetUIButtonFlag, TrickleDown.TrickleDown);
             NoMonopolyYetPanel.GotItButton.clickable.clicked += NoMonopolyYetPanel.Hide;
+        }
+
+        private void ShowPropertyPanel(MouseUpEvent e)
+        {
+            PurchasePropertyPanelController.ShowPanel(); 
+            _setUIButtonFlag.DispatchEvent(); 
+        }
+        private void HandleBuyHouseButton(MouseUpEvent e)
+        {
+            HandleBuyHouseButtonClick(); 
+            _setUIButtonFlag.DispatchEvent(); 
+        }
+
+
+        private void SetUIButtonFlag(MouseDownEvent e) 
+        {
+            _setUIButtonFlag.DispatchEvent(); 
         }
 
         public void Update()
@@ -77,11 +96,11 @@ namespace DOTS.UI.Controllers
 
         public void Dispose()
         {
-            SpaceActionsPanel.BuyHouseButton.clickable.clicked -= HandleBuyHouseButtonClick;
+            SpaceActionsPanel.BuyHouseButton.UnregisterCallback<MouseUpEvent>(HandleBuyHouseButton, TrickleDown.TrickleDown);
+            SpaceActionsPanel.BuyPropertyButton.UnregisterCallback<MouseUpEvent>(ShowPropertyPanel, TrickleDown.TrickleDown);
+            SpaceActionsPanel.BuyHouseButton.UnregisterCallback<MouseDownEvent>(SetUIButtonFlag, TrickleDown.TrickleDown);
+            SpaceActionsPanel.BuyPropertyButton.UnregisterCallback<MouseDownEvent>(SetUIButtonFlag, TrickleDown.TrickleDown);
             NoMonopolyYetPanel.GotItButton.clickable.clicked -= NoMonopolyYetPanel.Hide;
-            SpaceActionsPanel.BuyHouseButton.clickable.clicked -= _setUIButtonFlag.DispatchEvent;
-            SpaceActionsPanel.BuyPropertyButton.clickable.clicked -= _setUIButtonFlag.DispatchEvent;
-            SpaceActionsPanel.BuyPropertyButton.clickable.clicked -= PurchasePropertyPanelController.ShowPanel;
         }
     }
 }
