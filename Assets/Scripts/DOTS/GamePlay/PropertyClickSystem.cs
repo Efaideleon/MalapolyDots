@@ -34,9 +34,6 @@ namespace DOTS.GamePlay
             // doesn't handle double tapping the same stop
             foreach (var clickData in SystemAPI.Query<RefRO<ClickData>>().WithChangeFilter<ClickData>())
             {
-                if (clickData.ValueRO.Phase != InputActionPhase.Canceled)
-                    break;
-
                 var clickRayCastData = SystemAPI.GetSingleton<ClickRayCastData>();
                 RaycastInput input = new()
                 {
