@@ -38,7 +38,8 @@ namespace DOTS.Mediator
             state.RequireForUpdate<PropertiesDataBlobReference>();
             state.RequireForUpdate<SpriteRegistryComponent>();
             state.RequireForUpdate<LoginData>();
-
+            state.RequireForUpdate<UIButtonDirtyFlag>();
+            state.RequireForUpdate<UIButtonEventBus>();
             state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
             state.EntityManager.CreateSingleton(new SpriteRegistryComponent { Value = null });
@@ -119,10 +120,10 @@ namespace DOTS.Mediator
             var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
             panelControllers.backdropController = new(backdrop);
-            panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel.Panel);
-            panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel.Panel);
-            panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel.Panel);
-            panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel.Panel);
+            panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel);
+            panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel);
+            panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel);
+            panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel);
             panelControllers.purchaseHousePanelController = new(purchaseHousePanel);
             panelControllers.purchasePropertyPanelController = new(
                     purchasePropertyPanel,
@@ -174,12 +175,17 @@ namespace DOTS.Mediator
             panelControllers.goPanelController = new(goPanel, goPanelContext);
             panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
             panelControllers.changeTurnPanelController = new(changeTurnPanel, changeTurnPanelContext);
+
+            var setButtonUIFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonEventBus>().Build();
+            var setButtonUIFlagEvent = new SetUIButtonFlagEvent(setButtonUIFlagQuery);
             panelControllers.spaceActionsPanelController = new(
                     spaceActionsPanelContext,
                     spaceActionsPanel,
                     panelControllers.purchaseHousePanelController,
                     noMonopolyYetPanel,
-                    panelControllers.purchasePropertyPanelController);
+                    panelControllers.purchasePropertyPanelController,
+                    setButtonUIFlagEvent
+                    );
 
             PropertyPopupManagerContext propertyPopupManagerContext = new()
             {

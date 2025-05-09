@@ -10,7 +10,7 @@ namespace DOTS.UI.Controllers
         // Make subscribe to some event that a panel is visible and make the backdrop visible too
         public Button Backdrop { get; private set; } 
         // TODO: With the button just subscribe to it being clicked and then hid the button and the panel
-        public List<VisualElement> PanelsToHideRegistry {get; private set; }
+        public List<IPanel> PanelsToHideRegistry {get; private set; }
 
         public BackdropController(Button backdrop)
         {
@@ -63,11 +63,11 @@ namespace DOTS.UI.Controllers
                 // TODO: Call on the Hide function from the panel here
                 // TODO: Use an interface?
                 UnityEngine.Debug.Log("Hiding panels");
-                panel.style.display = DisplayStyle.None;
+                panel.Hide();
             }
         }
 
-        public void RegisterPanelToHide(VisualElement panel)
+        public void RegisterPanelToHide(IPanel panel)
         {
             PanelsToHideRegistry.Add(panel);
         }

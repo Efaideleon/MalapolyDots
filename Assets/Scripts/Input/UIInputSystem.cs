@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputActionsComponent : IComponentData
@@ -99,6 +100,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
                     SetClickData(
                             ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
                             ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
+                            ctx.phase,
                             rayLenght,
                             clickPosition,
                             rayData);
@@ -108,6 +110,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
                     SetClickData ( 
                             ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
                             ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
+                            ctx.phase,
                             rayLenght,
                             clickPosition2,
                             rayData2);
@@ -132,6 +135,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
     private static void SetClickData(
             ref ClickRayCastData clickRayCastData,
             ref ClickData clickData,
+            InputActionPhase phase,
             float rayLenght,
             float2 clickPosition,
             RayData rayData)
@@ -140,7 +144,7 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
         clickRayCastData.RayDirection = rayData.direction;
         clickRayCastData.RayEnd = rayData.origin + (rayData.direction * rayLenght);
         clickData.Position = clickPosition;  
-        clickData.Phase = InputActionPhase.Canceled;  
+        clickData.Phase = phase;  
     }
 
     public void OnUpdate(ref SystemState state) { }

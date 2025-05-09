@@ -12,7 +12,7 @@ namespace DOTS.UI.Panels
         public int Price { get; set; }
     }
 
-    public class PurchaseHousePanel
+    public class PurchaseHousePanel : IPanel
     {
         public VisualElement Panel { get; private set; }
         public Label PropertyName { get; private set; }

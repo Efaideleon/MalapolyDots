@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class NoMonopolyYetPanel
+    public class NoMonopolyYetPanel : IPanel
     {
         public VisualElement Panel { get; private set; }
         public Button GotItButton { get; private set; }

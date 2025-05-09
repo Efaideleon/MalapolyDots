@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class PurchasePropertyPanel
+    public class PurchasePropertyPanel : IPanel
     {
         public VisualElement Panel { get; private set; }
         public Label PriceLabel {get; private set; }

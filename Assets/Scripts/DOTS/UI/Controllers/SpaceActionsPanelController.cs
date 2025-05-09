@@ -1,4 +1,6 @@
 using DOTS.UI.Panels;
+using DOTS.UI.Utilities.UIButtonEvents;
+using UnityEngine.UIElements;
 
 namespace DOTS.UI.Controllers
 {
@@ -15,16 +17,18 @@ namespace DOTS.UI.Controllers
         public NoMonopolyYetPanel NoMonopolyYetPanel { get; private set; }
         public PurchaseHousePanelController PurchaseHousePanelController { get; private set; }
         public PurchasePropertyPanelController PurchasePropertyPanelController { get; private set; }
+        private readonly IButtonEvent _setUIButtonFlag; 
 
         public SpaceActionsPanelController(
                 SpaceActionsPanelContext context,
                 SpaceActionsPanel panel,
                 PurchaseHousePanelController purchaseHousePanelController,
                 NoMonopolyYetPanel noMonopolyYetPanel,
-                PurchasePropertyPanelController purchasePropertyPanelController)
+                PurchasePropertyPanelController purchasePropertyPanelController,
+                IButtonEvent setUIButtonFlag)
         {
-            if (panel == null || 
-                    purchaseHousePanelController == null || 
+            if (panel == null ||
+                    purchaseHousePanelController == null ||
                     noMonopolyYetPanel == null ||
                     purchasePropertyPanelController == null)
             {
@@ -32,8 +36,9 @@ namespace DOTS.UI.Controllers
             }
             else
             {
+                _setUIButtonFlag = setUIButtonFlag;
                 SpaceActionsPanel = panel;
-                PurchaseHousePanelController = purchaseHousePanelController; 
+                PurchaseHousePanelController = purchaseHousePanelController;
                 NoMonopolyYetPanel = noMonopolyYetPanel;
                 PurchasePropertyPanelController = purchasePropertyPanelController;
                 Context = context;
@@ -45,6 +50,8 @@ namespace DOTS.UI.Controllers
         {
             SpaceActionsPanel.BuyHouseButton.clickable.clicked += HandleBuyHouseButtonClick;
             SpaceActionsPanel.BuyPropertyButton.clickable.clicked += PurchasePropertyPanelController.ShowPanel;
+            SpaceActionsPanel.BuyHouseButton.clickable.clicked += _setUIButtonFlag.DispatchEvent;
+            SpaceActionsPanel.BuyPropertyButton.clickable.clicked += _setUIButtonFlag.DispatchEvent;
             NoMonopolyYetPanel.GotItButton.clickable.clicked += NoMonopolyYetPanel.Hide;
         }
 
@@ -72,6 +79,8 @@ namespace DOTS.UI.Controllers
         {
             SpaceActionsPanel.BuyHouseButton.clickable.clicked -= HandleBuyHouseButtonClick;
             NoMonopolyYetPanel.GotItButton.clickable.clicked -= NoMonopolyYetPanel.Hide;
+            SpaceActionsPanel.BuyHouseButton.clickable.clicked -= _setUIButtonFlag.DispatchEvent;
+            SpaceActionsPanel.BuyPropertyButton.clickable.clicked -= _setUIButtonFlag.DispatchEvent;
             SpaceActionsPanel.BuyPropertyButton.clickable.clicked -= PurchasePropertyPanelController.ShowPanel;
         }
     }
