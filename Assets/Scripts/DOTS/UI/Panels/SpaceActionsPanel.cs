@@ -32,7 +32,7 @@ namespace DOTS.UI.Panels
             {
                 UnityEngine.Debug.LogWarning("BuyPropertyButton is null");
             }
-            Hide();
+            Panel.style.display = DisplayStyle.None;
             SetupCallbacks();
         }
 
