@@ -73,7 +73,7 @@ namespace DOTS.UI.Panels
                     UnityEngine.Debug.Log("Showing inTransition");
                     Panel.style.display = DisplayStyle.Flex;
                     AddClassAnimation();
-                }).StartingIn(300);
+                }).StartingIn(500);
             }
             UnityEngine.Debug.Log("Showing the SpaceActions panel");
         }
@@ -102,7 +102,7 @@ namespace DOTS.UI.Panels
                 Panel.schedule.Execute(() =>
                 {
                     Panel.style.display = DisplayStyle.None;
-                }).StartingIn(300);
+                }).StartingIn(400);
                 inTransition = true;
             }
             else
@@ -110,13 +110,12 @@ namespace DOTS.UI.Panels
                 Panel.schedule.Execute(() =>
                 {
                     RemoveClassAnimation();
-                    Panel.style.display = DisplayStyle.None;
-                }).StartingIn(300);
+                }).StartingIn(500);
 
                 Panel.schedule.Execute(() =>
                 {
                     Panel.style.display = DisplayStyle.None;
-                }).StartingIn(700);
+                }).StartingIn(800);
             }
             UnityEngine.Debug.Log("Hiding the SpaceActions panel");
         }
