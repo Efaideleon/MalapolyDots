@@ -65,6 +65,10 @@ namespace DOTS.UI.Panels
                 Panel.style.display = DisplayStyle.Flex;
                 AddClassAnimation();
                 inTransition = true;
+                Panel.schedule.Execute(() =>
+                {
+                    EnableButtons();
+                }).StartingIn(400);
             }
             else 
             {
@@ -74,6 +78,10 @@ namespace DOTS.UI.Panels
                     Panel.style.display = DisplayStyle.Flex;
                     AddClassAnimation();
                 }).StartingIn(500);
+                Panel.schedule.Execute(() =>
+                {
+                    EnableButtons();
+                }).StartingIn(900);
             }
             UnityEngine.Debug.Log("Showing the SpaceActions panel");
         }
@@ -94,14 +102,29 @@ namespace DOTS.UI.Panels
             PayRentButton.RemoveFromClassList("animation-translation-from-bottom");
         }
 
+        private void EnableButtons()
+        {
+            BuyHouseButton.SetEnabled(true);
+            BuyPropertyButton.SetEnabled(true);
+            PayRentButton.SetEnabled(true);
+        }
+
+        private void DisableButtons()
+        {
+            BuyHouseButton.SetEnabled(false);
+            BuyPropertyButton.SetEnabled(false);
+            PayRentButton.SetEnabled(false);
+        }
+
         public void Hide()
         {
+            DisableButtons();
             if (inTransition == false)
             {
                 RemoveClassAnimation();
                 Panel.schedule.Execute(() =>
                 {
-                    Panel.style.display = DisplayStyle.None;
+                    // Panel.style.display = DisplayStyle.None;
                 }).StartingIn(400);
                 inTransition = true;
             }
@@ -114,7 +137,7 @@ namespace DOTS.UI.Panels
 
                 Panel.schedule.Execute(() =>
                 {
-                    Panel.style.display = DisplayStyle.None;
+                    // Panel.style.display = DisplayStyle.None;
                 }).StartingIn(800);
             }
             UnityEngine.Debug.Log("Hiding the SpaceActions panel");
