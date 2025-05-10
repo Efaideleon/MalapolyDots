@@ -63,9 +63,13 @@ namespace DOTS.GamePlay
                             SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = true;
                             clickedProperty.ValueRW.entity = Entity.Null; 
                         }
-                        else
+                        else if (hit.Entity != clickedProperty.ValueRO.entity && hit.Entity != Entity.Null)
                         {
                             SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = false;
+                            clickedProperty.ValueRW.entity = hit.Entity; 
+                        }
+                        else
+                        {
                             clickedProperty.ValueRW.entity = hit.Entity; 
                         }
                     }

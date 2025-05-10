@@ -50,6 +50,7 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                         var lastPropertyClicked = SystemAPI.GetSingletonRW<LastPropertyClicked>();
                         lastPropertyClicked.ValueRW.entity = clickedProperty.ValueRO.entity;
 
+                        UnityEngine.Debug.Log($"clickData.Phase {clickData.Phase}");
                         switch (clickData.Phase)
                         {
                             case InputActionPhase.Canceled:

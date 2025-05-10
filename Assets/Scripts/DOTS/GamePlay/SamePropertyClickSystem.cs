@@ -16,11 +16,9 @@ namespace DOTS.GamePlay
         {
             foreach (var flag in SystemAPI.Query<RefRO<IsSamePropertyClicked>>().WithChangeFilter<IsSamePropertyClicked>())
             {
-                if (flag.ValueRO.Value)
-                {
-                    var buffer = SystemAPI.GetSingletonBuffer<BackDropEventBus>();
-                    buffer.Add(new BackDropEventBus { });
-                }
+                UnityEngine.Debug.Log($"IsSamePropertyClicked changed {flag.ValueRO.Value}");
+                var buffer = SystemAPI.GetSingletonBuffer<BackDropEventBus>();
+                buffer.Add(new BackDropEventBus { });
             }
         }
     }
