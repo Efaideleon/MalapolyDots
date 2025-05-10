@@ -32,7 +32,7 @@ namespace DOTS.UI.Panels
             {
                 UnityEngine.Debug.LogWarning("BuyPropertyButton is null");
             }
-            Panel.style.display = DisplayStyle.None;
+            // Panel.style.display = DisplayStyle.None;
             SetupCallbacks();
         }
 
@@ -62,7 +62,7 @@ namespace DOTS.UI.Panels
             if (inTransition == false)
             {
                 UnityEngine.Debug.Log("Showing not in transition");
-                Panel.style.display = DisplayStyle.Flex;
+                // Panel.style.display = DisplayStyle.Flex;
                 AddClassAnimation();
                 inTransition = true;
                 Panel.schedule.Execute(() =>
@@ -75,7 +75,7 @@ namespace DOTS.UI.Panels
                 Panel.schedule.Execute(() =>
                 {
                     UnityEngine.Debug.Log("Showing inTransition");
-                    Panel.style.display = DisplayStyle.Flex;
+                    // Panel.style.display = DisplayStyle.Flex;
                     AddClassAnimation();
                 }).StartingIn(500);
                 Panel.schedule.Execute(() =>
@@ -84,6 +84,26 @@ namespace DOTS.UI.Panels
                 }).StartingIn(900);
             }
             UnityEngine.Debug.Log("Showing the SpaceActions panel");
+        }
+
+        public void Hide()
+        {
+            DisableButtons();
+            if (inTransition == false)
+            {
+                UnityEngine.Debug.Log("Hiding not in transition");
+                RemoveClassAnimation();
+                inTransition = true;
+            }
+            else
+            {
+                Panel.schedule.Execute(() =>
+                {
+                    RemoveClassAnimation();
+                    UnityEngine.Debug.Log("Hiding inTransition");
+                }).StartingIn(500);
+            }
+            UnityEngine.Debug.Log("Hiding the SpaceActions panel");
         }
 
         private void AddClassAnimation()
@@ -114,33 +134,6 @@ namespace DOTS.UI.Panels
             BuyHouseButton.SetEnabled(false);
             BuyPropertyButton.SetEnabled(false);
             PayRentButton.SetEnabled(false);
-        }
-
-        public void Hide()
-        {
-            DisableButtons();
-            if (inTransition == false)
-            {
-                RemoveClassAnimation();
-                Panel.schedule.Execute(() =>
-                {
-                    // Panel.style.display = DisplayStyle.None;
-                }).StartingIn(400);
-                inTransition = true;
-            }
-            else
-            {
-                Panel.schedule.Execute(() =>
-                {
-                    RemoveClassAnimation();
-                }).StartingIn(500);
-
-                Panel.schedule.Execute(() =>
-                {
-                    // Panel.style.display = DisplayStyle.None;
-                }).StartingIn(800);
-            }
-            UnityEngine.Debug.Log("Hiding the SpaceActions panel");
         }
     }
 }
