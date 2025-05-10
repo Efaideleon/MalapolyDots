@@ -930,38 +930,37 @@
 
 .animation-from-bottom-initial-1 {
     transition: transform 0.3s ease;
-    transition-property: translate;
+    transition-property: translate, opacity;
+    opacity: 0;
     translate: 0 250px;
 }
 
 .animation-from-bottom-initial-2 {
     transition: transform 0.3s ease;
-    transition-property: translate;
+    transition-property: translate, opacity;
+    opacity: 0;
     translate: 0 250px;
     transition-delay: 0.1s;
 }
 
 .animation-from-bottom-initial-3 {
     transition: transform 0.3s ease;
-    transition-property: translate;
+    transition-property: translate, opacity;
+    opacity: 0;
     translate: 0 250px;
     transition-delay: 0.2s;
 }
 
 .animation-from-bottom-initial-4 {
     transition: transform 0.3s ease;
-    transition-property: translate;
+    transition-property: translate, opacity;
+    opacity: 0;
     translate: 0 250px;
     transition-delay: 0.3s;
 }
 
 .animation-translation-from-bottom {
-    transition-property: translate;
+    transition-property: translate, opacity;
+    opacity: 1;
     translate: 0 0;
-}
-
-.animation-from-bottom-initial-4 {
-    transition: transform 0.3s ease;
-    transition-property: translate;
-    translate: 0 250px;
 }
