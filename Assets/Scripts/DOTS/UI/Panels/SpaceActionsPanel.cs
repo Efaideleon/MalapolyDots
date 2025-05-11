@@ -1,7 +1,22 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
+    public class ButtonEvent : IVisibilityEvent
+    {
+        private readonly Action _action;
+        public ButtonEvent(Action action)
+        {
+            _action = action;
+        }
+        public void Execute()
+        {
+            _action();
+        }
+    }
+
     public class SpaceActionsPanel : IPanel
     {
         public VisualElement Panel { get; private set; }
@@ -11,8 +26,9 @@ namespace DOTS.UI.Panels
         public Button BuyHouseButton { get; private set; }
         public Button BuyPropertyButton { get; private set; }
         public Button PayRentButton { get; private set; }
+        private readonly Queue<IVisibilityEvent> VisibilityEvents = new();
 
-        private bool inTransition = false;
+        private bool isPlaying = false;
 
         public SpaceActionsPanel(VisualElement root)
         {
@@ -32,78 +48,79 @@ namespace DOTS.UI.Panels
             {
                 UnityEngine.Debug.LogWarning("BuyPropertyButton is null");
             }
-            // Panel.style.display = DisplayStyle.None;
+            //Panel.style.display = DisplayStyle.None;
             SetupCallbacks();
         }
 
+        private readonly StylePropertyName styleTranslate = new("translate");
         private void SetupCallbacks()
         {
-            BuyHouseButtonContainer.RegisterCallback<TransitionEndEvent>(e => 
+            PayRentButton.RegisterCallback<TransitionEndEvent>(e => 
             {
-                inTransition = false;
+                if (e.stylePropertyNames.Contains(styleTranslate)) 
+                {
+                    UnityEngine.Debug.Log($"TransitionEnded");
+                    if (VisibilityEvents.Count > 0)
+                    {
+                        UnityEngine.Debug.Log($"Dequeueing event {VisibilityEvents.Count}");
+                        VisibilityEvents.Dequeue().Execute();
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.Log($"setting isPLaying to false event {VisibilityEvents.Count}");
+                        isPlaying = false;
+                    }
+                }
             });
-            BuyHotelButtonContainer.RegisterCallback<TransitionEndEvent>(e =>
-            {
-                inTransition = false;
-            });
-            BuyPropertyButtonContainer.RegisterCallback<TransitionEndEvent>(e => 
-            {
-                inTransition = false;
-            });
-            BuyPropertyButtonContainer.RegisterCallback<TransitionEndEvent>(e =>
-            {
-                inTransition = false;
-            });
+        }
+
+        private void ShowButtons() 
+        {
+            AddClassAnimation(); 
+            EnableButtons();
+        }
+        private void HideButtons() 
+        {
+            RemoveClassAnimation(); 
+            DisableButtons();
         }
 
         public void Show()
         {
-            UnityEngine.Debug.Log($"In show inTransition: {inTransition}");
-            if (inTransition == false)
+            UnityEngine.Debug.Log($"Show isPlaying: {isPlaying}");
+            if (!isPlaying)
             {
-                UnityEngine.Debug.Log("Showing not in transition");
-                // Panel.style.display = DisplayStyle.Flex;
-                AddClassAnimation();
-                inTransition = true;
-                Panel.schedule.Execute(() =>
+                isPlaying = true;
+                UnityEngine.Debug.Log($"Just Showing {VisibilityEvents.Count}");
+                Panel.schedule.Execute(_ =>
                 {
-                    EnableButtons();
-                }).StartingIn(400);
+                    ShowButtons();
+                }).StartingIn(1);
             }
-            else 
+            else
             {
-                Panel.schedule.Execute(() =>
-                {
-                    UnityEngine.Debug.Log("Showing inTransition");
-                    // Panel.style.display = DisplayStyle.Flex;
-                    AddClassAnimation();
-                }).StartingIn(500);
-                Panel.schedule.Execute(() =>
-                {
-                    EnableButtons();
-                }).StartingIn(900);
+                UnityEngine.Debug.Log($"Enqueue Show event {VisibilityEvents.Count}");
+                VisibilityEvents.Enqueue(new ButtonEvent(ShowButtons));
             }
-            UnityEngine.Debug.Log("Showing the SpaceActions panel");
         }
 
         public void Hide()
         {
-            DisableButtons();
-            if (inTransition == false)
+            UnityEngine.Debug.Log($"Hide isPlaying: {isPlaying}");
+            if (!isPlaying)
             {
-                UnityEngine.Debug.Log("Hiding not in transition");
-                RemoveClassAnimation();
-                inTransition = true;
+                isPlaying = true;
+                UnityEngine.Debug.Log($"Just Hide {VisibilityEvents.Count}");
+                Panel.schedule.Execute(_ =>
+                {
+                    HideButtons();
+                }).StartingIn(1);
             }
             else
             {
-                Panel.schedule.Execute(() =>
-                {
-                    RemoveClassAnimation();
-                    UnityEngine.Debug.Log("Hiding inTransition");
-                }).StartingIn(500);
+                UnityEngine.Debug.Log($"Enqueue Hide event {VisibilityEvents.Count}");
+                VisibilityEvents.Enqueue(new ButtonEvent(HideButtons));
             }
-            UnityEngine.Debug.Log("Hiding the SpaceActions panel");
         }
 
         private void AddClassAnimation()
