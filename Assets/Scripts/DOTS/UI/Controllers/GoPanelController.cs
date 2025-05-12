@@ -54,6 +54,5 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked -= DispatchEvents;
             Panel.OkButton.clickable.clicked -= Panel.Hide;
         }
-
     }
 }

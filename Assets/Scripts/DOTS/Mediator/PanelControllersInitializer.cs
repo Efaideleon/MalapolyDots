@@ -120,7 +120,6 @@ namespace DOTS.Mediator
             var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
             panelControllers.backdropController = new(backdrop);
-            panelControllers.backdropController.RegisterPanelToHide(spaceActionsPanel);
             panelControllers.backdropController.RegisterPanelToHide(purchaseHousePanel);
             panelControllers.backdropController.RegisterPanelToHide(noMonopolyYetPanel);
             panelControllers.backdropController.RegisterPanelToHide(purchasePropertyPanel);
@@ -186,6 +185,8 @@ namespace DOTS.Mediator
                     panelControllers.purchasePropertyPanelController,
                     setButtonUIFlagEvent
                     );
+
+            panelControllers.backdropController.RegisterController(panelControllers.spaceActionsPanelController);
 
             PropertyPopupManagerContext propertyPopupManagerContext = new()
             {
