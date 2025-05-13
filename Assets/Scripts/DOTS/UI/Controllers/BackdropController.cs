@@ -54,19 +54,16 @@ namespace DOTS.UI.Controllers
 
         public void ShowBackdrop() 
         {
-            // UnityEngine.Debug.Log("Showing backdrop");
             Backdrop.style.display = DisplayStyle.Flex;
         }
 
         public void HideBackdrop() 
         {
             Backdrop.style.display = DisplayStyle.None;
-            // UnityEngine.Debug.Log("Hiding backdrop");
         }
 
         public void HideRegisteredPanels()
         {
-            // UnityEngine.Debug.Log("Hiding Registered panels");
             foreach (var panel in PanelsToHideRegistry)
                 panel.Hide();
 
