@@ -51,29 +51,28 @@ namespace DOTS.GamePlay
                     }
                 };
                 var isButtonDirty = SystemAPI.GetSingletonRW<UIButtonDirtyFlag>();
-                if (!isButtonDirty.ValueRO.Value)
+                if (isButtonDirty.ValueRO.Value)
                 {
-                    collisionWorld.CastRay(input, out RaycastHit hit);
-
-                    var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                    if (clickData.ValueRO.Phase == InputActionPhase.Started)
-                    {
-                        if (hit.Entity == clickedProperty.ValueRO.entity && hit.Entity != Entity.Null)
-                        {
-                            SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = true;
-                            clickedProperty.ValueRW.entity = Entity.Null; 
-                        }
-                        else if (hit.Entity != clickedProperty.ValueRO.entity && hit.Entity != Entity.Null)
-                        {
-                            SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = false;
-                            clickedProperty.ValueRW.entity = hit.Entity; 
-                        }
-                        else
-                            clickedProperty.ValueRW.entity = hit.Entity; 
-                    }
-                }
-                else
                     isButtonDirty.ValueRW.Value = false;
+                    break;
+                }
+
+                collisionWorld.CastRay(input, out RaycastHit hit);
+
+                var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                switch (clickData.ValueRO.Phase)
+                {
+                    case InputActionPhase.Started:
+                        if (hit.Entity == Entity.Null)
+                            clickedProperty.ValueRW.entity = hit.Entity; 
+                        else
+                        {
+                            var isSameEntity = hit.Entity == clickedProperty.ValueRO.entity;
+                            clickedProperty.ValueRW.entity = isSameEntity ? Entity.Null : hit.Entity;
+                            SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = isSameEntity;
+                        }
+                        break;
+                }
             }
         }
     }
