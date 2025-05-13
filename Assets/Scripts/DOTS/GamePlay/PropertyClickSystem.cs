@@ -69,9 +69,7 @@ namespace DOTS.GamePlay
                             clickedProperty.ValueRW.entity = hit.Entity; 
                         }
                         else
-                        {
                             clickedProperty.ValueRW.entity = hit.Entity; 
-                        }
                     }
                 }
                 else

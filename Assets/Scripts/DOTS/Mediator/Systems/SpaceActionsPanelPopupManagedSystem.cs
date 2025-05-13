@@ -27,7 +27,7 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                 if (panelControllers.backdropController == null)
                     break;
 
-                panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                panelControllers.spaceActionsPanelController.ShowPanel();
                 panelControllers.backdropController.ShowBackdrop();
             }
             buffer.Clear();
@@ -54,7 +54,7 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                         switch (clickData.Phase)
                         {
                             case InputActionPhase.Canceled:
-                                panelControllers.spaceActionsPanelController.SpaceActionsPanel.Show();
+                                panelControllers.spaceActionsPanelController.ShowPanel();
                                 panelControllers.backdropController.ShowBackdrop();
                                 break;
                         }
