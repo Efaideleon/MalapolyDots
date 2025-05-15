@@ -7,7 +7,7 @@ public class HideAndShowPanelController
     public VisualElement Panel { get; private set; }
     private readonly VisualElement _lastElementToAnimate;
     private readonly Queue<Action> _actions = new();
-    private bool _isPlaying = false;
+    public bool IsPlaying = false;
     private readonly StylePropertyName styleTranslate = new("translate");
 
     public HideAndShowPanelController(VisualElement panel, VisualElement lastElementToAnimate)
@@ -19,14 +19,16 @@ public class HideAndShowPanelController
 
     public void ExecuteAction(Action action)
     {
-        if (!_isPlaying)
+        if (!IsPlaying)
         {
-            _isPlaying = true;
+            UnityEngine.Debug.Log("Playing action");
+            IsPlaying = true;
             action();
         }
         else
         {
             _actions.Enqueue(action);
+            UnityEngine.Debug.Log("Queuing Action");
         }
     }
 
@@ -42,7 +44,7 @@ public class HideAndShowPanelController
                     action();
                 }
                 else
-                    _isPlaying = false;
+                    IsPlaying = false;
             }
         });
     }

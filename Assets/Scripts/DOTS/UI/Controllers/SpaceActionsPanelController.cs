@@ -58,8 +58,26 @@ namespace DOTS.UI.Controllers
             NoMonopolyYetPanel.GotItButton.clickable.clicked += NoMonopolyYetPanel.Hide;
         }
 
-        public void ShowPanel() => _hideAndShowPanelController.ExecuteAction(SpaceActionsPanel.Show);
-        public void HidePanel() => _hideAndShowPanelController.ExecuteAction(SpaceActionsPanel.Hide);
+        public void ShowPanel()
+        {
+            if (!_hideAndShowPanelController.IsPlaying && SpaceActionsPanel.VisibleState == VisibleEnum.Visible)
+            {
+                UnityEngine.Debug.Log($"{_hideAndShowPanelController.IsPlaying} {SpaceActionsPanel.VisibleState}");
+            }
+            else
+            {
+                _hideAndShowPanelController.ExecuteAction(SpaceActionsPanel.Show);
+            }
+        }
+        public void HidePanel()
+        {
+            if (!_hideAndShowPanelController.IsPlaying && SpaceActionsPanel.VisibleState == VisibleEnum.Hidden)
+            {}
+            else
+            {
+                _hideAndShowPanelController.ExecuteAction(SpaceActionsPanel.Hide);
+            }
+        }
 
         private void ShowPropertyPanel(MouseUpEvent e)
         {

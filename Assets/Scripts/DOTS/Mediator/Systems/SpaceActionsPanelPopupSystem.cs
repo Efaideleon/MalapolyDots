@@ -24,6 +24,7 @@ public partial struct SpaceActionsPanelPopupSystem : ISystem
         foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
             if (gameState.ValueRO.State == GameState.Landing)
             {
+                UnityEngine.Debug.Log($"Sending event to show actions panels");
                 var landedOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
                 if (SystemAPI.HasComponent<PropertySpaceTag>(landedOnEntity.entity))
                     SystemAPI.GetSingletonBuffer<ShowActionsPanelBuffer>().Add(new ShowActionsPanelBuffer { });

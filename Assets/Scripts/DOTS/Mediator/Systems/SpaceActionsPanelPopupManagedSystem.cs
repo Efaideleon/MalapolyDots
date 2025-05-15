@@ -27,6 +27,7 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                 if (panelControllers.backdropController == null)
                     break;
 
+                UnityEngine.Debug.Log($"Show space actions panels");
                 panelControllers.spaceActionsPanelController.ShowPanel();
                 panelControllers.backdropController.ShowBackdrop();
             }

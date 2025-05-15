@@ -64,6 +64,7 @@ namespace DOTS.UI.Controllers
 
         public void HideRegisteredPanels()
         {
+            // UnityEngine.Debug.Log("Hiding Registered panels");
             foreach (var panel in PanelsToHideRegistry)
                 panel.Hide();
 

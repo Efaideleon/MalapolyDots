@@ -57,10 +57,17 @@ namespace DOTS.UI.Panels
         public Button Button { get; set; }
     }
 
+    public enum VisibleEnum
+    {
+        Visible,
+        Hidden,
+    }
+
     public class SpaceActionsPanel : IPanel
     {
         public VisualElement Panel { get; private set; }
         public readonly Dictionary<SpaceActionButtonsEnum, ButtonElement> ButtonSet = new();
+        public VisibleEnum VisibleState = VisibleEnum.Hidden;
 
         public SpaceActionsPanel(VisualElement root)
         {
@@ -78,13 +85,17 @@ namespace DOTS.UI.Panels
 
         public void Show()
         {
+            UnityEngine.Debug.Log("Showing SAP");
             AddClassAnimation(); 
+            VisibleState = VisibleEnum.Visible;
             ToggleButtonsState(true);
         }
 
         public void Hide()
         {
+            UnityEngine.Debug.Log("Hiding SAP");
             RemoveClassAnimation(); 
+            VisibleState = VisibleEnum.Hidden;
             ToggleButtonsState(false);
         }
 

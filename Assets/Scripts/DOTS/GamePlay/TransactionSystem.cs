@@ -32,6 +32,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<TransactionEventBuffer>();
             state.RequireForUpdate<ClickedPropertyComponent>();
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
+            state.RequireForUpdate<BackDropEventBus>();
         }
 
         [BurstCompile]
@@ -119,6 +120,10 @@ namespace DOTS.GamePlay
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
                             }
                         }
+                        
+                        // TODO: Move this to another system
+                        var eventBuffer = SystemAPI.GetSingletonBuffer<BackDropEventBus>();
+                        eventBuffer.Add(new BackDropEventBus{ });
                     }
 
                     if (transaction.EventType == TransactionEventType.PayTaxes)

@@ -28,6 +28,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Touch",
+            "id": "e31cb5cb-c9de-43e9-a1a3-1335fb0d37a7",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Value",
+                    "id": "24b1b83b-4973-4bb7-a73d-83597788a292",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1f0c6adb-ba5b-4982-8a4f-6d5acbab2175",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
