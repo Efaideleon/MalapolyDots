@@ -62,6 +62,7 @@ namespace DOTS.UI.Panels
     {
         public VisualElement Panel { get; private set; }
         public readonly Dictionary<SpaceActionButtonsEnum, ButtonElement> ButtonSet = new();
+        public VisibleEnum VisibleState = VisibleEnum.Hidden;
 
         public SpaceActionsPanel(VisualElement root)
         {
@@ -81,6 +82,7 @@ namespace DOTS.UI.Panels
         {
             UnityEngine.Debug.Log("Main Show");
             AddClassAnimation(); 
+            VisibleState = VisibleEnum.Visible;
             ToggleButtonsState(true);
         }
 
@@ -88,6 +90,7 @@ namespace DOTS.UI.Panels
         {
             UnityEngine.Debug.Log("Main Hide");
             RemoveClassAnimation(); 
+            VisibleState = VisibleEnum.Hidden;
             ToggleButtonsState(false);
         }
 
