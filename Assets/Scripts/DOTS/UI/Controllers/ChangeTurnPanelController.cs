@@ -13,6 +13,7 @@ namespace DOTS.UI.Controllers
     {
         public ChangeTurnPanel ChangeTurnPanel { get; private set; }
         public EntityQuery TransactionEventBufferQuery { get; private set; }
+        public EntityQuery BackDropEventBusQuery { get; private set; }
         public ChangeTurnPanelContext Context { get; set; }
 
         public ChangeTurnPanelController(ChangeTurnPanel panel, ChangeTurnPanelContext context)
@@ -25,13 +26,9 @@ namespace DOTS.UI.Controllers
         public void UpdateVisibility()
         {
             if (Context.IsVisible)
-            {
                 ChangeTurnPanel.Show();
-            }
             else
-            {
                 ChangeTurnPanel.Hide();
-            }
         }
 
         public void SubscribeEvents()
@@ -39,7 +36,11 @@ namespace DOTS.UI.Controllers
             ChangeTurnPanel.ChangeTurnButton.clickable.clicked += DispatchEvents;
         }
 
-        public void SetEventBufferQuery(EntityQuery query) => TransactionEventBufferQuery = query;
+        public void SetEventBufferQuery(EntityQuery query, EntityQuery backdropQuery)
+        {
+            BackDropEventBusQuery = backdropQuery;
+            TransactionEventBufferQuery = query;
+        }
 
         private void DispatchEvents()
         {

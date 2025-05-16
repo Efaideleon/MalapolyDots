@@ -57,6 +57,7 @@ namespace DOTS.UI.Panels
         public Button Button { get; set; }
     }
 
+
     public class SpaceActionsPanel : IPanel
     {
         public VisualElement Panel { get; private set; }
@@ -78,12 +79,14 @@ namespace DOTS.UI.Panels
 
         public void Show()
         {
+            UnityEngine.Debug.Log("Main Show");
             AddClassAnimation(); 
             ToggleButtonsState(true);
         }
 
         public void Hide()
         {
+            UnityEngine.Debug.Log("Main Hide");
             RemoveClassAnimation(); 
             ToggleButtonsState(false);
         }

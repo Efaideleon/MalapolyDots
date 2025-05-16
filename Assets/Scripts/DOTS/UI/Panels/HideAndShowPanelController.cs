@@ -2,13 +2,28 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 
+public enum ActionType
+{
+    Showing,
+    Hiding,
+    None
+}
+
+public struct HideAndShowAction
+{
+    public Action Action { get; set; }
+    public ActionType Type {get; set; }
+}
+
 public class HideAndShowPanelController
 {
     public VisualElement Panel { get; private set; }
     private readonly VisualElement _lastElementToAnimate;
-    private readonly Queue<Action> _actions = new();
-    private bool _isPlaying = false;
+    private readonly Queue<HideAndShowAction> _actions = new();
+    public ActionType lastActionPlayed = ActionType.None;
+    public bool IsPlaying = false;
     private readonly StylePropertyName styleTranslate = new("translate");
+    private ActionType _lastActionTypeAdded = ActionType.None;
 
     public HideAndShowPanelController(VisualElement panel, VisualElement lastElementToAnimate)
     {
@@ -17,16 +32,31 @@ public class HideAndShowPanelController
         SetupCallbacks();
     }
 
-    public void ExecuteAction(Action action)
+    public void ExecuteAction(HideAndShowAction action)
     {
-        if (!_isPlaying)
+        if (!IsPlaying && lastActionPlayed != action.Type)
         {
-            _isPlaying = true;
-            action();
+            UnityEngine.Debug.Log($"Playing action: {action.Type}");
+            IsPlaying = true;
+            action.Action();
+            lastActionPlayed = action.Type;
+        }
+        else if (IsPlaying && lastActionPlayed == action.Type && _actions.Count < 1)
+        {
+            UnityEngine.Debug.Log($"lastActionPlayed: {lastActionPlayed}");
+        }
+        else if (!IsPlaying && lastActionPlayed == action.Type)
+        {
+            UnityEngine.Debug.Log($"lastActionPlayed2: {lastActionPlayed}");
         }
         else
         {
-            _actions.Enqueue(action);
+            if (CanQueue(action.Type))
+            {
+                UnityEngine.Debug.Log($"Queuing Action: {action.Type}");
+                _actions.Enqueue(action);
+                _lastActionTypeAdded = action.Type;
+            }
         }
     }
 
@@ -36,14 +66,28 @@ public class HideAndShowPanelController
         {
             if (e.stylePropertyNames.Contains(styleTranslate)) 
             {
+                UnityEngine.Debug.Log("Animation Ended");
                 if (_actions.Count > 0)
                 {
                     var action = _actions.Dequeue();
-                    action();
+                    UnityEngine.Debug.Log($"Playing next animation: {action.Type}");
+                    action.Action();
+                    lastActionPlayed = action.Type;
                 }
                 else
-                    _isPlaying = false;
+                {
+                    IsPlaying = false;
+                    UnityEngine.Debug.Log("actions queue has been emptied");
+                    _lastActionTypeAdded = ActionType.None;
+                }
             }
         });
+    }
+
+    private bool CanQueue(ActionType type)
+    {
+        if (type == _lastActionTypeAdded)
+            return false;
+        return true;
     }
 }

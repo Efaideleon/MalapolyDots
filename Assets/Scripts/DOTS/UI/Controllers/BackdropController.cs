@@ -33,12 +33,19 @@ namespace DOTS.UI.Controllers
 
         private void SubscribeEvents()
         {
+            Backdrop.clickable.clicked += DebugButton;
             Backdrop.clickable.clicked += HidePanelsAndButton;
         }
 
         public void Dispose()
         {
+            Backdrop.clickable.clicked -= DebugButton;
             Backdrop.clickable.clicked -= HidePanelsAndButton;
+        }
+
+        public void DebugButton()
+        {
+            UnityEngine.Debug.Log("Backdorp panel clicked");
         }
 
         public void HidePanelsAndButton()
@@ -64,6 +71,7 @@ namespace DOTS.UI.Controllers
 
         public void HideRegisteredPanels()
         {
+            UnityEngine.Debug.Log("Hiding Registered panels");
             foreach (var panel in PanelsToHideRegistry)
                 panel.Hide();
 

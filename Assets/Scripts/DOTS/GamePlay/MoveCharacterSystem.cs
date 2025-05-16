@@ -106,20 +106,17 @@ namespace DOTS.GamePlay
         [BurstCompile]
         private readonly bool MoveToTarget(ref LocalTransform characterTransform, float3 nextTargetPosition, float moveSpeed)
         {
-            var pos = characterTransform.Position;
-            var dir = nextTargetPosition - pos;
-
-            var moveDirectionNormalized = math.normalizesafe(dir);
-
-            if (math.distance(characterTransform.Position, nextTargetPosition) < 0.1)
+            float3 pos = characterTransform.Position;
+            float3 delta = nextTargetPosition - pos; 
+            float dist = math.length(delta);
+            if (dist <= moveSpeed)
             {
                 characterTransform.Position = nextTargetPosition;
                 return true;
             }
 
-            characterTransform.Position += moveDirectionNormalized * moveSpeed;
-            characterTransform.Rotation = quaternion.identity;
-            characterTransform.Scale = 1f;
+            float3 dir = delta / dist;
+            characterTransform.Position += dir * moveSpeed;
             return false;
         }
     }

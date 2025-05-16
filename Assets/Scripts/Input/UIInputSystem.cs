@@ -1,9 +1,6 @@
 using System;
-using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputActionsComponent : IComponentData
@@ -84,77 +81,53 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
 
     public void OnStartRunning(ref SystemState state)
     {
-        var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
-        
-        var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
-
-        var clickDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickData>().Build();
-        var clickRayCastDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickRayCastData>().Build();
-        float rayLenght = 1000f;
-        clickCallback.leftClickCallback = ctx => 
-        {
-            switch(ctx.phase)
-            {
-                case InputActionPhase.Started:
-                    var (clickPosition, rayData) = GetClickPositionAndRay();
-                    SetClickData(
-                            ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
-                            ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
-                            ctx.phase,
-                            rayLenght,
-                            clickPosition,
-                            rayData);
-                    break;
-                case InputActionPhase.Canceled:
-                    var (clickPosition2, rayData2) = GetClickPositionAndRay();
-                    SetClickData ( 
-                            ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
-                            ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
-                            ctx.phase,
-                            rayLenght,
-                            clickPosition2,
-                            rayData2);
-                    break;
-            }
-        };
-        inputActionsComponent.Value.Mouse.LeftClick.started += clickCallback.leftClickCallback;
-        inputActionsComponent.Value.Mouse.LeftClick.canceled += clickCallback.leftClickCallback;
-        inputActionsComponent.Value.Enable();
+        // var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
+        //
+        // var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
+        //
+        // var clickDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickData>().Build();
+        // var clickRayCastDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickRayCastData>().Build();
+        // float rayLenght = 1000f;
+        // clickCallback.leftClickCallback = ctx => 
+        // {
+        //     switch(ctx.phase)
+        //     {
+        //         case InputActionPhase.Started:
+        //             var (clickPosition, rayData) = InputHelperMethods.GetClickPositionAndRay();
+        //             InputHelperMethods.SetClickData(
+        //                     ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
+        //                     ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
+        //                     ctx.phase,
+        //                     rayLenght,
+        //                     clickPosition,
+        //                     rayData);
+        //             break;
+        //         case InputActionPhase.Canceled:
+        //             var (clickPosition2, rayData2) = InputHelperMethods.GetClickPositionAndRay();
+        //             InputHelperMethods.SetClickData ( 
+        //                     ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW,
+        //                     ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW,
+        //                     ctx.phase,
+        //                     rayLenght,
+        //                     clickPosition2,
+        //                     rayData2);
+        //             break;
+        //     }
+        // };
+        // inputActionsComponent.Value.Mouse.LeftClick.started += clickCallback.leftClickCallback;
+        // inputActionsComponent.Value.Mouse.LeftClick.canceled += clickCallback.leftClickCallback;
+        // inputActionsComponent.Value.Enable();
     }
 
-    private static (float2, RayData) GetClickPositionAndRay()
-    {
-        var clickPositionVector = Mouse.current.position.ReadValue();
-        float2 clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
-        Ray ray = Camera.main.ScreenPointToRay(clickPositionVector);
-        RayData rayData = new() { origin = ray.origin, direction = ray.direction };
-        return (clickPositionFloat2, rayData);
-    }
-
-    [BurstCompile]
-    private static void SetClickData(
-            ref ClickRayCastData clickRayCastData,
-            ref ClickData clickData,
-            InputActionPhase phase,
-            float rayLenght,
-            float2 clickPosition,
-            RayData rayData)
-    {
-        clickRayCastData.RayOrigin = rayData.origin;
-        clickRayCastData.RayDirection = rayData.direction;
-        clickRayCastData.RayEnd = rayData.origin + (rayData.direction * rayLenght);
-        clickData.Position = clickPosition;  
-        clickData.Phase = phase;  
-    }
 
     public void OnUpdate(ref SystemState state) { }
 
     public void OnStopRunning(ref SystemState state)
     {
-        var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
-        var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
-        inputActionsComponent.Value.Mouse.LeftClick.started -= clickCallback.leftClickCallback;
-        inputActionsComponent.Value.Mouse.LeftClick.canceled -= clickCallback.leftClickCallback;
-        inputActionsComponent.Value.Disable();
+        // var inputActionsComponent = SystemAPI.ManagedAPI.GetSingleton<InputActionsComponent>();
+        // var clickCallback = SystemAPI.ManagedAPI.GetSingleton<ClickCallback>();
+        // inputActionsComponent.Value.Mouse.LeftClick.started -= clickCallback.leftClickCallback;
+        // inputActionsComponent.Value.Mouse.LeftClick.canceled -= clickCallback.leftClickCallback;
+        // inputActionsComponent.Value.Disable();
     }
 }

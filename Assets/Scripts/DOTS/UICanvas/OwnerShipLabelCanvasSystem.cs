@@ -70,7 +70,7 @@ public partial struct OwnerShipLabelCanvasSystem : ISystem, ISystemStartStop
                 labelRect.anchoredPosition = new Vector2(currentLocalPoint.x, currentLocalPoint.y + 30);
                 // labelRect.anchoredPosition = localPoint; 
             }
-            state.Enabled = false; // TODO: enable when the camera follows the player
+            //state.Enabled = true; // TODO: enable when the camera follows the player
         }
     }
 

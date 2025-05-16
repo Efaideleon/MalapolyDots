@@ -195,7 +195,7 @@ namespace DOTS.Mediator
             };
             PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);
             SystemAPI.ManagedAPI.GetSingleton<PopupManagers>().propertyPopupManager = propertyPopupManager;
-
+            var backdropEntityQuery = SystemAPI.QueryBuilder().WithAllRW<BackDropEventBus>().Build();
             // Button Actions
             var rollEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<RollEventBuffer>().Build();
             var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
@@ -208,7 +208,7 @@ namespace DOTS.Mediator
             panelControllers.goToJailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
-            panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery, backdropEntityQuery);
         }
 
         public void OnUpdate(ref SystemState state)

@@ -58,8 +58,22 @@ namespace DOTS.UI.Controllers
             NoMonopolyYetPanel.GotItButton.clickable.clicked += NoMonopolyYetPanel.Hide;
         }
 
-        public void ShowPanel() => _hideAndShowPanelController.ExecuteAction(SpaceActionsPanel.Show);
-        public void HidePanel() => _hideAndShowPanelController.ExecuteAction(SpaceActionsPanel.Hide);
+        public void ShowPanel()
+        {
+            _hideAndShowPanelController.ExecuteAction(new HideAndShowAction 
+            {
+                Action = SpaceActionsPanel.Show,
+                Type = ActionType.Showing
+            });
+        }
+        public void HidePanel()
+        {
+            _hideAndShowPanelController.ExecuteAction(new HideAndShowAction
+            {
+                 Action =  SpaceActionsPanel.Hide,
+                 Type = ActionType.Hiding
+            });
+        }
 
         private void ShowPropertyPanel(MouseUpEvent e)
         {
