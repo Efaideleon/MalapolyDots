@@ -19,7 +19,7 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct PropertyClickSystem : ISystem
     {
-        public void OnCreate(ref SystemState state) 
+        public void OnCreate(ref SystemState state)
         {
             state.EntityManager.CreateSingleton<ClickedPropertyComponent>();
             state.EntityManager.CreateSingleton(new UIButtonDirtyFlag { Value = false }); // might need to move this somewhere else
@@ -30,7 +30,7 @@ namespace DOTS.GamePlay
         }
 
         [BurstCompile]
-        public void OnUpdate(ref SystemState state) 
+        public void OnUpdate(ref SystemState state)
         {
             PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
             var collisionWorld = world.CollisionWorld;
@@ -60,17 +60,20 @@ namespace DOTS.GamePlay
                 collisionWorld.CastRay(input, out RaycastHit hit);
 
                 var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
+                
                 switch (clickData.ValueRO.Phase)
                 {
                     case InputActionPhase.Started:
                         if (hit.Entity == Entity.Null)
-                            clickedProperty.ValueRW.entity = hit.Entity; 
+                            clickedProperty.ValueRW.entity = hit.Entity;
                         else
                         {
                             var isSameEntity = hit.Entity == clickedProperty.ValueRO.entity;
                             clickedProperty.ValueRW.entity = isSameEntity ? Entity.Null : hit.Entity;
                             SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = isSameEntity;
                         }
+                        break;
+                    case InputActionPhase.Canceled:
                         break;
                 }
             }

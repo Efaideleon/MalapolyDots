@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents;
 using DOTS.UI.Panels;
 using DOTS.UI.Utilities.UIButtonEvents;
 using UnityEngine.UIElements;
@@ -17,7 +18,7 @@ namespace DOTS.UI.Controllers
         public NoMonopolyYetPanel NoMonopolyYetPanel { get; private set; }
         public PurchaseHousePanelController PurchaseHousePanelController { get; private set; }
         public PurchasePropertyPanelController PurchasePropertyPanelController { get; private set; }
-        private readonly HideAndShowPanelController _hideAndShowPanelController;
+        private readonly HideAndShowPanelStateMachine _hideAndShowStateMachine;
         private readonly IButtonEvent _setUIButtonFlag; 
 
         public SpaceActionsPanelController(
@@ -42,7 +43,7 @@ namespace DOTS.UI.Controllers
                 PurchaseHousePanelController = purchaseHousePanelController;
                 NoMonopolyYetPanel = noMonopolyYetPanel;
                 PurchasePropertyPanelController = purchasePropertyPanelController;
-                _hideAndShowPanelController = new(SpaceActionsPanel.Panel, SpaceActionsPanel.ButtonSet[SpaceActionButtonsEnum.PayRent].Button);
+                _hideAndShowStateMachine = new(SpaceActionsPanel, SpaceActionsPanel.ButtonSet[SpaceActionButtonsEnum.PayRent].Button);
                 Context = context;
                 SubscribeEvents();
             }
@@ -60,19 +61,11 @@ namespace DOTS.UI.Controllers
 
         public void ShowPanel()
         {
-            _hideAndShowPanelController.ExecuteAction(new HideAndShowAction 
-            {
-                Action = SpaceActionsPanel.Show,
-                Type = ActionType.Showing
-            });
+            _hideAndShowStateMachine.Show();
         }
         public void HidePanel()
         {
-            _hideAndShowPanelController.ExecuteAction(new HideAndShowAction
-            {
-                 Action =  SpaceActionsPanel.Hide,
-                 Type = ActionType.Hiding
-            });
+            _hideAndShowStateMachine.Hide();
         }
 
         private void ShowPropertyPanel(MouseUpEvent e)
@@ -119,6 +112,7 @@ namespace DOTS.UI.Controllers
             SpaceActionsPanel.ButtonSet[SpaceActionButtonsEnum.BuyHouse].Button.UnregisterCallback<MouseDownEvent>(SetUIButtonFlag, TrickleDown.TrickleDown);
             SpaceActionsPanel.ButtonSet[SpaceActionButtonsEnum.BuyProperty].Button.UnregisterCallback<MouseDownEvent>(SetUIButtonFlag, TrickleDown.TrickleDown);
             NoMonopolyYetPanel.GotItButton.clickable.clicked -= NoMonopolyYetPanel.Hide;
+            _hideAndShowStateMachine.Dispose();
         }
     }
 }
