@@ -8,5 +8,6 @@
         <engine:Instance template="NumOfPlayerScreen" name="NumOfPlayerScreen" style="position: relative; width: auto; height: auto; display: flex;" />
         <engine:Instance template="CharacterSelectScreen" name="CharacterSelectScreen" style="position: absolute; width: auto; height: auto; display: none;" />
         <engine:Instance template="NumOfRoundsScreen" name="NumOfRoundsScreen" style="position: relative; width: 100%; height: 100%; display: none; align-items: center; justify-content: center;" />
+        <engine:Button text="SKIP" name="debug-start-button" style="position: absolute; right: 75px; bottom: 75px; background-color: rgb(230, 255, 0); font-size: 72px; -unity-font-style: bold-and-italic; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;" />
     </engine:VisualElement>
 </engine:UXML>
