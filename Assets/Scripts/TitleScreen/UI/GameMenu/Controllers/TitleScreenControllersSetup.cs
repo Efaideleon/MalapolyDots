@@ -44,6 +44,7 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         }
 
         var titleScreenRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-menu-root");
+        var debugStartButton = titleScreenRoot.Q<Button>("debug-start-button");
         TitleScreen titleScreen = new(titleScreenRoot);
         NumOfRoundsScreen numOfRoundsScreen = new(titleScreenRoot);
         NumberOfPlayersScreen numberOfPlayersScreen = new(titleScreenRoot);

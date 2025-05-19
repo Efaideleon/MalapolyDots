@@ -63,7 +63,7 @@ namespace DOTS.Mediator
                 UnityEngine.Object.Destroy(uiGameObject);
                 return;
             }
-
+            
             // Registering the properties sprites to their respective name
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
             Dictionary<FixedString64Bytes, Sprite> characterSpriteRegistry = new();
