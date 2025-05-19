@@ -44,7 +44,9 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         }
 
         var titleScreenRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-menu-root");
+#if UNITY_EDITOR
         var debugStartButton = titleScreenRoot.Q<Button>("debug-start-button");
+#endif
         TitleScreen titleScreen = new(titleScreenRoot);
         NumOfRoundsScreen numOfRoundsScreen = new(titleScreenRoot);
         NumberOfPlayersScreen numberOfPlayersScreen = new(titleScreenRoot);
@@ -70,6 +72,11 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
 
         var charactersDataEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<CharacterSelectedEventBuffer>().Build();
         titleScreenControllers.CharacterSelectionControler.SetDataEventBufferQuery(charactersDataEventBufferQuery);
+    }
+
+    public static void SetDataForGameToStart(ref LoginData loginData, ref DynamicBuffer<CharacterSelectedNameBuffer> buffer)
+    {
+
     }
 
     public void OnUpdate(ref SystemState state)
