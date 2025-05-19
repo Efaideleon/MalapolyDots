@@ -20,7 +20,6 @@ public class TitleScreenController
         Screen.StartButton.clickable.clicked += DispatchScreenChangeEvent;
     }
 
-
     private void DispatchScreenChangeEvent()
     {
         if (_changeScreenQuery != null)
