@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
@@ -66,15 +67,17 @@ namespace DOTS.UI.Panels
 
         public SpaceActionsPanel(VisualElement root)
         {
-            _ = root ?? throw new NullReferenceException($"{nameof(root)} is undefined");
+            _ = root ?? throw new NullReferenceException($"[SpaceActionsPanel] {nameof(root)} is undefined");
             Panel = root.Q<VisualElement>(SpaceActionsPanelData.PanelUXMLClassName);
 
             foreach (var buttonData in SpaceActionsPanelData.ButtonData)
             {
+                var button = buttonData.ButtonUXMLClassName != null ? Panel.Q<Button>(buttonData.ButtonUXMLClassName) : null;
+                var container = buttonData.ContainerUXMLClassName != null ? Panel.Q<VisualElement>(buttonData.ContainerUXMLClassName) : null;
                 ButtonSet.Add(buttonData.Type, new ButtonElement
                 {
-                    Button = buttonData.ButtonUXMLClassName != null ? Panel.Q<Button>(buttonData.ButtonUXMLClassName) : null,
-                    Container = buttonData.ContainerUXMLClassName != null ? Panel.Q<VisualElement>(buttonData.ContainerUXMLClassName) : null
+                    Button = button,
+                    Container = container
                 });
             }
         }

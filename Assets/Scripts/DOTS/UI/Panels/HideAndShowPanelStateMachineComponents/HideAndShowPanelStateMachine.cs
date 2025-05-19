@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Assets.Scripts.DOTS.UI.Panels.StateMachineUtilities;
 using UnityEngine.UIElements;
 
@@ -92,13 +93,9 @@ namespace Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
 
         private void TransitionEndHandler(TransitionEndEvent e)
         {
-            if (e.stylePropertyNames.Contains(styleTranslate))
-                OnTransitionEnd();
-            else
+            if (e.AffectsProperty(styleTranslate))
             {
-#if UNITY_EDITOR
-                UnityEngine.Debug.LogError($"Transition does not include {styleTranslate}");
-#endif
+                OnTransitionEnd();
             }
         }
 
