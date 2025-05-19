@@ -10,7 +10,7 @@ namespace Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
         Showing
     }
 
-    public class HideAndShowPanelStateMachine
+    public class HideAndShowPanelStateMachine : IDisposable
     {
         private readonly StateMachine stateMachine;
         private readonly VisualElement _lastElementToAnimate;
@@ -114,6 +114,12 @@ namespace Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
             }
         }
 
-        public void Dispose() => _lastElementToAnimate.UnregisterCallback<TransitionEndEvent>(TransitionEndHandler);
+        bool _disposed = false;
+        public void Dispose() 
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _lastElementToAnimate.UnregisterCallback<TransitionEndEvent>(TransitionEndHandler);
+        }
     }
 }

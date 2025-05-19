@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 
@@ -65,6 +66,7 @@ namespace DOTS.UI.Panels
 
         public SpaceActionsPanel(VisualElement root)
         {
+            _ = root ?? throw new NullReferenceException($"{nameof(root)} is undefined");
             Panel = root.Q<VisualElement>(SpaceActionsPanelData.PanelUXMLClassName);
 
             foreach (var buttonData in SpaceActionsPanelData.ButtonData)
@@ -79,14 +81,18 @@ namespace DOTS.UI.Panels
 
         public void Show()
         {
-            UnityEngine.Debug.Log("Main Show");
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log($"{nameof(SpaceActionsPanel)}: {nameof(Show)}");
+#endif
             AddClassAnimation(); 
             ToggleButtonsState(true);
         }
 
         public void Hide()
         {
-            UnityEngine.Debug.Log("Main Hide");
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log($"{nameof(SpaceActionsPanel)}: {nameof(Hide)}");
+#endif
             RemoveClassAnimation(); 
             ToggleButtonsState(false);
         }
