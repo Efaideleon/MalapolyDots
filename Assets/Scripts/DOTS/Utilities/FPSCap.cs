@@ -4,9 +4,11 @@ public class SetFPS : MonoBehaviour
 {
     void Awake()
     {
-#if UNITY_EDITOR
-        Application.targetFrameRate = 15;
+// #if UNITY_EDITOR
+//         Application.targetFrameRate = 15;
+//         QualitySettings.vSyncCount = 0;
+// #endif
         QualitySettings.vSyncCount = 0;
-#endif
+        Application.targetFrameRate = 60;
     }
 }
