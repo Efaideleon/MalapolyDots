@@ -87,12 +87,9 @@ public partial struct ScreenChangeSystem : ISystem
                         }
                         break;
                     case ScreenType.NumOfRounds:
-                        UnityEngine.Debug.Log($"Changing Screen from ScreenType.NumOfRounds");
                         var numOfRoundsClicked = SystemAPI.GetSingleton<LastNumberOfRoundsClicked>().Value;
-                        UnityEngine.Debug.Log($"NumOfRounds Clicked: {numOfRoundsClicked}");
                         if (numOfRoundsClicked > 0)
                         {
-                            UnityEngine.Debug.Log($"NumOfRounds selected: {numOfRoundsClicked}");
                             SystemAPI.GetSingletonBuffer<NumberOfRoundsConfirmEventBuffer>()
                                 .Add(new NumberOfRoundsConfirmEventBuffer { });
                             titleScreenControllers.NumOfRoundsController.HideScreen();

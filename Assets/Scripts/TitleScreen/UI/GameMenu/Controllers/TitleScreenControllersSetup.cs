@@ -103,7 +103,6 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         loginData.NumberOfPlayers = 2;
         loginData.NumberOfRounds = 12;
         lastNumberOfRoundsClicked.Value = 12;
-        UnityEngine.Debug.Log($"Setting lastNumberOfRoundsClicked {lastNumberOfRoundsClicked.Value}");
         buffer.Add(new CharacterSelectedNameBuffer { Name = "Avocado"} );
         buffer.Add(new CharacterSelectedNameBuffer { Name = "Bird"} );
     }
