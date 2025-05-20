@@ -25,7 +25,7 @@ namespace DOTS.GamePlay.CameraSystems
             if (SystemAPI.HasComponent<LocalTransform>(player.entity))
             {
                 var playerLocalTransform = SystemAPI.GetComponent<LocalTransform>(player.entity);
-                var offset = new float3(25, 20, -30);
+                var offset = new float3(17.54f, 13.87f, -21.8f);
                 mainCameraTransform.ValueRW.Position = playerLocalTransform.Position + offset;
                 float3 forward = math.normalize(playerLocalTransform.Position - mainCameraTransform.ValueRO.Position);
                 var up = new float3(0, 1, 0);
