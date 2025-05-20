@@ -2,22 +2,33 @@ using Unity.Entities;
 
 namespace DOTS.Utilities.TreasuresBlob
 {
-    public static class TreasureDataBlobBuilder
+    public struct TreasureDataBlobBuilder
     {
-        public static BlobAssetReference<TreasureDataBlob> Create(TreasureData[] treasuresData, IBaker baker)
+        public static BlobAssetReference<TreasureDataBlob> Create(TreasuresData treasuresData, IBaker baker)
         {
-            return GenericBlobAssetBuilder.CreateBlobAsset(baker, 
+            return GenericBlobAssetBuilder.CreateBlobAsset(baker,
                     (BlobBuilder builder, ref TreasureDataBlob root) =>
                     {
-                    BlobBuilderArray<FixedTreasureData> treasuresBuilder = builder.Allocate(ref root.treasures, treasuresData.Length);
+                        BlobBuilderArray<FixedTreasureData> treasuresDataBuilder = builder.Allocate(
+                                ref root.treasures, treasuresData.treasures.Length);
 
-                    for (int i = 0; i < treasuresData.Length; i++)
-                    {
-                    TreasureData tax = treasuresData[i];
-                    treasuresBuilder[i].id = tax.id;
-                    treasuresBuilder[i].Name = tax.Name;
-                    treasuresBuilder[i].boardIndex = tax.boardIndex;
-                    }
+                        BlobBuilderArray<FixedTreasureCardData> cardsBuilder = builder.Allocate(
+                                ref root.cards, treasuresData.cards.Length);
+
+                        for (int i = 0; i < treasuresData.treasures.Length; i++)
+                        {
+                            TreasureData treasure = treasuresData.treasures[i];
+                            treasuresDataBuilder[i].id = treasure.id;
+                            treasuresDataBuilder[i].Name = treasure.Name;
+                            treasuresDataBuilder[i].boardIndex = treasure.boardIndex;
+                        }
+
+                        for (int i = 0; i < treasuresData.cards.Length; i++)
+                        {
+                            TreasureCardData card = treasuresData.cards[i];
+                            cardsBuilder[i].id = card.id;
+                            cardsBuilder[i].data = card.data;
+                        }
                     });
         }
     }

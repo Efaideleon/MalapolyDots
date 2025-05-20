@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace DOTS.Utilities.JailBlob
 {
-    public static class JailDataBlobBuilder
+    public struct JailDataBlobBuilder
     {
         public static BlobAssetReference<JailDataBlob> Create(JailData jailData, IBaker baker)
         {

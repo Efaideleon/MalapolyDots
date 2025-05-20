@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace DOTS.Utilities.ParkingBlob
 {
-    public static class ParkingDataBlobBuilder
+    public struct ParkingDataBlobBuilder
     {
         public static BlobAssetReference<ParkingDataBlob> Create(ParkingData parkingData, IBaker baker)
         {

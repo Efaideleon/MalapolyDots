@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using DOTS.DataComponents;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace DOTS.Utilities.PropertiesBlob
 {
-    public static class PropertyColorUtility
+    public struct PropertiesDataBlobBuilder
     {
-        public static readonly Dictionary<string, PropertyColor> Map = new()
+        public static readonly Dictionary<string, PropertyColor> ColorMap = new()
         {
             { "None", PropertyColor.White },
             { "Brown", PropertyColor.Brown },
@@ -18,10 +19,7 @@ namespace DOTS.Utilities.PropertiesBlob
             { "Green", PropertyColor.Green },
             { "Blue", PropertyColor.Blue }
         };
-    }
 
-    public static class PropertiesDataBlobBuilder
-    {
         public static BlobAssetReference<PropertiesDataBlob> Create(PropertyData[] propertiesData, IBaker baker)
         {
             return GenericBlobAssetBuilder.CreateBlobAsset(baker,
@@ -46,7 +44,7 @@ namespace DOTS.Utilities.PropertiesBlob
                             propertiesBuilder[i].boardIndex = property.boardIndex;
                             propertiesBuilder[i].price = property.price;
                             propertiesBuilder[i].rentWithHotel = property.rentWithHotel;
-                            propertiesBuilder[i].color = PropertyColorUtility.Map[property.color];
+                            propertiesBuilder[i].color = ColorMap[property.color];
                         }
                     });
         }

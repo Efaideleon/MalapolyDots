@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace DOTS.Utilities.GoBlob
 {
-    public static class GoDataBlobBuilder
+    public struct GoDataBlobBuilder
     {
         public static BlobAssetReference<GoDataBlob> Create(GoData goData, IBaker baker)
         {

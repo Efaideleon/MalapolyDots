@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UI.GameMenu;
 using Unity.Entities;
 using UnityEngine.UIElements;
@@ -62,7 +60,7 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         var loginData = SystemAPI.GetSingletonRW<LoginData>();
         var characterSelectedNameBuffer = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
         var lastNumOfRoundsClickedQuery = SystemAPI.QueryBuilder().WithAllRW<LastNumberOfRoundsClicked>().Build();
-        debugStartButton.clickable.clicked += () => 
+        debugStartButton.clickable.clicked += () =>
         {
             var lastNumOfRoundsClicked = lastNumOfRoundsClickedQuery.GetSingletonRW<LastNumberOfRoundsClicked>();
             SetDataForGameToStart(
@@ -70,17 +68,17 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
                     ref characterSelectedNameBuffer,
                     ref lastNumOfRoundsClicked.ValueRW);
             var changeScreenBuffer = changeScreenEventBufferQuery.GetSingletonBuffer<ChangeScreenEventBuffer>();
-            changeScreenBuffer.Add( new ChangeScreenEventBuffer { ScreenType = ScreenType.NumOfRounds });
+            changeScreenBuffer.Add(new ChangeScreenEventBuffer { ScreenType = ScreenType.NumOfRounds });
             UnityEngine.Debug.Log("Skipping GameMenu");
         };
 #endif
 
         var titleScreenControllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
-        titleScreenControllers.TitleScreenController = new (titleScreen);
-        titleScreenControllers.NumOfRoundsController = new (numOfRoundsScreen, changeScreenEventBufferQuery, roundsDataEventBufferQuery);
-        titleScreenControllers.NumOfPlayersController = new (numberOfPlayersScreen, changeScreenEventBufferQuery, playersDataEventBufferQuery);
-        titleScreenControllers.CharacterSelectionControler = new (characterSelectionScreen, new CharacterSelectionContext());
-        
+        titleScreenControllers.TitleScreenController = new(titleScreen);
+        titleScreenControllers.NumOfRoundsController = new(numOfRoundsScreen, changeScreenEventBufferQuery, roundsDataEventBufferQuery);
+        titleScreenControllers.NumOfPlayersController = new(numberOfPlayersScreen, changeScreenEventBufferQuery, playersDataEventBufferQuery);
+        titleScreenControllers.CharacterSelectionControler = new(characterSelectionScreen, new CharacterSelectionContext());
+
         titleScreenControllers.TitleScreenController.ShowScreen();
         titleScreenControllers.NumOfRoundsController.HideScreen();
         titleScreenControllers.NumOfPlayersController.HideScreen();
@@ -103,8 +101,8 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
         loginData.NumberOfPlayers = 2;
         loginData.NumberOfRounds = 12;
         lastNumberOfRoundsClicked.Value = 12;
-        buffer.Add(new CharacterSelectedNameBuffer { Name = "Avocado"} );
-        buffer.Add(new CharacterSelectedNameBuffer { Name = "Bird"} );
+        buffer.Add(new CharacterSelectedNameBuffer { Name = "Avocado" });
+        buffer.Add(new CharacterSelectedNameBuffer { Name = "Bird" });
     }
 #endif
 

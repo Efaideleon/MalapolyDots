@@ -6,13 +6,16 @@ using DOTS.Utilities.ParkingBlob;
 using DOTS.Utilities.PropertiesBlob;
 using DOTS.Utilities.TaxesBlob;
 using DOTS.Utilities.TreasuresBlob;
+using Mono.Cecil;
+using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
 namespace DOTS.Utilities
 {
     [System.Serializable]
-    public class PropertyData
+    public struct PropertyData
     {
         public int id;
         public string Name;
@@ -24,7 +27,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class ChanceData
+    public struct ChanceData
     {
         public int id;
         public string Name;
@@ -32,7 +35,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class GoData
+    public struct GoData
     {
         public int id;
         public string Name;
@@ -40,7 +43,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class GoToJailData
+    public struct GoToJailData
     {
         public int id;
         public string Name;
@@ -48,7 +51,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class JailData
+    public struct JailData
     {
         public int id;
         public string Name;
@@ -56,7 +59,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class ParkingData
+    public struct ParkingData
     {
         public int id;
         public string Name;
@@ -64,7 +67,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class TaxData
+    public struct TaxData
     {
         public int id;
         public string Name;
@@ -72,7 +75,7 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class TreasureData
+    public struct TreasureData
     {
         public int id;
         public string Name;
@@ -80,7 +83,21 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
-    public class SpacesData
+    public struct TreasureCardData
+    {
+        public int id;
+        public string data;
+    }
+
+    [System.Serializable]
+    public struct TreasuresData
+    {
+        public TreasureData[] treasures;
+        public TreasureCardData[] cards;
+    }
+
+    [System.Serializable]
+    public struct SpacesData
     {
         public PropertyData[] properties;
         public ChanceData[] chances;
@@ -89,7 +106,7 @@ namespace DOTS.Utilities
         public JailData jail;
         public ParkingData parking;
         public TaxData[] taxes;
-        public TreasureData[] treasures;
+        public TreasuresData treasures;
     }
 
     public class JsonDataReader : MonoBehaviour

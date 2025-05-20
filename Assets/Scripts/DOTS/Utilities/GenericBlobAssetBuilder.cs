@@ -1,3 +1,4 @@
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -5,7 +6,7 @@ namespace DOTS.Utilities
 {
     public delegate void BlobBuildAction<TDataBlob>(BlobBuilder blobBuilder, ref TDataBlob data) where TDataBlob : unmanaged;
 
-    public static class GenericBlobAssetBuilder
+    public struct GenericBlobAssetBuilder
     {
         public static BlobAssetReference<TDataBlob> CreateBlobAsset<TDataBlob>(
                 IBaker baker,

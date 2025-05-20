@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace DOTS.Utilities.ChancesBlob
 {
-    public static class ChancesDataBlobBuilder
+    public struct ChancesDataBlobBuilder
     {
         public static BlobAssetReference<ChancesDataBlob> Create(ChanceData[] chancesData, IBaker baker)
         {

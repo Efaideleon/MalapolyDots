@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace DOTS.Utilities.TaxesBlob
 {
-    public static class TaxesDataBlobBuilder
+    public struct TaxesDataBlobBuilder
     {
         public static BlobAssetReference<TaxesDataBlob> Create(TaxData[] taxesData, IBaker baker)
         {

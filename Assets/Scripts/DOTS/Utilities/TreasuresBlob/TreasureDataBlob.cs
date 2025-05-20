@@ -10,8 +10,16 @@ namespace DOTS.Utilities.TreasuresBlob
         public int boardIndex;
     }
 
+    public struct FixedTreasureCardData
+    {
+        public int id;
+        public FixedString64Bytes data;
+
+    }
+
     public struct TreasureDataBlob
     {
         public BlobArray<FixedTreasureData> treasures;
+        public BlobArray<FixedTreasureCardData> cards;
     }
 }

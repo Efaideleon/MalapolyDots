@@ -39,8 +39,8 @@ namespace DOTS.GamePlay
                 {
                     var rollAmount = SystemAPI.GetSingletonRW<RollAmountComponent>();
                     var randomData = SystemAPI.GetSingletonRW<RandomValueComponent>();
-                    rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
-                    //rollAmount.ValueRW.Value = 4;
+                    //rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
+                    rollAmount.ValueRW.Value = 2;
                 }
 
                 buffer.Clear();
