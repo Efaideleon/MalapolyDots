@@ -1,3 +1,4 @@
+using System;
 using DOTS.EventBuses;
 using DOTS.UI.Panels;
 using Unity.Entities;
@@ -9,7 +10,7 @@ namespace DOTS.UI.Controllers
         public string Title;
     }
 
-    public class GoToJailPanelController
+    public class GoToJailPanelController : IDisposable
     {
         
         public GoToJailPanel Panel { get; private set; }
@@ -55,6 +56,5 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked -= DispatchEvents;
             Panel.OkButton.clickable.clicked -= Panel.Hide;
         }
-
     }
 }
