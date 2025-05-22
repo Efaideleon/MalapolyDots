@@ -14,29 +14,29 @@ namespace DOTS.GamePlay.CameraSystems
         float3 offset;
         float3 initialOffset;
         float currentAngleDeg;
-        int prevSpaceIdx;
         int currSpaceIdx;
         bool isAnimating;
         float3 newRotatedOffsetVector;
         int prevPlayerID;
         int currPlayerID;
 
-
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             up = new float3(0, 1, 0);
-            //                  x    z    y
             offset = new float3(0f, 13f, 27f);
             currentAngleDeg = 0;
             initialOffset = GetRotatedCameraOffsetVector(offset, math.radians(51));
-            prevSpaceIdx = 0;
-            prevSpaceIdx = 0;
+            currSpaceIdx = 0;
             isAnimating = false;
             prevPlayerID = -1;
             currPlayerID = -1;
+            state.RequireForUpdate<PlayerID>();
             state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<CurrentPlayerComponent>();
+            state.RequireForUpdate<RollAmountCountDown>();
+            state.RequireForUpdate<CurrentRound>();
+            state.RequireForUpdate<GameStateComponent>();
         }
 
         [BurstCompile]
@@ -48,69 +48,88 @@ namespace DOTS.GamePlay.CameraSystems
 
             if (SystemAPI.HasComponent<LocalTransform>(player.entity))
             {
-                currSpaceIdx = SystemAPI.GetComponent<PlayerWaypointIndex>(player.entity).Value;
                 currPlayerID = SystemAPI.GetComponent<PlayerID>(player.entity).Value;
+                var playerLocalTransform = SystemAPI.GetComponent<LocalTransform>(player.entity);
+                currSpaceIdx = SystemAPI.GetComponent<PlayerWaypointIndex>(player.entity).Value;
+                var playerMoveState = SystemAPI.GetComponent<PlayerMovementState>(player.entity).Value;
+                var roundNumber = SystemAPI.GetSingleton<CurrentRound>().Value;
+
+                if (ShouldRotateCamera(currSpaceIdx) && 
+                    playerMoveState == MoveState.Walking && 
+                    !isAnimating)
+                {
+                    if (currSpaceIdx == 0 && roundNumber == 0)
+                    { }
+                    else
+                    {
+                        isAnimating = true;
+                        currentAngleDeg = 0;
+                    }
+                }
                 if (currPlayerID != prevPlayerID)
                 {
                     isAnimating = false;
                 }
-                var playerLocalTransform = SystemAPI.GetComponent<LocalTransform>(player.entity);
-                if (ChangeInSides(prevSpaceIdx, currSpaceIdx))
-                {
-                    isAnimating = true;
-                    currentAngleDeg = 0;
-                }
 
                 if (isAnimating)
                 {
-                    currentAngleDeg = math.lerp(currentAngleDeg, 90, 10 * deltaTime);
+                    currentAngleDeg = math.lerp(currentAngleDeg, 90, 5f * deltaTime);
                     float interpolatedAngleRadians = math.radians(currentAngleDeg);
-                    newRotatedOffsetVector = GetRotatedCameraOffsetVector(initialOffset, interpolatedAngleRadians);
+                    var nextSpaceIdx = (currSpaceIdx + 1) % 39;
+                    newRotatedOffsetVector = GetRotatedCameraOffsetVector(
+                            GetRotatedVector(
+                                initialOffset, 
+                                nextSpaceIdx, 
+                                final: false,
+                                roundNumber
+                            ), 
+                            interpolatedAngleRadians);
                 }
                 else
                 {
-                    newRotatedOffsetVector = GetRotatedVector(initialOffset, currSpaceIdx);
+                    newRotatedOffsetVector = GetRotatedVector(initialOffset, currSpaceIdx, final: true, roundNumber);
                 }
 
                 mainCameraTransform.ValueRW.Position = playerLocalTransform.Position + newRotatedOffsetVector;
                 float3 forward = math.normalize(playerLocalTransform.Position - mainCameraTransform.ValueRO.Position);
                 var quaternionToLookAtPlayer = quaternion.LookRotationSafe(forward, up);
                 mainCameraTransform.ValueRW.Rotation = quaternionToLookAtPlayer;
-                prevSpaceIdx = currSpaceIdx;
-                prevPlayerID =currPlayerID;
-                //state.Enabled = false;
+                prevPlayerID = currPlayerID;
             }
         }
 
-        public readonly float3 GetRotatedVector(float3 initialOffset, int spaceIdx)
+        public readonly float3 GetRotatedVector(float3 initialOffset, int spaceIdx, bool final, int round)
         {
-            return spaceIdx switch 
-            {
-                >= 0 and <= 10 => GetRotatedCameraOffsetVector(initialOffset, math.radians(90)),
-                >= 11 and <= 20 => GetRotatedCameraOffsetVector(initialOffset, math.radians(180)),
-                >= 21 and <= 30 => GetRotatedCameraOffsetVector(initialOffset, math.radians(270)),
-                >= 31 and <= 39 => GetRotatedCameraOffsetVector(initialOffset, math.radians(360)),
-                _ => 0
-            };
+            int leftBound;
+            if (round == 0)
+                leftBound = 0;
+            else 
+                leftBound = 1;
+
+            if (spaceIdx >= leftBound && spaceIdx <= 10)
+                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 90 : 0));
+            if (spaceIdx >= 11 && spaceIdx <= 20)
+                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 180 : 90));
+            if (spaceIdx >= 21 && spaceIdx <= 30)
+                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 270 : 180));
+            if (spaceIdx >= 31 && spaceIdx <= 39 || spaceIdx == 0)
+                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 360 : 270));
+            return default;
         }
 
         // Returns:
         // The angle of the camera in the radians based on the board side
-        // Top: side where Mercado is at : 0 - 10
-        // Right: side where Santa Lucias is at : 11 - 20
-        // Bottom: side where Ineb is at : 21 - 30
-        // Left: side where El estadio is at : 31 - 39
+        // Top: side where Mercado is at : 0 - 9
+        // Right: side where Santa Lucias is at : 10 - 19
+        // Bottom: side where Ineb is at : 20 - 29
+        // Left: side where El estadio is at : 30 - 39
         [BurstCompile]
-        public readonly bool ChangeInSides(int prevSpaceIdx, int currSpaceIdx)
+        public readonly bool ShouldRotateCamera(int currSpaceIdx)
         {
-            if (prevSpaceIdx >= 0 && prevSpaceIdx <= 10 && currSpaceIdx >= 11 && currSpaceIdx <= 20)
+            if (currSpaceIdx == 10 || currSpaceIdx == 20 || currSpaceIdx == 30 || currSpaceIdx == 0) 
+            {
                 return true;
-            if (prevSpaceIdx >= 11 && prevSpaceIdx <= 20 && currSpaceIdx >= 21 && currSpaceIdx <= 30)
-                return true;
-            if (prevSpaceIdx >= 21 && prevSpaceIdx <= 30 && currSpaceIdx >= 31 && currSpaceIdx <= 39)
-                return true;
-            if (prevSpaceIdx >= 31 && prevSpaceIdx <= 39 && currSpaceIdx >= 0 && currSpaceIdx <= 10)
-                return true;
+            }
             return false;
         }
 
