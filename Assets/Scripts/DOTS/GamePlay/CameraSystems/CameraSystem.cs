@@ -10,27 +10,27 @@ namespace DOTS.GamePlay.CameraSystems
     [BurstCompile]
     public partial struct CameraSystem : ISystem
     {
-        float3 up;
-        float3 offset;
-        float3 initialOffset;
-        float currentAngleDeg;
-        int currSpaceIdx;
-        bool isAnimating;
-        float3 newRotatedOffsetVector;
-        int prevPlayerID;
-        int currPlayerID;
+       private static readonly float3 Up = new(0, 1, 0);
+       private const float RotationThresholdDegree = 90;
+       private float3 _offset;
+       private float3 _initialOffset;
+       private float _currentAngleDeg;
+       private int _currSpaceIdx;
+       private bool _isAnimating;
+       private float3 _newRotatedOffsetVector;
+       private int _prevPlayerID;
+       private int _currPlayerID;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            up = new float3(0, 1, 0);
-            offset = new float3(0f, 13f, 27f);
-            currentAngleDeg = 0;
-            initialOffset = GetRotatedCameraOffsetVector(offset, math.radians(51));
-            currSpaceIdx = 0;
-            isAnimating = false;
-            prevPlayerID = -1;
-            currPlayerID = -1;
+            _offset = new float3(0f, 13f, 27f);
+            _currentAngleDeg = 0;
+            _initialOffset = GetRotatedCameraOffsetVector(_offset, math.radians(51));
+            _currSpaceIdx = 0;
+            _isAnimating = false;
+            _prevPlayerID = -1;
+            _currPlayerID = -1;
             state.RequireForUpdate<PlayerID>();
             state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<CurrentPlayerComponent>();
@@ -48,37 +48,37 @@ namespace DOTS.GamePlay.CameraSystems
 
             if (SystemAPI.HasComponent<LocalTransform>(player.entity))
             {
-                currPlayerID = SystemAPI.GetComponent<PlayerID>(player.entity).Value;
+                _currPlayerID = SystemAPI.GetComponent<PlayerID>(player.entity).Value;
                 var playerLocalTransform = SystemAPI.GetComponent<LocalTransform>(player.entity);
-                currSpaceIdx = SystemAPI.GetComponent<PlayerWaypointIndex>(player.entity).Value;
+                _currSpaceIdx = SystemAPI.GetComponent<PlayerWaypointIndex>(player.entity).Value;
                 var playerMoveState = SystemAPI.GetComponent<PlayerMovementState>(player.entity).Value;
                 var roundNumber = SystemAPI.GetSingleton<CurrentRound>().Value;
 
-                if (ShouldRotateCamera(currSpaceIdx) && 
+                if (ShouldRotateCamera(_currSpaceIdx) && 
                     playerMoveState == MoveState.Walking && 
-                    !isAnimating)
+                    !_isAnimating)
                 {
-                    if (currSpaceIdx == 0 && roundNumber == 0)
+                    if (_currSpaceIdx == 0 && roundNumber == 0)
                     { }
                     else
                     {
-                        isAnimating = true;
-                        currentAngleDeg = 0;
+                        _isAnimating = true;
+                        _currentAngleDeg = 0;
                     }
                 }
-                if (currPlayerID != prevPlayerID)
+                if (_currPlayerID != _prevPlayerID)
                 {
-                    isAnimating = false;
+                    _isAnimating = false;
                 }
 
-                if (isAnimating)
+                if (_isAnimating)
                 {
-                    currentAngleDeg = math.lerp(currentAngleDeg, 90, 5f * deltaTime);
-                    float interpolatedAngleRadians = math.radians(currentAngleDeg);
-                    var nextSpaceIdx = (currSpaceIdx + 1) % 39;
-                    newRotatedOffsetVector = GetRotatedCameraOffsetVector(
+                    _currentAngleDeg = math.lerp(_currentAngleDeg, RotationThresholdDegree, 5f * deltaTime);
+                    float interpolatedAngleRadians = math.radians(_currentAngleDeg);
+                    var nextSpaceIdx = (_currSpaceIdx + 1) % 39;
+                    _newRotatedOffsetVector = GetRotatedCameraOffsetVector(
                             GetRotatedVector(
-                                initialOffset, 
+                                _initialOffset, 
                                 nextSpaceIdx, 
                                 final: false,
                                 roundNumber
@@ -87,14 +87,14 @@ namespace DOTS.GamePlay.CameraSystems
                 }
                 else
                 {
-                    newRotatedOffsetVector = GetRotatedVector(initialOffset, currSpaceIdx, final: true, roundNumber);
+                    _newRotatedOffsetVector = GetRotatedVector(_initialOffset, _currSpaceIdx, final: true, roundNumber);
                 }
 
-                mainCameraTransform.ValueRW.Position = playerLocalTransform.Position + newRotatedOffsetVector;
+                mainCameraTransform.ValueRW.Position = playerLocalTransform.Position + _newRotatedOffsetVector;
                 float3 forward = math.normalize(playerLocalTransform.Position - mainCameraTransform.ValueRO.Position);
-                var quaternionToLookAtPlayer = quaternion.LookRotationSafe(forward, up);
+                var quaternionToLookAtPlayer = quaternion.LookRotationSafe(forward, Up);
                 mainCameraTransform.ValueRW.Rotation = quaternionToLookAtPlayer;
-                prevPlayerID = currPlayerID;
+                _prevPlayerID = _currPlayerID;
             }
         }
 
