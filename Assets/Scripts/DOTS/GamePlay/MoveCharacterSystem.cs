@@ -88,6 +88,8 @@ namespace DOTS.GamePlay
                         var nextTargetPosition = wayPointsBuffer[nextWayPointIndex].WayPoint;
                         isCurrentCharacterMoving.ValueRW.Value = true;
 
+                        // We are writing to this component every frame.
+                        SystemAPI.GetComponentRW<PlayerMovementState>(playerEntity).ValueRW.Value = MoveState.Walking;
                         if (MoveToTarget(ref localTransform.ValueRW, nextTargetPosition, moveSpeed))
                         {
                             SystemAPI.GetComponentRW<PlayerWaypointIndex>(playerEntity).ValueRW.Value = nextWayPointIndex;
@@ -96,6 +98,7 @@ namespace DOTS.GamePlay
                             {
                                 isCurrentCharacterMoving.ValueRW.Value = false;
                                 SystemAPI.GetSingletonRW<ArrivedFlag>().ValueRW.Arrived = true;
+                                SystemAPI.GetComponentRW<PlayerMovementState>(playerEntity).ValueRW.Value = MoveState.Idle;
                             }
                         }
                     }

@@ -17,14 +17,22 @@ namespace DOTS.GamePlay
     public struct ChangeTurnBufferEvent : IBufferElementData
     {}
 
+    public struct CurrentRound : IComponentData
+    {
+        public int Value;
+    }
+
     [BurstCompile]
     public partial struct TransactionSystem : ISystem
     {
+        private int currentTurn;
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            currentTurn = 0;
             state.EntityManager.CreateSingleton(new CharacterNameIndex { Index = 0 });
             state.EntityManager.CreateSingletonBuffer<ChangeTurnBufferEvent>();
+            state.EntityManager.CreateSingleton(new CurrentRound { Value = 0 });
 
             state.RequireForUpdate<GameDataComponent>();
             state.RequireForUpdate<CurrentPlayerID>();
@@ -102,6 +110,17 @@ namespace DOTS.GamePlay
                     if (transaction.EventType == TransactionEventType.ChangeTurn)
                     {
                         // Handle each change turn request
+                        var totalRounds = SystemAPI.GetSingleton<LoginData>().NumberOfRounds;
+                        var totalNumOfPlayer = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
+                        currentTurn += 1;
+                        UnityEngine.Debug.Log($"Turn: {currentTurn}");
+                        if (currentTurn == totalNumOfPlayer)
+                        {
+                            SystemAPI.GetSingletonRW<CurrentRound>().ValueRW.Value += 1;
+                            currentTurn = 0;
+                            UnityEngine.Debug.Log($"Changing Round {SystemAPI.GetSingleton<CurrentRound>().Value}");
+                        }
+
                         var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
                         var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
                         currentPlayerIndex.ValueRW.Index = nextPlayerIndex;

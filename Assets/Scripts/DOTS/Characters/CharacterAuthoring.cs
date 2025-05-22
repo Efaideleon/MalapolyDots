@@ -16,11 +16,12 @@ namespace DOTS.Characters
                 // character entity
                 var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
 
-                AddComponent(authoringEntity, new NameComponent{ Value = authoring.charName });
-                AddComponent(authoringEntity, new MoneyComponent{ Value = 500_000 });
+                AddComponent(authoringEntity, new NameComponent { Value = authoring.charName });
+                AddComponent(authoringEntity, new MoneyComponent { Value = 500_000 });
                 AddComponent(authoringEntity, new PrefabTag());
-                AddComponent(authoringEntity, new PlayerWaypointIndex{ Value = 0 } );
-                AddComponent(authoringEntity, new CharacterFlag{});
+                AddComponent(authoringEntity, new PlayerWaypointIndex { Value = 0 });
+                AddComponent(authoringEntity, new CharacterFlag { });
+                AddComponent(authoringEntity, new PlayerMovementState { Value = MoveState.Idle });
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
             }
         }
@@ -41,6 +42,17 @@ namespace DOTS.Characters
         public int Value;
     }
 
+    public struct PlayerMovementState : IComponentData
+    {
+        public MoveState Value;
+    }
+
     public struct CharacterFlag : IComponentData
-    {}
+    { }
+
+    public enum MoveState
+    {
+        Walking,
+        Idle
+    }
 }
