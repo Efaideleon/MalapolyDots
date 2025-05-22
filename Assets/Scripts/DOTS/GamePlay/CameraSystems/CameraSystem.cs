@@ -42,7 +42,7 @@ namespace DOTS.GamePlay.CameraSystems
             var camTransform = SystemAPI.GetSingletonRW<MainCameraTransform>();
             var currentPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
             
-            if (SystemAPI.HasComponent<LocalTransform>(currentPlayer.entity))
+            if (!SystemAPI.HasComponent<LocalTransform>(currentPlayer.entity))
                 return;
 
             var playerId = SystemAPI.GetComponent<PlayerID>(currentPlayer.entity).Value;
