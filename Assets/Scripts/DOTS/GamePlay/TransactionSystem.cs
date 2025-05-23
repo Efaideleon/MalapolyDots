@@ -2,7 +2,6 @@ using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.EventBuses;
 using DOTS.GameData;
-using DOTS.GameData.PlacesData;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
