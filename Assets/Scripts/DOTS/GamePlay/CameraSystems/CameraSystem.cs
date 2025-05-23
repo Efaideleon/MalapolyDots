@@ -98,7 +98,7 @@ namespace DOTS.GamePlay.CameraSystems
         {
             cam.Position = playerPos + offset;
             float3 forward = math.normalize(playerPos - cam.Position);
-            cam.Rotation = quaternion.LookRotationSafe(forward, math.up());;
+            cam.Rotation = quaternion.LookRotationSafe(forward, math.up());
         }
 
         [BurstCompile]
