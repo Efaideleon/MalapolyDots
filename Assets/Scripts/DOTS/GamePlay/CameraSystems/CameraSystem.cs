@@ -7,26 +7,36 @@ using DOTS.Characters;
 
 namespace DOTS.GamePlay.CameraSystems
 {
+    public struct CameraState : IComponentData
+    {
+        public float CurrentAngleRad;
+        public bool IsAnimating;
+        public int PreviousPlayerId;
+        public float3 InitialOffset;
+        public float RotationThresholdRad;
+        public float RotationSpeed;
+        public int LastAnimatedSpaceIdx;
+        public float3 TargetOffset;
+    }
+
     [BurstCompile]
     public partial struct CameraSystem : ISystem
     {
-       private static readonly float3 Up = new(0, 1, 0);
-       private const float RotationThresholdDegree = 90;
-       private float3 _offset;
-       private float3 _initialOffset;
-       private float _currentAngleDeg;
-       private bool _isAnimating;
-       private float3 _newRotatedOffsetVector;
-       private int _prevPlayerID;
-
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            _offset = new float3(0f, 13f, 27f);
-            _currentAngleDeg = 0;
-            _initialOffset = GetRotatedCameraOffsetVector(_offset, math.radians(51));
-            _isAnimating = false;
-            _prevPlayerID = -1;
+            var offset = new float3(0f, 13f, 27f);
+            state.EntityManager.CreateSingleton(new CameraState
+            {
+                CurrentAngleRad = 0,
+                IsAnimating = false,
+                PreviousPlayerId = -1,
+                InitialOffset = RotateOffset(offset, math.radians(51)),
+                RotationThresholdRad = math.PI / 2,
+                RotationSpeed = math.PI,
+                LastAnimatedSpaceIdx = -1,
+                TargetOffset = default
+            });
             state.RequireForUpdate<PlayerID>();
             state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<CurrentPlayerComponent>();
@@ -38,10 +48,13 @@ namespace DOTS.GamePlay.CameraSystems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            var cameraState = SystemAPI.GetSingletonRW<CameraState>();
+            ref var camStateRW = ref cameraState.ValueRW;
+            var camStateRO = cameraState.ValueRO;
             var deltaTime = SystemAPI.Time.DeltaTime;
+
             var camTransform = SystemAPI.GetSingletonRW<MainCameraTransform>();
             var currentPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
-            
             if (!SystemAPI.HasComponent<LocalTransform>(currentPlayer.entity))
                 return;
 
@@ -51,95 +64,109 @@ namespace DOTS.GamePlay.CameraSystems
             var playerMoveState = SystemAPI.GetComponent<PlayerMovementState>(currentPlayer.entity).Value;
             var roundNum = SystemAPI.GetSingleton<CurrentRound>().Value;
 
-            bool shouldRotate = ShouldRotateCamera(currentSpaceIdx);
-            bool isNewPlayer = playerId != _prevPlayerID;
+            bool isNewPlayer = playerId != camStateRO.PreviousPlayerId;
+            bool atCorner = IsCornerSpace(currentSpaceIdx);
+            bool isWalking = playerMoveState == MoveState.Walking;
 
-            if (shouldRotate && 
-                playerMoveState == MoveState.Walking && 
-                !_isAnimating)
-            {
-                if (currentSpaceIdx == 0 && roundNum == 0)
-                { }
-                else
-                {
-                    _isAnimating = true;
-                    _currentAngleDeg = 0;
-                }
-            }
+            bool isAnimating  = camStateRO.IsAnimating;
+            bool spaceChanged = camStateRO.LastAnimatedSpaceIdx != currentSpaceIdx;
+
             if (isNewPlayer)
             {
-                _isAnimating = false;
+                camStateRW.IsAnimating = false;
+            }
+            else if (ShouldStartAnimation(atCorner, isWalking, currentSpaceIdx, roundNum, camStateRO))
+            {
+                StartAnimation(ref camStateRW, currentSpaceIdx);
+            }
+            
+            if (isAnimating) 
+            {
+                camStateRW.TargetOffset = PlayRotationAnimation( currentSpaceIdx, roundNum, deltaTime, ref camStateRW);
+            }
+            else if (!isAnimating && spaceChanged)
+            {
+                camStateRW.TargetOffset = ComputeFinalOffset(currentSpaceIdx, roundNum, camStateRO);
             }
 
-            if (_isAnimating)
-            {
-                _currentAngleDeg = math.lerp(_currentAngleDeg, RotationThresholdDegree, 5f * deltaTime);
-                float interpolatedAngleRadians = math.radians(_currentAngleDeg);
-                var nextSpaceIdx = (currentSpaceIdx + 1) % 39;
-                _newRotatedOffsetVector = GetRotatedCameraOffsetVector(
-                        GetRotatedVector(
-                            _initialOffset, 
-                            nextSpaceIdx, 
-                            final: false,
-                            roundNum
-                        ), 
-                        interpolatedAngleRadians);
-            }
-            else
-            {
-                _newRotatedOffsetVector = GetRotatedVector(_initialOffset, currentSpaceIdx, final: true, roundNum);
-            }
-
-            camTransform.ValueRW.Position = playerTransform.Position + _newRotatedOffsetVector;
-            float3 forward = math.normalize(playerTransform.Position - camTransform.ValueRO.Position);
-            var quaternionToLookAtPlayer = quaternion.LookRotationSafe(forward, Up);
-            camTransform.ValueRW.Rotation = quaternionToLookAtPlayer;
-            _prevPlayerID = playerId;
+            ApplyCameraTransform(ref camTransform.ValueRW, playerTransform.Position, camStateRO.TargetOffset);
+            camStateRW.PreviousPlayerId = playerId;
         }
 
-        public readonly float3 GetRotatedVector(float3 initialOffset, int spaceIdx, bool final, int round)
+        [BurstCompile]
+        private readonly void ApplyCameraTransform(ref MainCameraTransform cam, float3 playerPos, float3 offset)
         {
-            int leftBound;
-            if (round == 0)
-                leftBound = 0;
-            else 
-                leftBound = 1;
+            cam.Position = playerPos + offset;
+            float3 forward = math.normalize(playerPos - cam.Position);
+            cam.Rotation = quaternion.LookRotationSafe(forward, math.up());
+        }
 
-            if (spaceIdx >= leftBound && spaceIdx <= 10)
-                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 90 : 0));
-            if (spaceIdx >= 11 && spaceIdx <= 20)
-                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 180 : 90));
-            if (spaceIdx >= 21 && spaceIdx <= 30)
-                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 270 : 180));
-            if (spaceIdx >= 31 && spaceIdx <= 39 || spaceIdx == 0)
-                return GetRotatedCameraOffsetVector(initialOffset, math.radians(final ? 360 : 270));
+        [BurstCompile]
+        private readonly float3 PlayRotationAnimation(
+                int spaceIdx,
+                int roundNum,
+                float deltaTime,
+                ref CameraState state
+        )
+        {
+            var nextAngle = state.CurrentAngleRad + state.RotationSpeed * deltaTime;
+
+            if (nextAngle >= state.RotationThresholdRad)
+            {
+                nextAngle = state.RotationThresholdRad;
+                state.IsAnimating = false;
+            }
+
+            state.CurrentAngleRad = nextAngle;
+
+            var nextSpaceIdx = (spaceIdx + 1) % 39;
+            var cornerAngle = FindRotationAngle(nextSpaceIdx, final: false, roundNum);
+            var baseOff = RotateOffset(state.InitialOffset, cornerAngle);
+
+            return RotateOffset(baseOff, state.CurrentAngleRad);
+        }
+
+        [BurstCompile]
+        private readonly float FindRotationAngle(int spaceIdx, bool final, int round)
+        {
+            int start = round == 0 ? 0 : 1;
+            if (spaceIdx >= start && spaceIdx <= 10) return final ? math.PIHALF : 0;
+            if (spaceIdx >= 11 && spaceIdx <= 20) return final ? math.PI : math.PIHALF;
+            if (spaceIdx >= 21 && spaceIdx <= 30) return final ? 3 * math.PIHALF : math.PI;
+            if (spaceIdx >= 31 && spaceIdx <= 39 || spaceIdx == 0) return final ? math.PI2 : 3 * math.PIHALF;
+
             return default;
         }
 
-        // Returns:
-        // The angle of the camera in the radians based on the board side
-        // Top: side where Mercado is at : 0 - 9
-        // Right: side where Santa Lucias is at : 10 - 19
-        // Bottom: side where Ineb is at : 20 - 29
-        // Left: side where El estadio is at : 30 - 39
         [BurstCompile]
-        public readonly bool ShouldRotateCamera(int currSpaceIdx)
+        public readonly float3 ComputeFinalOffset(int spaceIdx, int round, in CameraState state)
         {
-            if (currSpaceIdx == 10 || currSpaceIdx == 20 || currSpaceIdx == 30 || currSpaceIdx == 0) 
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public readonly float3 GetRotatedCameraOffsetVector(float3 offset, float angle)
-        {
-            var quaternionToRotateVector = quaternion.RotateY(angle);
-            return math.mul(quaternionToRotateVector, offset);
+            float angle = FindRotationAngle(spaceIdx, final: true, round);
+            return RotateOffset(state.InitialOffset, angle);
         }
 
         [BurstCompile]
-        public void OnDestroy(ref SystemState state)
-        { }
+        private readonly bool IsCornerSpace(int spaceIdx) => spaceIdx % 10 == 0;
+
+        [BurstCompile]
+        private readonly float3 RotateOffset(float3 offset, float angle) => math.mul(quaternion.RotateY(angle), offset);
+
+        [BurstCompile]
+        private readonly bool ShouldStartAnimation(bool atCorner, bool isWalking, int spaceIdx, int roundNum, in CameraState state)
+        {
+            return atCorner 
+                && isWalking 
+                && !state.IsAnimating 
+                && !(spaceIdx == 0 && roundNum == 0) 
+                && state.LastAnimatedSpaceIdx != spaceIdx;
+        }
+
+        [BurstCompile]
+        private readonly void StartAnimation(ref CameraState state, int spaceIdx)
+        {
+            state.IsAnimating = true;
+            state.CurrentAngleRad = 0;
+            state.LastAnimatedSpaceIdx = spaceIdx;
+        }
     }
 }
