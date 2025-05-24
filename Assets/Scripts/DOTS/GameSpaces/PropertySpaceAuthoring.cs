@@ -26,6 +26,7 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new MonopolyFlagComponent { Value = false });
                 AddComponent(entity, new HouseCount { Value = 0 });
                 AddComponent(entity, new MaterialOverrideColorSlider { Value = 0 });
+                AddComponent(entity, new ForSaleComponent { entity = default });
                 AddBuffer<BaseRentBuffer>(entity);
             }
         }
