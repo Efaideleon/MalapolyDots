@@ -25,7 +25,7 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new ColorCodeComponent { Value = default });
                 AddComponent(entity, new MonopolyFlagComponent { Value = false });
                 AddComponent(entity, new HouseCount { Value = 0 });
-                AddComponent(entity, new AccumulatedColorTransition { Value = 0 });
+                AddComponent(entity, new MaterialOverrideColorSlider { Value = 0 });
                 AddBuffer<BaseRentBuffer>(entity);
             }
         }
@@ -33,5 +33,4 @@ namespace DOTS.GameSpaces
 
     public struct PropertySpaceTag : IComponentData
     { }
-
 }
