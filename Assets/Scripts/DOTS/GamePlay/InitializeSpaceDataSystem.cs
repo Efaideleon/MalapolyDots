@@ -44,9 +44,9 @@ namespace DOTS.GamePlay
                     for (int j = 0; j < property.rent.Length; j++)
                     {
                         rentBuffer.Add(new BaseRentBuffer
-                                {
-                                Value = property.rent[j]
-                                });
+                        {
+                            Value = property.rent[j]
+                        });
                     }
                 }
             }
