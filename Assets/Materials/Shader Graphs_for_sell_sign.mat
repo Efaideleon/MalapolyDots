@@ -13,6 +13,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 9
+--- !u!114 &-996885162585227569
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -37,6 +50,18 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _SampleTexture2DLOD_b6fc1d07698549b8bcfc13f2ff887a94_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 551d7ab1e697b5341ae2c3b03090c0c0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_2d615b2c88914ac1a70cd76d7c21537f_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 4db096764c323284da38a7e9bc4eb08d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_148bb6930c404841b28ecfba1bd3dcd6_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 551d7ab1e697b5341ae2c3b03090c0c0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,8 +76,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: 0
+    - _CurrentFrame: 1
+    - _Float: 0
+    - _FrameRate: 60
+    - _NumFrames: 60
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _RowsPerFrame: 1
+    - _TextureHeight: 64
+    - _TextureWidth: 64
+    m_Colors:
+    - _PosMax: {r: 0.83, g: 4.45, b: 7.74, a: 0}
+    - _PosMin: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
