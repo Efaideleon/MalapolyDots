@@ -27,7 +27,7 @@ namespace DOTS.GamePlay
                         RefRW<MaterialOverrideColorSlider>,
                         RefRO<OwnerComponent>,
                         RefRO<PropertySpaceTag>
-                    >())
+                    >()) //TODO: Add WithChangeFilter<OwnerComponent>?
             {
                 var colorSliderRO = materialColorSlider.ValueRO;
                 bool coloring = colorSliderRO.Value < ColoringThreshold;
