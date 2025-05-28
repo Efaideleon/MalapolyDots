@@ -1,7 +1,6 @@
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 
 namespace DOTS.GamePlay

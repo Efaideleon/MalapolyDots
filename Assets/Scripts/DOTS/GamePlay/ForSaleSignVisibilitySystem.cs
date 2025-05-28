@@ -15,27 +15,33 @@ namespace DOTS.GamePlay
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (visiblityState, _, entity) in 
-                    SystemAPI.Query<
-                        RefRW<VisibleStateComponent>,
-                        RefRO<ForSaleSignTag>
-                    >()
-                    .WithChangeFilter<VisibleStateComponent>()
-                    .WithEntityAccess())
-            {
-                if (visiblityState.ValueRO.Value == VisibleState.Hidden)
-                {
-                    if (SystemAPI.HasBuffer<Child>(entity))
-                    {
-                        var children = SystemAPI.GetBuffer<Child>(entity);
+            float dt = SystemAPI.Time.DeltaTime;
+            var job = new HideForSaleSignJob{ dt = dt };
+            job.Schedule(state.Dependency);
+        }
 
-                        // The entity is show the logic side, the child shows the redner side.
-                        foreach (var child in children)
-                        {
-                            var animatorRef = SystemAPI.ManagedAPI.GetComponent<AnimatorReference>(child.Value);
-                            //animatorRef.Animator.Set();
-                        }
-                    }
+        public partial struct HideForSaleSignJob : IJobEntity
+        {
+            public float dt;
+
+            public void Execute (
+                    Entity entity,
+                    ref VisibleStateComponent visibleState,
+                    ref MaterialOverrideFrame frame,
+                    //DynamicBuffer<Child> children,
+                    in ForSaleSignTag _
+                    )
+            {
+                if (visibleState.Value == VisibleState.Hidden)
+                {
+                    frame.Value += dt * 1;
+                    // The entity is show the logic side, the child shows the redner side.
+                    // foreach (var child in children)
+                    // {
+                    //     var animatorRef = SystemAPI.ManagedAPI.GetComponent<AnimatorReference>(child.Value);
+                    //     //animatorRef.Animator.Set();
+                    // }
+                    // }
                 }
             }
         }
