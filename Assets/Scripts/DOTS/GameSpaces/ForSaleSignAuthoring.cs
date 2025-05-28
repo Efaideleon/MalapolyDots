@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Rendering;
 using UnityEngine;
 
 namespace DOTS.GameSpaces
@@ -14,6 +15,12 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new VisibleStateComponent { Value = VisibleState.Visible });
             }
         }
+    }
+
+    [MaterialProperty("_frame")]
+    public struct MaterialOverrideFrame : IComponentData
+    {
+        public float Value;
     }
 
     public struct ForSaleSignTag : IComponentData { }
