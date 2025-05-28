@@ -17,7 +17,8 @@ namespace DOTS.GamePlay
         {
             float dt = SystemAPI.Time.DeltaTime;
             var job = new HideForSaleSignJob{ dt = dt };
-            job.Schedule(state.Dependency);
+            var handle = job.Schedule(state.Dependency);
+            handle.Complete();
         }
 
         public partial struct HideForSaleSignJob : IJobEntity
@@ -27,21 +28,17 @@ namespace DOTS.GamePlay
             public void Execute (
                     Entity entity,
                     ref VisibleStateComponent visibleState,
-                    ref MaterialOverrideFrame frame,
                     //DynamicBuffer<Child> children,
+                    ref MaterialOverrideFrame frame,
                     in ForSaleSignTag _
-                    )
+                )
             {
                 if (visibleState.Value == VisibleState.Hidden)
                 {
+                    //The entity is show the logic side, the child shows the redner side.
+                    // var renderedEntity = children [0];
+
                     frame.Value += dt * 1;
-                    // The entity is show the logic side, the child shows the redner side.
-                    // foreach (var child in children)
-                    // {
-                    //     var animatorRef = SystemAPI.ManagedAPI.GetComponent<AnimatorReference>(child.Value);
-                    //     //animatorRef.Animator.Set();
-                    // }
-                    // }
                 }
             }
         }
