@@ -1,9 +1,5 @@
-using DOTS.DataComponents;
 using DOTS.GameSpaces;
-using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Rendering;
 using Unity.Transforms;
 
 namespace DOTS.GamePlay
@@ -33,8 +29,6 @@ namespace DOTS.GamePlay
                         var children = SystemAPI.GetBuffer<Child>(entity);
                         foreach (var child in children)
                         {
-                            var animatorRef = SystemAPI.ManagedAPI.GetComponent<AnimatorReference>(child.Value);
-                            //animatorRef.Animator.Set();
                         }
                     }
                 }
