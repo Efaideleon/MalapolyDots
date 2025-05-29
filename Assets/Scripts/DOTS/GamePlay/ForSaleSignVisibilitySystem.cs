@@ -1,12 +1,13 @@
-using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Entities;
-using Unity.Transforms;
+using Unity.Rendering;
 
 namespace DOTS.GamePlay
 {
     public partial struct ForSaleSignVisibilitySystem : ISystem
     {
+        private const float AnimationSpeed = 60f;
+
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<ForSaleSignTag>();
@@ -16,7 +17,12 @@ namespace DOTS.GamePlay
         public void OnUpdate(ref SystemState state)
         {
             float dt = SystemAPI.Time.DeltaTime;
-            var job = new HideForSaleSignJob{ dt = dt };
+            var job = new HideForSaleSignJob
+            { 
+                dt = dt,
+                speed = AnimationSpeed,
+                ecb = GetECB(ref state).AsParallelWriter()
+            };
             var handle = job.Schedule(state.Dependency);
             handle.Complete();
         }
@@ -24,23 +30,35 @@ namespace DOTS.GamePlay
         public partial struct HideForSaleSignJob : IJobEntity
         {
             public float dt;
+            public float speed;
+            public EntityCommandBuffer.ParallelWriter ecb; 
 
             public void Execute (
                     Entity entity,
+                    [EntityIndexInQuery] int entityInQueryIndex,
                     ref VisibleStateComponent visibleState,
-                    //DynamicBuffer<Child> children,
                     ref MaterialOverrideFrame frame,
                     in ForSaleSignTag _
-                )
+            )
             {
-                if (visibleState.Value == VisibleState.Hidden)
+                if (visibleState.Value == VisibleState.Hiding)
                 {
-                    //The entity is show the logic side, the child shows the redner side.
-                    // var renderedEntity = children [0];
+                    frame.Value += dt * speed;
+                }
+                if (frame.Value >= 59)
+                {
+                    visibleState.Value = VisibleState.Hidden;
 
-                    frame.Value += dt * 1;
+                    // Hides the ForSaleSign when the animation ends
+                    ecb.AddComponent<DisableRendering>(entityInQueryIndex, entity);
                 }
             }
+        }
+
+        public readonly EntityCommandBuffer GetECB(ref SystemState state)
+        {
+            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            return ecb.CreateCommandBuffer(state.WorldUnmanaged);
         }
     }
 }

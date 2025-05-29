@@ -74,6 +74,8 @@ namespace DOTS.GamePlay.CameraSystems
             if (isNewPlayer)
             {
                 camStateRW.IsAnimating = false;
+                camStateRW.CurrentAngleRad = 0;
+                camStateRW.LastAnimatedSpaceIdx = -1;
             }
             else if (ShouldStartAnimation(atCorner, isWalking, currentSpaceIdx, roundNum, camStateRO))
             {

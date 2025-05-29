@@ -36,7 +36,7 @@ namespace DOTS.GamePlay
                 {
                     var forSaleSignEntity = forSaleComponent.ValueRW.entity;
                     ref var visibleStateCompRW = ref SystemAPI.GetComponentRW<VisibleStateComponent>(forSaleSignEntity).ValueRW;
-                    visibleStateCompRW.Value = VisibleState.Hidden;
+                    visibleStateCompRW.Value = VisibleState.Hiding;
                 }
             }
         }

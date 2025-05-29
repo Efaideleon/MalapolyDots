@@ -29,6 +29,7 @@ namespace DOTS.GameSpaces
     public enum VisibleState
     {
         Visible,
+        Hiding,
         Hidden,
     }
 
