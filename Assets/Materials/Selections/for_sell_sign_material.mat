@@ -38,11 +38,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 4db096764c323284da38a7e9bc4eb08d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 551d7ab1e697b5341ae2c3b03090c0c0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D_1:
@@ -67,13 +67,13 @@ Material:
     - _QueueOffset: 0
     - _exageration: 0
     - _frame: 0
-    - _frames: 0
+    - _frames: 60
     - _speed: 1
     - _usePackedNormals: 1
-    - _useTime: 1
-    - _yResolution: 0
+    - _useTime: 0
+    - _yResolution: 64
     m_Colors:
-    - _maxValues: {r: 0, g: 0, b: 0, a: 0}
-    - _minValues: {r: 0, g: 0, b: 0, a: 0}
+    - _maxValues: {r: -0.5, g: 1.1, b: 0.1, a: 0}
+    - _minValues: {r: 0.1, g: -1.6, b: -2.7, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
