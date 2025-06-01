@@ -2,95 +2,116 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine;
+using System;
+using UnityEngine.Rendering.RenderGraphModule.Util;
 
 public class CustomRenderPassFeature : ScriptableRendererFeature
 {
+    [Serializable]
+    public class BlurSettings
+    {
+        [Range(0,0.4f)] public float horizontalBlur;
+        [Range(0,0.4f)] public float verticalBlur;
+    }
+
     class CustomRenderPass : ScriptableRenderPass
     {
-        private LayerMask _layerMask;
+        private BlurSettings defaultSettings;
+        private Material material;
+        private TextureDesc blurTextureDescriptor;
 
-        public CustomRenderPass(LayerMask layerMask)
-        {
-            _layerMask = layerMask;
+        private static readonly int horizontalBlurId = Shader.PropertyToID("_HorizontalBlur");
+        private static readonly int verticalBlurId = Shader.PropertyToID("_VerticalBlur");
+        private const string _blurTextureName = "_BlurTexture";
+        private const string _verticalPassName = "VerticalBlurRenderPass";
+        private const string _horizontalPassName = "horizontalBlurRenderPass";
+
+        public CustomRenderPass(Material material, BlurSettings defaultSettings)
+        { 
+            this.defaultSettings = defaultSettings;
+            this.material = material;
         }
-        // This class stores the data needed by the RenderGraph pass.
-        // It is passed as a parameter to the delegate function that executes the RenderGraph pass.
+
         private class PassData
         {
-            public RendererListHandle rendererListHandle;
         }
 
-        private void InitRendererLists(ContextContainer frameData, ref PassData passData, RenderGraph renderGraph)
+
+        private void UpdateBlurSettings()
         {
-            UniversalRenderingData universalRenderingData = frameData.Get<UniversalRenderingData>();
-            UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
+            if (material == null) return;
 
-            RenderQueueRange renderQueueRange = new();
-            FilteringSettings filteringSettings = new(renderQueueRange, _layerMask);
-            DrawingSettings drawingSettings = new();
+            var volumeComponent = VolumeManager.instance.stack.GetComponent<CustomVolumeBlurComponent>();
+            float horizontalBlur = volumeComponent.horizontalBlur.overrideState ? volumeComponent.horizontalBlur.value : defaultSettings.horizontalBlur;
+            float verticalBlur = volumeComponent.verticalBlur.overrideState ? volumeComponent.verticalBlur.value : defaultSettings.verticalBlur;
 
-            RendererListParams param = new(universalRenderingData.cullResults, drawingSettings, filteringSettings);
-            passData.rendererListHandle = renderGraph.CreateRendererList(param);
+            material.SetFloat(horizontalBlurId, horizontalBlur);
+            material.SetFloat(verticalBlurId, verticalBlur);
         }
 
-        // This static method is passed as the RenderFunc delegate to the RenderGraph render pass.
-        // It is used to execute draw commands.
-        static void ExecutePass(PassData data, RasterGraphContext context)
-        {
-        }
-
-        // RecordRenderGraph is where the RenderGraph handle can be accessed, through which render passes can be added to the graph.
-        // FrameData is a context container through which URP resources can be accessed and managed.
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
         {
             const string passName = "Render Custom Pass";
 
-            // This adds a raster render pass to the graph, specifying the name and the data type that will be passed to the ExecutePass function.
-            using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName, out var passData))
-            {
-                // Use this scope to set the required inputs and outputs of the pass and to
-                // setup the passData with the required properties needed at pass execution time.
+            UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
+            UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
 
-                // Make use of frameData to access resources and camera data through the dedicated containers.
-                // Eg:
-                // UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
-                UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
+            if (resourceData.isActiveTargetBackBuffer)
+                return;
 
-                InitRendererLists(frameData, ref passData, renderGraph);
+            UpdateBlurSettings();
 
-                builder.UseRendererList(passData.rendererListHandle);
+            TextureHandle srcCamColor = resourceData.activeColorTexture;
+            blurTextureDescriptor = srcCamColor.GetDescriptor(renderGraph);
+            blurTextureDescriptor.name = _blurTextureName;
+            blurTextureDescriptor.depthBufferBits = 0;
+            var dst = renderGraph.CreateTexture(blurTextureDescriptor);
 
-                // Setup pass inputs and outputs through the builder interface.
-                // Eg:
-                // builder.UseTexture(sourceTexture);
-                // TextureHandle destination = UniversalRenderer.CreateRenderGraphTexture(renderGraph, cameraData.cameraTargetDescriptor, "Destination Texture", false);
+            if (!srcCamColor.IsValid() || !dst.IsValid())
+                return;
 
-                // This sets the render target of the pass to the active color texture. Change it to your own render target as needed.
-                builder.SetRenderAttachment(resourceData.activeColorTexture, 0);
+            RenderGraphUtils.BlitMaterialParameters paraVeritical = new(srcCamColor, dst, material, 0);
+            renderGraph.AddBlitPass(paraVeritical, _verticalPassName);
 
-                // Assigns the ExecutePass function to the render pass delegate. This will be called by the render graph when executing the pass.
-                builder.SetRenderFunc((PassData data, RasterGraphContext context) => ExecutePass(data, context));
-            }
+            RenderGraphUtils.BlitMaterialParameters paraHorizontal = new(dst, srcCamColor, material, 1);
+            renderGraph.AddBlitPass(paraHorizontal, _horizontalPassName);
         }
     }
 
-    public LayerMask _layerMask;
+    [SerializeField] private BlurSettings settings;
+    [SerializeField] private Shader shader;
+    private Material material;
+    private CustomRenderPass m_ScriptablePass;
 
-    CustomRenderPass m_ScriptablePass;
-
-    /// <inheritdoc/>
     public override void Create()
     {
-        m_ScriptablePass = new CustomRenderPass(_layerMask);
+        if (shader == null)
+        {
+            return;
+        }
 
-        // Configures where the render pass should be injected.
-        m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+        material = new Material(shader);
+        m_ScriptablePass = new CustomRenderPass(material, settings);
+        m_ScriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
     }
 
-    // Here you can inject one or multiple render passes in the renderer.
-    // This method is called when setting up the renderer once per-camera.
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        renderer.EnqueuePass(m_ScriptablePass);
+        if (renderingData.cameraData.cameraType == CameraType.Game)
+        {
+            renderer.EnqueuePass(m_ScriptablePass);
+        }
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (Application.isPlaying)
+        {
+            Destroy(material);
+        }
+        else
+        {
+            DestroyImmediate(material);
+        }
     }
 }
