@@ -32,18 +32,19 @@ public class CustomRenderPassFeature : ScriptableRendererFeature
             this.material = material;
         }
 
-        private class PassData
-        {
-        }
-
-
         private void UpdateBlurSettings()
         {
             if (material == null) return;
 
             var volumeComponent = VolumeManager.instance.stack.GetComponent<CustomVolumeBlurComponent>();
-            float horizontalBlur = volumeComponent.horizontalBlur.overrideState ? volumeComponent.horizontalBlur.value : defaultSettings.horizontalBlur;
-            float verticalBlur = volumeComponent.verticalBlur.overrideState ? volumeComponent.verticalBlur.value : defaultSettings.verticalBlur;
+
+            float horizontalBlur = volumeComponent.horizontalBlur.overrideState 
+                ? volumeComponent.horizontalBlur.value 
+                : defaultSettings.horizontalBlur;
+
+            float verticalBlur = volumeComponent.verticalBlur.overrideState 
+                ? volumeComponent.verticalBlur.value 
+                : defaultSettings.verticalBlur;
 
             material.SetFloat(horizontalBlurId, horizontalBlur);
             material.SetFloat(verticalBlurId, verticalBlur);

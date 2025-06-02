@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   color:
     m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 1}
@@ -92,26 +92,6 @@ MonoBehaviour:
   - {fileID: -7893295128165547882}
   - {fileID: 7391319092446245454}
   - {fileID: -3357603926938260329}
-  - {fileID: 795031869161167128}
---- !u!114 &795031869161167128
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51b4188ca38564e1aa3608393d7d8d24, type: 3}
-  m_Name: CustomVolumeBlurComponent
-  m_EditorClassIdentifier: 
-  active: 1
-  horizontalBlur:
-    m_OverrideState: 1
-    m_Value: 0.188
-  verticalBlur:
-    m_OverrideState: 1
-    m_Value: 0.5
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
