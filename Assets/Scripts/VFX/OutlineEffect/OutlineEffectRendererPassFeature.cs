@@ -241,19 +241,34 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
     public override void Create()
     {
         if (maskShader == null)
+        {
+            Debug.Log("markShader is null");
             return;
+        }
 
         if (smoothstepShader == null)
+        {
+            Debug.Log("smoothstepShader is null");
             return;
+        }
 
         if (outlineShader == null)
+        {
+            Debug.Log("outlineShader is null");
             return;
+        }
 
         if (compositeShader == null)
+        {
+            Debug.Log("compositeShader is null");
             return;
+        }
 
         if (blurShader == null)
+        {
+            Debug.Log("blurShader is null");
             return;
+        }
 
         var blurMaterial = new Material(blurShader);
         var smoothstepMaterial = new Material(smoothstepShader);
