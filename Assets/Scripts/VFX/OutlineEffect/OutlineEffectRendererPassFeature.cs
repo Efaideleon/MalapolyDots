@@ -78,6 +78,15 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
             UniversalLightData lightData = frameData.Get<UniversalLightData>();
 
+            if (resourceData.isActiveTargetBackBuffer) return;
+            if (!resourceData.activeColorTexture.IsValid()) return;
+
+            if (_maskMaterial == null) return;
+            if (_blurMaterial == null) return;
+            if (_smoothstepMaterial == null) return;
+            if (_outlineMaterial == null) return;
+            if (_compositeMaterial == null) return;
+
             TextureHandle depthTexture = resourceData.cameraDepth;
 
             TextureDesc intermediateDesc = resourceData.activeColorTexture.GetDescriptor(renderGraph);
@@ -152,6 +161,12 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 passData.smoothstepped = smoothstepDST;
                 passData.outlineDST = outlineTexture;
                 passData.outlineMaterial = _outlineMaterial;
+
+                if (passData.outlineMaterial == null)
+                {
+                    Debug.LogWarning("passData.outlineMaterial is null");
+                    return;
+                }
                 
                 builder.UseTexture(passData.orignal, AccessFlags.Read);
                 builder.UseTexture(passData.smoothstepped, AccessFlags.Read);
@@ -172,6 +187,12 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 passData.originalCameraColor = resourceData.activeColorTexture;
                 passData.compositeMaterial = _compositeMaterial;
                 passData.finalTextureComposite = compositeTexture;
+
+                if (passData.compositeMaterial == null)
+                {
+                    Debug.LogWarning("passData.compositeMaterial is null");
+                    return;
+                }
 
                 builder.UseTexture(passData.outlineDST, AccessFlags.Read);
                 builder.UseTexture(passData.originalCameraColor, AccessFlags.Read);
@@ -196,6 +217,13 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             // SetTexture is called here because when the ExecutePass is called when the pass is being executed 
             // and the TextureHandle has been Registered as a Texture
             // which SetTexture() expects.
+
+            if (data.outlineMaterial == null)
+            {
+                Debug.LogWarning("data.outLineMater is null in ExecutePass");
+                return;
+            }
+
             data.outlineMaterial.SetTexture(outlineOriginalID, data.orignal);
             data.outlineMaterial.SetTexture(outlineSmoothsteppedID, data.smoothstepped);
 
@@ -208,6 +236,13 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             // SetTexture is called here because when the ExecutePass is called when the pass is being executed 
             // and the TextureHandle has been Registered as a Texture
             // which SetTexture() expects.
+            //
+            if (data.compositeMaterial == null)
+            {
+                Debug.Log("data.CompositeMaterial is null in ExecuteFinalCompositePass");
+                return;
+            }
+
             data.compositeMaterial.SetTexture("_Outline", data.outlineDST);
             data.compositeMaterial.SetTexture("_CameraColor", data.originalCameraColor);
 
