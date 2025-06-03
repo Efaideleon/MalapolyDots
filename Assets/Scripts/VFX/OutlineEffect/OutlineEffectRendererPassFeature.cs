@@ -4,6 +4,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.RenderGraphModule.Util;
 using System;
+using UnityEngine.Rendering.RendererUtils;
 
 public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 {
@@ -16,6 +17,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
         private Material _compositeMaterial;
         private BlurSettings _blurSettings;
         private TextureDesc _blurTextureDescriptor;
+        private LayerMask _outlineLayerMask;
 
         private static readonly int horizontalBlurId = Shader.PropertyToID("_HorizontalBlur");
         private static readonly int verticalBlurId = Shader.PropertyToID("_VerticalBlur");
@@ -33,6 +35,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             internal TextureHandle finalTextureComposite;
             internal Material outlineMaterial;
             internal Material compositeMaterial;
+            internal RendererListHandle rendererListHandle;
         }
 
         public OutlineRenderPass(
@@ -41,7 +44,9 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 Material smoothstepMaterial,
                 Material outlineMaterial,
                 Material compositeMaterial,
-                BlurSettings blurSettings)
+                BlurSettings blurSettings,
+                LayerMask outlineLayerMask
+        )
         {
             _maskMaterial = maskMaterial;
             _blurMaterial = blurMaterial;
@@ -49,6 +54,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             _smoothstepMaterial = smoothstepMaterial;
             _compositeMaterial = compositeMaterial;
             _blurSettings = blurSettings;
+            _outlineLayerMask = outlineLayerMask;
         }
 
         private void UpdateBlurSettings()
@@ -68,6 +74,10 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             string passName = "OutlinePass";
 
             UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
+            UniversalRenderingData universalRenderingData = frameData.Get<UniversalRenderingData>();
+            UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
+            UniversalLightData lightData = frameData.Get<UniversalLightData>();
+
             TextureHandle depthTexture = resourceData.cameraDepth;
 
             TextureDesc intermediateDesc = resourceData.activeColorTexture.GetDescriptor(renderGraph);
@@ -81,6 +91,29 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             TextureDesc maskedTextureDesc = resourceData.activeColorTexture.GetDescriptor(renderGraph);
             TextureHandle maskedTexture = renderGraph.CreateTexture(maskedTextureDesc);
 
+            // Building the RendererListHandle
+            ShaderTagId shaderTagId = new ShaderTagId("UniversalForward");
+            var sortFlags = cameraData.defaultOpaqueSortFlags;
+            DrawingSettings drawingSettings = RenderingUtils.CreateDrawingSettings(
+                    shaderTagId,
+                    universalRenderingData,
+                    cameraData,
+                    lightData,
+                    sortFlags
+            );
+            drawingSettings.overrideMaterial = _maskMaterial;
+            drawingSettings.overrideShaderPassIndex = 0;
+
+            FilteringSettings filteringSettings = new FilteringSettings(RenderQueueRange.opaque, _outlineLayerMask);
+
+            var rendererListParams = new RendererListParams(
+                    universalRenderingData.cullResults,
+                    drawingSettings,
+                    filteringSettings
+            );
+
+            var rendererListHandle = renderGraph.CreateRendererList(rendererListParams);
+
             TextureDesc smoothstepDesc = resourceData.activeColorTexture.GetDescriptor(renderGraph);
             TextureHandle smoothstepDST = renderGraph.CreateTexture(smoothstepDesc);
 
@@ -89,8 +122,15 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
             UpdateBlurSettings();
 
-            RenderGraphUtils.BlitMaterialParameters maskPara = new(depthTexture, maskedTexture, _maskMaterial, 0);
-            renderGraph.AddBlitPass(maskPara, "Build Depth Mask");
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Build Depth Mask", out var passData) )
+            {
+                passData.rendererListHandle = rendererListHandle;
+
+                builder.SetRenderAttachment(maskedTexture, 0, AccessFlags.Write);
+                builder.UseRendererList(passData.rendererListHandle);
+
+                builder.SetRenderFunc((PassData data, RasterGraphContext context) => ExecuteRendererListToMaskPass(data, context));
+            }
 
             renderGraph.AddBlitPass(maskedTexture, intermediateTexture, new Vector2(1, 1), new Vector2(0, 0), passName: "Copy Mask To Camera");
 
@@ -119,7 +159,6 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 builder.SetRenderAttachment(passData.outlineDST, 0, AccessFlags.Write);
                 //builder.SetRenderAttachmentDepth(passData.outlineDST, AccessFlags.Write);
 
-
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) => ExecutePass(data, context));
             }
 
@@ -137,7 +176,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 builder.UseTexture(passData.outlineDST, AccessFlags.Read);
                 builder.UseTexture(passData.originalCameraColor, AccessFlags.Read);
 
-                builder.SetRenderAttachment(passData.finalTextureComposite, 0, AccessFlags.Write);
+                builder.SetRenderAttachment(compositeTexture, 0, AccessFlags.Write);
                 //builder.SetRenderAttachmentDepth(passData.outlineDST, AccessFlags.Write);
 
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) => ExecuteFinalCompositePass(data, context));
@@ -174,6 +213,12 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
             Blitter.BlitTexture(context.cmd, data.outlineDST, new Vector4(1, 1, 0, 0), data.compositeMaterial, 0);
         }
+
+        static void ExecuteRendererListToMaskPass(PassData data, RasterGraphContext context)
+        {
+            context.cmd.ClearRenderTarget(clearDepth: false, clearColor: true, backgroundColor: Color.clear);
+            context.cmd.DrawRendererList(data.rendererListHandle);
+        }
     }
 
     [Serializable]
@@ -184,38 +229,53 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
     }
 
     [SerializeField] private BlurSettings blurSettings;
-    [SerializeField] Material maskMaterial;
-    [SerializeField] Material smoothstepMaterial;
-    [SerializeField] Material outlineMaterial;
-    [SerializeField] Material compositeMaterial;
+    [SerializeField] Shader maskShader;
+    [SerializeField] Shader smoothstepShader;
+    [SerializeField] Shader outlineShader;
+    [SerializeField] Shader compositeShader;
     [SerializeField] Shader blurShader;
+    [SerializeField] LayerMask outlineLayerMask;
 
     OutlineRenderPass _outlineRenderPass;
 
     public override void Create()
     {
+        if (maskShader == null)
+            return;
+
+        if (smoothstepShader == null)
+            return;
+
+        if (outlineShader == null)
+            return;
+
+        if (compositeShader == null)
+            return;
+
         if (blurShader == null)
             return;
 
-        if (smoothstepMaterial == null)
-            return;
-
         var blurMaterial = new Material(blurShader);
+        var smoothstepMaterial = new Material(smoothstepShader);
+        var outlineMaterial = new Material(outlineShader);
+        var compositeMaterial = new Material(compositeShader);
+        var maskMaterial = new Material(maskShader);
+
         _outlineRenderPass = new OutlineRenderPass(
                 maskMaterial,
                 blurMaterial,
                 smoothstepMaterial,
                 outlineMaterial,
                 compositeMaterial,
-                blurSettings);
+                blurSettings,
+                outlineLayerMask
+        );
 
-        _outlineRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+        _outlineRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (maskMaterial == null)
-            return;
         renderer.EnqueuePass(_outlineRenderPass);
     }
 }
