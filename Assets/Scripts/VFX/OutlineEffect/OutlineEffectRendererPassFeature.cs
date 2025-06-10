@@ -36,6 +36,8 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             internal TextureHandle outlineDST;
             internal TextureHandle originalCameraColor;
             internal TextureHandle finalTextureComposite;
+            internal TextureHandle cameraDepth;
+            internal TextureHandle maskedObjectsDepth;
             internal Material outlineMaterial;
             internal Material compositeMaterial;
             internal RendererListHandle rendererListHandle;
@@ -98,14 +100,21 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
             _blurTextureDescriptor = resourceData.activeColorTexture.GetDescriptor(renderGraph);
             _blurTextureDescriptor.name = _blurTextureName;
-            _blurTextureDescriptor.depthBufferBits = 0;
+            //_blurTextureDescriptor.depthBufferBits = 0;
             _blurTextureDescriptor.colorFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm;
             var dst = renderGraph.CreateTexture(_blurTextureDescriptor);
 
             TextureDesc maskedTextureDesc = resourceData.activeColorTexture.GetDescriptor(renderGraph);
             maskedTextureDesc.colorFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm;
             maskedTextureDesc.clearColor = Color.black;
+            maskedTextureDesc.name = "Masked Objects Texture";
+            //maskedTextureDesc.depthBufferBits = DepthBits.Depth16;
             TextureHandle maskedTexture = renderGraph.CreateTexture(maskedTextureDesc);
+
+            TextureDesc maskedObjectsDepthDesc = resourceData.cameraDepth.GetDescriptor(renderGraph);
+            maskedObjectsDepthDesc.name = "Masked Objects Depth Texture";
+            maskedObjectsDepthDesc.depthBufferBits = DepthBits.Depth16;
+            TextureHandle maskedObjectsDepthTexture = renderGraph.CreateTexture(maskedObjectsDepthDesc);
 
             var sortFlags = cameraData.defaultOpaqueSortFlags;
             RenderQueueRange renderQueueRange = RenderQueueRange.all;
@@ -149,6 +158,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             TextureHandle smoothstepDST = renderGraph.CreateTexture(smoothstepDesc);
 
             TextureDesc outlineDesc = resourceData.activeColorTexture.GetDescriptor(renderGraph);
+            //outlineDesc.depthBufferBits = DepthBits.Depth32;
             TextureHandle outlineTexture = renderGraph.CreateTexture(outlineDesc);
 
             UpdateBlurSettings();
@@ -159,12 +169,13 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
                 //builder.SetRenderAttachment(maskedTexture, 0, AccessFlags.Write);
                 builder.UseRendererList(passData.rendererListHandle);
+                builder.SetRenderAttachmentDepth(maskedObjectsDepthTexture, AccessFlags.Write);
                 builder.SetRenderAttachment(maskedTexture, 0, AccessFlags.Write);
-                builder.SetRenderAttachmentDepth(resourceData.activeDepthTexture, AccessFlags.Write);
 
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) => ExecuteRendererListToMaskPass(data, context));
             }
 
+            //renderGraph.AddBlitPass(maskedObjectsDepthTexture, resourceData.activeColorTexture, new Vector2(1, 1), new Vector2(0, 0), passName: "Testing Depth");
             //renderGraph.AddBlitPass(maskedTexture, resourceData.activeColorTexture, new Vector2(1, 1), new Vector2(0, 0), passName: "Copy Mask To Camera 1");
             renderGraph.AddBlitPass(maskedTexture, intermediateTexture, new Vector2(1, 1), new Vector2(0, 0), passName: "Copy Mask To Camera");
 
@@ -197,7 +208,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 builder.UseTexture(passData.smoothstepped, AccessFlags.Read);
 
                 builder.SetRenderAttachment(passData.outlineDST, 0, AccessFlags.Write);
-                //builder.SetRenderAttachmentDepth(passData.outlineDST, AccessFlags.Write);
+                //builder.SetRenderAttachmentDepth(resourceData.cameraDepth, AccessFlags.Write);
 
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) => ExecutePass(data, context));
             }
@@ -212,6 +223,8 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 passData.originalCameraColor = resourceData.activeColorTexture;
                 passData.compositeMaterial = _compositeMaterial;
                 passData.finalTextureComposite = compositeTexture;
+                passData.cameraDepth = resourceData.cameraDepth;
+                passData.maskedObjectsDepth = maskedObjectsDepthTexture;
 
                 if (passData.compositeMaterial == null)
                 {
@@ -221,6 +234,8 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
                 builder.UseTexture(passData.outlineDST, AccessFlags.Read);
                 builder.UseTexture(passData.originalCameraColor, AccessFlags.Read);
+                builder.UseTexture(passData.cameraDepth, AccessFlags.Read);
+                builder.UseTexture(passData.maskedObjectsDepth, AccessFlags.Read);
 
                 builder.SetRenderAttachment(compositeTexture, 0, AccessFlags.Write);
                 //builder.SetRenderAttachmentDepth(passData.outlineDST, AccessFlags.Write);
@@ -266,13 +281,15 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
             data.compositeMaterial.SetTexture("_Outline", data.outlineDST);
             data.compositeMaterial.SetTexture("_CameraColor", data.originalCameraColor);
+            data.compositeMaterial.SetTexture("_CameraDepth", data.cameraDepth);
+            data.compositeMaterial.SetTexture("_MaskedObjectsDepth", data.maskedObjectsDepth);
 
             Blitter.BlitTexture(context.cmd, data.outlineDST, new Vector4(1, 1, 0, 0), data.compositeMaterial, 0);
         }
 
         static void ExecuteRendererListToMaskPass(PassData data, RasterGraphContext context)
         {
-            context.cmd.ClearRenderTarget(RTClearFlags.ColorDepth, Color.black, 1,0);
+            //context.cmd.ClearRenderTarget(RTClearFlags.ColorDepth, Color.black, 1,0);
             context.cmd.DrawRendererList(data.rendererListHandle);
 
         }
