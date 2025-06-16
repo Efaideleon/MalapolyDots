@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   blurSettings:
-    horizontalBlur: 0.023
-    verticalBlur: 0.054
+    horizontalBlur: 0.004
+    verticalBlur: 0.007
   maskShader: {fileID: -6465566751694194690, guid: 41863b5059d894bacbed4fe3f08be554, type: 3}
   smoothstepShader: {fileID: -6465566751694194690, guid: 20d185f0218c8496095b04520f19c289, type: 3}
   outlineShader: {fileID: -6465566751694194690, guid: 055f8778bf2814348924ac4260a12bb2, type: 3}
   compositeShader: {fileID: -6465566751694194690, guid: a7329cc56139c401a84cc8cd04f3f8bd, type: 3}
   blurShader: {fileID: 4800000, guid: bc2b591dd76844bbba2d7ca93d311a45, type: 3}
+  colorBlurShader: {fileID: 4800000, guid: ed4a7558b3522406290974756a2af7cb, type: 3}
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 64

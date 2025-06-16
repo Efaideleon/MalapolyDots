@@ -6,11 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="12d493fe-654f-44e0-83b0-fa93ecd0ceb2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MalapolyDots/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MalapolyDots/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/background_materials/Shader Graphs_board_shader.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/background_materials/Shader Graphs_board_shader.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/background_materials/board_shader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/background_materials/board_shader.shadergraph" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/VFX/OutlineEffect/OutlineEffectRendererPassFeature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/VFX/OutlineEffect/OutlineEffectRendererPassFeature.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/Mobile_RPAsset.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Mobile_RPAsset.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/SampleMainLight.hlsl" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/SampleMainLight.hlsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/Mobile_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Mobile_Renderer.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/01MaskShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/01MaskShader.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/CompositeShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/CompositeShader.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/OutlineShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/OutlineShader.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/SmoothstepShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/ShaderGraph/SmoothstepShader.shadergraph" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Subscenes/Game_Subscene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Subscenes/Game_Subscene.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +29,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DOTS/DataComponents/RentComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DOTS/UI/Controllers/StatsPanelController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DOTS/UI/Panels/PlayerNameMoneyPanel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/VFX/OutlineEffect/OutlineEffectRendererPassFeature.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@aafc78c5567d/Runtime/Utilities/Blit.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@33a81de38539/ShaderLibrary/Input.hlsl" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -65,7 +70,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.0b10\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.1.0b10/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\abeld\Documents\GitHub\MalapolyDots -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\abeld\Documents\GitHub\MalapolyDots" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -73,7 +78,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.0b10\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.1.0b10/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\abeld\Documents\GitHub\MalapolyDots -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\abeld\Documents\GitHub\MalapolyDots" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -166,6 +171,9 @@
       <workItem from="1749066671363" duration="5041000" />
       <workItem from="1749074688641" duration="3996000" />
       <workItem from="1749142291131" duration="6714000" />
+      <workItem from="1749689818106" duration="777000" />
+      <workItem from="1749839832460" duration="4299000" />
+      <workItem from="1749845412665" duration="16036000" />
     </task>
     <servers />
   </component>
