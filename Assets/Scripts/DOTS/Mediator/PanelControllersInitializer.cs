@@ -57,9 +57,11 @@ namespace DOTS.Mediator
 
             // --- Instantiate Prefab ---
             var uiGameObject = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO);
+            Debug.Log("Instantiating GameUI UIToolkit Canvas");
             var uiDocument = uiGameObject.GetComponent<UIDocument>();
             if (uiDocument == null)
             {
+                Debug.Log("Destroying GameUI UIToolkit Canvas");
                 UnityEngine.Object.Destroy(uiGameObject);
                 return;
             }
