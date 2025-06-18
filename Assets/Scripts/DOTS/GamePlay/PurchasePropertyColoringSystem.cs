@@ -18,6 +18,9 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<MaterialOverrideColorSlider>();
         }
 
+        // TODO:
+        // This system should only run once, each time the player buys a building.
+        // TODO: Currently it is running every frame and resetting the color slider to be equal to threshold.
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -39,7 +42,8 @@ namespace DOTS.GamePlay
 
                     bool purchased = ownerID != PropertyConstants.Vacant;
 
-                    if  (purchased)
+                    // if  (purchased) BRING BACK
+                    if  (true)
                         colorSliderRW.Value = colorSliderRO.Value + coloringSpeed * dt;
 
                     if (colorSliderRO.Value >= ColoringThreshold)
