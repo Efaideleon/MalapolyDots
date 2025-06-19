@@ -25,6 +25,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
         private Materials _materials;
         private BlurSettings _blurSettings;
         private LayerMask _outlineLayerMask;
+        private Color _color;
 
         #region Shader Ids
         private static readonly int _horizontalBlurID = Shader.PropertyToID("_HorizontalBlur");
@@ -34,6 +35,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
         private static readonly int _cameralColorID = Shader.PropertyToID("_CameraColor");
         private static readonly int _customDepthTextureID = Shader.PropertyToID("_CustomDepthTexture");
         private static readonly int _outlineOutputID = Shader.PropertyToID("_OutlineOutput");
+        private static readonly int _outlineColorID = Shader.PropertyToID("_OutlineColor");
         #endregion
 
         private const string BlurTextureName = "_BlurTexture";
@@ -75,11 +77,12 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             internal RendererListHandle CustomDepthRendererListHandle;
         }
 
-        public OutlineRenderPass(Materials materials, BlurSettings blurSettings, LayerMask outlineLayerMask)
+        public OutlineRenderPass(Materials materials, BlurSettings blurSettings, LayerMask outlineLayerMask, Color color)
         {
             _materials = materials;
             _blurSettings = blurSettings;
             _outlineLayerMask = outlineLayerMask;
+            _color = color;
         }
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
@@ -152,6 +155,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
             SortingCriteria sortFlags = cameraData.defaultOpaqueSortFlags;
 
             UpdateBlurSettings();
+            UpdateOutlineColor();
 
             #region Custom Depth Texture Pass
             using (var builder = renderGraph.AddRasterRenderPass<PassData>(CustomDepthTextureRenderPassName, out var passData))
@@ -297,13 +301,20 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
 
         private void UpdateBlurSettings()
         {
-            if (_materials.Blur == null) return;
+            if (_materials.Blur == null) { return; }
 
             float horizontalBlur = _blurSettings.HorizontalBlur;
             float verticalBlur = _blurSettings.VerticalBlur;
 
             _materials.Blur.SetFloat(_horizontalBlurID, horizontalBlur);
             _materials.Blur.SetFloat(_verticalBlurID, verticalBlur);
+        }
+
+        private void UpdateOutlineColor()
+        {
+            if (_materials.Composite == null) { return; }
+
+            _materials.Composite.SetColor(_outlineColorID, _color);
         }
     }
 
@@ -330,6 +341,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
     [SerializeField] private Shader _compositeShader;
     [SerializeField] private Shader _blurShader;
     [SerializeField] private LayerMask _outlineLayerMask;
+    [SerializeField] private Color _outlineColor;
 
     private Materials _materials = new();
 
@@ -376,7 +388,8 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
         _outlineRenderPass = new OutlineRenderPass(
                 _materials,
                 _blurSettings,
-                _outlineLayerMask
+                _outlineLayerMask,
+                _outlineColor
         );
 
         _outlineRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
