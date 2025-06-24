@@ -21,6 +21,13 @@ public struct ClickRayCastData : IComponentData
     public float3 RayEnd;
 }
 
+public struct DeltaClickRayCastData : IComponentData
+{
+    public float3 RayOrigin;
+    public float3 RayDirection;
+    public float3 RayEnd;
+}
+
 public class ClickCallback : IComponentData
 {
     public Action<InputAction.CallbackContext> leftClickCallback;
@@ -43,6 +50,18 @@ public partial struct UIInputSystem : ISystem, ISystemStartStop
             ComponentType.ReadOnly<ClickRayCastData>()
         });
         SystemAPI.SetComponent(clickRayCastDataEntity, new ClickRayCastData
+        {
+            RayOrigin = default, 
+            RayDirection = default,
+            RayEnd = default 
+        });
+
+        // DeltaClickRayCastData
+        var deltaRayCastDataEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
+        {
+            ComponentType.ReadOnly<DeltaClickRayCastData>()
+        });
+        SystemAPI.SetComponent(deltaRayCastDataEntity, new DeltaClickRayCastData
         {
             RayOrigin = default, 
             RayDirection = default,

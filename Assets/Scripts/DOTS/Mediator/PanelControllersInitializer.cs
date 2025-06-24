@@ -23,6 +23,56 @@ namespace DOTS.Mediator
         public Dictionary<FixedString64Bytes, Sprite> Value;
     }
 
+    public class BotPanelRoot : IComponentData
+    {
+        public VisualElement Value;
+    }
+
+    public struct GameScreenInitializedFlag : IComponentData
+    {
+        public bool Value;
+    }
+
+    public class ButtonsPointerEnterEventCallback : IComponentData
+    {
+        public EventCallback<PointerEnterEvent> Callback;
+    }
+
+    public class ButtonsPointerMoveEventCallback : IComponentData
+    {
+        public EventCallback<PointerMoveEvent> Callback;
+    }
+
+    public class ButtonsPointerUpEventCallback : IComponentData
+    {
+        public EventCallback<PointerUpEvent> Callback;
+    }
+
+    public class PointerEnterEventCallback : IComponentData
+    {
+        public EventCallback<PointerEnterEvent> Callback;
+    }
+
+    public class PointerMoveEventCallback : IComponentData
+    {
+        public EventCallback<PointerMoveEvent> Callback;
+    }
+
+    public class PointerUpEventCallback : IComponentData
+    {
+        public EventCallback<PointerUpEvent> Callback;
+    }
+
+    public class AllUIButtons : IComponentData
+    {
+        public List<Button> Buttons;
+    }
+
+    public class ForegroundContainterComponent : IComponentData
+    {
+        public VisualElement Value;
+    }
+
     public partial struct PanelControllersInitializer : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -44,6 +94,15 @@ namespace DOTS.Mediator
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
             state.EntityManager.CreateSingleton(new SpriteRegistryComponent { Value = null });
             state.EntityManager.CreateSingleton(new CharacterSpriteDictionary { Value = new() });
+            state.EntityManager.CreateSingleton(new BotPanelRoot { Value = null });
+            state.EntityManager.CreateSingleton(new PointerEnterEventCallback { Callback = null });
+            state.EntityManager.CreateSingleton(new PointerMoveEventCallback { Callback = null });
+            state.EntityManager.CreateSingleton(new PointerUpEventCallback { Callback = null });
+            state.EntityManager.CreateSingleton(new ForegroundContainterComponent { Value = null });
+            state.EntityManager.CreateSingleton(new ButtonsPointerEnterEventCallback { Callback = null });
+            state.EntityManager.CreateSingleton(new ButtonsPointerMoveEventCallback { Callback = null });
+            state.EntityManager.CreateSingleton(new ButtonsPointerUpEventCallback { Callback = null });
+            state.EntityManager.CreateSingleton(new AllUIButtons { Buttons = null });
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -57,13 +116,15 @@ namespace DOTS.Mediator
 
             // --- Instantiate Prefab ---
             var uiGameObject = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO);
+            Debug.Log("Instantiating GameUI UIToolkit Canvas");
             var uiDocument = uiGameObject.GetComponent<UIDocument>();
             if (uiDocument == null)
             {
+                Debug.Log("Destroying GameUI UIToolkit Canvas");
                 UnityEngine.Object.Destroy(uiGameObject);
                 return;
             }
-            
+
             // Registering the properties sprites to their respective name
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
             Dictionary<FixedString64Bytes, Sprite> characterSpriteRegistry = new();
@@ -80,23 +141,95 @@ namespace DOTS.Mediator
             SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
 
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
+            if (botPanelRoot == null)
+            {
+                Debug.Log($"botPanelRoot is null at {nameof(PanelControllersInitializer)}");
+                return;
+            }
+            SystemAPI.ManagedAPI.GetSingleton<BotPanelRoot>().Value = botPanelRoot;
             var backdrop = uiDocument.rootVisualElement.Q<Button>("Backdrop");
             var playerNameMoneyContainer = botPanelRoot.Q<VisualElement>("PlayersStatsContainer");
 
             if (playerNameMoneyContainer == null)
                 return;
 
+#region Foreground Container Click Detection and Buttons
+            var foregroundContainer = uiDocument.rootVisualElement.Q<VisualElement>("foreground");
+            if (foregroundContainer == null)
+            {
+                Debug.LogWarning("foreground is missing from [GameScreen.uxml]");
+                return;
+            }
+            SystemAPI.ManagedAPI.GetSingleton<ForegroundContainterComponent>().Value = foregroundContainer;
+
+            var buttonDirtyFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonDirtyFlag>().Build();
+            SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback = (PointerEnterEvent evt) => 
+            {
+                evt.StopImmediatePropagation();
+                buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+                Debug.Log("Clicked on UIToolkit Element");
+            };
+
+            SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback = (PointerMoveEvent evt) => 
+            {
+                evt.StopImmediatePropagation();
+                buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+                Debug.Log("Moving on UIToolkit Element");
+            };
+
+            SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback = (PointerUpEvent evt) => 
+            {
+                evt.StopImmediatePropagation();
+                buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+                Debug.Log("Lifting click on UIToolkit Element");
+            };
+
+            var enterCallback = SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback;
+            var moveCallback = SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback;
+            var upCallback = SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback;
+            foregroundContainer.RegisterCallback(enterCallback, TrickleDown.TrickleDown);
+            foregroundContainer.RegisterCallback(moveCallback, TrickleDown.TrickleDown);
+            foregroundContainer.RegisterCallback(upCallback, TrickleDown.TrickleDown);
+
+            var allButtons = uiDocument.rootVisualElement.Query<Button>().ToList();
+            SystemAPI.ManagedAPI.GetSingleton<AllUIButtons>().Buttons = allButtons;
+            var bDirtyFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonDirtyFlag>().Build();
+
+            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback = (PointerEnterEvent evt) => 
+            {
+                bDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+            };
+            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback = (PointerMoveEvent evt) => 
+            {
+                bDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+            };
+            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback = (PointerUpEvent evt) => 
+            {
+                bDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+            };
+
+            var buttonsEnterCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback;
+            var buttonsMoveCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback;
+            var buttonsUpCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback;
+            foreach (var button in allButtons)
+            {
+                button.RegisterCallback(buttonsEnterCallback);
+                button.RegisterCallback(buttonsMoveCallback);
+                button.RegisterCallback(buttonsUpCallback);
+            }
+#endregion
+
             PurchasePropertyPanelContext purchasePropertyPanelContext = new() { Name = default, Price = default, };
             PurchaseHousePanelContext purchaseHousePanelContext = new() { Name = default, HousesOwned = default, Price = default };
             SpaceActionsPanelContext spaceActionsPanelContext = new() { HasMonopoly = false, IsPlayerOwner = false };
             PayRentPanelContext payRentPanelContext = new() { Rent = default };
-            PayTaxPanelContext payTaxPanelContext  = new() { Amount = default };
-            TreasurePanelContext treasurePanelContext  = new() { Title = "Treasure" };
+            PayTaxPanelContext payTaxPanelContext = new() { Amount = default };
+            TreasurePanelContext treasurePanelContext = new() { Title = "Treasure" };
             ChancePanelContext chancePanelContext = new() { Title = "Chance" };
             JailPanelContext jailPanelContext = new() { Title = "Jail" };
-            ParkingPanelContext parkingPanelContext = new () { Title = "Parking" };
-            GoToJailPanelContext goToJailPanelContext = new () { Title = "GoToJail" };
-            GoPanelContext goPanelContext = new () { Title = "Go" };
+            ParkingPanelContext parkingPanelContext = new() { Title = "Parking" };
+            GoToJailPanelContext goToJailPanelContext = new() { Title = "GoToJail" };
+            GoPanelContext goPanelContext = new() { Title = "Go" };
 
             RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
@@ -209,6 +342,8 @@ namespace DOTS.Mediator
             panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
             panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery, backdropEntityQuery);
+
+            state.EntityManager.CreateSingleton(new GameScreenInitializedFlag { Value = true });
         }
 
         public void OnUpdate(ref SystemState state)
@@ -223,6 +358,25 @@ namespace DOTS.Mediator
             panelsController.payRentPanelController.Dispose();
             panelsController.rollPanelController.Dispose();
             panelsController.backdropController.Dispose();
+
+            var foregroundContainer = SystemAPI.ManagedAPI.GetSingleton<ForegroundContainterComponent>().Value;
+            var enterCallback = SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback;
+            var moveCallback = SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback;
+            var upCallback = SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback;
+            foregroundContainer.UnregisterCallback(enterCallback, TrickleDown.TrickleDown);
+            foregroundContainer.UnregisterCallback(moveCallback, TrickleDown.TrickleDown);
+            foregroundContainer.UnregisterCallback(upCallback, TrickleDown.TrickleDown);
+
+            var allButtons = SystemAPI.ManagedAPI.GetSingleton<AllUIButtons>().Buttons;
+            var buttonsEnterCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback;
+            var buttonsMoveCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback;
+            var buttonsUpCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback;
+            foreach (var button in allButtons)
+            {
+                button.UnregisterCallback(buttonsEnterCallback);
+                button.UnregisterCallback(buttonsMoveCallback);
+                button.UnregisterCallback(buttonsUpCallback);
+            }
         }
     }
 }

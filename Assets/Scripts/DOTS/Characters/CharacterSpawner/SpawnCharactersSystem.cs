@@ -63,9 +63,9 @@ namespace DOTS.Characters.CharacterSpawner
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-                    {
-                    ComponentType.ReadOnly<SpawnFlag>(),
-                    });
+            {
+                ComponentType.ReadOnly<SpawnFlag>(),
+            });
 
             SystemAPI.SetComponent(entity, new SpawnFlag { Value = false });
         }

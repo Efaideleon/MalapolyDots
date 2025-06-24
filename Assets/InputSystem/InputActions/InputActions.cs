@@ -136,6 +136,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeltaPosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a31fbbf3-28aa-4c71-b95d-ab788ecac22e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -160,6 +169,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Press"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""15885fa0-8e7d-481b-9c9b-d0ccea4aa37a"",
+                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeltaPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -173,6 +193,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_Position = m_Touch.FindAction("Position", throwIfNotFound: true);
         m_Touch_Press = m_Touch.FindAction("Press", throwIfNotFound: true);
+        m_Touch_DeltaPosition = m_Touch.FindAction("DeltaPosition", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -352,6 +373,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<ITouchActions> m_TouchActionsCallbackInterfaces = new List<ITouchActions>();
     private readonly InputAction m_Touch_Position;
     private readonly InputAction m_Touch_Press;
+    private readonly InputAction m_Touch_DeltaPosition;
     /// <summary>
     /// Provides access to input actions defined in input action map "Touch".
     /// </summary>
@@ -371,6 +393,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Touch/Press".
         /// </summary>
         public InputAction @Press => m_Wrapper.m_Touch_Press;
+        /// <summary>
+        /// Provides access to the underlying input action "Touch/DeltaPosition".
+        /// </summary>
+        public InputAction @DeltaPosition => m_Wrapper.m_Touch_DeltaPosition;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -403,6 +429,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Press.started += instance.OnPress;
             @Press.performed += instance.OnPress;
             @Press.canceled += instance.OnPress;
+            @DeltaPosition.started += instance.OnDeltaPosition;
+            @DeltaPosition.performed += instance.OnDeltaPosition;
+            @DeltaPosition.canceled += instance.OnDeltaPosition;
         }
 
         /// <summary>
@@ -420,6 +449,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Press.started -= instance.OnPress;
             @Press.performed -= instance.OnPress;
             @Press.canceled -= instance.OnPress;
+            @DeltaPosition.started -= instance.OnDeltaPosition;
+            @DeltaPosition.performed -= instance.OnDeltaPosition;
+            @DeltaPosition.canceled -= instance.OnDeltaPosition;
         }
 
         /// <summary>
@@ -489,5 +521,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPress(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DeltaPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDeltaPosition(InputAction.CallbackContext context);
     }
 }

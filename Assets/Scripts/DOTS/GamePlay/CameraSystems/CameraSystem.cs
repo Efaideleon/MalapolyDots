@@ -1,3 +1,7 @@
+// ========================================================================
+// **Camera Rotation System**
+// * Rotates the camera when the player turns on a corner.
+// ========================================================================
 using DOTS.DataComponents;
 using Unity.Burst;
 using Unity.Entities;
@@ -43,6 +47,7 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<RollAmountCountDown>();
             state.RequireForUpdate<CurrentRound>();
             state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<FreeCameraToggleFlag>();
         }
 
         [BurstCompile]
@@ -68,7 +73,7 @@ namespace DOTS.GamePlay.CameraSystems
             bool atCorner = IsCornerSpace(currentSpaceIdx);
             bool isWalking = playerMoveState == MoveState.Walking;
 
-            bool isAnimating  = camStateRO.IsAnimating;
+            bool isAnimating = camStateRO.IsAnimating;
             bool spaceChanged = camStateRO.LastAnimatedSpaceIdx != currentSpaceIdx;
 
             if (isNewPlayer)
@@ -81,17 +86,22 @@ namespace DOTS.GamePlay.CameraSystems
             {
                 StartAnimation(ref camStateRW, currentSpaceIdx);
             }
-            
-            if (isAnimating) 
+
+            if (isAnimating)
             {
-                camStateRW.TargetOffset = PlayRotationAnimation( currentSpaceIdx, roundNum, deltaTime, ref camStateRW);
+                camStateRW.TargetOffset = PlayRotationAnimation(currentSpaceIdx, roundNum, deltaTime, ref camStateRW);
             }
             else if (!isAnimating && spaceChanged)
             {
                 camStateRW.TargetOffset = ComputeFinalOffset(currentSpaceIdx, roundNum, camStateRO);
             }
 
-            ApplyCameraTransform(ref camTransform.ValueRW, playerTransform.Position, camStateRO.TargetOffset);
+            // If free camera is enabled don't set the camera to the player position
+            bool isCameraFree = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value; 
+            if (!isCameraFree)
+            {
+                ApplyCameraTransform(ref camTransform.ValueRW, playerTransform.Position, camStateRO.TargetOffset);
+            }
             camStateRW.PreviousPlayerId = playerId;
         }
 
@@ -156,10 +166,10 @@ namespace DOTS.GamePlay.CameraSystems
         [BurstCompile]
         private readonly bool ShouldStartAnimation(bool atCorner, bool isWalking, int spaceIdx, int roundNum, in CameraState state)
         {
-            return atCorner 
-                && isWalking 
-                && !state.IsAnimating 
-                && !(spaceIdx == 0 && roundNum == 0) 
+            return atCorner
+                && isWalking
+                && !state.IsAnimating
+                && !(spaceIdx == 0 && roundNum == 0)
                 && state.LastAnimatedSpaceIdx != spaceIdx;
         }
 

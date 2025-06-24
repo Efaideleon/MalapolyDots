@@ -10,6 +10,12 @@ namespace DOTS.GamePlay.CameraSystems
         public quaternion Rotation;
     }
 
+    public struct MainCameraTranslateData : IComponentData
+    {
+        public float3 Delta;
+        public Space Space;
+    }
+
     public class CameraSetupAuthoring : MonoBehaviour
     {
         public Transform CameraTransform;
@@ -19,10 +25,17 @@ namespace DOTS.GamePlay.CameraSystems
             public override void Bake(CameraSetupAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
+
                 AddComponent(entity, new MainCameraTransform 
                 {
                     Position = authoring.CameraTransform.position,
                     Rotation = authoring.CameraTransform.rotation
+                });
+
+                AddComponent(entity, new MainCameraTranslateData 
+                {
+                    Delta = default,
+                    Space = default
                 });
             }
         }
