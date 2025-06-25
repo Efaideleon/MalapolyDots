@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using DOTS.Utilities.PropertiesBlob;
 using Unity.Collections;
 using DOTS.UI.Utilities.UIButtonEvents;
+using System.Linq;
 
 namespace DOTS.Mediator
 {
@@ -107,7 +108,7 @@ namespace DOTS.Mediator
 
         public void OnStartRunning(ref SystemState state)
         {
-            UnityEngine.Debug.Log(">>> GameUICanvasSystem.OnStartRunning CALLED <<<");
+            UnityEngine.Debug.Log("[PanelControllersInitializer] | >>> GameUICanvasSystem.OnStartRunning CALLED <<<");
             var canvasRef = SystemAPI.ManagedAPI.GetSingleton<CanvasReferenceComponent>();
             if (canvasRef.uiDocumentGO == null)
             {
@@ -116,11 +117,11 @@ namespace DOTS.Mediator
 
             // --- Instantiate Prefab ---
             var uiGameObject = UnityEngine.Object.Instantiate(canvasRef.uiDocumentGO);
-            Debug.Log("Instantiating GameUI UIToolkit Canvas");
+            Debug.Log("[PanelControllersInitializer] | Instantiating GameUI UIToolkit Canvas");
             var uiDocument = uiGameObject.GetComponent<UIDocument>();
             if (uiDocument == null)
             {
-                Debug.Log("Destroying GameUI UIToolkit Canvas");
+                Debug.Log("[PanelControllersInitializer] | Destroying GameUI UIToolkit Canvas");
                 UnityEngine.Object.Destroy(uiGameObject);
                 return;
             }
@@ -143,7 +144,7 @@ namespace DOTS.Mediator
             var botPanelRoot = uiDocument.rootVisualElement.Q<VisualElement>("game-screen-bottom-container");
             if (botPanelRoot == null)
             {
-                Debug.Log($"botPanelRoot is null at {nameof(PanelControllersInitializer)}");
+                Debug.Log($"[PanelControllersInitializer] | botPanelRoot is null at {nameof(PanelControllersInitializer)}");
                 return;
             }
             SystemAPI.ManagedAPI.GetSingleton<BotPanelRoot>().Value = botPanelRoot;
@@ -157,7 +158,7 @@ namespace DOTS.Mediator
             var foregroundContainer = uiDocument.rootVisualElement.Q<VisualElement>("foreground");
             if (foregroundContainer == null)
             {
-                Debug.LogWarning("foreground is missing from [GameScreen.uxml]");
+                Debug.LogWarning("[PanelControllersInitializer] | foreground is missing from [GameScreen.uxml]");
                 return;
             }
             SystemAPI.ManagedAPI.GetSingleton<ForegroundContainterComponent>().Value = foregroundContainer;
@@ -167,21 +168,21 @@ namespace DOTS.Mediator
             {
                 evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
-                Debug.Log("Clicked on UIToolkit Element");
+                Debug.Log("[PanelControllersInitializer] | Clicked on UIToolkit Element");
             };
 
             SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback = (PointerMoveEvent evt) => 
             {
                 evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
-                Debug.Log("Moving on UIToolkit Element");
+                Debug.Log("[PanelControllersInitializer] | Moving on UIToolkit Element");
             };
 
             SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback = (PointerUpEvent evt) => 
             {
                 evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
-                Debug.Log("Lifting click on UIToolkit Element");
+                Debug.Log("[PanelControllersInitializer] | Lifting click on UIToolkit Element");
             };
 
             var enterCallback = SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback;
@@ -192,26 +193,34 @@ namespace DOTS.Mediator
             foregroundContainer.RegisterCallback(upCallback, TrickleDown.TrickleDown);
 
             var allButtons = uiDocument.rootVisualElement.Query<Button>().ToList();
+
+            // Names of buttons that raycast can still go through.
+            List<string> raycastableButtonNames = new List<string> ()
+            {
+                backdrop.name
+            };
+            // Buttons that block raycast.
+            var buttonsBlockingRaycast = allButtons.Where(button => !raycastableButtonNames.Contains(button.name));
             SystemAPI.ManagedAPI.GetSingleton<AllUIButtons>().Buttons = allButtons;
-            var bDirtyFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonDirtyFlag>().Build();
 
             SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback = (PointerEnterEvent evt) => 
             {
-                bDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+                buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
             };
             SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback = (PointerMoveEvent evt) => 
             {
-                bDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+                buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
             };
             SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback = (PointerUpEvent evt) => 
             {
-                bDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
+                buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
             };
 
             var buttonsEnterCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback;
             var buttonsMoveCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback;
             var buttonsUpCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback;
-            foreach (var button in allButtons)
+            // filter the backdrop button.
+            foreach (var button in buttonsBlockingRaycast)
             {
                 button.RegisterCallback(buttonsEnterCallback);
                 button.RegisterCallback(buttonsMoveCallback);

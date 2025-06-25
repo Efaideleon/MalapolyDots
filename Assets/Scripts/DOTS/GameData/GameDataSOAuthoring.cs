@@ -9,7 +9,7 @@ namespace DOTS.GameData
 
         void Start()
         {
-            Debug.Log("Start in GameDataSOAuthoring");
+            Debug.Log("[GameDataSOAuthoring] | Start in GameDataSOAuthoring");
             EntityManager entityManger = World.DefaultGameObjectInjectionWorld.EntityManager;
             var entity = entityManger.CreateEntity();
 

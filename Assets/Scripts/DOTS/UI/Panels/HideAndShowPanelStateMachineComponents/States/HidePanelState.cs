@@ -24,7 +24,7 @@ public class HidePanelState : State
     public override void Enter()
     {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Entering HideState");
+        UnityEngine.Debug.Log("[HidePanelState] | Entering HideState");
 #endif
         _isCurrentState = true;
         IsPlaying = true;
@@ -33,7 +33,7 @@ public class HidePanelState : State
     public override void Execute()
     {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Executing HideState");
+        UnityEngine.Debug.Log("[HidePanelState] | Executing HideState");
 #endif
         _panel.Hide();
     }
@@ -41,7 +41,7 @@ public class HidePanelState : State
     public override void Exit()
     {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Exitting HideState");
+        UnityEngine.Debug.Log("[HidePanelState] | Exiting HideState");
 #endif
         _isCurrentState = false;
     }

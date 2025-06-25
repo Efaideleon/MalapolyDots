@@ -18,7 +18,7 @@ namespace DOTS.GamePlay.CleanupSystems
             {
                 if (flag.ValueRO.Value == true)
                 {
-                    UnityEngine.Debug.Log("Cleaning up UIButtonDirtyFlag");
+                    UnityEngine.Debug.Log("[UIButtonDirtyFlagCleanupSystem] | Cleaning up UIButtonDirtyFlag");
                     flag.ValueRW.Value = false;
                 }
             }

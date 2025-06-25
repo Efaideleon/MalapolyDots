@@ -50,7 +50,7 @@ namespace DOTS.UI.Controllers
 
         private void DispatchRollEvent()
         {
-            UnityEngine.Debug.Log($"Clicked on roll and sent event");
+            UnityEngine.Debug.Log($"[RollPanelController] | Clicked on roll and sent event");
             var eventBuffer = RollAmountQuery.GetSingletonBuffer<RollEventBuffer>();
             eventBuffer.Add(new RollEventBuffer{});
         }

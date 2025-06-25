@@ -2,8 +2,7 @@
 // **Camera Panning System**
 // * Pans the camera by dragging finger on floor.
 // ========================================================================
-using DOTS.EventBuses;
-using DOTS.GamePlay.CameraSystems; 
+using DOTS.GamePlay.CameraSystems;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -29,6 +28,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<DeltaClickRayCastData>();
             state.RequireForUpdate<ClickRayCastData>();
             state.RequireForUpdate<ClickData>();
+            state.RequireForUpdate<RayCastResult>();
         }
 
         [BurstCompile]
@@ -39,26 +39,26 @@ namespace DOTS.GamePlay
 
             var camTranslateData = SystemAPI.GetSingletonRW<MainCameraTranslateData>();
 
-            foreach (var clickData in SystemAPI.Query<RefRO<ClickData>>().WithChangeFilter<ClickData>())
+            foreach (var hit in SystemAPI.Query<RefRO<RayCastResult>>().WithChangeFilter<RayCastResult>())
             {
-                var isUIButtonClicked = SystemAPI.GetSingleton<UIButtonDirtyFlag>().Value;
-                UnityEngine.Debug.Log($"CameraPanningSystem isUIButtonClicked: {isUIButtonClicked}");
-                if (isUIButtonClicked)
-                {
-                    UnityEngine.Debug.Log("CameraPanningSystem raycast skipped");
+                // Check if we can pan the camera.
+                bool isUIButtonClicked = SystemAPI.GetSingleton<UIButtonDirtyFlag>().Value;
+                bool isPropertyClicked = hit.ValueRO.PropertyHit.Entity != Entity.Null;
+                bool isFreeCamera = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value;
+
+                if (!CanPan(isUIButtonClicked, isFreeCamera, isPropertyClicked))
                     break;
-                }
 
-                var rayNow = SystemAPI.GetSingleton<ClickRayCastData>();
+                // Process RayCast data.
+                var clickPhase = hit.ValueRO.ClickPhase;
+
                 var rayBefore = SystemAPI.GetSingleton<DeltaClickRayCastData>();
+                RaycastInput rayBeforeInput = CreateRaycastInput(rayBefore.RayOrigin, rayBefore.RayEnd, floorLayerBitMask);
 
-                RaycastInput rayNowInput = CreateRaycastInput(rayNow.RayOrigin, rayNow.RayEnd, floorLayerBitMask);
-                RaycastInput rayBeforeInput = CreateRaycastInput(rayBefore.RayOrigin, rayBefore.RayEnd, floorLayerBitMask); 
-
-                collisionWorld.CastRay(rayNowInput, out RaycastHit rayHitNow);
+                HitData rayHitNow = hit.ValueRO.FloorHit;
                 collisionWorld.CastRay(rayBeforeInput, out RaycastHit rayHitBefore);
 
-                switch (clickData.ValueRO.Phase)
+                switch (clickPhase)
                 {
                     case InputActionPhase.Performed:
                         if (rayHitNow.Entity != Entity.Null && rayHitBefore.Entity != Entity.Null)
@@ -70,6 +70,33 @@ namespace DOTS.GamePlay
                         break;
                 }
             }
+        }
+
+        [BurstCompile]
+        public readonly bool CanPan(bool isUIButtonClicked, bool isFreeCamera, bool isPropertyClicked)
+        {
+                if (isUIButtonClicked)
+                {
+#if UNITY_EDITOR
+                    Debug.Log("[CameraPanningSystem] | UI Element or Button Clicked. No Panning.");
+#endif
+                    return false;
+                }
+                if (isPropertyClicked)
+                {
+#if UNITY_EDITOR
+                    Debug.Log("[CameraPanningSystem] | Entity Hit. No Panning.");
+#endif
+                    return false;
+                }
+                if (!isFreeCamera)
+                {
+#if UNITY_EDITOR
+                    Debug.Log("[CameraPanningSystem] | FreeCamera is off. No Panning.");
+#endif
+                    return false;
+                }
+                return true;
         }
 
         [BurstCompile]

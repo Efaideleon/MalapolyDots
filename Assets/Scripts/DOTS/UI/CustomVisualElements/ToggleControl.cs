@@ -30,7 +30,7 @@ namespace DOTS.UI.CustomVisualElements
             }
             else
             {
-                Debug.LogWarning("root is null in ToggleControl");
+                Debug.LogWarning("[ToggleControl] | root is null in ToggleControl");
             }
         }
 
@@ -43,7 +43,7 @@ namespace DOTS.UI.CustomVisualElements
             }
             else
             {
-                Debug.LogWarning("BuyButton or SellButton is null in ToggleControl in SubscribeEvents");
+                Debug.LogWarning("[ToggleControl] | BuyButton or SellButton is null in ToggleControl in SubscribeEvents");
             }
         }
 
@@ -51,26 +51,26 @@ namespace DOTS.UI.CustomVisualElements
         {
             if (ToggleHighlight == null && BuyButton == null)
             {
-                Debug.LogWarning("ToggleHighlight or BuyButton is null");
+                Debug.LogWarning("[ToggleControl] | ToggleHighlight or BuyButton is null");
                 return;
             }
             float target = BuyButton.layout.x;
             ToggleHighlight.style.left = new StyleLength(target);
             State = ToggleState.Buy;
-            Debug.Log("changing toggle state  to buy");
+            Debug.Log("[ToggleControl] | changing toggle state  to buy");
         }
 
         public void SetToSell()
         {
             if (ToggleHighlight == null && SellButton == null)
             {
-                Debug.LogWarning("ToggleHighlight or SellButton is null");
+                Debug.LogWarning("[ToggleControl] | ToggleHighlight or SellButton is null");
                 return;
             }
             float target = SellButton.layout.x;
             ToggleHighlight.style.left = new StyleLength(target);
             State = ToggleState.Sell;
-            Debug.Log("changing state toggle to sell");
+            Debug.Log("[ToggleControl] | changing state toggle to sell");
         }
 
         public void InitializeToggle() => SetToBuy();
@@ -84,7 +84,7 @@ namespace DOTS.UI.CustomVisualElements
             }
             else
             {
-                Debug.LogWarning("BuyButton or SellButton is null in ToggleControl when diposing");
+                Debug.LogWarning("[ToggleControl] | BuyButton or SellButton is null in ToggleControl when diposing");
             }
         }
     }

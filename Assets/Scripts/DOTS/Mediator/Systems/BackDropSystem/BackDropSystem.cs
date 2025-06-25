@@ -23,7 +23,7 @@ public partial struct BackDropSystem : ISystem
 
             foreach (var _ in buffer)
             {
-                UnityEngine.Debug.Log("Hiding Panels from the Backdrop system");
+                UnityEngine.Debug.Log("[BackDropSystem] | Hiding Panels from the Backdrop system");
                 controller.backdropController.HidePanelsAndButton();
             }
 

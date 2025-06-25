@@ -19,7 +19,7 @@ namespace DOTS.UI.Panels
             Root.name = "PlayerNameMoneyPanel";
             if (Root == null)
             {
-                UnityEngine.Debug.Log("Stats panels parent is null");
+                UnityEngine.Debug.Log("[PlayerNameMoneyPanel] | Stats panels parent is null");
             }
 
             Root.style.width = StyleKeyword.Auto;

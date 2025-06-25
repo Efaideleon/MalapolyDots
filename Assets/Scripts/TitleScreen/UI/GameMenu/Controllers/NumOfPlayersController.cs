@@ -25,7 +25,7 @@ public class NumOfPlayersController
             _dataEventQuery.GetSingletonBuffer<NumberOfPlayersEventBuffer>()
                 .Add(new NumberOfPlayersEventBuffer { NumberOfPlayers = num });
         else
-            UnityEngine.Debug.LogWarning("_eventBufferQuery not set in NumOfPlayersController");
+            UnityEngine.Debug.LogWarning("[NumOfPlayersController] | _eventBufferQuery not set in NumOfPlayersController");
     }
 
     public void OnDispose() => _optionsController.OnDispose();

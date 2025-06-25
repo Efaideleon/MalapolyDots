@@ -77,7 +77,7 @@ namespace Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
             else
             {
 #if UNITY_EDITOR
-                UnityEngine.Debug.LogWarning($"No visibility is set, panel is already in {target}");
+                UnityEngine.Debug.LogWarning($"[HideAndShowPanelStateMachine] | No visibility is set, panel is already in {target}");
 #endif
             }
         }
@@ -107,7 +107,7 @@ namespace Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.LogError($"StateMachine execution failed during {action.Method.Name}: {ex}");
+                UnityEngine.Debug.LogError($"[HideAndShowPanelStateMachine] | StateMachine execution failed during {action.Method.Name}: {ex}");
             }
         }
 

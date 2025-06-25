@@ -61,7 +61,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.Log("HousesOwnedCounter is null");
+                UnityEngine.Debug.Log("[PurchaseHousePanel] | HousesOwnedCounter is null");
             }
         }
 
@@ -73,7 +73,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.Log("PropertyName is null");
+                UnityEngine.Debug.Log("[PurchaseHousePanel] | PropertyName is null");
             }
         }
 
@@ -85,7 +85,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.LogWarning("Plus button is null");
+                UnityEngine.Debug.LogWarning("[PurchaseHousePanel] | Plus button is null");
             }
             if (MinusButton != null)
             {
@@ -93,7 +93,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.LogWarning("Minus button is null");
+                UnityEngine.Debug.LogWarning("[PurchaseHousePanel] | Minus button is null");
             }
             if (OkButton != null)
             {
@@ -101,7 +101,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.LogWarning("OkButton is null");
+                UnityEngine.Debug.LogWarning("[PurchaseHousePanel] | OkButton is null");
             }
             if (CloseButton != null)
             {
@@ -109,7 +109,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.LogWarning("CloseButton is null");
+                UnityEngine.Debug.LogWarning("[PurchaseHousePanel] | CloseButton is null");
             }
         }
 
@@ -170,7 +170,7 @@ namespace DOTS.UI.Panels
             }
             else
             {
-                UnityEngine.Debug.LogWarning("BuyingHouseCounter Label is null");
+                UnityEngine.Debug.LogWarning("[PurchaseHousePanel] | BuyingHouseCounter Label is null");
             }
         }
     }

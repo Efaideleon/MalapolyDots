@@ -33,14 +33,14 @@ public partial struct OwnerShipLabelImageUpdateSystem : ISystem
                 var labelGOs = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>().GameObjects;
                 var imagePanel = labelGOs[propertyName.ValueRO.Value].transform.GetChild(0).GetComponentInChildren<Image>();
                 var characterSpriteDictionary = SystemAPI.ManagedAPI.GetSingleton<CharacterSpriteDictionary>();
-                UnityEngine.Debug.Log($"Looking up sprite for {playerName.ValueRO.Value}");
+                UnityEngine.Debug.Log($"[OwnerShipLabelImageUpdateSystem] | Looking up sprite for {playerName.ValueRO.Value}");
                 if (characterSpriteDictionary.Value.TryGetValue(playerName.ValueRO.Value, out var test))
                 {
-                    UnityEngine.Debug.Log($"Found sprite {playerName.ValueRO.Value}");
+                    UnityEngine.Debug.Log($"[OwnerShipLabelImageUpdateSystem] | Found sprite {playerName.ValueRO.Value}");
                 }
                 else
                 {
-                    UnityEngine.Debug.Log($"Did not find sprite {playerName.ValueRO.Value}");
+                    UnityEngine.Debug.Log($"[OwnerShipLabelImageUpdateSystem] | Did not find sprite {playerName.ValueRO.Value}");
                 }
                 imagePanel.sprite = characterSpriteDictionary.Value[playerName.ValueRO.Value];
                 labelGOs[propertyName.ValueRO.Value].SetActive(true);

@@ -69,7 +69,7 @@ public partial struct TitleScreenControllersSetup : ISystem, ISystemStartStop
                     ref lastNumOfRoundsClicked.ValueRW);
             var changeScreenBuffer = changeScreenEventBufferQuery.GetSingletonBuffer<ChangeScreenEventBuffer>();
             changeScreenBuffer.Add(new ChangeScreenEventBuffer { ScreenType = ScreenType.NumOfRounds });
-            UnityEngine.Debug.Log("Skipping GameMenu");
+            UnityEngine.Debug.Log("[TitleScreenControllersSetup] | Skipping GameMenu");
         };
 #endif
 

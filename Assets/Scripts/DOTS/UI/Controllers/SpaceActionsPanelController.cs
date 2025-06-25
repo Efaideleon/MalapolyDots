@@ -34,7 +34,7 @@ namespace DOTS.UI.Controllers
                     noMonopolyYetPanel == null ||
                     purchasePropertyPanelController == null)
             {
-                UnityEngine.Debug.LogWarning("Panel or PurchaseHousePanel is null");
+                UnityEngine.Debug.LogWarning("[SpaceActionsPanelController] | Panel or PurchaseHousePanel is null");
             }
             else
             {

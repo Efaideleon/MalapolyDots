@@ -85,7 +85,7 @@ namespace DOTS.UI.Panels
         public void Show()
         {
 #if UNITY_EDITOR
-            UnityEngine.Debug.Log($"{nameof(SpaceActionsPanel)}: {nameof(Show)}");
+            UnityEngine.Debug.Log($"[{nameof(SpaceActionsPanel)}] | {nameof(Show)}");
 #endif
             AddClassAnimation(); 
             ToggleButtonsState(true);
@@ -94,7 +94,7 @@ namespace DOTS.UI.Panels
         public void Hide()
         {
 #if UNITY_EDITOR
-            UnityEngine.Debug.Log($"{nameof(SpaceActionsPanel)}: {nameof(Hide)}");
+            UnityEngine.Debug.Log($"[{nameof(SpaceActionsPanel)}] | {nameof(Hide)}");
 #endif
             RemoveClassAnimation(); 
             ToggleButtonsState(false);

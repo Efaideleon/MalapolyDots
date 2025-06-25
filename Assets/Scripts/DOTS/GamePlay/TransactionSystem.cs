@@ -117,7 +117,7 @@ namespace DOTS.GamePlay
                         {
                             SystemAPI.GetSingletonRW<CurrentRound>().ValueRW.Value += 1;
                             currentTurn = 0;
-                            UnityEngine.Debug.Log($"Changing Round {SystemAPI.GetSingleton<CurrentRound>().Value}");
+                            UnityEngine.Debug.Log($"[TransactionSystem] | Changing Round {SystemAPI.GetSingleton<CurrentRound>().Value}");
                         }
 
                         var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();

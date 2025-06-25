@@ -36,24 +36,24 @@ public class HideAndShowPanelController
     {
         if (!IsPlaying && lastActionPlayed != action.Type)
         {
-            UnityEngine.Debug.Log($"Playing action: {action.Type}");
+            UnityEngine.Debug.Log($"[HideAndShowPanelController] | Playing action: {action.Type}");
             IsPlaying = true;
             action.Action();
             lastActionPlayed = action.Type;
         }
         else if (IsPlaying && lastActionPlayed == action.Type && _actions.Count < 1)
         {
-            UnityEngine.Debug.Log($"lastActionPlayed: {lastActionPlayed}");
+            UnityEngine.Debug.Log($"[HideAndShowPanelController] | lastActionPlayed: {lastActionPlayed}");
         }
         else if (!IsPlaying && lastActionPlayed == action.Type)
         {
-            UnityEngine.Debug.Log($"lastActionPlayed2: {lastActionPlayed}");
+            UnityEngine.Debug.Log($"[HideAndShowPanelController] | lastActionPlayed2: {lastActionPlayed}");
         }
         else
         {
             if (CanQueue(action.Type))
             {
-                UnityEngine.Debug.Log($"Queuing Action: {action.Type}");
+                UnityEngine.Debug.Log($"[HideAndShowPanelController] | Queuing Action: {action.Type}");
                 _actions.Enqueue(action);
                 _lastActionTypeAdded = action.Type;
             }
@@ -66,18 +66,18 @@ public class HideAndShowPanelController
         {
             if (e.stylePropertyNames.Contains(styleTranslate)) 
             {
-                UnityEngine.Debug.Log("Animation Ended");
+                UnityEngine.Debug.Log("[HideAndShowPanelController] | Animation Ended");
                 if (_actions.Count > 0)
                 {
                     var action = _actions.Dequeue();
-                    UnityEngine.Debug.Log($"Playing next animation: {action.Type}");
+                    UnityEngine.Debug.Log($"[HideAndShowPanelController] | Playing next animation: {action.Type}");
                     action.Action();
                     lastActionPlayed = action.Type;
                 }
                 else
                 {
                     IsPlaying = false;
-                    UnityEngine.Debug.Log("actions queue has been emptied");
+                    UnityEngine.Debug.Log("[HideAndShowPanelController] | actions queue has been emptied");
                     _lastActionTypeAdded = ActionType.None;
                 }
             }

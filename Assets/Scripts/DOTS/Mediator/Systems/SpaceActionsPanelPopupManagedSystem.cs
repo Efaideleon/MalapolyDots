@@ -1,3 +1,4 @@
+using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using Unity.Entities;
@@ -27,7 +28,7 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                 if (panelControllers.backdropController == null)
                     break;
 
-                UnityEngine.Debug.Log($"Show space actions panels");
+                UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Show space actions panels");
                 panelControllers.spaceActionsPanelController.ShowPanel();
                 panelControllers.backdropController.ShowBackdrop();
             }
@@ -47,12 +48,18 @@ public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
                 {
                     if (clickedProperty.ValueRO.entity != Entity.Null)
                     {
-                        var clickData = SystemAPI.GetSingleton<ClickData>();
+                        var clickPhase = clickedProperty.ValueRO.ClickPhase;
+                        UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | clickData.Phase {clickPhase}");
                         var lastPropertyClicked = SystemAPI.GetSingletonRW<LastPropertyClicked>();
+
+                        if (SystemAPI.HasComponent<NameComponent>(clickedProperty.ValueRO.entity))
+                        {
+                            var name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity);
+                            UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Entity Hit: {name.Value}");
+                        }
                         lastPropertyClicked.ValueRW.entity = clickedProperty.ValueRO.entity;
 
-                        UnityEngine.Debug.Log($"clickData.Phase {clickData.Phase}");
-                        switch (clickData.Phase)
+                        switch (clickPhase)
                         {
                             case InputActionPhase.Canceled:
                                 panelControllers.spaceActionsPanelController.ShowPanel();

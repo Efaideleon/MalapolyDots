@@ -25,7 +25,7 @@ namespace DOTS.Mediator.Systems.GoPanelSystems
                     if (panelControllers.backdropController == null)
                         break;
 
-                    UnityEngine.Debug.Log("Shwoing Go Panel!");
+                    UnityEngine.Debug.Log("[GoPanelPopupManagedSystem] | Showing Go Panel!");
                     panelControllers.goPanelController.ShowPanel();
                     panelControllers.backdropController.ShowBackdrop();
                 }

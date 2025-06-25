@@ -15,7 +15,7 @@ namespace DOTS.Mediator.Systems
     public struct FreeCameraButtonTag : IComponentData
     { }
 
-    public partial struct FreeCameraButtonSystem : ISystem, ISystemStartStop
+    public partial struct FreeCameraToggleButtonSystem : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
         {
@@ -27,6 +27,7 @@ namespace DOTS.Mediator.Systems
             state.EntityManager.AddComponentData(entity, new ButtonManagedData { Button = null, Callback = null});
             SystemAPI.SetComponent(entity, new FreeCameraButtonTag { });
 
+            state.EntityManager.CreateSingleton(new FreeCameraToggleFlag { Value = false });
             state.RequireForUpdate<BotPanelRoot>();
             state.RequireForUpdate<FreeCameraToggleFlag>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
@@ -38,14 +39,14 @@ namespace DOTS.Mediator.Systems
             var botPanelRoot = SystemAPI.ManagedAPI.GetSingleton<BotPanelRoot>().Value;
             if (botPanelRoot == null)
             {
-                Debug.LogWarning($"botPanelRoot is null. [{nameof(FreeCameraButtonSystem)}]");
+                Debug.LogWarning($"[FreeCameraButtonSystem] | botPanelRoot is null. [{nameof(FreeCameraToggleButtonSystem)}]");
                 return;
             }
 
             var button = botPanelRoot.Q<Button>("FreeCameraButton");
             if (button == null)
             {
-                Debug.LogWarning($"FreeCameraButton is missing. [{nameof(FreeCameraButtonSystem)}]");
+                Debug.LogWarning($"[FreeCameraButtonSystem] | FreeCameraButton is missing. [{nameof(FreeCameraToggleButtonSystem)}]");
                 return;
             }
 

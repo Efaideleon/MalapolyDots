@@ -24,7 +24,7 @@ public class ShowPanelState : State
     public override void Enter()
     {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Entering ShowState");
+        UnityEngine.Debug.Log("[ShowPanelState] | Entering ShowState");
 #endif
         IsPlaying = true;
         _isCurrentState = true;
@@ -33,7 +33,7 @@ public class ShowPanelState : State
     public override void Execute()
     {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Executing ShowState");
+        UnityEngine.Debug.Log("[ShowPanelState] | Executing ShowState");
 #endif
         _panel.Show();
     }
@@ -41,7 +41,7 @@ public class ShowPanelState : State
     public override void Exit()
     {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Exitting ShowState");
+        UnityEngine.Debug.Log("[ShowPanelState] | Exiting ShowState");
 #endif
         _isCurrentState = false;
     }

@@ -134,7 +134,7 @@ public class CharacterSelectionController
                 });
         }
         else
-            UnityEngine.Debug.LogWarning("_eventBufferQuery not set in CharacterSelectionControler");
+            UnityEngine.Debug.LogWarning("[CharacterSelectionControler] | _eventBufferQuery not set in CharacterSelectionControler");
     }
 
     private void DispatchScreenChangeEvent()

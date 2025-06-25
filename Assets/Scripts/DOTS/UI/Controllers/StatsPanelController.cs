@@ -147,7 +147,7 @@ namespace DOTS.UI.Controllers
         public void Update()
         {
             var panel = StatsPanelRegistry[Context.Name.ToString()];
-            UnityEngine.Debug.Log($"Updating panel: {Context.Name}");
+            UnityEngine.Debug.Log($"[StatsPanelController] | Updating panel: {Context.Name}");
             panel.UpdatePlayerNameLabelText(Context.Name.ToString());
             panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
         }

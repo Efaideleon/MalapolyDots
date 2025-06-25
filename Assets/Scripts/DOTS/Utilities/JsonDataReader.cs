@@ -122,7 +122,7 @@ namespace DOTS.Utilities
 
                 if (string.IsNullOrEmpty(spacesDataString))
                 {
-                    Debug.Log("JSON string is empty, check the file loading");
+                    Debug.Log("[JsonDataReader] | JSON string is empty, check the file loading");
                 }
                 else
                 {

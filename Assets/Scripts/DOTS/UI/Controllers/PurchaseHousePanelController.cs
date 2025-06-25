@@ -50,11 +50,11 @@ namespace DOTS.UI.Controllers
                     }
                     else 
                     {
-                        UnityEngine.Debug.LogWarning("buyHouseEventsQuery not set in PurchasePanelController");
+                        UnityEngine.Debug.LogWarning("[PurchaseHousePanelController] | buyHouseEventsQuery not set in PurchasePanelController");
                     }
                     break;
                 case ToggleState.Sell:
-                    UnityEngine.Debug.Log("Selling abel houses lol");
+                    UnityEngine.Debug.Log("[PurchaseHousePanelController] | Selling abel houses lol");
                     break;
             }
         }

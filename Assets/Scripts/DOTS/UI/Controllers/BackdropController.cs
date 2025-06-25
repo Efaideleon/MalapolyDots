@@ -20,12 +20,12 @@ namespace DOTS.UI.Controllers
             _controllers = new();
             if (backdrop == null)
             {
-                UnityEngine.Debug.LogWarning("backdrop is null");
+                UnityEngine.Debug.LogWarning("[BackdropController] | backdrop is null");
             }
             else
             {
                 Backdrop = backdrop;
-                UnityEngine.Debug.Log("Loading Backdrop");
+                UnityEngine.Debug.Log("[BackdropController] | Loading Backdrop");
                 SubscribeEvents();
            }
             HideBackdrop();
@@ -45,7 +45,7 @@ namespace DOTS.UI.Controllers
 
         public void DebugButton()
         {
-            UnityEngine.Debug.Log("Backdorp panel clicked");
+            UnityEngine.Debug.Log("[BackdropController] | Backdorp panel clicked");
         }
 
         public void HidePanelsAndButton()
@@ -71,7 +71,7 @@ namespace DOTS.UI.Controllers
 
         public void HideRegisteredPanels()
         {
-            UnityEngine.Debug.Log("Hiding Registered panels");
+            UnityEngine.Debug.Log("[BackdropController] | Hiding Registered panels");
             foreach (var panel in PanelsToHideRegistry)
                 panel.Hide();
 

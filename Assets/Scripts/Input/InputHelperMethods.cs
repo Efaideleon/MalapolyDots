@@ -33,6 +33,7 @@ public static class InputHelperMethods
     public static void SetClickData(ref ClickData clickData, Vector2 clickPosition, InputActionPhase phase)
     {
         clickData.Position = new float2(clickPosition.x, clickPosition.y);
+        UnityEngine.Debug.Log($"[SetClickData] | Click Phase: {phase}");
         clickData.Phase = phase;
     }
 
