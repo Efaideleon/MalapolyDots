@@ -2,7 +2,6 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Mathematics;
-using UnityEditor.SceneManagement;
 
 // ======================================================================
 // This system updates the camera transform and translation using managed
@@ -18,7 +17,8 @@ namespace DOTS.GamePlay.CameraSystems
 
     public partial struct CameraManageUpdateSystem : ISystem
     {
-        const float MaxFlingSpeed = 10f;
+        // TODO: Extract the panning logic into a burstable system
+        const float MaxFlingSpeed = 30f;
         const float DampingPerSecond = 5f;
 
         public void OnCreate(ref SystemState state)
@@ -57,9 +57,13 @@ namespace DOTS.GamePlay.CameraSystems
                 {
                     Camera.main.transform.Translate(translateData.ValueRO.Delta, translateData.ValueRO.Space);
 
+                    // Velocity is a change in distance over a change in time, with both magnitude and direction.
                     var velocity = delta / dt;
                     var speed = math.length(velocity);
-                    var direction = velocity / speed;
+
+                    // Finding the unit vector for direction.
+                    var direction = velocity / speed; 
+
                     if (speed > MaxFlingSpeed)
                         velocity = direction * MaxFlingSpeed;
 

@@ -5,7 +5,7 @@ namespace DOTS.GamePlay.CameraSystems
 {
     public partial struct CameraManagedConfigSystem : ISystem
     {
-        private const int CameraOrthographicSize = 12;
+        private const int CameraOrthographicSize = 14;
 
         public void OnCreate(ref SystemState state)
         {
