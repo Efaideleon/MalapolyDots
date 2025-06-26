@@ -13,7 +13,6 @@ namespace DOTS.GamePlay.CameraSystems
     public struct MainCameraTranslateData : IComponentData
     {
         public float3 Delta;
-        public Space Space;
     }
 
     public class CameraSetupAuthoring : MonoBehaviour
@@ -35,7 +34,6 @@ namespace DOTS.GamePlay.CameraSystems
                 AddComponent(entity, new MainCameraTranslateData 
                 {
                     Delta = default,
-                    Space = default
                 });
             }
         }
