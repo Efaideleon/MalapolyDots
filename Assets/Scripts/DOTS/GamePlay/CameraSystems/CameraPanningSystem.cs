@@ -27,7 +27,7 @@ namespace DOTS.GamePlay
         const uint floorLayerBitMask = 1u << 8;
         const float MaxFlingSpeed = 30f;
         const float DampingPerSecond = 5f;
-        const uint StartPanningThreshold = 0;
+        const float StartPanningThreshold = 0;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -47,12 +47,12 @@ namespace DOTS.GamePlay
             PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
             var collisionWorld = world.CollisionWorld;
 
-            ref var camTranslateData = ref SystemAPI.GetSingletonRW<MainCameraTranslateData>().ValueRW;
             ref var cache = ref SystemAPI.GetSingletonRW<Cache>().ValueRW;
             var dt = SystemAPI.Time.DeltaTime;
 
             foreach (var hit in SystemAPI.Query<RefRO<RayCastResult>>().WithChangeFilter<RayCastResult>())
             {
+                var camTranslateData = SystemAPI.GetSingletonRW<MainCameraTranslateData>();
                 // Check if we can pan the camera.
                 bool isUIButtonClicked = SystemAPI.GetSingleton<UIButtonDirtyFlag>().Value;
                 bool isFreeCamera = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value;
@@ -72,23 +72,25 @@ namespace DOTS.GamePlay
                 switch (hit.ValueRO.ClickPhase)
                 {
                     case InputActionPhase.Performed:
+                        cache.ClickPhase = InputActionPhase.Performed;
                         if (isDraggingFloor)
                         {
                             var delta = floorHitBefore.Position - floorHitNow.Position;
 
-                            if (math.lengthsq(delta) > StartPanningThreshold)
+                            if (math.lengthsq(delta) > 0)
                             {
-                                camTranslateData.Delta = delta;
+                                camTranslateData.ValueRW.Delta = delta;
+                                Debug.Log($"[CameraPanningSystem] | Panning. Delta: {delta}");
                                 CacheMomentum(ref cache, delta, dt);
                             }
                             else
-                                camTranslateData.Delta = 0;
-
-                            cache.ClickPhase = InputActionPhase.Performed;
+                            {
+                                cache.Momentum = 0;
+                            }
                         }
                         break;
                     case InputActionPhase.Started:
-                        camTranslateData.Delta = 0;
+                        camTranslateData.ValueRW.Delta = 0;
                         cache.Momentum = 0;
                         cache.ClickPhase = InputActionPhase.Started;
                         break;
@@ -99,7 +101,11 @@ namespace DOTS.GamePlay
             }
 
             if (math.lengthsq(cache.Momentum) > 0 && cache.ClickPhase == InputActionPhase.Canceled)
-                ApplyMomentum(ref cache, ref camTranslateData, in dt);
+            {
+                Debug.Log($"[CameraPanningSystem] | Applying momentum.");
+                var camTranslateData = SystemAPI.GetSingletonRW<MainCameraTranslateData>();
+                ApplyMomentum(ref cache, ref camTranslateData.ValueRW, in dt);
+            }
         }
 
         [BurstCompile]

@@ -32,6 +32,7 @@ namespace DOTS.GamePlay.CameraSystems
 
             foreach (var translateData in SystemAPI.Query<RefRW<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
             {
+                Debug.Log($"[CameraManageUpdateSystem] | translateData.Delta: {translateData.ValueRO.Delta}");
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);
             }
         }
