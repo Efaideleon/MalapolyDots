@@ -26,7 +26,7 @@ public struct DeltaClickRayCastData : IComponentData
     public float3 RayOrigin;
     public float3 RayDirection;
     public float3 RayEnd;
-}
+
 
 public class ClickCallback : IComponentData
 {
