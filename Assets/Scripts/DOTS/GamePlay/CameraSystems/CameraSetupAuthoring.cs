@@ -15,6 +15,11 @@ namespace DOTS.GamePlay.CameraSystems
         public float3 Delta;
     }
 
+    public struct CameraFieldOfView : IComponentData
+    {
+        public float Value;
+    }
+
     public class CameraSetupAuthoring : MonoBehaviour
     {
         public Transform CameraTransform;
@@ -34,6 +39,11 @@ namespace DOTS.GamePlay.CameraSystems
                 AddComponent(entity, new MainCameraTranslateData 
                 {
                     Delta = default,
+                });
+
+                AddComponent(entity, new CameraFieldOfView 
+                {
+                    Value = Camera.main.fieldOfView
                 });
             }
         }

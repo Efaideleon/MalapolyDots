@@ -1,7 +1,5 @@
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Unity.Mathematics;
 
 // ======================================================================
 // This system updates the camera transform and translation using managed
@@ -10,6 +8,7 @@ using Unity.Mathematics;
 
 namespace DOTS.GamePlay.CameraSystems
 {
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct CameraManageUpdateSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -30,9 +29,8 @@ namespace DOTS.GamePlay.CameraSystems
                 }
             }
 
-            foreach (var translateData in SystemAPI.Query<RefRW<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
+            foreach (var translateData in SystemAPI.Query<RefRO<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
             {
-                Debug.Log($"[CameraManageUpdateSystem] | translateData.Delta: {translateData.ValueRO.Delta}");
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);
             }
         }
