@@ -15,6 +15,7 @@ namespace DOTS.GamePlay.CameraSystems
         {
             state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<FreeCameraToggleFlag>();
+            state.RequireForUpdate<CameraFieldOfView>();
             state.RequireForUpdate<ClickData>();
         }
 
@@ -32,6 +33,11 @@ namespace DOTS.GamePlay.CameraSystems
             foreach (var translateData in SystemAPI.Query<RefRO<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
             {
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);
+            }
+
+            foreach (var fieldOfView in SystemAPI.Query<RefRO<CameraFieldOfView>>().WithChangeFilter<CameraFieldOfView>())
+            {
+                Camera.main.orthographicSize = fieldOfView.ValueRO.Value;
             }
         }
     }

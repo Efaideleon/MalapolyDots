@@ -59,6 +59,7 @@ namespace DOTS.Mediator.Systems
             {
                 ref var state = ref freeCamToggleQuery.GetSingletonRW<FreeCameraToggleFlag>().ValueRW;
                 state.Value = !state.Value;
+                Debug.Log($"[FreeCameraToggleButtonSystem] | FreeCamButton clicked");
             };
 
             button.clickable.clicked += buttonData.Callback;

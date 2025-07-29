@@ -1,11 +1,12 @@
 using Unity.Entities;
-using Unity.Jobs;
 
 namespace DOTS.GamePlay.CameraSystems
 {
     public partial struct CameraZoomOutPanSystem : ISystem
     {
-        const float MaxZoomOut = 70;
+        const float MaxZoomOut = 20;
+        const float MaxZoomIn = 14; // The default zoom level.
+        const float ZoomSpeed = 5;
 
         public void OnCreate(ref SystemState state)
         {
@@ -15,47 +16,57 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var freeCamFlag in SystemAPI.Query<RefRO<FreeCameraToggleFlag>>().WithChangeFilter<FreeCameraToggleFlag>())
-            { 
-                ref var fieldOfViewRW = ref SystemAPI.GetSingletonRW<CameraFieldOfView>().ValueRW;
-                if (freeCamFlag.ValueRO.Value && fieldOfViewRW.Value != MaxZoomOut)
-                {
-                    var job = new CameraZoomOutJob()
-                    {
-                        FieldOfView = fieldOfViewRW,
-                        // pass MaxZoomOut
-                    };
-                }
+            var fieldOfViewRW = SystemAPI.GetSingleton<CameraFieldOfView>();
+            var freeCamFlag = SystemAPI.GetSingleton<FreeCameraToggleFlag>();
 
-                // if (!freeCamFlag.ValueRO.Value)
-                // {
-                //     var job = new CameraZoomInJob()
-                //     {
-                //     };
-                // }
+            // Zoom out if free cam is enabled.
+            if (freeCamFlag.Value && fieldOfViewRW.Value <= MaxZoomOut)
+            {
+                var job = new CameraZoomOutJob()
+                {
+                    MaxZoomOut = MaxZoomOut,
+                    deltaTime = SystemAPI.Time.DeltaTime,
+                    ZoomSpeed =  ZoomSpeed
+                };
+                state.Dependency = job.Schedule(state.Dependency);
+            }
+
+            // Zoom in if free cam is disabled.
+            if (!freeCamFlag.Value && fieldOfViewRW.Value >= MaxZoomIn) // TODO: Should probably round the max values
+            {
+                var job = new CameraZoomInJob()
+                {
+                    MaxZoomIn = MaxZoomIn,
+                    deltaTime = SystemAPI.Time.DeltaTime,
+                    ZoomSpeed =  ZoomSpeed
+                };
+                state.Dependency = job.Schedule(state.Dependency);
             }
         }
     }
 
-    // Wouldn't using a another System to do this be better than using a job to change the value in a IComponentData?
-    public partial struct CameraZoomOutJob : IJob
+    public partial struct CameraZoomOutJob : IJobEntity
     {
-        // Changing a value by reference in job
+        public float MaxZoomOut;
+        public float deltaTime;
+        public float ZoomSpeed;
 
-        // Would FieldOfView be read and write since it a struct but is passed using `ref`?
-        public CameraFieldOfView FieldOfView;
-
-        public void Execute()
+        public void Execute(ref CameraFieldOfView cameraFieldOfView)
         {
-            throw new System.NotImplementedException();
+            cameraFieldOfView.Value += deltaTime * ZoomSpeed; // maybe add curve, start fast -> slow down
         }
     }
 
-    public partial struct CameraZoomInJob : IJob
+    public partial struct CameraZoomInJob : IJobEntity
     {
-        public void Execute()
+
+        public float MaxZoomIn;
+        public float deltaTime;
+        public float ZoomSpeed;
+
+        public void Execute(ref CameraFieldOfView cameraFieldOfView)
         {
-            throw new System.NotImplementedException();
+            cameraFieldOfView.Value -= deltaTime * ZoomSpeed; // maybe add curve, start fast -> slow down
         }
     }
 }
