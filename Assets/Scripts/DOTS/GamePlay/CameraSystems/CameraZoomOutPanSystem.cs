@@ -16,11 +16,11 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            var fieldOfViewRW = SystemAPI.GetSingleton<CameraFieldOfView>();
+            var fieldOfView = SystemAPI.GetSingleton<CameraFieldOfView>();
             var freeCamFlag = SystemAPI.GetSingleton<FreeCameraToggleFlag>();
 
             // Zoom out if free cam is enabled.
-            if (freeCamFlag.Value && fieldOfViewRW.Value <= MaxZoomOut)
+            if (freeCamFlag.Value && fieldOfView.Value <= MaxZoomOut)
             {
                 var job = new CameraZoomOutJob()
                 {
@@ -32,7 +32,7 @@ namespace DOTS.GamePlay.CameraSystems
             }
 
             // Zoom in if free cam is disabled.
-            if (!freeCamFlag.Value && fieldOfViewRW.Value >= MaxZoomIn) // TODO: Should probably round the max values
+            if (!freeCamFlag.Value && fieldOfView.Value >= MaxZoomIn) // TODO: Should probably round the max values
             {
                 var job = new CameraZoomInJob()
                 {
