@@ -19,6 +19,7 @@ namespace DOTS.GamePlay.CameraSystems
             var fieldOfView = SystemAPI.GetSingleton<CameraFieldOfView>();
             var freeCamFlag = SystemAPI.GetSingleton<FreeCameraToggleFlag>();
 
+            // Two JOBS to control zoom in and zoom out based on free cam state.
             // Zoom out if free cam is enabled.
             if (freeCamFlag.Value && fieldOfView.Value <= MaxZoomOut)
             {
