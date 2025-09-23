@@ -152,7 +152,7 @@
                 "m_Node": {
                     "m_Id": "7c95949bfc714ffeb3ae9bb833df4842"
                 },
-                "m_SlotId": -1591695172
+                "m_SlotId": -1243487038
             }
         },
         {
@@ -401,7 +401,6 @@
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
     },
     "m_SliderType": 0,
     "m_SliderPower": 3.0,
@@ -688,31 +687,6 @@
     "m_Property": {
         "m_Id": "1369ca30b8164cfba4eda8b6a0fa6228"
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "46a025a021f84290b9bb6519a09ea746",
-    "m_Id": -1591695172,
-    "m_DisplayName": "UvChannel",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "_UvChannel",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_Labels": []
 }
 
 {
@@ -1012,13 +986,13 @@
     },
     "m_Name": "openVAT_standard",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -470.00006103515627,
-            "y": -376.6667175292969,
-            "width": 294.6667175292969,
-            "height": 545.3333740234375
+            "x": -450.5,
+            "y": -345.5,
+            "width": 250.5,
+            "height": 447.0
         }
     },
     "m_Slots": [
@@ -1056,7 +1030,7 @@
             "m_Id": "66eea92552224728ba9521d635e011be"
         },
         {
-            "m_Id": "46a025a021f84290b9bb6519a09ea746"
+            "m_Id": "bd620d1d85e149bd8c9b87174a2d8db5"
         },
         {
             "m_Id": "53cc6f7608ae436781a9b51dc05d3962"
@@ -1086,7 +1060,8 @@
         "7b89f91e-6902-472e-b419-8ae91b3aed52",
         "9e73afc1-ef5d-4957-9c83-911aa6d939f3",
         "046e26e1-ce88-42ea-bdf6-893d3bcb9bb4",
-        "00f0b305-300d-4b65-accc-928218e72768"
+        "00f0b305-300d-4b65-accc-928218e72768",
+        "e556aaf3-bd6b-45d6-9cf4-5730c6073625"
     ],
     "m_PropertyIds": [
         -2010118187,
@@ -1100,7 +1075,8 @@
         -2017414221,
         1049369254,
         -812198417,
-        -1591695172
+        -1591695172,
+        -1243487038
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -1118,10 +1094,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -733.9999389648438,
-            "y": -9.33332633972168,
-            "width": 209.33331298828126,
-            "height": 314.66656494140627
+            "x": -797.4999389648438,
+            "y": -22.999984741210939,
+            "width": 208.0,
+            "height": 311.49993896484377
         }
     },
     "m_Slots": [
@@ -1377,6 +1353,31 @@
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "bd620d1d85e149bd8c9b87174a2d8db5",
+    "m_Id": -1243487038,
+    "m_DisplayName": "uvmap",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_uvmap",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
     },
     "m_Labels": []
 }
