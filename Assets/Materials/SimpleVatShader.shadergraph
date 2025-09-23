@@ -152,7 +152,7 @@
                 "m_Node": {
                     "m_Id": "7c95949bfc714ffeb3ae9bb833df4842"
                 },
-                "m_SlotId": -1243487038
+                "m_SlotId": -1591695172
             }
         },
         {
@@ -858,6 +858,31 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "604a548a601f447e9112b035fd4cca2e",
+    "m_Id": -1591695172,
+    "m_DisplayName": "UvChannel",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_UvChannel",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.NormalMaterialSlot",
     "m_ObjectId": "62006e65ae3b46dcb8f48c5125f7589c",
     "m_Id": 0,
@@ -986,13 +1011,13 @@
     },
     "m_Name": "openVAT_standard",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -450.5,
-            "y": -345.5,
-            "width": 250.5,
-            "height": 447.0
+            "x": -414.6667175292969,
+            "y": -345.33331298828127,
+            "width": 258.00006103515627,
+            "height": 425.3333435058594
         }
     },
     "m_Slots": [
@@ -1030,7 +1055,7 @@
             "m_Id": "66eea92552224728ba9521d635e011be"
         },
         {
-            "m_Id": "bd620d1d85e149bd8c9b87174a2d8db5"
+            "m_Id": "604a548a601f447e9112b035fd4cca2e"
         },
         {
             "m_Id": "53cc6f7608ae436781a9b51dc05d3962"
@@ -1353,31 +1378,6 @@
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "bd620d1d85e149bd8c9b87174a2d8db5",
-    "m_Id": -1243487038,
-    "m_DisplayName": "uvmap",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "_uvmap",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
     },
     "m_Labels": []
 }
