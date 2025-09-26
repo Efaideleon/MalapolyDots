@@ -11,7 +11,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 2b449fd4b93d79f43ba0a58f169ca519, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _MAIN_LIGHT_SHADOWS
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -56,8 +57,14 @@ Material:
     m_Floats:
     - _Float: 0.1
     - _Float_1: 0.1
+    - _MAINLIGHTSHADOWS: 0
+    - _MAINLIGHTSHADOWSCASCADE: 0
+    - _MAIN_LIGHT_SHADOWS: 1
+    - _MAIN_LIGHT_SHADOWS_CASCADE: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SOFTSHADOWS: 0
+    - _SOFT_SHADOWS: 0
     - _grass_tiling: 72.22
     m_Colors:
     - _Color: {r: 1.2525294, g: 2, b: 0.7434555, a: 0}
