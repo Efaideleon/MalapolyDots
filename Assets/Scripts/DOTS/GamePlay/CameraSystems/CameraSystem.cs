@@ -8,6 +8,7 @@ using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
 using DOTS.Characters;
+using UnityEngine.Rendering.VirtualTexturing;
 
 namespace DOTS.GamePlay.CameraSystems
 {
@@ -29,13 +30,12 @@ namespace DOTS.GamePlay.CameraSystems
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            var offset = new float3(0f, 13f, 27f);
             state.EntityManager.CreateSingleton(new CameraState
             {
                 CurrentAngleRad = 0,
                 IsAnimating = false,
                 PreviousPlayerId = -1,
-                InitialOffset = RotateOffset(offset, math.radians(51)),
+                InitialOffset = default,
                 RotationThresholdRad = math.PI / 2,
                 RotationSpeed = math.PI,
                 LastAnimatedSpaceIdx = -1,
@@ -48,6 +48,7 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<CurrentRound>();
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<FreeCameraToggleFlag>();
+            state.RequireForUpdate<CameraOffset>();
         }
 
         [BurstCompile]
@@ -76,6 +77,11 @@ namespace DOTS.GamePlay.CameraSystems
             bool isAnimating = camStateRO.IsAnimating;
             bool spaceChanged = camStateRO.LastAnimatedSpaceIdx != currentSpaceIdx;
 
+            // Updates the initial camera offset from the authoring info.
+            var camOffset = SystemAPI.GetSingleton<CameraOffset>().Offset;
+            var camAngle = SystemAPI.GetSingleton<CameraOffset>().Angle;
+            camStateRW.InitialOffset = RotateOffset(camOffset, camAngle);
+
             if (isNewPlayer)
             {
                 camStateRW.IsAnimating = false;
@@ -97,7 +103,7 @@ namespace DOTS.GamePlay.CameraSystems
             }
 
             // If free camera is enabled don't set the camera to the player position
-            bool isCameraFree = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value; 
+            bool isCameraFree = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value;
             if (!isCameraFree)
             {
                 ApplyCameraTransform(ref camTransform.ValueRW, playerTransform.Position, camStateRO.TargetOffset);
@@ -160,6 +166,7 @@ namespace DOTS.GamePlay.CameraSystems
         [BurstCompile]
         private readonly bool IsCornerSpace(int spaceIdx) => spaceIdx % 10 == 0;
 
+        // GetNewPostionWithOffset; it doesn't actually rotate.
         [BurstCompile]
         private readonly float3 RotateOffset(float3 offset, float angle) => math.mul(quaternion.RotateY(angle), offset);
 

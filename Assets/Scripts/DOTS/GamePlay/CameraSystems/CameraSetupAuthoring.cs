@@ -14,6 +14,12 @@ namespace DOTS.GamePlay.CameraSystems
         public quaternion Rotation;
     }
 
+    public struct CameraOffset : IComponentData
+    {
+        public float3 Offset;
+        public float Angle;
+    }
+
     public struct MainCameraTranslateData : IComponentData
     {
         public float3 Delta;
@@ -27,6 +33,8 @@ namespace DOTS.GamePlay.CameraSystems
     public class CameraSetupAuthoring : MonoBehaviour
     {
         public Transform CameraTransform;
+        public float3 Offset = new (0f, 13f, 27f);
+        public float Angle = 51; // Should limit values between 0 and 360 in inspector.
 
         public class CameraBaker : Baker<CameraSetupAuthoring>
         {
@@ -48,6 +56,12 @@ namespace DOTS.GamePlay.CameraSystems
                 AddComponent(entity, new CameraFieldOfView 
                 {
                     Value = default, 
+                });
+
+                AddComponent(entity, new CameraOffset 
+                {
+                    Offset = authoring.Offset, 
+                    Angle = math.radians(authoring.Angle)
                 });
             }
         }

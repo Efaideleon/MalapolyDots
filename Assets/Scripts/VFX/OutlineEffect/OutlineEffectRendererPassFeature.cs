@@ -392,7 +392,7 @@ public class OutlineEffectRendererPassFeature : ScriptableRendererFeature
                 _outlineColor
         );
 
-        _outlineRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
+        _outlineRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
