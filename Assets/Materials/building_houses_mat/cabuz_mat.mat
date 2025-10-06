@@ -16,7 +16,7 @@ MonoBehaviour:
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41,6 +41,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: da6455afdf5a7b441aa238c0500639b8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OpenVATstandard_f90ce56359ae404f8a7ebc0ed5b56536_openVATnrml_3347946277_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OpenVatTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_8b9e0b20ff1e4931a57886dccd2c6282_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 7b274103426a23a459ee6773b371fa49, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -61,12 +69,17 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _building_1_slider: 94.6
+    - _building_1_slider: 143.8
     - _building_2_slider: 110.7
     - _building_3_slider: 89.8
     - _building_4_slider: 94.4
     - _cabuz_slider: 28.2
+    - _frame: 0
+    - _use_time: 0
+    - _y_resolution: 0
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _max_values: {r: 0, g: 0, b: 0, a: 0}
+    - _min_values: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
