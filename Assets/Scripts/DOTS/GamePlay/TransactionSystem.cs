@@ -93,7 +93,7 @@ namespace DOTS.GamePlay
                             if (playerID.ValueRO.Value == currentPlayerID.Value)
                             {
                                 var property = SystemAPI.GetSingleton<PropertyEventComponent>();
-                                // TODO: Check if the player is on the this entity to be able to buy it
+                                // TODO: Check if the player is on property entity to be able to buy it
                                 if (property.entity != Entity.Null && 
                                         SystemAPI.HasComponent<PropertySpaceTag>(property.entity))
                                 {
