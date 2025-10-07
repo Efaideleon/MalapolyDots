@@ -39,7 +39,7 @@ namespace DOTS.GamePlay
                     {
                         if (buyHouseEvent.property == name.ValueRO.Value)
                         {
-                            if (houseCount.ValueRO.Value < 4 && isMonopoly.ValueRO.Value)
+                            if (houseCount.ValueRO.Value < 4 && isMonopoly.ValueRO.Value) // Can only buy houses when there is a monopoly.
                             {
                                 houseCount.ValueRW.Value++;
                             }

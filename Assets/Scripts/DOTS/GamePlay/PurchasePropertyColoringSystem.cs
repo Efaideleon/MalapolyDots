@@ -106,7 +106,9 @@ namespace DOTS.GamePlay
 
                     //if  (true)
                     if  (purchased) //BRING BACK
+                    {
                         Color(ref colorSliderRW.Value, ref dt, ColoringThreshold);
+                    }
                 }
             }
         }

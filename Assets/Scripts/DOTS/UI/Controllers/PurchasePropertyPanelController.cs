@@ -52,9 +52,14 @@ namespace DOTS.UI.Controllers
 
         private void SubscribeEvents()
         {
+            // On Ok Pressed.
             PurchasePropertyPanel.OkButton.clickable.clicked += DispatchEvents;
             PurchasePropertyPanel.OkButton.clickable.clicked += PurchasePropertyPanel.Hide;
             PurchasePropertyPanel.OkButton.clickable.clicked += PlaySound;
+
+            // On Decline Pressed.
+            PurchasePropertyPanel.DeclineButton.clickable.clicked += PlaySound;
+            PurchasePropertyPanel.DeclineButton.clickable.clicked += PurchasePropertyPanel.Hide;
         }
 
         private void PlaySound()
@@ -78,9 +83,14 @@ namespace DOTS.UI.Controllers
 
         public void Dispose()
         {
+            // On Ok Pressed.
             PurchasePropertyPanel.OkButton.clickable.clicked -= DispatchEvents;
             PurchasePropertyPanel.OkButton.clickable.clicked -= PurchasePropertyPanel.Hide;
             PurchasePropertyPanel.OkButton.clickable.clicked -= PlaySound;
+
+            // On Decline Pressed.
+            PurchasePropertyPanel.DeclineButton.clickable.clicked += PlaySound;
+            PurchasePropertyPanel.DeclineButton.clickable.clicked += PurchasePropertyPanel.Hide;
         }
     }
 }
