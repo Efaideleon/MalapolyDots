@@ -1,4 +1,5 @@
 using DOTS.Characters;
+using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.EventBuses;
 using DOTS.GameData;
@@ -40,6 +41,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<ClickedPropertyComponent>();
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
             state.RequireForUpdate<BackDropEventBus>();
+            state.RequireForUpdate<LandedOnSpace>();
         }
 
         [BurstCompile]
@@ -93,14 +95,48 @@ namespace DOTS.GamePlay
                             if (playerID.ValueRO.Value == currentPlayerID.Value)
                             {
                                 var property = SystemAPI.GetSingleton<PropertyEventComponent>();
-                                // TODO: Check if the player is on property entity to be able to buy it
+                                var landOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
+
+                                // TODO: Check if the current player is on property entity to be able to buy it
+                                // BUG: Right now the landing points are not matching the property.
+                                // Visually the player may look like they are in front of a property (e.i Campero)
+                                // but it's the 3rd landing point which used to be 'La Terminal'.
+                                // if (property.entity == landOnEntity.entity)
+                                // {
+                                    if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
+                                           SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
+                                    {
+                                        var name = SystemAPI.GetComponent<NameComponent>(property.entity);
+                                        UnityEngine.Debug.Log($"[TransactionSystem] | property: {name.Value}");
+                                        var name2 = SystemAPI.GetComponent<NameComponent>(landOnEntity.entity);
+                                        UnityEngine.Debug.Log($"[TransactionSystem] | landOnEntity: {name2.Value}");
+                                    }
+                                    // UnityEngine.Debug.Log("[TransactionSystem] | same entity landed and clicked.");
+                               //}
+
+                               // Make sure that the property doesn't already have an owner.
                                 if (property.entity != Entity.Null && 
-                                        SystemAPI.HasComponent<PropertySpaceTag>(property.entity))
+                                    SystemAPI.HasComponent<PropertySpaceTag>(property.entity)
+                                    )
                                 {
-                                    var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
-                                    playerMoney.ValueRW.Value -= price.Value;
                                     var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
-                                    owner.ValueRW.ID = playerID.ValueRO.Value;
+                                    if (owner.ValueRO.ID == PropertyConstants.Vacant)
+                                    {
+                                        var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
+                                        playerMoney.ValueRW.Value -= price.Value;
+                                        owner.ValueRW.ID = playerID.ValueRO.Value;
+
+                                        if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
+                                               SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
+                                        {
+                                            var name = SystemAPI.GetComponent<NameComponent>(property.entity);
+                                            UnityEngine.Debug.Log($"[TransactionSystem] | Property Bought! {name.Value}");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        UnityEngine.Debug.Log($"[TransactionSystem] | Property Not For Sale.");
+                                    }
                                 }
                             }
                         }
