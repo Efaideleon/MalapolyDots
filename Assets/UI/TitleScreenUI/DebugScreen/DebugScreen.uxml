@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/DebugSettings.uss?fileID=7433441132597879392&amp;guid=a0c603d4908f442359bd8ca203a31a09&amp;type=3#DebugSettings"/>
+    <ui:VisualElement name="RollSettings" class="screen__font RollSettings" style="flex-grow: 1; position: absolute;">
+        <ui:Label text="Debug Settings" name="debug-settings-label"/>
+        <ui:Toggle label="Custom Roll:" name="CustomRollToggle"/>
+        <ui:IntegerField label="Custom Roll Value:" value="0" name="CustomRollIntegerField"/>
+    </ui:VisualElement>
+</ui:UXML>

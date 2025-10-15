@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using DOTS.EventBuses;
 using Unity.Burst;
 using Unity.Entities;
 using Random = Unity.Mathematics.Random;
+using DOTS.GamePlay.DebugAuthoring;
 
 namespace DOTS.GamePlay
 {
@@ -25,6 +27,9 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<RollAmountComponent>();
             state.RequireForUpdate<RollEventBuffer>();
             state.RequireForUpdate<RandomValueComponent>();
+#if UNITY_EDITOR
+            state.RequireForUpdate<RollConfig>();
+#endif
         }
 
         [BurstCompile]
@@ -40,7 +45,14 @@ namespace DOTS.GamePlay
                     var rollAmount = SystemAPI.GetSingletonRW<RollAmountComponent>();
                     var randomData = SystemAPI.GetSingletonRW<RandomValueComponent>();
                     rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
-                    rollAmount.ValueRW.Value = 4;
+
+#if UNITY_EDITOR
+                    var rollConfig = SystemAPI.GetSingleton<RollConfig>();
+                    var isCustomEnabled = rollConfig.isCustomEnabled;
+                    UnityEngine.Debug.Log($"[RollSystem] | rollConfig.isCustomEnabled = {isCustomEnabled}");
+                    var customRollValue = rollConfig.customRollValue;
+                    rollAmount.ValueRW.Value = isCustomEnabled ? customRollValue : rollAmount.ValueRO.Value;
+#endif
                 }
 
                 buffer.Clear();
