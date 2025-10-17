@@ -69,10 +69,12 @@ namespace DOTS.Mediator
         public List<Button> Buttons;
     }
 
+#nullable enable
     public class ForegroundContainterComponent : IComponentData
     {
-        public VisualElement Value;
+        public VisualElement? Value;
     }
+#nullable disable
 
     public partial struct PanelControllersInitializer : ISystem, ISystemStartStop
     {
