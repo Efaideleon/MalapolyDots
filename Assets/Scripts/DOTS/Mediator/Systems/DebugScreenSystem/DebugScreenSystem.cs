@@ -61,8 +61,8 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             var rollConfigQuery = SystemAPI.QueryBuilder().WithAllRW<RollConfig>().Build();
             var debugScreenEntity = SystemAPI.GetSingletonEntity<DebugScreenFlag>();
 
-            SetupRollToggle(ref state, debugScreen, rollConfigQuery, debugScreenEntity);
-            SetupRollIntegerField(ref state, debugScreen, rollConfigQuery, debugScreenEntity);
+            SetupRollToggle(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity);
+            SetupRollIntegerField(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity);
         }
 
         public void OnUpdate(ref SystemState state)
@@ -83,7 +83,7 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
                 ref SystemState state,
                 VisualElement debugScreen,
                 EntityQuery rollConfigQuery,
-                Entity debugScreenEntity
+                ref Entity debugScreenEntity
         )
         {
             var customRollToggle = debugScreen.Q<Toggle>("CustomRollToggle");
@@ -111,7 +111,7 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
                 ref SystemState state,
                 VisualElement debugScreen,
                 EntityQuery rollConfigQuery,
-                Entity debugScreenEntity
+                ref Entity debugScreenEntity
         )
         {
             var customRollIntegerField = debugScreen.Q<IntegerField>("CustomRollIntegerField");
