@@ -102,7 +102,8 @@ namespace DOTS.GamePlay
                 in ChanceSpaceTag _,
                 in NameComponent name,
                 ref SpaceIDComponent id,
-                ref BoardIndexComponent boardIdx
+                ref BoardIndexComponent boardIdx,
+                ref DynamicBuffer<ChanceActionDataBuffer> chanceActionDataBuffer
                 )
         {
             var numOfChances = chancesReference.Value.chances.Length;
@@ -113,6 +114,14 @@ namespace DOTS.GamePlay
                 {
                     id.Value = chance.id;
                     boardIdx.Value = chance.boardIndex;
+                    for (int j = 0; j < chance.actionData.Length; j++)
+                    {
+                        chanceActionDataBuffer.Add(new ChanceActionDataBuffer
+                        {
+                            id = chance.actionData[j].id,
+                            msg = chance.actionData[j].msg,
+                        });
+                    }
                 }
             }
         }

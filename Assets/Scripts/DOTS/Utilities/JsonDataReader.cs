@@ -24,11 +24,19 @@ namespace DOTS.Utilities
     }
 
     [System.Serializable]
+    public struct ChanceActionData
+    {
+        public int id;
+        public string msg;
+    }
+
+    [System.Serializable]
     public struct ChanceData
     {
         public int id;
         public string Name;
         public int boardIndex;
+        public ChanceActionData[] chanceActionData;
     }
 
     [System.Serializable]
