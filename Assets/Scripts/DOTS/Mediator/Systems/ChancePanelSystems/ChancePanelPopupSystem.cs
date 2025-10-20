@@ -28,7 +28,9 @@ namespace DOTS.Mediator.Systems.ChancePanelSystems
                 {
                     var landedOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
                     if (SystemAPI.HasComponent<ChanceSpaceTag>(landedOnEntity.entity))
+                    {
                         SystemAPI.GetSingletonBuffer<ShowChancePanelBuffer>().Add(new ShowChancePanelBuffer { });
+                    }
                 }
         }
     }

@@ -30,9 +30,9 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked += Panel.Hide;
         }
 
-        public void Update()
+        public void Update(ref ChancePanelContext context)
         {
-            Panel.TitleLabel.text = Context.Title;
+            Panel.TitleLabel.text = context.Title;
         }
 
         public void SetEventBufferQuery(EntityQuery query)
