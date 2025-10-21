@@ -6,6 +6,7 @@ using UnityEngine;
 // data.
 // ======================================================================
 
+#nullable enable
 namespace DOTS.GamePlay.CameraSystems
 {
     [UpdateInGroup(typeof(PresentationSystemGroup))]
@@ -21,6 +22,8 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
+            if (Camera.main == null) return;
+
             foreach (var transform in SystemAPI.Query<RefRW<MainCameraTransform>>().WithChangeFilter<MainCameraTransform>())
             {
                 bool isFreeCamera = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value;
@@ -30,6 +33,9 @@ namespace DOTS.GamePlay.CameraSystems
                 }
             }
 
+            // TODO: Create a foreach to change from orthographic to perspective.
+            // TODO: Will need a componentData to keep track of this.
+
             foreach (var translateData in SystemAPI.Query<RefRO<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
             {
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);
@@ -37,6 +43,7 @@ namespace DOTS.GamePlay.CameraSystems
 
             foreach (var fieldOfView in SystemAPI.Query<RefRO<CameraFieldOfView>>().WithChangeFilter<CameraFieldOfView>())
             {
+                // TODO: will need a if statment to check if we are in orthographic or perspective
                 Camera.main.orthographicSize = fieldOfView.ValueRO.Value;
             }
         }

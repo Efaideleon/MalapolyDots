@@ -6,16 +6,17 @@ using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 
+#nullable enable
 using UnityObject = UnityEngine.Object;
 
 public class LabelGOsComponent : IComponentData
 {
-    public Dictionary<FixedString64Bytes, GameObject> GameObjects;
+    public Dictionary<FixedString64Bytes, GameObject>? GameObjects;
 }
 
 public class CanvasGORef : IComponentData
 {
-    public GameObject CanvasGO;
+    public GameObject? CanvasGO;
 }
 
 public partial struct OwnerShipLabelCanvasSystem : ISystem, ISystemStartStop
@@ -47,12 +48,13 @@ public partial struct OwnerShipLabelCanvasSystem : ISystem, ISystemStartStop
         {
             var labelGO = UnityObject.Instantiate(canvasRef.LabelGO, canvasGO.transform);
             labelGO.SetActive(false);
-            labelGOsRef.GameObjects.Add(name.ValueRO.Value, labelGO);
+            labelGOsRef?.GameObjects?.Add(name.ValueRO.Value, labelGO);
         }
     }
 
     public void OnUpdate(ref SystemState state)
     {
+        if (Camera.main == null) return;
         var canvasGO = SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>();
         if (canvasGO.CanvasGO != null)
         {

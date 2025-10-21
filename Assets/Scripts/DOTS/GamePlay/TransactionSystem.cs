@@ -3,6 +3,7 @@ using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.EventBuses;
 using DOTS.GameData;
+using DOTS.GamePlay.ChanceActionSystems;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
@@ -42,6 +43,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
             state.RequireForUpdate<BackDropEventBus>();
             state.RequireForUpdate<LandedOnSpace>();
+            state.RequireForUpdate<ChanceBufferEvent>();
         }
 
         [BurstCompile]
@@ -197,6 +199,13 @@ namespace DOTS.GamePlay
                                 }
                             }
                         }
+                    }
+
+                    if (transaction.EventType == TransactionEventType.Chance)
+                    {
+                        UnityEngine.Debug.Log($"[TransactionSystem] | chance transaction.");
+                        var chanceBufferEvent = SystemAPI.GetSingletonBuffer<ChanceBufferEvent>();
+                        chanceBufferEvent.Add(new ChanceBufferEvent { });
                     }
                 }
 

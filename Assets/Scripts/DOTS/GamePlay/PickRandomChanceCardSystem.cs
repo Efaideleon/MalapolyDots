@@ -28,6 +28,8 @@ namespace DOTS.GamePlay
                 if (gameState.ValueRO.State == GameState.Landing)
                 {
                     var landedOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
+
+                    // if we land on a chance spot
                     if (SystemAPI.HasComponent<ChanceSpaceTag>(landedOnEntity.entity))
                     {
                         var chanceActionData = SystemAPI.GetBuffer<ChanceActionDataBuffer>(landedOnEntity.entity);

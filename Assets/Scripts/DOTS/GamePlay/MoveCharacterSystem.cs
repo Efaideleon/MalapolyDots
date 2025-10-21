@@ -25,6 +25,9 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct MoveCharacterSystem : ISystem
     {
+        //private const float moveSpeedFactor = 10f;
+        private const float moveSpeedFactor = 50f;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
@@ -43,7 +46,7 @@ namespace DOTS.GamePlay
         public void OnUpdate(ref SystemState state)
         {
             var dt = SystemAPI.Time.DeltaTime;
-            var moveSpeed = dt * 10f;
+            var moveSpeed = dt * moveSpeedFactor;
 
             foreach (var rollAmount in 
                     SystemAPI.Query<
