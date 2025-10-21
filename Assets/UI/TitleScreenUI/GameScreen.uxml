@@ -23,7 +23,7 @@
             <ui:Instance template="RollPanel" name="RollPanel" picking-mode="Ignore" class="roll_template-container" style="position: absolute; display: flex; width: auto; height: auto; right: 5%;"/>
             <ui:Instance template="JailPanel" name="JailPanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
             <ui:Instance template="GoToJailPanel" name="GoToJailPanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
-            <ui:Instance template="ChancePanel" name="ChancePanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
+            <ui:Instance template="ChancePanel" name="ChancePanel" picking-mode="Ignore" style="position: absolute; display: none; width: 500px;"/>
             <ui:Instance template="GoPanel" name="GoPanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
             <ui:Instance template="ParkingPanel" name="ParkingPanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
             <ui:Instance template="PayRentPanel" name="PayRentPanel" picking-mode="Ignore" style="display: none; position: absolute;"/>
