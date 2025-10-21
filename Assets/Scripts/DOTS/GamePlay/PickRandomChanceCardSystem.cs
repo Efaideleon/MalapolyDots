@@ -6,13 +6,18 @@ using Unity.Entities;
 namespace DOTS.GamePlay
 {
     [BurstCompile]
-    public partial struct PickRandomChanceCard : ISystem
+    public partial struct PickRandomChanceCardSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.EntityManager.CreateSingleton<ChanceCardPicked>();
+            state.RequireForUpdate<RandomValueComponent>();
             state.RequireForUpdate<ChanceCardPicked>();
+            state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<LandedOnSpace>();
+            state.RequireForUpdate<ChanceSpaceTag>();
+            state.RequireForUpdate<ChanceActionDataBuffer>();
         }
 
         [BurstCompile]
@@ -30,7 +35,9 @@ namespace DOTS.GamePlay
                         // pick a random number
                         var randomData = SystemAPI.GetSingletonRW<RandomValueComponent>();
                         var numOfActions = chanceActionData.Length;
-                        var randomNumber = randomData.ValueRW.Value.NextInt(0, numOfActions);
+
+                        //var randomNumber = randomData.ValueRW.Value.NextInt(0, numOfActions);
+                        var randomNumber = 0; 
 
                         ref var cardPicked = ref SystemAPI.GetSingletonRW<ChanceCardPicked>().ValueRW;
                         cardPicked.id = chanceActionData[randomNumber].id;
