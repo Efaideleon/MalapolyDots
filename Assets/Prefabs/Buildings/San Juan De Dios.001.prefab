@@ -62,6 +62,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,9 +85,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1065857304053948528
 MonoBehaviour:
@@ -114,6 +118,7 @@ GameObject:
   - component: {fileID: 8481181626153364027}
   - component: {fileID: 2997767006685858303}
   - component: {fileID: 6635129456900222877}
+  - component: {fileID: 8382455270505718414}
   m_Layer: 7
   m_Name: San Juan De Dios.001
   m_TagString: Untagged
@@ -166,6 +171,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -187,9 +194,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2997767006685858303
 MonoBehaviour:
@@ -203,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: San Juan de Dios
+  Space: {fileID: 8382455270505718414}
 --- !u!65 &6635129456900222877
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -225,6 +234,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.059325, y: 3.548813, z: 4.1003895}
   m_Center: {x: 4.9745e-41, y: 1.7616247, z: -0.060036123}
+--- !u!114 &8382455270505718414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3888581328912852004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: San Juan de Dios
 --- !u!1001 &6536736310752004794
 PrefabInstance:
   m_ObjectHideFlags: 0

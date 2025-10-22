@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 1535386770392955172}
   - component: {fileID: 1826145926037986458}
   - component: {fileID: 4501790734876167712}
+  - component: {fileID: 3087058193740349988}
   m_Layer: 7
   m_Name: Chop Suey Final Toon S.001
   m_TagString: Untagged
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Chop suey
+  Space: {fileID: 3087058193740349988}
 --- !u!65 &4501790734876167712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,6 +220,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.0408072, y: 1.7378198, z: 3.8873236}
   m_Center: {x: -0.11867863, y: 0.8689099, z: 0.10093582}
+--- !u!114 &3087058193740349988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3930536543637920083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Chop suey
 --- !u!1 &4815590476715086866
 GameObject:
   m_ObjectHideFlags: 0

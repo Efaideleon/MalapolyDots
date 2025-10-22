@@ -1,4 +1,5 @@
 using DOTS.Characters;
+using DOTS.Characters.CharacterSpawner;
 using DOTS.DataComponents;
 using Unity.Burst;
 using Unity.Entities;
@@ -16,6 +17,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<PlayerID>();
             state.RequireForUpdate<PlayerWaypointIndex>();
             state.RequireForUpdate<CurrentPlayerID>();
+            state.RequireForUpdate<WayPointBufferElement>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
                     {
@@ -37,10 +39,15 @@ namespace DOTS.GamePlay
                         SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>())
                 {
                     var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                    foreach (var (boardIndex, spaceEntity) in SystemAPI.Query<RefRO<BoardIndexComponent>>().WithEntityAccess())
+
+                    var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
+                    var wayPointSpace = wayPointsBuffer[playerWaypointIndex.ValueRO.Value];
+
+                    foreach (var (spaceName, _, spaceEntity) in SystemAPI.Query<
+                            RefRO<NameComponent>, RefRO<BoardIndexComponent>>().WithEntityAccess())
                     {
                         if (playerID.ValueRO.Value == currentPlayerID.Value 
-                                && playerWaypointIndex.ValueRO.Value == boardIndex.ValueRO.Value)
+                                && wayPointSpace.Name == spaceName.ValueRO.Value)
                         {
                             var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
                             spaceLandedEntity.ValueRW.entity = spaceEntity;

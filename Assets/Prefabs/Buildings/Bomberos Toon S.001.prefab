@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 845398949052848784}
   - component: {fileID: 5973814281201756815}
   - component: {fileID: 8748849113409334861}
+  - component: {fileID: 407366914924717138}
   m_Layer: 7
   m_Name: Bomberos Toon S.001
   m_TagString: Untagged
@@ -211,6 +212,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Space: {fileID: 407366914924717138}
+--- !u!114 &407366914924717138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162144401160473935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
   Name: Bomberos
 --- !u!1 &8115089845044974092
 GameObject:

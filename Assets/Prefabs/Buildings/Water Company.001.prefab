@@ -62,6 +62,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,9 +85,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2449182335123338414
 MonoBehaviour:
@@ -114,6 +118,7 @@ GameObject:
   - component: {fileID: 1916600198177134730}
   - component: {fileID: 4536821972936704746}
   - component: {fileID: 5283633825191945104}
+  - component: {fileID: 8334057403027025940}
   m_Layer: 7
   m_Name: Water Company.001
   m_TagString: Untagged
@@ -166,6 +171,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -187,9 +194,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &4536821972936704746
 MonoBehaviour:
@@ -203,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Water Company
+  Space: {fileID: 8334057403027025940}
 --- !u!65 &5283633825191945104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -225,6 +234,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6456065, y: 2.926209, z: 2.8384275}
   m_Center: {x: 0.49020454, y: -0.0071644187, z: -0.0070412755}
+--- !u!114 &8334057403027025940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7937146325267774918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Water Company
 --- !u!1001 &2091098954405124000
 PrefabInstance:
   m_ObjectHideFlags: 0

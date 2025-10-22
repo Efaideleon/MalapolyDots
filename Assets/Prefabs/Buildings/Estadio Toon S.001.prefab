@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6692684502583076728}
   - component: {fileID: 3561386510675359680}
   - component: {fileID: 4688455827451777217}
+  - component: {fileID: 4155563249915564003}
   m_Layer: 7
   m_Name: Estadio Toon S.001
   m_TagString: Untagged
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Estadio
+  Space: {fileID: 4155563249915564003}
 --- !u!65 &4688455827451777217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,6 +130,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.2569306, y: 1.0349864, z: 4.846962}
   m_Center: {x: -0.014763713, y: 0.51749307, z: -0.033937573}
+--- !u!114 &4155563249915564003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062612940749434643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Estadio
 --- !u!1 &4677587318602382386
 GameObject:
   m_ObjectHideFlags: 0

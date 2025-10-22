@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 1630729407929623601}
   - component: {fileID: 5365388103615637139}
   - component: {fileID: 340234090440929680}
+  - component: {fileID: -3452505003650757689}
   m_Layer: 7
   m_Name: Parque Final Toon S.001
   m_TagString: Untagged
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Parque
+  Space: {fileID: -3452505003650757689}
 --- !u!65 &340234090440929680
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,6 +220,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.5933514, y: 1.5177172, z: 2.6794896}
   m_Center: {x: -0.067697406, y: 0.7588586, z: -0.00000029802322}
+--- !u!114 &-3452505003650757689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8555748975282280477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Parque
 --- !u!1 &8692155850376323293
 GameObject:
   m_ObjectHideFlags: 0

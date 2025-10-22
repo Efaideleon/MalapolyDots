@@ -6,14 +6,14 @@ namespace DOTS.GameSpaces
 {
     public class GoSpaceAuthoring : MonoBehaviour
     {
-        [SerializeField] string Name;
+        public SpaceProperties Space;
 
         class GoSpaceAuthoringBaker : Baker<GoSpaceAuthoring>
         {
             public override void Bake(GoSpaceAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-                AddComponent(entity, new NameComponent { Value = authoring.Name });
+                AddComponent(entity, new NameComponent { Value = authoring.Space.Name });
                 AddComponent(entity, new SpaceIDComponent { Value = default });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
                 AddComponent(entity, new GoSpaceTag { });

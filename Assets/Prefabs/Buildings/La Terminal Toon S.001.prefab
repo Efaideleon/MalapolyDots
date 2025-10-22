@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 2579707696050763110}
   - component: {fileID: 7186816757349428595}
   - component: {fileID: 3141385891002312834}
+  - component: {fileID: 6229469143575683143}
   m_Layer: 7
   m_Name: La Terminal Toon S.001
   m_TagString: Untagged
@@ -302,7 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: La Terminal
+  Space: {fileID: 6229469143575683143}
 --- !u!65 &3141385891002312834
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -324,6 +325,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.7985244, y: 1.1112704, z: 3.7099273}
   m_Center: {x: -0.036908746, y: 0.5556352, z: 0.00009548664}
+--- !u!114 &6229469143575683143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220313342686278964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: La Terminal
 --- !u!1001 &4055027323215782258
 PrefabInstance:
   m_ObjectHideFlags: 0

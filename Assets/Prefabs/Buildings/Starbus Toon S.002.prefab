@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6797891724724001479}
   - component: {fileID: 1389054111674198966}
   - component: {fileID: 948547913060803533}
+  - component: {fileID: -4403457130336250910}
   m_Layer: 7
   m_Name: Starbus Toon S.002
   m_TagString: Untagged
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Starbus
+  Space: {fileID: -4403457130336250910}
 --- !u!65 &948547913060803533
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,6 +130,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.2765634, y: 2.1127458, z: 2.000001}
   m_Center: {x: 0.13091362, y: 1.0563729, z: 0.0002541542}
+--- !u!114 &-4403457130336250910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264786017229797054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Starbus
 --- !u!1 &4278523359140002568
 GameObject:
   m_ObjectHideFlags: 0

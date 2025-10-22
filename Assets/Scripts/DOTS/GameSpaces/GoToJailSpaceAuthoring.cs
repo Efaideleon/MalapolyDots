@@ -6,14 +6,14 @@ namespace DOTS.GameSpaces
 {
     public class GoToJailSpaceAuthoring : MonoBehaviour
     {
-        [SerializeField] string Name;
+        public SpaceProperties Space;
 
         class GoToJailSpaceAuthoringBaker : Baker<GoToJailSpaceAuthoring>
         {
             public override void Bake(GoToJailSpaceAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-                AddComponent(entity, new NameComponent { Value = authoring.Name });
+                AddComponent(entity, new NameComponent { Value = authoring.Space.Name });
                 AddComponent(entity, new SpaceIDComponent { Value = default });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
                 AddComponent(entity, new GoToJailTag { });

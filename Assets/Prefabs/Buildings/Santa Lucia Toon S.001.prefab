@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 893497059880374008}
   - component: {fileID: 8217386067991360902}
   - component: {fileID: 7111254336465494980}
+  - component: {fileID: -2983876987848935174}
   m_Layer: 7
   m_Name: Santa Lucia Toon S.001
   m_TagString: Untagged
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Santa Lucia
+  Space: {fileID: -2983876987848935174}
 --- !u!65 &7111254336465494980
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,6 +130,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.3238983, y: 1.7794702, z: 3.1546378}
   m_Center: {x: -0.467422, y: 0.8897351, z: 0.17299408}
+--- !u!114 &-2983876987848935174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2794237943848314893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Santa Lucia
 --- !u!1 &5427718482665555314
 GameObject:
   m_ObjectHideFlags: 0

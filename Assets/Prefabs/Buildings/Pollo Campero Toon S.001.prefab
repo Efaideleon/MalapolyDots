@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 144794788648917659}
   - component: {fileID: 2282094911070451801}
   - component: {fileID: 1717903762356601853}
+  - component: {fileID: -203312274292906134}
   m_Layer: 7
   m_Name: Pollo Campero Toon S.001
   m_TagString: Untagged
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Pollo Campero
+  Space: {fileID: -203312274292906134}
 --- !u!65 &1717903762356601853
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,6 +130,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.139947, y: 1.2400216, z: 4.3461866}
   m_Center: {x: -0.06763953, y: 0.6200108, z: -0.11414623}
+--- !u!114 &-203312274292906134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146549792304037895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Pollo Campero
 --- !u!1 &4529498027172077530
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4929108253134852276}
   - component: {fileID: 8075321087470313398}
   - component: {fileID: 8670356517457325534}
+  - component: {fileID: 1939341772895212097}
+  - component: {fileID: 9204559166486267885}
   m_Layer: 7
   m_Name: Farmacia Higia Toon S.001
   m_TagString: Untagged
@@ -115,6 +117,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.900857, y: 1.9313158, z: 3.4806433}
   m_Center: {x: -0.1729505, y: 0.9656579, z: 0.6036572}
+--- !u!114 &1939341772895212097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3533607312020366682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.PropertySpaceAuthoring
+  Space: {fileID: 9204559166486267885}
+--- !u!114 &9204559166486267885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3533607312020366682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Farmacia Higia
 --- !u!1 &3619994959384310898
 GameObject:
   m_ObjectHideFlags: 0

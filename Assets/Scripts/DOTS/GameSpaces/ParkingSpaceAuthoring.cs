@@ -6,14 +6,14 @@ namespace DOTS.GameSpaces
 {
     public class ParkingSpaceAuthoring : MonoBehaviour
     {
-        [SerializeField] string Name;
+        public SpaceProperties Space;
 
         class ParkingSpaceAuthoringBaker : Baker<ParkingSpaceAuthoring>
         {
             public override void Bake(ParkingSpaceAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-                AddComponent(entity, new NameComponent { Value = authoring.Name });
+                AddComponent(entity, new NameComponent { Value = authoring.Space.Name });
                 AddComponent(entity, new SpaceIDComponent { Value = default });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
                 AddComponent(entity, new ParkingSpaceTag { });

@@ -1,3 +1,5 @@
+using DOTS.DataComponents;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -20,7 +22,14 @@ namespace DOTS.Characters.CharacterSpawner
                 var wayPointsBuffer = AddBuffer<WayPointBufferElement>(entity);
                 for (int i = 0; i < authoring.wayPoints.Length; i++)
                 {
-                    wayPointsBuffer.Add( new WayPointBufferElement{ WayPoint =  authoring.wayPoints[i].transform.position });
+                    authoring.wayPoints[i].TryGetComponent<SpaceWayPoint>(out var spaceWayPoint);
+                    var name = spaceWayPoint == null ? "None" : spaceWayPoint.space.name;
+
+                    wayPointsBuffer.Add( new WayPointBufferElement 
+                    { 
+                        WayPoint =  authoring.wayPoints[i].transform.position,
+                        Name = name
+                    });
                 }
 
                 AddComponent(entity, new WayPointsTag{});
@@ -36,6 +45,7 @@ namespace DOTS.Characters.CharacterSpawner
     public struct WayPointBufferElement : IBufferElementData
     {
         public float3 WayPoint;
+        public FixedString64Bytes Name;
     }
 
     public struct WayPointsTag : IComponentData

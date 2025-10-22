@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 1102717933373509806}
   - component: {fileID: 9066404417737558844}
   - component: {fileID: 6289475745595209145}
+  - component: {fileID: -18212435754136598}
   m_Layer: 7
   m_Name: Cabuz Toon S.001
   m_TagString: Untagged
@@ -210,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Cabuz
+  Space: {fileID: -18212435754136598}
 --- !u!65 &6289475745595209145
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -232,6 +233,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.2381063, y: 1.5764155, z: 2.2975144}
   m_Center: {x: 0.020240784, y: 0.12982017, z: -0.024216771}
+--- !u!114 &-18212435754136598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530081402760461352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Cabuz
 --- !u!1 &8132748695684708911
 GameObject:
   m_ObjectHideFlags: 0

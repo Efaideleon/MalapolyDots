@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 104164229736584593}
   - component: {fileID: 3671897450268562270}
   - component: {fileID: 6273214953697002606}
+  - component: {fileID: 3699814048455777342}
   m_Layer: 7
   m_Name: Intercesion Toon S.001
   m_TagString: Untagged
@@ -212,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Interseccion
+  Space: {fileID: 3699814048455777342}
 --- !u!65 &6273214953697002606
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -234,6 +235,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0299941, y: 1.896451, z: 0.9761816}
   m_Center: {x: 0.0418368, y: 0.9482255, z: 0.06874305}
+--- !u!114 &3699814048455777342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5589326744667598511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Interseccion
 --- !u!1 &7437778008488099316
 GameObject:
   m_ObjectHideFlags: 0

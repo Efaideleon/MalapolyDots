@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7734793258024285099}
   - component: {fileID: 8957008818489591462}
   - component: {fileID: 4293678911266670602}
+  - component: {fileID: -106217261756303387}
   m_Layer: 7
   m_Name: La Municipalidad Toon S.001
   m_TagString: Untagged
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: La Municipalidad
+  Space: {fileID: -106217261756303387}
 --- !u!65 &4293678911266670602
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,6 +130,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.959557, y: 2.9774783, z: 2.9483585}
   m_Center: {x: 0.00077819824, y: 1.4887391, z: -0.330728}
+--- !u!114 &-106217261756303387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713985271708359067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: La Municipalidad
 --- !u!1 &4206534232226566407
 GameObject:
   m_ObjectHideFlags: 0

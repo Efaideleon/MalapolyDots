@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 2352602247820309603}
   - component: {fileID: 5874897970243633830}
   - component: {fileID: 4631217501199378880}
+  - component: {fileID: 6829611992995963367}
   m_Layer: 7
   m_Name: Boncafe Final Toon S.001
   m_TagString: Untagged
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Bon Cafe
+  Space: {fileID: 6829611992995963367}
 --- !u!65 &4631217501199378880
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,6 +220,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0976646, y: 1.4321637, z: 2.2423308}
   m_Center: {x: 0.37254834, y: 0.71608186, z: -0.37372124}
+--- !u!114 &6829611992995963367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538664639944145661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
+  Name: Bon Cafe
 --- !u!1 &5424080294859529083
 GameObject:
   m_ObjectHideFlags: 0
