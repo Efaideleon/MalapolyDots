@@ -1,10 +1,23 @@
 using Unity.Entities;
 using UnityEngine;
 
+public struct ABLESTUFF
+{
+    public string PetName;
+}
+
+#nullable enable
 namespace DOTS.Characters
 {
     public class CharactersAuthoring : MonoBehaviour
     {
+        private ABLESTUFF a = new ABLESTUFF { PetName = null };
+
+        public void Func()
+        {
+            var newPetName = a.PetName?.Trim('a');
+        }
+
         [SerializeField] public GameObject avocadoPrefab;
         [SerializeField] public GameObject birdPrefab;
         [SerializeField] public GameObject coinPrefab;
