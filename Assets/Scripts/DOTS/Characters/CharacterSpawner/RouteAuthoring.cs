@@ -23,7 +23,7 @@ namespace DOTS.Characters.CharacterSpawner
                 for (int i = 0; i < authoring.wayPoints.Length; i++)
                 {
                     authoring.wayPoints[i].TryGetComponent<SpaceWayPoint>(out var spaceWayPoint);
-                    var name = spaceWayPoint == null ? "None" : spaceWayPoint.space.name;
+                    var name = spaceWayPoint == null ? "None" : spaceWayPoint.space.Name;
 
                     wayPointsBuffer.Add( new WayPointBufferElement 
                     { 

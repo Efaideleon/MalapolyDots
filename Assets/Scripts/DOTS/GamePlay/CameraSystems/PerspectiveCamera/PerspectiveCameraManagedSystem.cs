@@ -24,7 +24,6 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
                 if (cam.enabled)
                 {
                     cam.transform.SetPositionAndRotation(transform.ValueRO.Position, transform.ValueRO.Rotation);
-                    UnityEngine.Debug.Log("[PerspectiveCameraManagedSystem] | Camera moving");
                 }
             }
         }

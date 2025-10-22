@@ -41,7 +41,11 @@ namespace DOTS.GamePlay
                     var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
 
                     var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
+                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | playerWaypointIndex:  {playerWaypointIndex.ValueRO.Value} ");
                     var wayPointSpace = wayPointsBuffer[playerWaypointIndex.ValueRO.Value];
+                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | space name on: {wayPointSpace.Name} ");
+                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | player id: {playerID.ValueRO.Value} player name: {name.ValueRO.Value} ");
+                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | currentPlayerID: {currentPlayerID.Value} ");
 
                     foreach (var (spaceName, _, spaceEntity) in SystemAPI.Query<
                             RefRO<NameComponent>, RefRO<BoardIndexComponent>>().WithEntityAccess())
@@ -51,7 +55,15 @@ namespace DOTS.GamePlay
                         {
                             var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
                             spaceLandedEntity.ValueRW.entity = spaceEntity;
+                            UnityEngine.Debug.Log($"[SpaceDetectorSystem] | Landed on: {wayPointSpace.Name} ");
                         }
+                    }
+
+                    if (playerID.ValueRO.Value == currentPlayerID.Value 
+                            && wayPointSpace.Name == "None")
+                    {
+                        var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
+                        spaceLandedEntity.ValueRW.entity = Entity.Null;
                     }
                 }
             }
@@ -62,5 +74,4 @@ namespace DOTS.GamePlay
     {
         public Entity entity;
     }
-
 }
