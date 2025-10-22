@@ -115,7 +115,6 @@ namespace DOTS.GamePlay
         
         public readonly void Color(ref float value, ref float dt, int threshold)
         {
-            value = 40;
             if (value < threshold)
             {
                 if (true)
