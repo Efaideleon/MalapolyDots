@@ -7,13 +7,26 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PerspectiveCamera>();
+            state.RequireForUpdate<MainCameraTransform>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            state.Enabled = false;
             var camComponent = SystemAPI.ManagedAPI.GetSingleton<PerspectiveCamera>();
-            //camComponent.camera.enabled = true;
+            if (camComponent.camera == null) return;
+
+            var cam = camComponent.camera;
+
+            foreach (var transform in SystemAPI.Query<
+                    RefRO<MainCameraTransform>
+            >().WithChangeFilter<MainCameraTransform>())
+            {
+                if (cam.enabled)
+                {
+                    cam.transform.SetPositionAndRotation(transform.ValueRO.Position, transform.ValueRO.Rotation);
+                    UnityEngine.Debug.Log("[PerspectiveCameraManagedSystem] | Camera moving");
+                }
+            }
         }
     }
 }

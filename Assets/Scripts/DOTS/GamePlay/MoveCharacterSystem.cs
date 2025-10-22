@@ -25,8 +25,8 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct MoveCharacterSystem : ISystem
     {
-        //private const float moveSpeedFactor = 10f;
-        private const float moveSpeedFactor = 50f;
+        private const float moveSpeedFactor = 10f;
+        //private const float moveSpeedFactor = 50f;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)

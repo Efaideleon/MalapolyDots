@@ -6,7 +6,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 {
     public class PerspectiveCameraAuthoring : MonoBehaviour
     {
-        [SerializeField] GameObject perspectiveCameraGO;
+        [SerializeField] GameObject? perspectiveCameraGO;
 
         public class PerspectiveCameraBaker : Baker<PerspectiveCameraAuthoring>
         {

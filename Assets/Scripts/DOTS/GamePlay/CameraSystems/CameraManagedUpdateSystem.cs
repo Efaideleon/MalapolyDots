@@ -9,6 +9,9 @@ using UnityEngine;
 #nullable enable
 namespace DOTS.GamePlay.CameraSystems
 {
+    ///<summary>
+    ///This system uses and updates managed properties from the `Camera.main`.
+    ///</summary>
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct CameraManageUpdateSystem : ISystem
     {
@@ -33,9 +36,6 @@ namespace DOTS.GamePlay.CameraSystems
                 }
             }
 
-            // TODO: Create a foreach to change from orthographic to perspective.
-            // TODO: Will need a componentData to keep track of this.
-
             foreach (var translateData in SystemAPI.Query<RefRO<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
             {
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);
@@ -43,7 +43,6 @@ namespace DOTS.GamePlay.CameraSystems
 
             foreach (var fieldOfView in SystemAPI.Query<RefRO<CameraFieldOfView>>().WithChangeFilter<CameraFieldOfView>())
             {
-                // TODO: will need a if statment to check if we are in orthographic or perspective
                 Camera.main.orthographicSize = fieldOfView.ValueRO.Value;
             }
         }

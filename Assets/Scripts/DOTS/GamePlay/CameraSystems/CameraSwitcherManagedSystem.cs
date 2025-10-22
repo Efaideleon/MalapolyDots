@@ -1,46 +1,41 @@
+using PerspectiveCam = DOTS.GamePlay.CameraSystems.PerspectiveCamera.PerspectiveCamera;
 using Unity.Entities;
 
-using CamSwitcher = DOTS.GamePlay.CameraSystems.CameraSwitcher;
 #nullable enable
 namespace DOTS.GamePlay.CameraSystems
 {
     /// <summary>
-    /// This swtiches uses the CameraSwitcher class to switch between orthorgraphic and perspective cameras.
+    /// This system enables and disables the `PerspectiveCamera` that we instantiate in the `PerspectiveCameraInstantiateSystem`.
     /// </summary>
     public partial struct CameraSwitcherManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            // state.EntityManager.CreateSingleton<CurrentCameraType>();
-            // state.RequireForUpdate<CurrentCameraType>();
-            // state.RequireForUpdate<CamerasTag>();
+            state.RequireForUpdate<PerspectiveCam>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            // foreach (var camera in SystemAPI.Query<RefRO<CurrentCameraType>>().WithChangeFilter<CurrentCameraType>())
-            // {
-            //     var entity = SystemAPI.GetSingletonEntity<CamerasTag>();
-            //     var perspectiveCam = state.EntityManager.GetComponentObject<PerspectiveCamera>(entity);
-            //
-            //     if (perspectiveCam.camera != null)
-            //     {
-            //         switch (camera.ValueRO.camera)
-            //         {
-            //             case Cameras.Walking:
-            //                 perspectiveCam.camera.enabled = true;
-            //                 break;
-            //             case Cameras.Rolling:
-            //                 perspectiveCam.camera.enabled = false;
-            //                 break;
-            //         }
-            //     }
-            // }
+            // Whenever the state of the game changes between walking and rolling enable or disable the perspective camera.
+            foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
+            {
+                if (gameState.ValueRO.State == GameState.Walking)
+                {
+                    var perspectiveCam = SystemAPI.ManagedAPI.GetSingleton<PerspectiveCam>();
+                    if (perspectiveCam.camera != null)
+                    {
+                        perspectiveCam.camera.enabled = true;
+                    }
+                }
+                if (gameState.ValueRO.State == GameState.Rolling)
+                {
+                    var perspectiveCam = SystemAPI.ManagedAPI.GetSingleton<PerspectiveCam>();
+                    if (perspectiveCam.camera != null)
+                    {
+                        perspectiveCam.camera.enabled = false;
+                    }
+                }
+            }
         }
-    }
-
-    public struct CurrentCameraType : IComponentData
-    {
-        public Cameras camera;
     }
 }
