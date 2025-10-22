@@ -14,6 +14,13 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
         public EventCallback<ChangeEvent<bool>>? Callback;
     }
 
+    internal class MonopolyToggleManagedData : IComponentData
+    {
+        public Toggle? Toggle;
+        public EventCallback<ChangeEvent<bool>>? Callback;
+    }
+
+
     internal class IntegerFieldManagedData : IComponentData
     {
         public IntegerField? IntegerField;
@@ -33,12 +40,14 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
 
             SystemAPI.SetComponent(entity, new DebugScreenFlag { });
             state.EntityManager.AddComponentData(entity, new ToggleManagedData { Toggle = null, Callback = null });
+            state.EntityManager.AddComponentData(entity, new MonopolyToggleManagedData { Toggle = null, Callback = null });
             state.EntityManager.AddComponentData(entity, new IntegerFieldManagedData { IntegerField = null, Callback = null });
 
             state.RequireForUpdate<ForegroundContainterComponent>();
             state.RequireForUpdate<DebugScreenFlag>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
             state.RequireForUpdate<RollConfig>();
+            state.RequireForUpdate<GlobalMonopolyEnabled>();
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -59,10 +68,12 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             }
 
             var rollConfigQuery = SystemAPI.QueryBuilder().WithAllRW<RollConfig>().Build();
+            var globalMonopolyQuery = SystemAPI.QueryBuilder().WithAllRW<GlobalMonopolyEnabled>().Build();
             var debugScreenEntity = SystemAPI.GetSingletonEntity<DebugScreenFlag>();
 
             SetupRollToggle(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity);
             SetupRollIntegerField(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity);
+            SetupGlobalMonopolyToggle(ref state, debugScreen, globalMonopolyQuery, ref debugScreenEntity);
         }
 
         public void OnUpdate(ref SystemState state)
@@ -77,6 +88,9 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
 
             var integerFieldData = SystemAPI.ManagedAPI.GetSingleton<IntegerFieldManagedData>();
             integerFieldData.IntegerField?.UnregisterCallback(integerFieldData.Callback);
+
+            var monopolyToggle = SystemAPI.ManagedAPI.GetSingleton<MonopolyToggleManagedData>();
+            monopolyToggle.Toggle?.UnregisterCallback(monopolyToggle.Callback);
         }
 
         private readonly void SetupRollToggle(
@@ -133,6 +147,34 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             };
 
             integerFieldData.IntegerField.RegisterCallback(integerFieldData.Callback);
+        }
+
+        private readonly void SetupGlobalMonopolyToggle(
+                ref SystemState state,
+                VisualElement debugScreen,
+                EntityQuery globalMonopolyQuery,
+                ref Entity debugScreenEntity
+        )
+        {
+            var monopolyToggle = debugScreen.Q<Toggle>("GlobalMonopoly");
+            if (monopolyToggle == null)
+            {
+                UnityEngine.Debug.LogWarning($"[DebugScreenSystem] | MonopolyToggle is missing.");
+                return;
+            }
+
+            var toggleData = SystemAPI.ManagedAPI.GetComponent<MonopolyToggleManagedData>(debugScreenEntity);
+
+            toggleData.Toggle = monopolyToggle;
+
+            toggleData.Callback = (evt) =>
+            {
+                ref var globalMonopolyRW = ref globalMonopolyQuery.GetSingletonRW<GlobalMonopolyEnabled>().ValueRW;
+                globalMonopolyRW.Value = evt.newValue;
+                UnityEngine.Debug.Log($"[DebugScreenSystem] | GlobalMonopolyEnabled: {globalMonopolyRW.Value}");
+            };
+
+            toggleData.Toggle.RegisterCallback(toggleData.Callback);
         }
     }
 }
