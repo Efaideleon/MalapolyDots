@@ -6,8 +6,12 @@ using UnityEngine;
 // data.
 // ======================================================================
 
+#nullable enable
 namespace DOTS.GamePlay.CameraSystems
 {
+    ///<summary>
+    ///This system uses and updates managed properties from the `Camera.main`.
+    ///</summary>
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct CameraManageUpdateSystem : ISystem
     {
@@ -21,6 +25,8 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
+            if (Camera.main == null) return;
+
             foreach (var transform in SystemAPI.Query<RefRW<MainCameraTransform>>().WithChangeFilter<MainCameraTransform>())
             {
                 bool isFreeCamera = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value;

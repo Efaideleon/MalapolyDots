@@ -18,14 +18,23 @@ namespace DOTS.GamePlay.ChanceActionSystems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var card in SystemAPI.Query<RefRO<ChanceCardPicked>>().WithChangeFilter<ChanceCardPicked>())
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<ChanceBufferEvent>>().WithChangeFilter<ChanceBufferEvent>())
             {
-                if (card.ValueRO.id == 0)
+                if (buffer.Length < 1)
+                    continue;
+
+                foreach (var _ in buffer)
                 {
-                    var player = SystemAPI.GetSingleton<CurrentPlayerComponent>();
-                    ref var money = ref SystemAPI.GetComponentRW<MoneyComponent>(player.entity).ValueRW;
-                    money.Value += 1;
+                    var card = SystemAPI.GetSingleton<ChanceCardPicked>();
+                    if (card.id == 0)
+                    {
+                        var player = SystemAPI.GetSingleton<CurrentPlayerComponent>();
+                        ref var money = ref SystemAPI.GetComponentRW<MoneyComponent>(player.entity).ValueRW;
+                        money.Value += 1;
+                    }
                 }
+
+                buffer.Clear();
             }
         }
     }
