@@ -8,7 +8,6 @@ using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
 using DOTS.Characters;
-using UnityEngine.Rendering.VirtualTexturing;
 
 namespace DOTS.GamePlay.CameraSystems
 {
