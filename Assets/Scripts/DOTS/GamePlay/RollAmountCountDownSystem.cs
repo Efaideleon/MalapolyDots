@@ -17,12 +17,6 @@ namespace DOTS.GamePlay
         }
 
         public void OnUpdate(ref SystemState state)
-        {
-            foreach (var _ in SystemAPI.Query<RefRO<PlayerWaypointIndex>>().WithChangeFilter<PlayerWaypointIndex>())
-            {
-                SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value -= 1;
-                break;
-            }
-        }
+        { }
     }
 }

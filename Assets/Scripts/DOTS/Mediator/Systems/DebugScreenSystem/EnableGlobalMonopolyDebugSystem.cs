@@ -1,4 +1,6 @@
+using DOTS.Constants;
 using DOTS.DataComponents;
+using DOTS.GamePlay;
 using Unity.Entities;
 
 #nullable enable
@@ -16,6 +18,7 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
         {
             state.EntityManager.CreateSingleton(new GlobalMonopolyEnabled { Value = false });
             state.RequireForUpdate<GlobalMonopolyEnabled>();
+            state.RequireForUpdate<CurrentPlayerID>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -24,15 +27,17 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             {
                 if (enabled.ValueRO.Value)
                 {
-                    foreach (var monopoly in SystemAPI.Query<RefRW<MonopolyFlagComponent>>())
+                    foreach (var (monopoly, owner) in SystemAPI.Query<RefRW<MonopolyFlagComponent>, RefRW<OwnerComponent>>())
                     {
+                        owner.ValueRW.ID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
                         monopoly.ValueRW.Value = true;
                     }
                 }
                 else
                 {
-                    foreach (var monopoly in SystemAPI.Query<RefRW<MonopolyFlagComponent>>())
+                    foreach (var (monopoly, owner) in SystemAPI.Query<RefRW<MonopolyFlagComponent>, RefRW<OwnerComponent>>())
                     {
+                        owner.ValueRW.ID = PropertyConstants.Vacant;
                         monopoly.ValueRW.Value = false;
                     }
                 }
