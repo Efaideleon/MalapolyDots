@@ -1,6 +1,11 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement style="flex-grow: 1; background-color: rgb(22, 85, 255); flex-direction: row; padding-top: 19px; padding-right: 19px; padding-bottom: 19px; padding-left: 19px;">
-        <ui:VisualElement style="flex-grow: 1; background-color: rgb(24, 205, 58); margin-right: 20px;"/>
-        <ui:VisualElement style="flex-grow: 1; background-color: rgb(242, 56, 56);"/>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(24, 205, 58); margin-right: 20px; flex-shrink: 1; align-items: center; justify-content: center;">
+            <ui:VisualElement style="flex-grow: 0; background-color: rgb(220, 201, 0); width: 177px; height: 260px; flex-shrink: 0;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgb(242, 56, 56); align-items: center;">
+            <ui:VisualElement style="flex-grow: 0; background-color: rgb(217, 18, 213); width: 174px; height: 180px; justify-content: flex-start; align-items: center;"/>
+            <ui:VisualElement style="flex-grow: 0; background-color: rgb(217, 18, 213); width: 174px; height: 180px; justify-content: flex-start; align-items: center; margin-top: 17px;"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
