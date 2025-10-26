@@ -6,6 +6,7 @@
     <ui:Template name="GoPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/GoPanel.uxml?fileID=9197481963319205126&amp;guid=22b76a13e7bdac94b83927b0b4a8aad3&amp;type=3#GoPanel"/>
     <ui:Template name="GoToJailPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/GoToJailPanel.uxml?fileID=9197481963319205126&amp;guid=75fe9de08ef75a947ae56955e613ed3c&amp;type=3#GoToJailPanel"/>
     <ui:Template name="JailPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/JailPanel.uxml?fileID=9197481963319205126&amp;guid=c63d18b3aafba044cb690bd81a76a0d4&amp;type=3#JailPanel"/>
+    <ui:Template name="MenuButton" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/MenuButton.uxml?fileID=9197481963319205126&amp;guid=9e5a9e66af002604c994cc4cd88b3c1f&amp;type=3#MenuButton"/>
     <ui:Template name="NoMonopoloyYetPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/NoMonopoloyYetPanel.uxml?fileID=9197481963319205126&amp;guid=ab6bd4b0261cb2d47a43482ca13ab462&amp;type=3#NoMonopoloyYetPanel"/>
     <ui:Template name="ParkingPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/ParkingPanel.uxml?fileID=9197481963319205126&amp;guid=e99a1a4f0f5ab8044805f8605bc2825f&amp;type=3#ParkingPanel"/>
     <ui:Template name="PayRentPanel" src="project://database/Assets/UI/TitleScreenUI/GameScreenPanels/PayRentPanel.uxml?fileID=9197481963319205126&amp;guid=1db64a035f464445dac2c140e4f8add7&amp;type=3#PayRentPanel"/>
@@ -20,6 +21,7 @@
     <ui:VisualElement name="foreground" focusable="false" picking-mode="Ignore" style="flex-grow: 1;">
         <ui:Instance template="DebugScreen" name="DebugScreen" style="position: absolute; left: 0; bottom: 0; width: 600px; height: 600px;"/>
         <ui:VisualElement name="game-screen-bottom-container" enabled="true" picking-mode="Ignore" style="flex-grow: 1; align-items: center; justify-content: center; flex-direction: row; align-content: auto; position: relative;">
+            <ui:Instance template="MenuButton" style="position: absolute; top: 150px; right: 150px; flex-grow: 0;"/>
             <ui:Instance template="RollPanel" name="RollPanel" picking-mode="Ignore" class="roll_template-container" style="position: absolute; display: flex; width: auto; height: auto; right: 5%;"/>
             <ui:Instance template="JailPanel" name="JailPanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
             <ui:Instance template="GoToJailPanel" name="GoToJailPanel" picking-mode="Ignore" style="position: absolute; display: none;"/>
