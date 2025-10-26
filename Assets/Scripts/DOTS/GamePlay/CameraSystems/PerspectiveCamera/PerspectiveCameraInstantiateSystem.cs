@@ -1,4 +1,7 @@
+using DOTS.DataComponents;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 #nullable enable
@@ -10,6 +13,8 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
         {
             state.RequireForUpdate<PerspectiveCameraGO>();
             state.RequireForUpdate<PerspectiveCameraGOTag>();
+            state.RequireForUpdate<PerspectiveCameraConfig>();
+            state.RequireForUpdate<CurrentPlayerComponent>();
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -23,6 +28,20 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
             if (camGO == null) return;
 
             var cam = camGO.GetComponent<Camera>();
+
+            // Set the camera initial position.
+            var currentPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
+            if (!SystemAPI.HasComponent<LocalTransform>(currentPlayer.entity))
+                return;
+
+            var player = SystemAPI.GetComponent<LocalTransform>(currentPlayer.entity);
+            var camConfig = SystemAPI.GetSingleton<PerspectiveCameraConfig>();
+            var newCamPosition =  player.Position + camConfig.Offset;
+
+            float3 forward = math.normalize(player.Position - newCamPosition);
+            var newCamRotation = quaternion.LookRotationSafe(forward, math.up());
+             
+            cam.transform.SetPositionAndRotation(newCamPosition, newCamRotation);
 
             state.EntityManager.CreateSingleton(new PerspectiveCamera { camera = cam });
         }

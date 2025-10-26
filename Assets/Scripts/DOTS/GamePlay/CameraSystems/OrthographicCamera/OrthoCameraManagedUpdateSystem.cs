@@ -13,7 +13,7 @@ namespace DOTS.GamePlay.CameraSystems
     ///This system uses and updates managed properties from the `Camera.main`.
     ///</summary>
     [UpdateInGroup(typeof(PresentationSystemGroup))]
-    public partial struct CameraManageUpdateSystem : ISystem
+    public partial struct OrthoCameraManageUpdateSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {

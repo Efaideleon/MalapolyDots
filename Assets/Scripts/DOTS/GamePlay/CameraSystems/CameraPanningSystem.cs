@@ -21,7 +21,7 @@ namespace DOTS.GamePlay
     }
 
     [UpdateInGroup(typeof(PresentationSystemGroup))]
-    [UpdateBefore(typeof(CameraManageUpdateSystem))]
+    [UpdateBefore(typeof(OrthoCameraManageUpdateSystem))]
     [BurstCompile]
     public partial struct CameraPanningSystem : ISystem
     {

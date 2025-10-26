@@ -857,6 +857,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.PerspectiveCamera.PerspectiveCameraAuthoring
   perspectiveCameraGO: {fileID: 7689251813701345384, guid: c19cec152991b462185cac84f857df13, type: 3}
+  offset:
+    x: 0
+    y: 13
+    z: 27
+  angle: 51
 --- !u!4 &1348354910
 Transform:
   m_ObjectHideFlags: 0
@@ -881,32 +886,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1561488916}
-  - component: {fileID: 1561488915}
+  - component: {fileID: 1561488917}
   m_Layer: 0
-  m_Name: CameraSetupAuthoring
+  m_Name: OrthoCameraSetupAuthoring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1561488915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561488914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d01e20cad5dd745188e30f2a4635dc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CameraTransform: {fileID: 8121963178908400873, guid: a29b8ecfeec0b4eda9a6a56f83e735ef, type: 3}
-  Offset:
-    x: 43.4
-    y: 28.93
-    z: 0.03
-  Angle: 51
 --- !u!4 &1561488916
 Transform:
   m_ObjectHideFlags: 0
@@ -922,6 +909,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1561488917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561488914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff9d39dac82f43d0ae3023b2e5bf24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.OrthoCameraSetupAuthoring
+  CameraTransform: {fileID: 8121963178908400873, guid: a29b8ecfeec0b4eda9a6a56f83e735ef, type: 3}
+  Offset:
+    x: 0
+    y: 13
+    z: 27
+  Angle: 51
 --- !u!1 &14178388349813914
 GameObject:
   m_ObjectHideFlags: 0
