@@ -15,7 +15,7 @@ namespace DOTS.GamePlay.CameraSystems
         public quaternion Rotation;
     }
 
-    public struct CameraOffset : IComponentData
+    public struct OrthoCamOffset : IComponentData
     {
         public float3 Offset;
         public float Angle;
@@ -31,15 +31,16 @@ namespace DOTS.GamePlay.CameraSystems
         public float Value;
     }
 
-    public class CameraSetupAuthoring : MonoBehaviour
+    public class OrthoCameraSetupAuthoring : MonoBehaviour
     {
+        public int CameraOrthographicSize = 14;
         public Transform CameraTransform;
         public float3 Offset = new (0f, 13f, 27f);
         public float Angle = 51; // Should limit values between 0 and 360 in inspector.
 
-        public class CameraBaker : Baker<CameraSetupAuthoring>
+        public class CameraBaker : Baker<OrthoCameraSetupAuthoring>
         {
-            public override void Bake(CameraSetupAuthoring authoring)
+            public override void Bake(OrthoCameraSetupAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
@@ -56,10 +57,10 @@ namespace DOTS.GamePlay.CameraSystems
 
                 AddComponent(entity, new CameraFieldOfView 
                 {
-                    Value = default, 
+                    Value = authoring.CameraOrthographicSize, 
                 });
 
-                AddComponent(entity, new CameraOffset 
+                AddComponent(entity, new OrthoCamOffset 
                 {
                     Offset = authoring.Offset, 
                     Angle = math.radians(authoring.Angle)
