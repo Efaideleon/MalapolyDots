@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: coffee_mug_mat
+  m_Shader: {fileID: -6465566751694194690, guid: d101253eb134e454cb2e95ad8c051403, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _1_vat_image:
+        m_Texture: {fileID: 2800000, guid: 3d869da9d04b80a4b8da56c9f8051ac4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _2_vat_image:
+        m_Texture: {fileID: 2800000, guid: 3a18186f4ffe7854590c8394b749bb61, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _3_vat_image:
+        m_Texture: {fileID: 2800000, guid: 493f9efc91f0ed849b3db336b3faee9b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _4_vat_image:
+        m_Texture: {fileID: 2800000, guid: 8371b924549f8de4aaa0d22e80abe957, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2D:
+        m_Texture: {fileID: 2800000, guid: 2d340b0910d0d394f9fbb16f891808d8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_7d948f6c3da941c998a607121377767a_Out_0_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2D_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _1_frame: 0
+    - _1_frames: 40
+    - _1_spped: 1
+    - _1_use_time: 1
+    - _1_y_resolution: 256
+    - _2_frame: 0
+    - _2_frames: 40
+    - _2_speed: 1
+    - _2_use_time: 1
+    - _2_y_resolution: 256
+    - _3_frame: 0
+    - _3_frames: 40
+    - _3_speed: 1
+    - _3_use_time: 1
+    - _3_y_resolution: 256
+    - _4_frame: 0
+    - _4_frames: 40
+    - _4_speed: 1
+    - _4_use_time: 1
+    - _4_y_resolution: 256
+    - _Animation_number: 0
+    - _Boolean: 0
+    - _Float: 0
+    - _Float_1: 0
+    - _Float_2: 0
+    - _Float_3: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors:
+    - _1_max_values: {r: -1.2, g: 0.6, b: 0.7, a: 0}
+    - _1_min_values: {r: 0.9, g: -0.6, b: -0.1, a: 0}
+    - _2_max_values: {r: -0.3, g: 0.1, b: 0.3, a: 0}
+    - _2_min_values: {r: 0.3, g: -0.1, b: -0.3, a: 0}
+    - _3_max_values: {r: -0.7, g: 0.1, b: 2, a: 0}
+    - _3_min_values: {r: 1.4, g: -1.8, b: -0.1, a: 0}
+    - _4_max_values: {r: -3.6, g: 0.6, b: 0.5, a: 0}
+    - _4_min_values: {r: 0, g: -0.6, b: -0.6, a: 0}
+    - _Vector3: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &988541845748864357
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
