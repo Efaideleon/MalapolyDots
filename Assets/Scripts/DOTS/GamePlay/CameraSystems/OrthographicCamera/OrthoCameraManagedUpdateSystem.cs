@@ -32,10 +32,11 @@ namespace DOTS.GamePlay.CameraSystems
                 bool isFreeCamera = SystemAPI.GetSingleton<FreeCameraToggleFlag>().Value;
                 if (!isFreeCamera)
                 {
-                    Camera.main.transform.SetPositionAndRotation(transform.ValueRO.Position, transform.ValueRO.Rotation);
+                    Camera.main.transform.localRotation = transform.ValueRO.Rotation;
                 }
             }
 
+            //TODO: buggy with new pivot
             foreach (var translateData in SystemAPI.Query<RefRO<MainCameraTranslateData>>().WithChangeFilter<MainCameraTranslateData>())
             {
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);

@@ -1,3 +1,4 @@
+using System;
 using log4net.Repository.Hierarchy;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -31,8 +32,14 @@ namespace DOTS.GamePlay.CameraSystems
         public float Value;
     }
 
+    public class OrthographicCameraPivot : IComponentData
+    {
+        public GameObject gameObject;
+    }
+
     public class OrthoCameraSetupAuthoring : MonoBehaviour
     {
+        [SerializeField] GameObject OrthographicCameraPivotGO;
         public int CameraOrthographicSize = 14;
         public Transform CameraTransform;
         public float3 Offset = new (0f, 13f, 27f);
@@ -44,27 +51,17 @@ namespace DOTS.GamePlay.CameraSystems
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
+                AddComponentObject(entity, new OrthographicCameraPivot { gameObject = authoring.OrthographicCameraPivotGO, });
+
                 AddComponent(entity, new MainCameraTransform 
                 {
                     Position = authoring.CameraTransform.position,
                     Rotation = authoring.CameraTransform.rotation
                 });
 
-                AddComponent(entity, new MainCameraTranslateData 
-                {
-                    Delta = default,
-                });
-
-                AddComponent(entity, new CameraFieldOfView 
-                {
-                    Value = authoring.CameraOrthographicSize, 
-                });
-
-                AddComponent(entity, new OrthoCamOffset 
-                {
-                    Offset = authoring.Offset, 
-                    Angle = math.radians(authoring.Angle)
-                });
+                AddComponent(entity, new MainCameraTranslateData { Delta = default, });
+                AddComponent(entity, new CameraFieldOfView { Value = authoring.CameraOrthographicSize, });
+                AddComponent(entity, new OrthoCamOffset { Offset = authoring.Offset, Angle = math.radians(authoring.Angle) });
             }
         }
     }

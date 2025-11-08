@@ -28,6 +28,7 @@ namespace DOTS.GamePlay.ChanceActionSystems
                     var card = SystemAPI.GetSingleton<ChanceCardPicked>();
                     if (card.id == 0)
                     {
+                        // TODO: what if the entity is null;
                         var player = SystemAPI.GetSingleton<CurrentPlayerComponent>();
                         ref var money = ref SystemAPI.GetComponentRW<MoneyComponent>(player.entity).ValueRW;
                         money.Value += 1;

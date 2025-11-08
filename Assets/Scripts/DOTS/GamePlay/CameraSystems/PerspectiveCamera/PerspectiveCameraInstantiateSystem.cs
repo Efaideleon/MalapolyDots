@@ -1,7 +1,6 @@
 using DOTS.DataComponents;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
 
 #nullable enable
@@ -11,7 +10,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<PerspectiveCameraGO>();
+            state.RequireForUpdate<PerspectiveCameraPivotGO>();
             state.RequireForUpdate<PerspectiveCameraGOTag>();
             state.RequireForUpdate<PerspectiveCameraConfig>();
             state.RequireForUpdate<CurrentPlayerComponent>();
@@ -20,28 +19,27 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
         public void OnStartRunning(ref SystemState state)
         {
             var entity = SystemAPI.GetSingletonEntity<PerspectiveCameraGOTag>();
-            var cameraGO = state.EntityManager.GetComponentObject<PerspectiveCameraGO>(entity);
+            var cameraGO = state.EntityManager.GetComponentObject<PerspectiveCameraPivotGO>(entity);
 
             if (cameraGO == null) return;
 
-            var camGO = GameObject.Instantiate(cameraGO.cameraGO);
-            if (camGO == null) return;
+            var camPivotGO = GameObject.Instantiate(cameraGO.Pivot);
+            if (camPivotGO == null) return;
 
-            var cam = camGO.GetComponent<Camera>();
+            state.EntityManager.CreateSingleton(new PerspectiveCameraPivot { Instance = camPivotGO });
 
-            // Set the camera initial position.
-            var currentPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
-            if (!SystemAPI.HasComponent<LocalTransform>(currentPlayer.entity))
-                return;
+            // Get the child components that has the Camera
+            var cam = camPivotGO.GetComponentInChildren<Camera>();
 
-            var player = SystemAPI.GetComponent<LocalTransform>(currentPlayer.entity);
+            // Set the camera initial position with respect to the pivot.
+            var origin = float3.zero;
             var camConfig = SystemAPI.GetSingleton<PerspectiveCameraConfig>();
-            var newCamPosition =  player.Position + camConfig.Offset;
+            var newCamPosition =  origin + camConfig.Offset;
 
-            float3 forward = math.normalize(player.Position - newCamPosition);
+            float3 forward = math.normalize(origin - newCamPosition);
             var newCamRotation = quaternion.LookRotationSafe(forward, math.up());
              
-            cam.transform.SetPositionAndRotation(newCamPosition, newCamRotation);
+            cam.transform.SetLocalPositionAndRotation(newCamPosition, newCamRotation);
 
             state.EntityManager.CreateSingleton(new PerspectiveCamera { camera = cam });
         }
@@ -52,6 +50,11 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 
         public void OnStopRunning(ref SystemState state)
         { }
+    }
+
+    public class PerspectiveCameraPivot : IComponentData
+    {
+        public GameObject? Instance;
     }
 
     public class PerspectiveCamera : IComponentData

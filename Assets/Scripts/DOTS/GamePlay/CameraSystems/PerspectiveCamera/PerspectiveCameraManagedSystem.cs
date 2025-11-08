@@ -1,5 +1,9 @@
 using Unity.Entities;
 
+/*
+ * Legacy code potentialy, as we don't need to rotate the PerspectiveCamera by itself, use pivot.
+ * This code could be used to rotate the PerspectiveCamera on its own axis.
+ */
 namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 {
     public partial struct PerspectiveCameraManagedSystem : ISystem
@@ -23,7 +27,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
             {
                 if (cam.enabled)
                 {
-                    cam.transform.SetPositionAndRotation(transform.ValueRO.Position, transform.ValueRO.Rotation);
+                    //cam.transform.rotation = transform.ValueRO.Rotation;
                 }
             }
         }

@@ -17,19 +17,22 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<CurrentCameraData>();
             state.RequireForUpdate<MainCameraTransform>();
+            state.RequireForUpdate<PivotTransform>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var playerEntity= SystemAPI.GetSingleton<CurrentPlayerComponent>().entity;
-            var player = SystemAPI.GetComponent<LocalTransform>(playerEntity);
-
-            var currCameraData = SystemAPI.GetSingleton<CurrentCameraData>();
-            ref var cam = ref SystemAPI.GetSingletonRW<MainCameraTransform>().ValueRW;
-
-            cam.Position = player.Position + currCameraData.Offset;
-            float3 forward = math.normalize(player.Position - cam.Position);
-            cam.Rotation = quaternion.LookRotationSafe(forward, math.up());
+            // var pivot = SystemAPI.GetSingleton<PivotTransform>();
+            //
+            // var currCameraData = SystemAPI.GetSingleton<CurrentCameraData>();
+            // ref var cam = ref SystemAPI.GetSingletonRW<MainCameraTransform>().ValueRW;
+            //
+            // // It only makes sure that the camera is looking at the player now.
+            // // Doesn't update the position of the camera
+            // var origin = float3.zero;
+            // var camPosition = origin + currCameraData.LocalPosition;
+            // float3 forward = math.normalize(origin - camPosition);
+            // cam.Rotation = quaternion.LookRotationSafe(forward, math.up());
         }
     }
 }

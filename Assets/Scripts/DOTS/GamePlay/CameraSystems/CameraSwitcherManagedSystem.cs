@@ -16,6 +16,8 @@ namespace DOTS.GamePlay.CameraSystems
     {
         public float3 Position;
         public quaternion Rotation;
+        public float3 LocalPosition;
+        public quaternion LocalRotation;
         public float3 Offset;
         public float3 InitialAngle;
     }
@@ -46,6 +48,8 @@ namespace DOTS.GamePlay.CameraSystems
                         perspectiveCam.camera.enabled = true;
                         currCameraData.Position = perspectiveCam.camera.transform.position;
                         currCameraData.Rotation = perspectiveCam.camera.transform.rotation;
+                        currCameraData.LocalPosition = perspectiveCam.camera.transform.localPosition;
+                        currCameraData.LocalRotation = perspectiveCam.camera.transform.localRotation;
                         currCameraData.Offset = perspectiveCamConfig.Offset;
                         currCameraData.InitialAngle = perspectiveCamConfig.Angle;
                     }
@@ -59,6 +63,8 @@ namespace DOTS.GamePlay.CameraSystems
                         perspectiveCam.camera.enabled = false;
                         currCameraData.Position = Camera.main.transform.position;
                         currCameraData.Rotation = Camera.main.transform.rotation;
+                        currCameraData.LocalPosition = Camera.main.transform.localPosition;
+                        currCameraData.LocalRotation = Camera.main.transform.localRotation;
                         currCameraData.Offset = orthoCamConfig.Offset;
                         currCameraData.InitialAngle = orthoCamConfig.Angle;
                     }
