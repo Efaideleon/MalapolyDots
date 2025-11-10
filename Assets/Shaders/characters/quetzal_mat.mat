@@ -3,7 +3,7 @@
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _1_vat_image:
-        m_Texture: {fileID: 2800000, guid: c80cd27ec4307b6459743a3f4b90320b, type: 3}
+        m_Texture: {fileID: 2800000, guid: e0a255832aebb74429cfd087ab7592b0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _2_vat_image:
@@ -82,8 +82,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _1_max_values: {r: 0, g: 0, b: -0.1, a: 0}
-    - _1_min_values: {r: 0, g: 0, b: 0.1, a: 0}
+    - _1_max_values: {r: 0, g: 0, b: 0.1, a: 0}
+    - _1_min_values: {r: 0, g: 0, b: -0.1, a: 0}
     - _2_max_values: {r: -0.3, g: 0.1, b: 0.3, a: 0}
     - _2_min_values: {r: 0.3, g: -0.1, b: -0.1, a: 0}
     - _3_max_values: {r: 0, g: 0, b: 0, a: 0}
