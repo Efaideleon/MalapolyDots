@@ -49,7 +49,8 @@ namespace DOTS.GamePlay.CameraSystems
                                 angleAnimationData.ValueRW.AnimationState = AngleAnimationState.InProgress;
                                 angleAnimationData.ValueRW.RotationSpeed = cameraZoneData.RotationSpeed;
                                 angleAnimationData.ValueRW.CurrentAngleY = 0;
-                                angleAnimationData.ValueRW.CurrentRotation = currentRotation;
+                                angleAnimationData.ValueRW.InitialRotation = currentRotation;
+                                angleAnimationData.ValueRW.Delta = 0;
 
                                 UnityEngine.Debug.Log($"[CameraRotationSystem] | currentAngle : {currentRotation}");
                                 break;
@@ -77,22 +78,19 @@ namespace DOTS.GamePlay.CameraSystems
                 ref PivotTransform pivotTransform,
                 ref PlayerToCameraAngleData playerToCameraAngle,
                 in int playerID,
-                ref float dt
-                )
+                ref float dt)
         {
             switch (angleData.AnimationState)
             {
                 case AngleAnimationState.InProgress:
-                    float deltaAngle = angleData.RotationSpeed * dt;
 
-                    angleData.CurrentAngleY += deltaAngle;
+                    angleData.Delta += angleData.RotationSpeed * dt;
+                    float t = math.clamp(angleData.Delta, 0, 1);
 
-                    UnityEngine.Debug.Log($"[CameraRotationSystem] | angleDalta.CurrentAngleY: {angleData.CurrentAngleY}");
-                    UnityEngine.Debug.Log($"[CameraRotationSystem] | angleDalta.TargetAngleY: {angleData.TargetAngleY}");
-                    if (angleData.CurrentAngleY <= angleData.TargetAngleY) // TODO: how would it work for negative angles.
+                    if (t < 1) // TODO: how would it work for negative angles.
                     {
-                        var deltaRotation = quaternion.AxisAngle(new float3(0, 1, 0), deltaAngle);
-                        pivotTransform.Rotation = math.mul(pivotTransform.Rotation, deltaRotation);
+                        var targetRotation = quaternion.AxisAngle(new float3(0, 1, 0), angleData.TargetAngleY);
+                        pivotTransform.Rotation = math.slerp(angleData.InitialRotation, targetRotation, t);
                         UnityEngine.Debug.Log($"[CameraRotationSystem] | pivotTransform.Rotation: {pivotTransform.Rotation}");
                     }
                     else
@@ -136,13 +134,16 @@ namespace DOTS.GamePlay.CameraSystems
     /// <param name="AnimationState"> Keep track if the pivot rotation animation is in progress or finished.</param>
     /// <param name="RotationSpeed"> How fast the pivot should rotate.</param>
     /// <param name="CurrentAngleY"> The current angle in radians of the pivot.</param>
+    /// <param name="InitialRotation"> The quaternion representing the initialRotation.</param>
+    /// <param name="Delta"> The change in the animation transition.</param>
     /// </summary>
     public struct AngleAnimationData : IComponentData
     {
         public float TargetAngleY;
         public AngleAnimationState AnimationState;
         public int RotationSpeed;
-        public quaternion CurrentRotation; 
         public float CurrentAngleY;
+        public quaternion InitialRotation;
+        public float Delta;
     }
 }
