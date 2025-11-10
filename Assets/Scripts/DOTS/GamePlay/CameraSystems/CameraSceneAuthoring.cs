@@ -7,6 +7,7 @@ namespace DOTS.GamePlay.CameraSystems
     {
         [SerializeField] int RotationAngle;
         [SerializeField] int RotationSpeed;
+        //TODO: scenes can choose between rotating the shortets or longest path.
         public class CameraSceneBaker : Baker<CameraSceneAuthoring>
         {
             public override void Bake(CameraSceneAuthoring authoring)
