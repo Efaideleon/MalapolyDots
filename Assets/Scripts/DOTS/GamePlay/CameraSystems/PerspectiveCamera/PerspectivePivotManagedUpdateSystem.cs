@@ -9,7 +9,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<PivotTransform>();
+            state.RequireForUpdate<PivotTransformTag>();
             state.RequireForUpdate<PerspectiveCameraPivot>();
         }
 
@@ -18,8 +18,10 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
             var perspectivePivot = SystemAPI.ManagedAPI.GetSingleton<PerspectiveCameraPivot>();
             if (perspectivePivot.Instance == null) return;
 
-            var pivot = SystemAPI.GetSingleton<PivotTransform>();
-            perspectivePivot.Instance.transform.SetPositionAndRotation(pivot.Position, pivot.Rotation);
+            foreach (var (position, rotation) in SystemAPI.Query<RefRO<PivotPosition>, RefRO<PivotRotation>>())
+            {
+                perspectivePivot.Instance.transform.SetPositionAndRotation(position.ValueRO.Value, rotation.ValueRO.Value);
+            }
         }
     }
 }

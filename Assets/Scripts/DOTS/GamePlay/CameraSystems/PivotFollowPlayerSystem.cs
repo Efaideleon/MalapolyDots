@@ -12,7 +12,17 @@ namespace DOTS.GamePlay.CameraSystems
     {
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton(new PivotTransform { Rotation = quaternion.identity, Position = default});
+            var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
+            {
+                ComponentType.ReadOnly<PivotPosition>(),
+                ComponentType.ReadOnly<PivotRotation>(),
+                ComponentType.ReadOnly<PivotTransformTag>()
+            });
+
+            SystemAPI.SetComponent(entity, new PivotPosition { Value = default });
+            SystemAPI.SetComponent(entity, new PivotRotation { Value = quaternion.identity });
+            SystemAPI.SetComponent(entity, new PivotTransformTag { });
+
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<CurrentCameraData>();
         }
@@ -25,13 +35,20 @@ namespace DOTS.GamePlay.CameraSystems
 
             var playerTransform = SystemAPI.GetComponent<LocalTransform>(player.entity);
 
-            SystemAPI.GetSingletonRW<PivotTransform>().ValueRW.Position = playerTransform.Position;
+            SystemAPI.GetSingletonRW<PivotPosition>().ValueRW.Value = playerTransform.Position;
         }
     }
 
-    public struct PivotTransform : IComponentData
+    public struct PivotPosition : IComponentData
     {
-        public float3 Position;
-        public quaternion Rotation;
+        public float3 Value;
     }
+
+    public struct PivotRotation : IComponentData
+    {
+        public quaternion Value;
+    }
+
+    public struct PivotTransformTag : IComponentData
+    { }
 }

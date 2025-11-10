@@ -1,3 +1,4 @@
+using DOTS.Characters;
 using DOTS.DataComponents;
 using Unity.Entities;
 
@@ -10,19 +11,19 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<CurrentPlayerID>();
-            state.RequireForUpdate<PivotTransform>();
-            state.RequireForUpdate<PlayerToCameraAngleData>();
+            state.RequireForUpdate<PivotTransformTag>();
+            state.RequireForUpdate<CurrentPivotRotation>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
             foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
             {
-                var pivot = SystemAPI.GetSingletonRW<PivotTransform>();
-                var playerToCameraRotation = SystemAPI.GetSingleton<PlayerToCameraAngleData>();
-                playerToCameraRotation.Map.TryGetValue(playerID.ValueRO.Value, out var pivotRotation);
-                pivot.ValueRW.Rotation = pivotRotation;
-                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | rotation: {pivot.ValueRO.Rotation}");
+                var pivotRotation = SystemAPI.GetSingletonRW<PivotRotation>();
+                var currentPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
+                var currentPivotRotation = SystemAPI.GetComponent<CurrentPivotRotation>(currentPlayer.entity);
+                pivotRotation.ValueRW.Value = currentPivotRotation.Value;
+                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | rotation: {pivotRotation.ValueRO.Value}");
                 UnityEngine.Debug.Log($"[CameraPlayerSwitch] | player id: {playerID.ValueRO.Value}");
             }
         }

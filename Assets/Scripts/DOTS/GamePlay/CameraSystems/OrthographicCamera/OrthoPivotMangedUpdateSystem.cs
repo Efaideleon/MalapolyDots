@@ -10,7 +10,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<OrthoCameraPivotInstanceTag>();
-            state.RequireForUpdate<PivotTransform>();
+            state.RequireForUpdate<PivotTransformTag>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -18,9 +18,10 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
             var orthoPivot = SystemAPI.ManagedAPI.GetSingleton<OrthoCameraPivotInstance>();
             if (orthoPivot.Instance == null) return;
 
-            var pivot = SystemAPI.GetSingleton<PivotTransform>();
-
-            orthoPivot.Instance.transform.position = pivot.Position;
+            foreach (var (position, rotation) in SystemAPI.Query<RefRO<PivotPosition>, RefRO<PivotRotation>>())
+            {
+                orthoPivot.Instance.transform.position = position.ValueRO.Value;
+            }
         }
     }
 }
