@@ -39,6 +39,7 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<CameraSceneData>();
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<MainCameraTransform>();
+            state.RequireForUpdate<PivotRotation>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -47,8 +48,7 @@ namespace DOTS.GamePlay.CameraSystems
 
             var currentPlayerEntity = SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRO.entity;
             var currentPlayerPivotRotation = SystemAPI.GetComponentRW<CurrentPivotRotation>(currentPlayerEntity);
-            var pivotEntity = SystemAPI.GetSingletonEntity<PivotTransform>();
-            var pivotTransform = SystemAPI.GetComponent<PivotTransform>(pivotEntity);
+            var pivotEntity = SystemAPI.GetSingletonEntity<PivotTransformTag>();
 
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<StatefulTriggerEvent>>().WithChangeFilter<StatefulTriggerEvent>())
             {
@@ -84,7 +84,6 @@ namespace DOTS.GamePlay.CameraSystems
 
             var job = new AnimatePivotJob
             {
-                pivotTransform = pivotTransform,
                 pivotEntity = pivotEntity,
                 playerEntity = currentPlayerEntity,
                 dt = deltaTime,
@@ -97,12 +96,9 @@ namespace DOTS.GamePlay.CameraSystems
         /// <summary>
         /// Animates the pivot to rotate to an absolute target angle in the world space. 
         /// </summary>
-        [BurstCompile]
+        //[BurstCompile]
         private partial struct AnimatePivotJob : IJobEntity
         {
-            /// <summary>Reference to the pivot transform component</summary>
-            public PivotTransform pivotTransform;
-
             /// <summary> The entity for the pivot transform being animated.</summary>
             public Entity pivotEntity;
 
@@ -131,21 +127,16 @@ namespace DOTS.GamePlay.CameraSystems
                         float t = math.clamp(delta.Value, 0, 1);
 
                         var targetRotation = quaternion.AxisAngle(new float3(0, 1, 0), targetAngleY.Value);
-                        var currPivotPos = pivotTransform.Position; 
 
-                        if (t < 1) // TODO: how would it work for negative angles.
+                        var newPivotRotation = new PivotRotation
                         {
-                            var newPivot = new PivotTransform
-                            {
-                                Rotation = math.slerp(initialRotation.Value, targetRotation, t),
-                                Position = currPivotPos
-                            };
-                            ecb.SetComponent(chuckIndex, pivotEntity, newPivot);
-                        }
-                        else
+                            Value = math.slerp(initialRotation.Value, targetRotation, t),
+                        };
+                        ecb.SetComponent(chuckIndex, pivotEntity, newPivotRotation);
+
+                        if (t == 1)
                         {
-                            var finalRotation = math.slerp(initialRotation.Value, targetRotation, 1f);
-                            ecb.SetComponent(chuckIndex, playerEntity, new CurrentPivotRotation { Value = finalRotation });
+                            ecb.SetComponent(chuckIndex, playerEntity, new CurrentPivotRotation { Value = newPivotRotation.Value });
                             animationState.Value = AngleAnimationState.Finished;
                         }
                         break;

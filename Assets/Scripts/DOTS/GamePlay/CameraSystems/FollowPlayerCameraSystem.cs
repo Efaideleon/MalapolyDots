@@ -17,7 +17,6 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<CurrentCameraData>();
             state.RequireForUpdate<MainCameraTransform>();
-            state.RequireForUpdate<PivotTransform>();
         }
 
         public void OnUpdate(ref SystemState state)
