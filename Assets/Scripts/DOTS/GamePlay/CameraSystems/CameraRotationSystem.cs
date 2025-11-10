@@ -28,6 +28,11 @@ namespace DOTS.GamePlay.CameraSystems
         public void OnUpdate(ref SystemState state)
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
+            var angleAnimationData = SystemAPI.GetSingletonRW<AngleAnimationData>();
+            var playerToCameraAngle = SystemAPI.GetSingletonRW<PlayerToCameraAngleData>();
+            var pivotTransform = SystemAPI.GetSingletonRW<PivotTransform>();
+            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<StatefulTriggerEvent>>().WithChangeFilter<StatefulTriggerEvent>())
             {
                 foreach (var statefulEvent in buffer)
@@ -38,44 +43,63 @@ namespace DOTS.GamePlay.CameraSystems
                         {
                             case StateEventType.Enter: 
                                 var cameraZoneData = SystemAPI.GetComponent<CameraSceneData>(cameraSceneEntity);
-                                var angleAnimationData = SystemAPI.GetSingletonRW<AngleAnimationData>();
+                                var currentRotation = playerToCameraAngle.ValueRW.Map[currentPlayerID.Value];
 
                                 angleAnimationData.ValueRW.TargetAngleY = math.radians(cameraZoneData.RotationAngleY);
                                 angleAnimationData.ValueRW.AnimationState = AngleAnimationState.InProgress;
                                 angleAnimationData.ValueRW.RotationSpeed = cameraZoneData.RotationSpeed;
-
-                                // TODO: This will depend on the previous state of the camera for the current player.
                                 angleAnimationData.ValueRW.CurrentAngleY = 0;
+                                angleAnimationData.ValueRW.CurrentRotation = currentRotation;
+
+                                UnityEngine.Debug.Log($"[CameraRotationSystem] | currentAngle : {currentRotation}");
                                 break;
                         }
                     }
                 }
             }
 
-            AnimateAngle(ref state, ref deltaTime);
+            AnimateAngleRotation(
+                    ref state,
+                    ref angleAnimationData.ValueRW,
+                    ref pivotTransform.ValueRW,
+                    ref playerToCameraAngle.ValueRW,
+                    currentPlayerID.Value,
+                    ref deltaTime
+            );
         }
 
         /// <summary>
-        /// Animations the angle from the current state
+        /// Animates the angle from the current state
         /// </summary>
-        public readonly void AnimateAngle(ref SystemState _, ref float dt)
+        private readonly void AnimateAngleRotation(
+                ref SystemState _,
+                ref AngleAnimationData angleData,
+                ref PivotTransform pivotTransform,
+                ref PlayerToCameraAngleData playerToCameraAngle,
+                in int playerID,
+                ref float dt
+                )
         {
-            var angleData = SystemAPI.GetSingletonRW<AngleAnimationData>();
-            switch (angleData.ValueRO.AnimationState)
+            switch (angleData.AnimationState)
             {
                 case AngleAnimationState.InProgress:
-                    var pivotTransform = SystemAPI.GetSingletonRW<PivotTransform>();
+                    float deltaAngle = angleData.RotationSpeed * dt;
 
-                    var newAngleY = angleData.ValueRO.CurrentAngleY + angleData.ValueRO.RotationSpeed * dt;
-                    if (newAngleY <= angleData.ValueRO.TargetAngleY)
+                    angleData.CurrentAngleY += deltaAngle;
+
+                    UnityEngine.Debug.Log($"[CameraRotationSystem] | angleDalta.CurrentAngleY: {angleData.CurrentAngleY}");
+                    UnityEngine.Debug.Log($"[CameraRotationSystem] | angleDalta.TargetAngleY: {angleData.TargetAngleY}");
+                    if (angleData.CurrentAngleY <= angleData.TargetAngleY) // TODO: how would it work for negative angles.
                     {
-                        angleData.ValueRW.CurrentAngleY = newAngleY;
-                        pivotTransform.ValueRW.Rotation = quaternion.Euler(0, newAngleY, 0);
+                        var deltaRotation = quaternion.AxisAngle(new float3(0, 1, 0), deltaAngle);
+                        pivotTransform.Rotation = math.mul(pivotTransform.Rotation, deltaRotation);
+                        UnityEngine.Debug.Log($"[CameraRotationSystem] | pivotTransform.Rotation: {pivotTransform.Rotation}");
                     }
                     else
                     {
-                        pivotTransform.ValueRW.Rotation = quaternion.Euler(0, angleData.ValueRO.TargetAngleY, 0);
-                        angleData.ValueRW.AnimationState = AngleAnimationState.Finished;
+                        angleData.AnimationState = AngleAnimationState.Finished;
+                        UnityEngine.Debug.Log($"[CameraRotationSystem] | id: {playerID} rotation: {pivotTransform.Rotation}");
+                        playerToCameraAngle.Map[playerID] = pivotTransform.Rotation;
                     }
                     break;
             }
@@ -118,6 +142,7 @@ namespace DOTS.GamePlay.CameraSystems
         public float TargetAngleY;
         public AngleAnimationState AnimationState;
         public int RotationSpeed;
+        public quaternion CurrentRotation; 
         public float CurrentAngleY;
     }
 }

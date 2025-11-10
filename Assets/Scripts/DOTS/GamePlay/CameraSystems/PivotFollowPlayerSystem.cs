@@ -12,8 +12,9 @@ namespace DOTS.GamePlay.CameraSystems
     {
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton<PivotTransform>();
+            state.EntityManager.CreateSingleton(new PivotTransform { Rotation = quaternion.identity, Position = default});
             state.RequireForUpdate<CurrentPlayerComponent>();
+            state.RequireForUpdate<CurrentCameraData>();
         }
 
         public void OnUpdate(ref SystemState state)
