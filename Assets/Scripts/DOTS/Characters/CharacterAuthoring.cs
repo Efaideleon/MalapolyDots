@@ -1,6 +1,7 @@
 using DOTS.DataComponents;
 using DOTS.GameData;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace DOTS.Characters
@@ -23,6 +24,7 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new CharacterFlag { });
                 AddComponent(authoringEntity, new PlayerMovementState { Value = MoveState.Idle });
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
+                AddComponent(authoringEntity, new CurrentPivotRotation { Value = quaternion.identity });
             }
         }
     }
@@ -54,5 +56,10 @@ namespace DOTS.Characters
     {
         Walking,
         Idle
+    }
+
+    public struct CurrentPivotRotation : IComponentData
+    {
+        public quaternion Value;
     }
 }

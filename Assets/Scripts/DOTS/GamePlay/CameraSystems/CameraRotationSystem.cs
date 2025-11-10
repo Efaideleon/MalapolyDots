@@ -1,3 +1,4 @@
+using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay.CameraSystems.TriggerSimulationEvent;
 using Unity.Burst;
@@ -14,11 +15,26 @@ namespace DOTS.GamePlay.CameraSystems
     }
 
     [UpdateAfter(typeof(CameraSceneManagerSystem))]
+    [BurstCompile]
     public partial struct CameraRotationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton<AngleAnimationData>();
+            var animationEnitity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
+            {
+                ComponentType.ReadOnly<TargetAngleYComponent>(),
+                ComponentType.ReadOnly<AngleAnimationStateComponent>(),
+                ComponentType.ReadOnly<RotationSpeedComponent>(),
+                ComponentType.ReadOnly<InitialRotationComponent>(),
+                ComponentType.ReadOnly<DeltaComponent>(),
+            });
+
+            SystemAPI.SetComponent(animationEnitity, new TargetAngleYComponent { });
+            SystemAPI.SetComponent(animationEnitity, new AngleAnimationStateComponent { });
+            SystemAPI.SetComponent(animationEnitity, new RotationSpeedComponent { });
+            SystemAPI.SetComponent(animationEnitity, new InitialRotationComponent { });
+            SystemAPI.SetComponent(animationEnitity, new DeltaComponent { });
+
             state.RequireForUpdate<StatefulTriggerEvent>();
             state.RequireForUpdate<CameraSceneData>();
             state.RequireForUpdate<CurrentPlayerComponent>();
@@ -28,10 +44,11 @@ namespace DOTS.GamePlay.CameraSystems
         public void OnUpdate(ref SystemState state)
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
-            var angleAnimationData = SystemAPI.GetSingletonRW<AngleAnimationData>();
-            var playerToCameraAngle = SystemAPI.GetSingletonRW<PlayerToCameraAngleData>();
-            var pivotTransform = SystemAPI.GetSingletonRW<PivotTransform>();
-            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+
+            var currentPlayerEntity = SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRO.entity;
+            var currentPlayerPivotRotation = SystemAPI.GetComponentRW<CurrentPivotRotation>(currentPlayerEntity);
+            var pivotEntity = SystemAPI.GetSingletonEntity<PivotTransform>();
+            var pivotTransform = SystemAPI.GetComponent<PivotTransform>(pivotEntity);
 
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<StatefulTriggerEvent>>().WithChangeFilter<StatefulTriggerEvent>())
             {
@@ -41,65 +58,98 @@ namespace DOTS.GamePlay.CameraSystems
                     {
                         switch (statefulEvent.State)
                         {
-                            case StateEventType.Enter: 
+                            case StateEventType.Enter:
                                 var cameraZoneData = SystemAPI.GetComponent<CameraSceneData>(cameraSceneEntity);
-                                var currentRotation = playerToCameraAngle.ValueRW.Map[currentPlayerID.Value];
 
-                                angleAnimationData.ValueRW.TargetAngleY = math.radians(cameraZoneData.RotationAngleY);
-                                angleAnimationData.ValueRW.AnimationState = AngleAnimationState.InProgress;
-                                angleAnimationData.ValueRW.RotationSpeed = cameraZoneData.RotationSpeed;
-                                angleAnimationData.ValueRW.CurrentAngleY = 0;
-                                angleAnimationData.ValueRW.InitialRotation = currentRotation;
-                                angleAnimationData.ValueRW.Delta = 0;
-
-                                UnityEngine.Debug.Log($"[CameraRotationSystem] | currentAngle : {currentRotation}");
+                                foreach (var (targetAngleY, animationState, rotationSpeed, initialRotation, delta)
+                                        in SystemAPI.Query<
+                                            RefRW<TargetAngleYComponent>,
+                                            RefRW<AngleAnimationStateComponent>,
+                                            RefRW<RotationSpeedComponent>,
+                                            RefRW<InitialRotationComponent>,
+                                            RefRW<DeltaComponent>
+                                        >())
+                                {
+                                    targetAngleY.ValueRW.Value = math.radians(cameraZoneData.RotationAngleY);
+                                    animationState.ValueRW.Value = AngleAnimationState.InProgress;
+                                    rotationSpeed.ValueRW.Value = cameraZoneData.RotationSpeed;
+                                    initialRotation.ValueRW.Value = currentPlayerPivotRotation.ValueRO.Value;
+                                    delta.ValueRW.Value = 0;
+                                }
                                 break;
                         }
                     }
                 }
             }
 
-            AnimateAngleRotation(
-                    ref state,
-                    ref angleAnimationData.ValueRW,
-                    ref pivotTransform.ValueRW,
-                    ref playerToCameraAngle.ValueRW,
-                    currentPlayerID.Value,
-                    ref deltaTime
-            );
+            var job = new AnimatePivotJob
+            {
+                pivotTransform = pivotTransform,
+                pivotEntity = pivotEntity,
+                playerEntity = currentPlayerEntity,
+                dt = deltaTime,
+                ecb = GetECB(ref state).AsParallelWriter()
+            };
+
+            job.ScheduleParallel();
         }
 
         /// <summary>
-        /// Animates the angle from the current state
+        /// Animates the pivot to rotate to an absolute target angle in the world space. 
         /// </summary>
-        private readonly void AnimateAngleRotation(
-                ref SystemState _,
-                ref AngleAnimationData angleData,
-                ref PivotTransform pivotTransform,
-                ref PlayerToCameraAngleData playerToCameraAngle,
-                in int playerID,
-                ref float dt)
+        [BurstCompile]
+        private partial struct AnimatePivotJob : IJobEntity
         {
-            switch (angleData.AnimationState)
+            /// <summary>Reference to the pivot transform component</summary>
+            public PivotTransform pivotTransform;
+
+            /// <summary> The entity for the pivot transform being animated.</summary>
+            public Entity pivotEntity;
+
+            /// <summary> The current player's entity.</summary>
+            public Entity playerEntity;
+
+            /// <summary> The delta over time to animate the transition between quaternion to another.</summary>
+            public float dt;
+
+            /// <summary> A reference to the EndSimulationEntityCommandBuffer as parralel writer.</summary>
+            public EntityCommandBuffer.ParallelWriter ecb;
+
+            public void Execute(
+                    [ChunkIndexInQuery] int chuckIndex,
+                    ref TargetAngleYComponent targetAngleY,
+                    ref AngleAnimationStateComponent animationState,
+                    ref RotationSpeedComponent rotationSpeed,
+                    ref InitialRotationComponent initialRotation,
+                    ref DeltaComponent delta)
             {
-                case AngleAnimationState.InProgress:
+                switch (animationState.Value)
+                {
+                    case AngleAnimationState.InProgress:
 
-                    angleData.Delta += angleData.RotationSpeed * dt;
-                    float t = math.clamp(angleData.Delta, 0, 1);
+                        delta.Value += rotationSpeed.Value * dt;
+                        float t = math.clamp(delta.Value, 0, 1);
 
-                    if (t < 1) // TODO: how would it work for negative angles.
-                    {
-                        var targetRotation = quaternion.AxisAngle(new float3(0, 1, 0), angleData.TargetAngleY);
-                        pivotTransform.Rotation = math.slerp(angleData.InitialRotation, targetRotation, t);
-                        UnityEngine.Debug.Log($"[CameraRotationSystem] | pivotTransform.Rotation: {pivotTransform.Rotation}");
-                    }
-                    else
-                    {
-                        angleData.AnimationState = AngleAnimationState.Finished;
-                        UnityEngine.Debug.Log($"[CameraRotationSystem] | id: {playerID} rotation: {pivotTransform.Rotation}");
-                        playerToCameraAngle.Map[playerID] = pivotTransform.Rotation;
-                    }
-                    break;
+                        var targetRotation = quaternion.AxisAngle(new float3(0, 1, 0), targetAngleY.Value);
+                        var currPivotPos = pivotTransform.Position; 
+
+                        if (t < 1) // TODO: how would it work for negative angles.
+                        {
+                            var newPivot = new PivotTransform
+                            {
+                                Rotation = math.slerp(initialRotation.Value, targetRotation, t),
+                                Position = currPivotPos
+                            };
+                            ecb.SetComponent(chuckIndex, pivotEntity, newPivot);
+                        }
+                        else
+                        {
+                            var finalRotation = math.slerp(initialRotation.Value, targetRotation, 1f);
+                            ecb.SetComponent(chuckIndex, playerEntity, new CurrentPivotRotation { Value = finalRotation });
+                            animationState.Value = AngleAnimationState.Finished;
+                        }
+                        break;
+                }
             }
         }
 
@@ -126,24 +176,43 @@ namespace DOTS.GamePlay.CameraSystems
             entity = Entity.Null;
             return false;
         }
+
+        /// <summary> Entity Commmand Buffer reference. </summary>
+        [BurstCompile]
+        private EntityCommandBuffer GetECB(ref SystemState state)
+        {
+            var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            return ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
+        }
     }
 
-    /// <summary>
-    /// Stores the necessary information for pivot angle rotation animation
-    /// <param name="TargetAngleY"> Angle in radians to rotate the pivot to.</param>
-    /// <param name="AnimationState"> Keep track if the pivot rotation animation is in progress or finished.</param>
-    /// <param name="RotationSpeed"> How fast the pivot should rotate.</param>
-    /// <param name="CurrentAngleY"> The current angle in radians of the pivot.</param>
-    /// <param name="InitialRotation"> The quaternion representing the initialRotation.</param>
-    /// <param name="Delta"> The change in the animation transition.</param>
-    /// </summary>
-    public struct AngleAnimationData : IComponentData
+    /// <summary> Angle in radians to rotate the pivot to. </summary>
+    public struct TargetAngleYComponent : IComponentData
     {
-        public float TargetAngleY;
-        public AngleAnimationState AnimationState;
-        public int RotationSpeed;
-        public float CurrentAngleY;
-        public quaternion InitialRotation;
-        public float Delta;
+        public float Value;
+    }
+
+    /// <summary> Keep track if the pivot rotation animation is in progress or finished. </summary>
+    public struct AngleAnimationStateComponent : IComponentData
+    {
+        public AngleAnimationState Value;
+    }
+
+    /// <summary> How fast the pivot should rotate. </summary>
+    public struct RotationSpeedComponent : IComponentData
+    {
+        public int Value;
+    }
+
+    /// <summary> The quaternion representing the initialRotation.</summary>
+    public struct InitialRotationComponent : IComponentData
+    {
+        public quaternion Value;
+    }
+
+    /// <summary> The change in the animation transition. </summary>
+    public struct DeltaComponent : IComponentData
+    {
+        public float Value;
     }
 }
