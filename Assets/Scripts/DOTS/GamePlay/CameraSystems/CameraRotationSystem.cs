@@ -148,6 +148,7 @@ namespace DOTS.GamePlay.CameraSystems
         /// If the stateful event involves a camera zone output that camera zone's entity.
         /// <param name="statefulEvent"> The trigger event in the buffer. </param>
         /// <param name="entity"> Camera zone entity for the trigger event. </param>
+        /// <returns> True if the state ful events involes a camera zone, false otherswise.</returns>
         /// </summary>
         [BurstCompile]
         private bool IsCameraStatefulEvent(ref SystemState _, in StatefulTriggerEvent statefulEvent, out Entity entity)
