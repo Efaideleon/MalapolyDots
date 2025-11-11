@@ -18,8 +18,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Renderable);
                 AddComponent(entity, new MaterialOverrideAnimationNumber { Value = 0 });
-                //AddComponent(entity, new MaterialOverrideFrameNumber { Value = 0 });
-                //AddComponent(entity, new MaterialOverrideUseTime { Value = false });
+                AddComponent(entity, new MaterialOverrideFrameNumber { Value = 0 });
+                AddComponent(entity, new MaterialOverrideUseTime { Value = false });
                 AddComponent(entity, new IdleComponent { Value = authoring.IDLE });
                 AddComponent(entity, new WalkingComponent { Value = authoring.WALKING });
                 AddComponent(entity, new CoffeeMaterialTag { });
