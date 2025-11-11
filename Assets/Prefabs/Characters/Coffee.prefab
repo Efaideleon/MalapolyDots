@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1526175837183116760}
   - component: {fileID: 3742051806969689052}
   - component: {fileID: 8514162473132122116}
+  - component: {fileID: 125702128059461005}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -90,6 +91,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &125702128059461005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711345923912296944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00623a67ff56048bfa75baa19425e4f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CoffeeMaterialAuthoring
+  IDLE: 0
+  WALKING: 1
 --- !u!1 &2335879554087428046
 GameObject:
   m_ObjectHideFlags: 0
