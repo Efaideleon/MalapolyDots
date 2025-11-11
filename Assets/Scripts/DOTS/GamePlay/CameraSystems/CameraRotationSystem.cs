@@ -40,14 +40,17 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<PivotRotation>();
+            state.RequireForUpdate<PivotTransformTag>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
 
-            var currentPlayerEntity = SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRO.entity;
-            var currentPlayerPivotRotation = SystemAPI.GetComponentRW<CurrentPivotRotation>(currentPlayerEntity);
+            var currentPlayer = SystemAPI.GetSingletonRW<CurrentPlayerComponent>();
+            if (currentPlayer.ValueRO.entity == Entity.Null || !SystemAPI.Exists(currentPlayer.ValueRO.entity)) return;
+            
+            var currentPlayerPivotRotation = SystemAPI.GetComponentRW<CurrentPivotRotation>(currentPlayer.ValueRO.entity);
             var pivotEntity = SystemAPI.GetSingletonEntity<PivotTransformTag>();
 
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<StatefulTriggerEvent>>().WithChangeFilter<StatefulTriggerEvent>())
@@ -85,7 +88,7 @@ namespace DOTS.GamePlay.CameraSystems
             var job = new AnimatePivotJob
             {
                 pivotEntity = pivotEntity,
-                playerEntity = currentPlayerEntity,
+                playerEntity = currentPlayer.ValueRO.entity,
                 dt = deltaTime,
                 ecb = GetECB(ref state).AsParallelWriter()
             };
@@ -112,7 +115,7 @@ namespace DOTS.GamePlay.CameraSystems
             public EntityCommandBuffer.ParallelWriter ecb;
 
             public void Execute(
-                    [ChunkIndexInQuery] int chuckIndex,
+                    [ChunkIndexInQuery] int chunkIndex,
                     ref TargetAngleYComponent targetAngleY,
                     ref AngleAnimationStateComponent animationState,
                     ref RotationSpeedComponent rotationSpeed,
@@ -132,11 +135,11 @@ namespace DOTS.GamePlay.CameraSystems
                         {
                             Value = math.slerp(initialRotation.Value, targetRotation, t),
                         };
-                        ecb.SetComponent(chuckIndex, pivotEntity, newPivotRotation);
+                        ecb.SetComponent(chunkIndex, pivotEntity, newPivotRotation);
 
                         if (t == 1)
                         {
-                            ecb.SetComponent(chuckIndex, playerEntity, new CurrentPivotRotation { Value = newPivotRotation.Value });
+                            ecb.SetComponent(chunkIndex, playerEntity, new CurrentPivotRotation { Value = newPivotRotation.Value });
                             animationState.Value = AngleAnimationState.Finished;
                         }
                         break;
@@ -144,12 +147,10 @@ namespace DOTS.GamePlay.CameraSystems
             }
         }
 
-        /// <summary>
-        /// If the stateful event involves a camera zone output that camera zone's entity.
+        /// <summary> If the stateful event involves a camera zone output that camera zone's entity.</summary>
         /// <param name="statefulEvent"> The trigger event in the buffer. </param>
         /// <param name="entity"> Camera zone entity for the trigger event. </param>
         /// <returns> True if the state ful events involes a camera zone, false otherswise.</returns>
-        /// </summary>
         [BurstCompile]
         private bool IsCameraStatefulEvent(ref SystemState _, in StatefulTriggerEvent statefulEvent, out Entity entity)
         {
