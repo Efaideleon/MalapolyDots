@@ -9,6 +9,18 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         public float Value;
     }
 
+    [MaterialProperty("_1_frame")]
+    public struct MaterialOverrideFrameNumber : IComponentData
+    {
+        public float Value;
+    }
+
+    [MaterialProperty("_1_use_time")]
+    public struct MaterialOverrideUseTime : IComponentData
+    {
+        public bool Value;
+    }
+
     /// <summary> Store the idle animation number for the character animation</summary>
     public struct IdleComponent : IComponentData
     {

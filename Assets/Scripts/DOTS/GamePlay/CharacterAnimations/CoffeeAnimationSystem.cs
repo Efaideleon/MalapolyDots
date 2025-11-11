@@ -44,6 +44,25 @@ namespace DOTS.GamePlay.CharacterAnimations
                     }
                 }
             }
+
+            // var entity = SystemAPI.GetSingletonEntity<CoffeeMaterialTag>();
+            // var idle = SystemAPI.GetComponentRO<IdleComponent>(entity);
+            // var frame = SystemAPI.GetComponentRW<MaterialOverrideFrameNumber>(entity);
+
+            // if (coffeeAnimationNum.ValueRO.Value == idle.ValueRO.Value)
+            // {
+            //     frame.ValueRW.Value += 1; 
+            //     if (frame.ValueRO.Value == 8)
+            //     {
+            //         frame.ValueRW.Value = 1;
+            //     }
+            // }
         }
+    }
+
+    /// <summary> The current animation number for coffee. </summary>
+    public struct CoffeeAnimationNumber : IComponentData
+    {
+        public float Value;
     }
 }
