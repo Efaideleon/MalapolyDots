@@ -44,20 +44,6 @@ namespace DOTS.GamePlay.CharacterAnimations
                     }
                 }
             }
-
-            var entity = SystemAPI.GetSingletonEntity<CoffeeMaterialTag>();
-            var idle = SystemAPI.GetComponentRO<IdleComponent>(entity);
-            var frame = SystemAPI.GetComponentRW<MaterialOverrideFrameNumber>(entity);
-            var animationNum = SystemAPI.GetComponentRO<MaterialOverrideAnimationNumber>(entity);
-
-            if (animationNum.ValueRO.Value == idle.ValueRO.Value)
-            {
-                frame.ValueRW.Value += 1; 
-                if (frame.ValueRO.Value == 39)
-                {
-                    frame.ValueRW.Value = 1;
-                }
-            }
         }
     }
 
