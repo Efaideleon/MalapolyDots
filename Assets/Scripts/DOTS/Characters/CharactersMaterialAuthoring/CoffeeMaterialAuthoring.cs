@@ -21,7 +21,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
                 AddComponent(entity, new MaterialOverrideAnimationNumber { Value = 0 });
                 AddComponent(entity, new MaterialOverrideFrameNumber { Value = 0 });
                 AddComponent(entity, new MaterialOverrideUseTime { Value = (float)AnimationMode.Frame });
-                AddComponent(entity, new MaterialOverrideIdleSpeed { Value = 0.0f });
+                AddComponent(entity, new MaterialOverrideIdleSpeed { Value = 0 });
                 AddComponent(entity, new IdleComponent { Value = authoring.IDLE });
                 AddComponent(entity, new WalkingComponent { Value = authoring.WALKING });
                 AddComponent(entity, new CoffeeMaterialTag { });
