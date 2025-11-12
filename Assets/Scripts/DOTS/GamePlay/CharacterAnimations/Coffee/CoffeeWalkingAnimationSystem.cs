@@ -11,10 +11,11 @@ namespace DOTS.GamePlay.CharacterAnimations.Coffee
         public void OnUpdate(ref SystemState state)
         {
             var dt = SystemAPI.Time.DeltaTime;
-            foreach (var (IDLE, WALKING, animationNumber, frameNumber, _) in
+            foreach (var (IDLE, idleFrameRate, frameRange, animationNumber, frameNumber, _) in
                     SystemAPI.Query<
                     RefRO<IdleComponent>,
-                    RefRO<WalkingComponent>,
+                    RefRO<IdleFrameRateComponent>,
+                    RefRO<IdleFrameRangeComponent>,
                     RefRW<MaterialOverrideAnimationNumber>,
                     RefRW<MaterialOverrideFrameNumber>,
                     RefRO<CoffeeMaterialTag>
@@ -22,10 +23,10 @@ namespace DOTS.GamePlay.CharacterAnimations.Coffee
             {
                 if (animationNumber.ValueRO.Value == IDLE.ValueRO.Value)
                 {
-                    frameNumber.ValueRW.Value += 60 * dt ;
-                    if (frameNumber.ValueRO.Value > 39)
+                    frameNumber.ValueRW.Value += idleFrameRate.ValueRO.Value * dt ;
+                    if (frameNumber.ValueRO.Value > frameRange.ValueRO.End)
                     {
-                        frameNumber.ValueRW.Value = 1;
+                        frameNumber.ValueRW.Value = frameRange.ValueRO.Start;
                     }
                 }
             }

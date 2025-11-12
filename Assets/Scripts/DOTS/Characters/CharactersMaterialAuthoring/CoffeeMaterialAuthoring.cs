@@ -1,15 +1,24 @@
 using Unity.Entities;
-using UnityEditor;
 using UnityEngine;
 
 namespace DOTS.Characters.CharactersMaterialAuthoring
 {
     public class CoffeeMaterialAuthoring : MonoBehaviour
     {
-        [Header("Animation Number")]
+        [Header("Idle Animation")]
         [Tooltip("The animation number for the idle animation.")]
         [SerializeField] float IDLE;
 
+        [Tooltip("The frame rate for the  idle animation.")]
+        [SerializeField] float IDLE_FrameRate;
+
+        [Tooltip("The start frame for the  idle animation.")]
+        [SerializeField] float IDLE_startFrame;
+
+        [Tooltip("The end frame for the  idle animation.")]
+        [SerializeField] float IDLE_endFrame;
+
+        [Header("Walking Animation")]
         [Tooltip("The animation number for the walking animation.")]
         [SerializeField] float WALKING;
 
@@ -21,10 +30,12 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
                 AddComponent(entity, new MaterialOverrideAnimationNumber { Value = 0 });
                 AddComponent(entity, new MaterialOverrideFrameNumber { Value = 0 });
                 AddComponent(entity, new MaterialOverrideUseTime { Value = (float)AnimationMode.Frame });
-                AddComponent(entity, new MaterialOverrideIdleSpeed { Value = 0 });
+                AddComponent(entity, new MaterialOverrideIdleSpeed { Value = 1 });
                 AddComponent(entity, new IdleComponent { Value = authoring.IDLE });
                 AddComponent(entity, new WalkingComponent { Value = authoring.WALKING });
+                AddComponent(entity, new IdleFrameRateComponent { Value = authoring.IDLE_FrameRate });
                 AddComponent(entity, new CoffeeMaterialTag { });
+                AddComponent(entity, new IdleFrameRangeComponent { Start = authoring.IDLE_startFrame, End = authoring.IDLE_endFrame });
             }
         }
     }

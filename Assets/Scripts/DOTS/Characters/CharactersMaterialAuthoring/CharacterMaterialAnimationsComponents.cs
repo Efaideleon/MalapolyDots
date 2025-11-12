@@ -21,8 +21,21 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         public float Value;
     }
 
-    [MaterialProperty("_1_spped")]
+    [MaterialProperty("_1_speed")]
     public struct MaterialOverrideIdleSpeed : IComponentData
+    {
+        public float Value;
+    }
+
+    /// <summary> Store the frame rate for the idle animation</summary>
+    public struct IdleFrameRangeComponent : IComponentData
+    {
+        public float Start;
+        public float End;
+    }
+
+    /// <summary> Store the frame rate for the idle animation</summary>
+    public struct IdleFrameRateComponent : IComponentData
     {
         public float Value;
     }
