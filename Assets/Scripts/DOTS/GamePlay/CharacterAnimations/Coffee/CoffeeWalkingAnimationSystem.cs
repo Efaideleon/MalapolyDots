@@ -1,6 +1,5 @@
 using DOTS.Characters.CharactersMaterialAuthoring;
 using Unity.Entities;
-using Unity.Transforms;
 
 namespace DOTS.GamePlay.CharacterAnimations.Coffee
 {
@@ -11,17 +10,24 @@ namespace DOTS.GamePlay.CharacterAnimations.Coffee
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (IDLE, WALKING, animationNumber, parent, _) in
+            var dt = SystemAPI.Time.DeltaTime;
+            foreach (var (IDLE, WALKING, animationNumber, frameNumber, _) in
                     SystemAPI.Query<
                     RefRO<IdleComponent>,
                     RefRO<WalkingComponent>,
                     RefRW<MaterialOverrideAnimationNumber>,
-                    RefRW<Parent>,
+                    RefRW<MaterialOverrideFrameNumber>,
                     RefRO<CoffeeMaterialTag>
                     >())
             {
                 if (animationNumber.ValueRO.Value == IDLE.ValueRO.Value)
-                {}
+                {
+                    frameNumber.ValueRW.Value += 60 * dt ;
+                    if (frameNumber.ValueRO.Value > 39)
+                    {
+                        frameNumber.ValueRW.Value = 1;
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 using Unity.Entities;
+using UnityEditor;
 using UnityEngine;
 
 namespace DOTS.Characters.CharactersMaterialAuthoring
@@ -19,7 +20,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
                 var entity = GetEntity(authoring, TransformUsageFlags.Renderable);
                 AddComponent(entity, new MaterialOverrideAnimationNumber { Value = 0 });
                 AddComponent(entity, new MaterialOverrideFrameNumber { Value = 0 });
-                AddComponent(entity, new MaterialOverrideUseTime { Value = false });
+                AddComponent(entity, new MaterialOverrideUseTime { Value = (float)AnimationMode.Frame });
+                AddComponent(entity, new MaterialOverrideIdleSpeed { Value = 0.0f });
                 AddComponent(entity, new IdleComponent { Value = authoring.IDLE });
                 AddComponent(entity, new WalkingComponent { Value = authoring.WALKING });
                 AddComponent(entity, new CoffeeMaterialTag { });
@@ -28,4 +30,10 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     }
 
     public struct CoffeeMaterialTag : IComponentData { }
+
+    public enum AnimationMode
+    {
+        Time = 1,
+        Frame = 0
+    }
 }
