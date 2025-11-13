@@ -19,11 +19,9 @@ namespace DOTS.GamePlay.CharacterAnimations
         {
             foreach (var _ in SystemAPI.Query<RefRO<PlayerMovementState>>().WithChangeFilter<PlayerMovementState>())
             {
-                foreach (var (IDLE, WALKING, animationNumber, parent, _) in
+                foreach (var (animationState, parent, _) in
                         SystemAPI.Query<
-                        RefRO<IdleComponent>,
-                        RefRO<WalkingComponent>,
-                        RefRW<MaterialOverrideAnimationNumber>,
+                        RefRW<CoffeeAnimationStateComponent>,
                         RefRW<Parent>,
                         RefRO<CoffeeMaterialTag>
                         >())
@@ -35,21 +33,15 @@ namespace DOTS.GamePlay.CharacterAnimations
                         switch (moveState.Value)
                         {
                             case MoveState.Idle:
-                                animationNumber.ValueRW.Value = IDLE.ValueRO.Value;
+                                animationState.ValueRW.Value = CoffeeAnimationState.Idle;
                                 break;
                             case MoveState.Walking:
-                                animationNumber.ValueRW.Value = WALKING.ValueRO.Value;
+                                animationState.ValueRW.Value = CoffeeAnimationState.Walking;
                                 break;
                         }
                     }
                 }
             }
         }
-    }
-
-    /// <summary> The current animation number for coffee. </summary>
-    public struct CoffeeAnimationNumber : IComponentData
-    {
-        public float Value;
     }
 }
