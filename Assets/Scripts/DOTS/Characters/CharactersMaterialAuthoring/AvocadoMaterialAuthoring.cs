@@ -18,8 +18,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Renderable);
                 AddComponent(entity, new MaterialOverrideAnimationNumber { Value = 0 });
-                AddComponent(entity, new IdleComponent { Value = authoring.IDLE });
-                AddComponent(entity, new WalkingComponent { Value = authoring.WALKING });
+                AddComponent(entity, new IdleAnimationNumber { Value = authoring.IDLE });
+                AddComponent(entity, new WalkingAnimationNumber { Value = authoring.WALKING });
                 AddComponent(entity, new AvocadoMaterialTag { });
             }
         }

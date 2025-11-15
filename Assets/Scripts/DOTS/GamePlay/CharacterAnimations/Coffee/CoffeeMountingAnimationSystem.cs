@@ -1,11 +1,10 @@
 using DOTS.Characters.CharactersMaterialAuthoring;
-using DOTS.GamePlay.CharacterAnimations;
 using Unity.Entities;
 
-namespace DOTS.GamePlay.ChanceActionSystems.Coffee
+namespace DOTS.GamePlay.CharacterAnimations.Coffee
 {
-    /// <summary>Plays the coffee walking animation by changing the frame number. </summary>
-    public partial struct CoffeeWalkingAnimationSystem : ISystem
+    /// <summary>Plays the coffee mounting animation by changing the frame number. </summary>
+    public partial struct CoffeeMountingAnimationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
@@ -16,21 +15,20 @@ namespace DOTS.GamePlay.ChanceActionSystems.Coffee
         public void OnUpdate(ref SystemState state)
         {
             var dt = SystemAPI.Time.DeltaTime;
-           
-            foreach (var (walking, frameRate, frameRange, animation, animationNumber, frameNumber, animationPlayState) in
+            foreach (var (mounting, frameRate, frameRange, animation, animationNumber, frameNumber, animationPlayState) in
                     SystemAPI.Query<
-                    RefRO<WalkingAnimationNumber>,
-                    RefRO<WalkingFrameRateComponent>,
-                    RefRO<WalkingFrameRangeComponent>,
+                    RefRO<MountingAnimationNumber>,
+                    RefRO<MountingFrameRateComponent>,
+                    RefRO<MountingFrameRangeComponent>,
                     RefRW<CoffeeAnimationComponent>,
                     RefRW<MaterialOverrideAnimationNumber>,
-                    RefRW<MaterialOverride2FrameNumber>,
+                    RefRW<MaterialOverride3FrameNumber>,
                     RefRW<CoffeeAnimationPlayState>
                     >())
             {
-                if (animation.ValueRO.Value == CoffeeAnimation.Walking)
+                if (animation.ValueRO.Value == CoffeeAnimation.Mounting)
                 {
-                    animationNumber.ValueRW.Value = walking.ValueRO.Value; // TODO: Maybe move this out of this loop?
+                    animationNumber.ValueRW.Value = mounting.ValueRO.Value; 
                     frameNumber.ValueRW.Value += frameRate.ValueRO.Value * dt ;
 
                     if (animationPlayState.ValueRO.Value != PlayState.Playing)
@@ -42,6 +40,8 @@ namespace DOTS.GamePlay.ChanceActionSystems.Coffee
                     if (frameNumber.ValueRO.Value > frameRange.ValueRO.End)
                     {
                         frameNumber.ValueRW.Value = frameRange.ValueRO.Start;
+                        animationPlayState.ValueRW.Value = PlayState.Finished;
+                        SystemAPI.GetSingletonRW<CoffeeAnimationControllerPlayState>().ValueRW.Value = PlayState.Finished;
                     }
                 }
             }

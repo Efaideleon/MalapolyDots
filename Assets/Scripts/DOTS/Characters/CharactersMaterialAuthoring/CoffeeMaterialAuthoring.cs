@@ -63,44 +63,45 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Renderable);
                 AddComponent(entity, new MaterialOverrideAnimationNumber { Value = 0 });
+                AddComponent(entity, new CoffeeAnimationPlayState { Value = PlayState.NotPlaying });
 
-                // Idle
                 AddComponent(entity, new MaterialOverride1FrameNumber { Value = 0 });
                 AddComponent(entity, new MaterialOverride1UseTime { Value = (float)AnimationMode.Frame });
                 AddComponent(entity, new MaterialOverride1IdleSpeed { Value = 1 });
-                AddComponent(entity, new IdleComponent { Value = authoring.IDLE });
+
+                AddComponent(entity, new MaterialOverride2FrameNumber { Value = 0 });
+                AddComponent(entity, new MaterialOverride2UseTime { Value = (float)AnimationMode.Frame });
+                AddComponent(entity, new MaterialOverride2IdleSpeed { Value = 1 });
+
+                AddComponent(entity, new MaterialOverride3FrameNumber { Value = 0 });
+                AddComponent(entity, new MaterialOverride3UseTime { Value = (float)AnimationMode.Frame });
+                AddComponent(entity, new MaterialOverride3IdleSpeed { Value = 1 });
+
+                AddComponent(entity, new MaterialOverride4FrameNumber { Value = 0 });
+                AddComponent(entity, new MaterialOverride4UseTime { Value = (float)AnimationMode.Frame });
+                AddComponent(entity, new MaterialOverride4IdleSpeed { Value = 1 });
+
+                // Idle
+                AddComponent(entity, new IdleAnimationNumber { Value = authoring.IDLE });
                 AddComponent(entity, new IdleFrameRangeComponent { Start = authoring.IDLE_startFrame, End = authoring.IDLE_endFrame });
                 AddComponent(entity, new IdleFrameRateComponent { Value = authoring.IDLE_FrameRate });
 
                 // Walking
-                var walkingAnimationEntity = CreateAdditionalEntity(TransformUsageFlags.None);
-                AddComponent(walkingAnimationEntity, new MaterialOverride2FrameNumber { Value = 0 });
-                AddComponent(walkingAnimationEntity, new MaterialOverride2UseTime { Value = (float)AnimationMode.Frame });
-                AddComponent(walkingAnimationEntity, new MaterialOverride2IdleSpeed { Value = 1 });
-                AddComponent(walkingAnimationEntity, new WalkingComponent { Value = authoring.WALKING });
-                AddComponent(walkingAnimationEntity, new WalkingFrameRangeComponent { Start = authoring.Walking_startFrame, End = authoring.Walking_endFrame });
-                AddComponent(walkingAnimationEntity, new WalkingFrameRateComponent { Value = authoring.Walking_FrameRate });
-                AddComponent(walkingAnimationEntity, new AnimationStateComponent { Value = CharactersAnimationState.NotPlaying });
+                AddComponent(entity, new WalkingAnimationNumber { Value = authoring.WALKING });
+                AddComponent(entity, new WalkingFrameRangeComponent { Start = authoring.Walking_startFrame, End = authoring.Walking_endFrame });
+                AddComponent(entity, new WalkingFrameRateComponent { Value = authoring.Walking_FrameRate });
 
                 // Mounting
-                var mountingAnimationEntity = CreateAdditionalEntity(TransformUsageFlags.None);
-                AddComponent(mountingAnimationEntity, new MaterialOverride3FrameNumber { Value = 0 });
-                AddComponent(mountingAnimationEntity, new MaterialOverride3UseTime { Value = (float)AnimationMode.Frame });
-                AddComponent(mountingAnimationEntity, new MaterialOverride3IdleSpeed { Value = 1 });
-                AddComponent(mountingAnimationEntity, new MountingComponent { Value = authoring.MOUNTING });
-                AddComponent(mountingAnimationEntity, new MountingFrameRangeComponent { Start = authoring.Mounting_startFrame, End = authoring.Mounting_endFrame });
-                AddComponent(mountingAnimationEntity, new MountingFrameRateComponent { Value = authoring.Mounting_FrameRate });
-                AddComponent(mountingAnimationEntity, new AnimationStateComponent { Value = CharactersAnimationState.NotPlaying });
+                AddComponent(entity, new MountingAnimationNumber { Value = authoring.MOUNTING });
+                AddComponent(entity, new MountingFrameRangeComponent { Start = authoring.Mounting_startFrame, End = authoring.Mounting_endFrame });
+                AddComponent(entity, new MountingFrameRateComponent { Value = authoring.Mounting_FrameRate });
 
                 // Unmounting
-                AddComponent(entity, new MaterialOverride4FrameNumber { Value = 0 });
-                AddComponent(entity, new MaterialOverride4UseTime { Value = (float)AnimationMode.Frame });
-                AddComponent(entity, new MaterialOverride4IdleSpeed { Value = 1 });
-                AddComponent(entity, new UnmountingComponent { Value = authoring.UNMOUNTING });
+                AddComponent(entity, new UnmountingAnimationNumber { Value = authoring.UNMOUNTING });
                 AddComponent(entity, new UnmountingFrameRangeComponent { Start = authoring.Unmounting_startFrame, End = authoring.Unmounting_endFrame });
                 AddComponent(entity, new UnmountingFrameRateComponent { Value = authoring.Unmounting_FrameRate });
 
-                AddComponent(entity, new CoffeeAnimationStateComponent { Value = CoffeeAnimationState.Idle });
+                AddComponent(entity, new CoffeeAnimationComponent { Value = CoffeeAnimation.Idle });
                 AddComponent(entity, new CoffeeMaterialTag { });
             }
         }
