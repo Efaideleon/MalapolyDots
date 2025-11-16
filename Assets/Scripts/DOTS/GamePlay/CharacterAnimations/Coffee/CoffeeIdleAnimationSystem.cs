@@ -3,29 +3,40 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay.CharacterAnimations.Coffee
 {
+    /// <summary>Plays the coffee idle animation by changing the frame number. </summary>
     public partial struct CoffeeIdleAnimationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
-        {}
+        {
+            state.RequireForUpdate<CoffeeMaterialTag>();
+            state.RequireForUpdate<CoffeeAnimationControllerPlayState>();
+        }
 
         public void OnUpdate(ref SystemState state)
         {
             var dt = SystemAPI.Time.DeltaTime;
-            foreach (var (IDLE, idleFrameRate, frameRange, animationState, animationNumber, frameNumber, _) in
+            foreach (var (IDLE, idleFrameRate, frameRange, animation, animationNumber, frameNumber, animationPlayState) in
                     SystemAPI.Query<
-                    RefRO<IdleComponent>,
+                    RefRO<IdleAnimationNumber>,
                     RefRO<IdleFrameRateComponent>,
                     RefRO<IdleFrameRangeComponent>,
-                    RefRW<CoffeeAnimationStateComponent>,
+                    RefRW<CoffeeAnimationComponent>,
                     RefRW<MaterialOverrideAnimationNumber>,
                     RefRW<MaterialOverride1FrameNumber>,
-                    RefRO<CoffeeMaterialTag>
+                    RefRW<CoffeeAnimationPlayState>
                     >())
             {
-                if (animationState.ValueRO.Value == CoffeeAnimationState.Idle)
+                if (animation.ValueRO.Value == CoffeeAnimation.Idle)
                 {
-                    animationNumber.ValueRW.Value = IDLE.ValueRO.Value; // TODO: Maybe move this out of this loop?
+                    animationNumber.ValueRW.Value = IDLE.ValueRO.Value; 
                     frameNumber.ValueRW.Value += idleFrameRate.ValueRO.Value * dt ;
+
+                    if (animationPlayState.ValueRO.Value != PlayState.Playing)
+                    {
+                        animationPlayState.ValueRW.Value = PlayState.Playing;
+                        SystemAPI.GetSingletonRW<CoffeeAnimationControllerPlayState>().ValueRW.Value = PlayState.Playing;
+                    }
+
                     if (frameNumber.ValueRO.Value > frameRange.ValueRO.End)
                     {
                         frameNumber.ValueRW.Value = frameRange.ValueRO.Start;

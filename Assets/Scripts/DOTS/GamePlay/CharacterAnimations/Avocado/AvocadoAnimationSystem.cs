@@ -21,8 +21,8 @@ namespace DOTS.GamePlay.CharacterAnimations
             {
                 foreach (var (IDLE, WALKING, animationNumber, parent, _) in
                         SystemAPI.Query<
-                        RefRO<IdleComponent>,
-                        RefRO<WalkingComponent>,
+                        RefRO<IdleAnimationNumber>,
+                        RefRO<WalkingAnimationNumber>,
                         RefRW<MaterialOverrideAnimationNumber>,
                         RefRW<Parent>,
                         RefRO<AvocadoMaterialTag>

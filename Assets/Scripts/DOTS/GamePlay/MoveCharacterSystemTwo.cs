@@ -75,10 +75,13 @@ namespace DOTS.GamePlay
                         int targetWayPointIndex = (characterWaypoint.ValueRO.Value + 1) % wayPoints.Length;
                         var target = wayPoints[targetWayPointIndex];
                         ref var rollAmountCountRef = ref SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW;
-                        ref var playerMovementStateRef = ref SystemAPI.GetComponentRW<PlayerMovementState>(playerEntity).ValueRW;
+                        var playerMovementState = SystemAPI.GetComponent<PlayerMovementState>(playerEntity);
 
                         isCurrentCharacterMoving.ValueRW.Value = true;
-                        playerMovementStateRef.Value = MoveState.Walking;
+                        if (playerMovementState.Value != MoveState.Walking)
+                        {
+                            SystemAPI.GetComponentRW<PlayerMovementState>(playerEntity).ValueRW.Value = MoveState.Walking;
+                        }
 
                         if (MoveToTarget(ref localTransform.ValueRW, target.WayPoint, moveSpeed))
                         {
@@ -90,7 +93,7 @@ namespace DOTS.GamePlay
                             {
                                 isCurrentCharacterMoving.ValueRW.Value = false;
                                 SystemAPI.GetSingletonRW<ArrivedFlag>().ValueRW.Arrived = true;
-                                playerMovementStateRef.Value = MoveState.Idle;
+                                SystemAPI.GetComponentRW<PlayerMovementState>(playerEntity).ValueRW.Value = MoveState.Idle;
                             }
                         }
                     }

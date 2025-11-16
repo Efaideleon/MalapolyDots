@@ -9,6 +9,11 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         public float Value;
     }
 
+    public struct CoffeeAnimationPlayState : IComponentData
+    {
+        public PlayState Value;
+    }
+
 #region 1
     [MaterialProperty("_1_frame")]
     public struct MaterialOverride1FrameNumber : IComponentData
@@ -39,6 +44,11 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct IdleFrameRateComponent : IComponentData
     {
         public float Value;
+    }
+
+    public struct IdleAnimationPlayStateComponent : IComponentData
+    {
+        public PlayState Value;
     }
 #endregion
 
@@ -73,6 +83,11 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     {
         public float Value;
     }
+
+    public struct WalkingAnimationPlayStateComponent : IComponentData
+    {
+        public PlayState Value;
+    }
 #endregion
 
 #region 3
@@ -105,6 +120,11 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct MountingFrameRateComponent : IComponentData
     {
         public float Value;
+    }
+
+    public struct MountingAnimationPlayStateComponent : IComponentData
+    {
+        public PlayState Value;
     }
 #endregion
 
@@ -139,52 +159,54 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     {
         public float Value;
     }
+
+    public struct UnmountingAnimationPlayStateComponent : IComponentData
+    {
+        public PlayState Value;
+    }
 #endregion
 
-    public struct CoffeeAnimationStateComponent : IComponentData
+    // TODO: rename CoffeeAnimation
+    public struct CoffeeAnimationComponent : IComponentData
     {
-        public CoffeeAnimationState Value;
+        public CoffeeAnimation Value;
     }
 
 #region Animation Number Components
     /// <summary> Store the idle animation number for the character animation</summary>
-    public struct IdleComponent : IComponentData
+    public struct IdleAnimationNumber : IComponentData
     {
         public float Value;
     }
 
-    /// <summary> Store the walking animation number for the character animation</summary>
-    public struct WalkingComponent : IComponentData
+    /// <summary> Stores the walking animation number for the character animation</summary>
+    public struct WalkingAnimationNumber : IComponentData
     {
         public float Value;
     }
 
-    public struct MountingComponent : IComponentData
+    public struct MountingAnimationNumber : IComponentData
     {
         public float Value;
     }
 
-    public struct UnmountingComponent : IComponentData
+    public struct UnmountingAnimationNumber : IComponentData
     {
         public float Value;
-    }
-#endregion
-
-#region New Component Components
-    public struct AnimationStateComponent : IComponentData
-    {
-        public CharactersAnimationState Value;
     }
 #endregion
 
 #region enums
-    public enum CoffeeAnimationState
+    public enum CoffeeAnimation
     {
+        Default,
         Idle,
-        Walking
+        Walking,
+        Mounting,
+        Unmounting
     }
 
-    public enum CharactersAnimationState
+    public enum PlayState
     {
         NotPlaying,
         Paused,
