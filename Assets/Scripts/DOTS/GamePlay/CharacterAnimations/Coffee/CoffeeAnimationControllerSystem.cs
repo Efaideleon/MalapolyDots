@@ -1,17 +1,19 @@
 using DOTS.Characters;
 using DOTS.Characters.CharactersMaterialAuthoring;
+using DOTS.Characters.CharactersMaterialAuthoring.CharactersTags;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
 
 namespace DOTS.GamePlay.CharacterAnimations
 {
     ///<summary> This system handles the animation for the coffee character by changing a property in the material.</summary>
+    [BurstCompile]
     public partial struct CoffeeAnimationControllerSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton(new CoffeeAnimationControllerPlayState { Value = PlayState.NotPlaying });
-            state.RequireForUpdate<MaterialOverrideAnimationNumber>();
+            state.RequireForUpdate<AnimationNumberMO>();
             state.RequireForUpdate<CoffeeMaterialTag>();
             state.RequireForUpdate<PlayerMovementState>();
         }
@@ -19,7 +21,7 @@ namespace DOTS.GamePlay.CharacterAnimations
         public void OnUpdate(ref SystemState state)
         {
             bool run = false;
-            foreach (var _ in SystemAPI.Query<RefRO<CoffeeAnimationControllerPlayState>>().WithChangeFilter<CoffeeAnimationControllerPlayState>())
+            foreach (var _ in SystemAPI.Query<RefRO<AnimationPlayState>, RefRO<CoffeeMaterialTag>>().WithChangeFilter<AnimationPlayState>())
                 run = true;
 
             foreach (var _ in SystemAPI.Query<RefRO<PlayerMovementState>>().WithChangeFilter<PlayerMovementState>())
@@ -29,7 +31,7 @@ namespace DOTS.GamePlay.CharacterAnimations
             {
                 foreach (var (animation, parent, _) in
                         SystemAPI.Query<
-                        RefRW<CoffeeAnimationComponent>,
+                        RefRW<CurrentAnimation>,
                         RefRW<Parent>,
                         RefRO<CoffeeMaterialTag>
                         >())
@@ -43,15 +45,15 @@ namespace DOTS.GamePlay.CharacterAnimations
                             case MoveState.Idle:
                                 animation.ValueRW.Value = animation.ValueRO.Value switch
                                 {
-                                    CoffeeAnimation.Walking => CoffeeAnimation.Unmounting,
-                                    _ => CoffeeAnimation.Idle,
+                                    Animations.Walking => Animations.Unmounting,
+                                    _ => Animations.Idle,
                                 };
                                 break;
                             case MoveState.Walking:
                                 animation.ValueRW.Value = animation.ValueRO.Value switch
                                 {
-                                    CoffeeAnimation.Idle => CoffeeAnimation.Mounting,
-                                    _ => CoffeeAnimation.Walking,
+                                    Animations.Idle => Animations.Mounting,
+                                    _ => Animations.Walking,
                                 };
                                 break;
                         }
@@ -59,11 +61,5 @@ namespace DOTS.GamePlay.CharacterAnimations
                 }
             }
         }
-    }
-
-    /// <summary> Tracks if an animation is playing for the coffee </summary>
-    public struct CoffeeAnimationControllerPlayState : IComponentData
-    {
-        public PlayState Value;
     }
 }
