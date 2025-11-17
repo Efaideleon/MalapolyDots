@@ -11,7 +11,12 @@ GameObject:
   - component: {fileID: 1526175837183116760}
   - component: {fileID: 3742051806969689052}
   - component: {fileID: 8514162473132122116}
-  - component: {fileID: 125702128059461005}
+  - component: {fileID: 1280230432500862430}
+  - component: {fileID: 5283075794801672629}
+  - component: {fileID: 1440523880236191656}
+  - component: {fileID: 6802729878443486587}
+  - component: {fileID: 5571621993213372444}
+  - component: {fileID: 4032076374246611131}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -91,7 +96,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &125702128059461005
+--- !u!114 &1280230432500862430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,25 +105,93 @@ MonoBehaviour:
   m_GameObject: {fileID: 711345923912296944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00623a67ff56048bfa75baa19425e4f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 16634717581124d50a10091e5ccfe461, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CoffeeMaterialAuthoring
-  IDLE: 0
-  IDLE_FrameRate: 30
-  IDLE_startFrame: 1
-  IDLE_endFrame: 39
-  WALKING: 1
-  Walking_FrameRate: 30
-  Walking_startFrame: 0
-  Walking_endFrame: 40
-  MOUNTING: 2
-  Mounting_FrameRate: 30
-  Mounting_startFrame: 0
-  Mounting_endFrame: 40
-  UNMOUNTING: 3
-  Unmounting_FrameRate: 30
-  Unmounting_startFrame: 0
-  Unmounting_endFrame: 40
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CharactersTags.CoffeeMaterialTagAuthoring
+--- !u!114 &5283075794801672629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711345923912296944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4919bda629c5c4d918117ab21e7f9646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.AnimationEssentials
+--- !u!114 &1440523880236191656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711345923912296944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d99242b210994711ae8f5e92eca0f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.IdleAnimationMaterialAuthoring
+  Data:
+    Number: 0
+    FrameRate: 30
+    FrameRange:
+      Start: 1
+      End: 40
+--- !u!114 &6802729878443486587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711345923912296944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e64eddaa292a4bf7bbdd365f735e4ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.WalkingAnimationMaterialAuthoring
+  Data:
+    Number: 1
+    FrameRate: 30
+    FrameRange:
+      Start: 0
+      End: 40
+--- !u!114 &5571621993213372444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711345923912296944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88a68b73d15aa44b1870cc7abea6e7be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.MountingAnimationMaterialAuthoring
+  Data:
+    Number: 2
+    FrameRate: 30
+    FrameRange:
+      Start: 0
+      End: 40
+--- !u!114 &4032076374246611131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711345923912296944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91773a249c9d3448a8ac8962cfa8f356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.UnmountingAnimationMaterialAuthoring
+  Data:
+    Number: 3
+    FrameRate: 30
+    FrameRange:
+      Start: 0
+      End: 40
 --- !u!1 &2335879554087428046
 GameObject:
   m_ObjectHideFlags: 0

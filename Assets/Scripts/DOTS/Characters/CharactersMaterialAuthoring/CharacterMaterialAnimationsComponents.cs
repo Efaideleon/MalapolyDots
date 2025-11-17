@@ -1,203 +1,21 @@
+using System;
 using Unity.Entities;
 using Unity.Rendering;
+using UnityEngine;
 
 namespace DOTS.Characters.CharactersMaterialAuthoring
 {
-    [MaterialProperty("_Animation_number")]
-    public struct MaterialOverrideAnimationNumber : IComponentData
+    /* Notes
+     * MO = MaterialOverride
+     */
+
+    public enum AnimationMode
     {
-        public float Value;
+        Time = 1,
+        Frame = 0
     }
 
-    public struct CoffeeAnimationPlayState : IComponentData
-    {
-        public PlayState Value;
-    }
-
-#region 1
-    [MaterialProperty("_1_frame")]
-    public struct MaterialOverride1FrameNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_1_use_time")]
-    public struct MaterialOverride1UseTime : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_1_speed")]
-    public struct MaterialOverride1IdleSpeed : IComponentData
-    {
-        public float Value;
-    }
-
-    /// <summary> Store the frame rate for the idle animation</summary>
-    public struct IdleFrameRangeComponent : IComponentData
-    {
-        public float Start;
-        public float End;
-    }
-
-    /// <summary> Store the frame rate for the idle animation</summary>
-    public struct IdleFrameRateComponent : IComponentData
-    {
-        public float Value;
-    }
-
-    public struct IdleAnimationPlayStateComponent : IComponentData
-    {
-        public PlayState Value;
-    }
-#endregion
-
-#region 2
-    [MaterialProperty("_2_frame")]
-    public struct MaterialOverride2FrameNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_2_use_time")]
-    public struct MaterialOverride2UseTime : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_2_speed")]
-    public struct MaterialOverride2IdleSpeed : IComponentData
-    {
-        public float Value;
-    }
-
-    /// <summary> Store the frame rate for the walking animation</summary>
-    public struct WalkingFrameRangeComponent : IComponentData
-    {
-        public float Start;
-        public float End;
-    }
-
-    /// <summary> Store the frame rate for the walking animation</summary>
-    public struct WalkingFrameRateComponent : IComponentData
-    {
-        public float Value;
-    }
-
-    public struct WalkingAnimationPlayStateComponent : IComponentData
-    {
-        public PlayState Value;
-    }
-#endregion
-
-#region 3
-    [MaterialProperty("_3_frame")]
-    public struct MaterialOverride3FrameNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_3_use_time")]
-    public struct MaterialOverride3UseTime : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_3_speed")]
-    public struct MaterialOverride3IdleSpeed : IComponentData
-    {
-        public float Value;
-    }
-
-    /// <summary> Store the frame rate for the mounting animation</summary>
-    public struct MountingFrameRangeComponent : IComponentData
-    {
-        public float Start;
-        public float End;
-    }
-
-    /// <summary> Store the frame rate for the mounting animation</summary>
-    public struct MountingFrameRateComponent : IComponentData
-    {
-        public float Value;
-    }
-
-    public struct MountingAnimationPlayStateComponent : IComponentData
-    {
-        public PlayState Value;
-    }
-#endregion
-
-#region 4
-    [MaterialProperty("_4_frame")]
-    public struct MaterialOverride4FrameNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_4_use_time")]
-    public struct MaterialOverride4UseTime : IComponentData
-    {
-        public float Value;
-    }
-
-    [MaterialProperty("_4_speed")]
-    public struct MaterialOverride4IdleSpeed : IComponentData
-    {
-        public float Value;
-    }
-
-    /// <summary> Store the frame rate for the unmounting animation</summary>
-    public struct UnmountingFrameRangeComponent : IComponentData
-    {
-        public float Start;
-        public float End;
-    }
-
-    /// <summary> Store the frame rate for the unmounting animation</summary>
-    public struct UnmountingFrameRateComponent : IComponentData
-    {
-        public float Value;
-    }
-
-    public struct UnmountingAnimationPlayStateComponent : IComponentData
-    {
-        public PlayState Value;
-    }
-#endregion
-
-    // TODO: rename CoffeeAnimation
-    public struct CoffeeAnimationComponent : IComponentData
-    {
-        public CoffeeAnimation Value;
-    }
-
-#region Animation Number Components
-    /// <summary> Store the idle animation number for the character animation</summary>
-    public struct IdleAnimationNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    /// <summary> Stores the walking animation number for the character animation</summary>
-    public struct WalkingAnimationNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    public struct MountingAnimationNumber : IComponentData
-    {
-        public float Value;
-    }
-
-    public struct UnmountingAnimationNumber : IComponentData
-    {
-        public float Value;
-    }
-#endregion
-
-#region enums
-    public enum CoffeeAnimation
+    public enum Animations
     {
         Default,
         Idle,
@@ -213,5 +31,85 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         Playing,
         Finished
     }
-#endregion
+
+    ///<summary> Store the first and last frame value of the animation.</summary>
+    [Serializable]
+    public struct FrameRange
+    {
+        public float Start;
+        public float End;
+    }
+
+    [Serializable]
+    public struct AnimationData
+    {
+        [Tooltip("The animation number for the animation.")]
+        [SerializeField] public float Number;
+        [Tooltip("The frame rate for the animation.")]
+        [SerializeField] public float FrameRate;
+        [Tooltip("The frame range for the animation.")]
+        [SerializeField] public FrameRange FrameRange;
+    }
+
+    [MaterialProperty("_Animation_number")]
+    public struct AnimationNumberMO : IComponentData { public float Value; }
+
+    public struct AnimationPlayState : IComponentData { public PlayState Value; }
+
+    #region 1
+    [MaterialProperty("_1_frame")]
+    public struct IdleFrameNumberMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_1_use_time")]
+    public struct IdleUseTimeMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_1_speed")]
+    public struct IdleSpeedMO : IComponentData { public float Value; }
+
+    public struct IdleAnimationData : IComponentData { public AnimationData Data; }
+    #endregion
+
+    #region 2
+    [MaterialProperty("_2_frame")]
+    public struct WalkingFrameNumberMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_2_use_time")]
+    public struct WalkingUseTimeMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_2_speed")]
+    public struct WalkingSpeedMO : IComponentData { public float Value; }
+
+    public struct WalkingAnimationData : IComponentData { public AnimationData Data; }
+    #endregion
+
+    #region 3
+    [MaterialProperty("_3_frame")]
+    public struct MountingFrameNumberMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_3_use_time")]
+    public struct MountingUseTimeMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_3_speed")]
+    public struct MountingSpeedMO : IComponentData { public float Value; }
+
+    public struct MountingAnimationData : IComponentData { public AnimationData Data; }
+    #endregion
+
+    #region 4
+    [MaterialProperty("_4_frame")]
+    public struct UnmountingFrameNumberMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_4_use_time")]
+    public struct UnmountingUseTimeMO : IComponentData { public float Value; }
+
+    [MaterialProperty("_4_speed")]
+    public struct UnmountingSpeedMO : IComponentData { public float Value; }
+
+    public struct UnmountingAnimationData : IComponentData { public AnimationData Data; }
+    #endregion
+
+    public struct CurrentAnimation : IComponentData
+    {
+        public Animations Value;
+    }
 }
