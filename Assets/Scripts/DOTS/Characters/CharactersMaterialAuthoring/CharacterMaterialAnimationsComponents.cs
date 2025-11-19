@@ -67,6 +67,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct IdleSpeedMO : IComponentData { public float Value; }
 
     public struct IdleAnimationData : IComponentData { public AnimationData Data; }
+
+    public struct IdleAnimationTag : IComponentData, IEnableableComponent { }
     #endregion
 
     #region 2
@@ -80,6 +82,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct WalkingSpeedMO : IComponentData { public float Value; }
 
     public struct WalkingAnimationData : IComponentData { public AnimationData Data; }
+
+    public struct WalkingAnimationTag : IComponentData, IEnableableComponent { }
     #endregion
 
     #region 3
@@ -93,6 +97,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct MountingSpeedMO : IComponentData { public float Value; }
 
     public struct MountingAnimationData : IComponentData { public AnimationData Data; }
+
+    public struct MountingAnimationTag : IComponentData, IEnableableComponent { }
     #endregion
 
     #region 4
@@ -106,6 +112,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct UnmountingSpeedMO : IComponentData { public float Value; }
 
     public struct UnmountingAnimationData : IComponentData { public AnimationData Data; }
+
+    public struct UnmountingAnimationTag : IComponentData, IEnableableComponent { }
     #endregion
 
     public struct CurrentAnimation : IComponentData

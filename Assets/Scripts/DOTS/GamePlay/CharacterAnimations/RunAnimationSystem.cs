@@ -36,13 +36,10 @@ namespace DOTS.GamePlay.CharacterAnimations
             private bool finished;
             public float dt;
 
-            public void Execute(in IdleAnimationData data, in CurrentAnimation currentAnimation,
+            public void Execute(in IdleAnimationData data, in IdleAnimationTag _,
                     ref AnimationNumberMO animationNumber, ref IdleFrameNumberMO frame)
             {
-                if (currentAnimation.Value == Animations.Idle)
-                {
-                    AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: true);
-                }
+                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: true);
             }
         }
 
@@ -52,13 +49,10 @@ namespace DOTS.GamePlay.CharacterAnimations
             private bool finished;
             public float dt;
 
-            public void Execute(in WalkingAnimationData data, in CurrentAnimation currentAnimation,
+            public void Execute(in WalkingAnimationData data, in WalkingAnimationTag _,
                     ref AnimationNumberMO animationNumber, ref WalkingFrameNumberMO frame)
             {
-                if (currentAnimation.Value == Animations.Walking)
-                {
-                    AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: true);
-                }
+                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: true);
             }
         }
 
@@ -69,16 +63,13 @@ namespace DOTS.GamePlay.CharacterAnimations
             public float dt;
             public EntityCommandBuffer.ParallelWriter ecb;
 
-            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in MountingAnimationData data, in CurrentAnimation currentAnimation,
+            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in MountingAnimationData data, in MountingAnimationTag _,
                     ref AnimationNumberMO animationNumber, ref MountingFrameNumberMO frame)
             {
-                if (currentAnimation.Value == Animations.Mounting)
+                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: false);
+                if (finished)
                 {
-                    AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: false);
-                    if (finished)
-                    {
-                        ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
-                    }
+                    ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
                 }
             }
         }
@@ -90,16 +81,13 @@ namespace DOTS.GamePlay.CharacterAnimations
             public float dt;
             public EntityCommandBuffer.ParallelWriter ecb;
 
-            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in UnmountingAnimationData data, in CurrentAnimation currentAnimation,
+            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in UnmountingAnimationData data, in UnmountingAnimationTag _,
                     ref AnimationNumberMO animationNumber, ref UnmountingFrameNumberMO frame)
             {
-                if (currentAnimation.Value == Animations.Unmounting)
+                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: false);
+                if (finished)
                 {
-                    AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: false);
-                    if (finished)
-                    {
-                        ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
-                    }
+                    ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
                 }
             }
         }

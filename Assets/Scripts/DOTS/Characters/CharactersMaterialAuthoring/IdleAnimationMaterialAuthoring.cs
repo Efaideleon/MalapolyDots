@@ -17,6 +17,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
                 AddComponent(entity, new IdleUseTimeMO { Value = (float)AnimationMode.Frame });
                 AddComponent(entity, new IdleSpeedMO { Value = 1 });
                 AddComponent(entity, new IdleAnimationData { Data = authoring.Data });
+                AddComponent(entity, new IdleAnimationTag { });
             }
         }
     }
