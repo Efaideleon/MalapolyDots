@@ -8,7 +8,7 @@ using Unity.Transforms;
 namespace DOTS.GamePlay.CharacterAnimations
 {
     ///<summary> This system handles the animation for the coffee character by changing a property in the material.</summary>
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct CoffeeAnimationControllerSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -22,7 +22,10 @@ namespace DOTS.GamePlay.CharacterAnimations
         {
             bool run = false;
             foreach (var _ in SystemAPI.Query<RefRO<AnimationPlayState>, RefRO<CoffeeMaterialTag>>().WithChangeFilter<AnimationPlayState>())
+            {
+                UnityEngine.Debug.Log($"[CoffeeAnimationControllerSystem] | Coffee play state changed.");
                 run = true;
+            }
 
             foreach (var _ in SystemAPI.Query<RefRO<PlayerMovementState>>().WithChangeFilter<PlayerMovementState>())
                 run = true;
