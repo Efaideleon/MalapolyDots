@@ -29,12 +29,12 @@ namespace DOTS.GamePlay.CharacterAnimations
 
             if (run)
             {
-                foreach (var (animation, parent, _) in
+                foreach (var (animation, parent, _, entity) in
                         SystemAPI.Query<
                         RefRW<CurrentAnimation>,
                         RefRW<Parent>,
                         RefRO<AvocadoMaterialTag>
-                        >())
+                        >().WithEntityAccess())
                 {
                     if (SystemAPI.HasComponent<PlayerMovementState>(parent.ValueRO.Value))
                     {
@@ -44,14 +44,22 @@ namespace DOTS.GamePlay.CharacterAnimations
                         {
                             case MoveState.Idle:
                                 animation.ValueRW.Value = Animations.Idle;
+                                AnimationTagSwitcher(ref state, in entity, Animations.Idle);
                                 break;
                             case MoveState.Walking:
                                 animation.ValueRW.Value = Animations.Walking;
+                                AnimationTagSwitcher(ref state, in entity, Animations.Walking);
                                 break;
                         }
                     }
                 }
             }
+        }
+
+        public void AnimationTagSwitcher(ref SystemState _, in Entity entity, Animations animation)
+        {
+            SystemAPI.SetComponentEnabled<IdleAnimationTag>(entity, animation == Animations.Idle);
+            SystemAPI.SetComponentEnabled<WalkingAnimationTag>(entity, animation == Animations.Walking);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
                 AddComponent(entity, new MountingUseTimeMO { Value = (float)AnimationMode.Frame });
                 AddComponent(entity, new MountingSpeedMO { Value = 1 });
                 AddComponent(entity, new MountingAnimationData { Data = authoring.Data });
+                AddComponent(entity, new MountingAnimationTag { });
             }
         }
     }

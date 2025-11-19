@@ -8,7 +8,7 @@ using Unity.Transforms;
 namespace DOTS.GamePlay.CharacterAnimations
 {
     ///<summary> This system handles the animation for the coffee character by changing a property in the material.</summary>
-    //[BurstCompile]
+    [BurstCompile]
     public partial struct CoffeeAnimationControllerSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -23,21 +23,22 @@ namespace DOTS.GamePlay.CharacterAnimations
             bool run = false;
             foreach (var _ in SystemAPI.Query<RefRO<AnimationPlayState>, RefRO<CoffeeMaterialTag>>().WithChangeFilter<AnimationPlayState>())
             {
-                UnityEngine.Debug.Log($"[CoffeeAnimationControllerSystem] | Coffee play state changed.");
                 run = true;
             }
 
             foreach (var _ in SystemAPI.Query<RefRO<PlayerMovementState>>().WithChangeFilter<PlayerMovementState>())
+            {
                 run = true;
+            }
 
             if (run)
             {
-                foreach (var (animation, parent, _) in
+                foreach (var (animation, parent, _, entity) in
                         SystemAPI.Query<
                         RefRW<CurrentAnimation>,
                         RefRW<Parent>,
                         RefRO<CoffeeMaterialTag>
-                        >())
+                        >().WithEntityAccess())
                 {
                     if (SystemAPI.HasComponent<PlayerMovementState>(parent.ValueRO.Value))
                     {
@@ -46,23 +47,43 @@ namespace DOTS.GamePlay.CharacterAnimations
                         switch (moveState.Value)
                         {
                             case MoveState.Idle:
-                                animation.ValueRW.Value = animation.ValueRO.Value switch
+                                switch (animation.ValueRO.Value)
                                 {
-                                    Animations.Walking => Animations.Unmounting,
-                                    _ => Animations.Idle,
-                                };
+                                    case Animations.Walking:
+                                        animation.ValueRW.Value = Animations.Unmounting;
+                                        AnimationTagSwitcher(ref state, in entity,Animations.Unmounting);
+                                        break;
+                                    default: 
+                                        animation.ValueRW.Value = Animations.Idle;
+                                        AnimationTagSwitcher(ref state, in entity,Animations.Idle);
+                                        break;
+                                }
                                 break;
                             case MoveState.Walking:
-                                animation.ValueRW.Value = animation.ValueRO.Value switch
+                                switch (animation.ValueRO.Value)
                                 {
-                                    Animations.Idle => Animations.Mounting,
-                                    _ => Animations.Walking,
-                                };
+                                    case Animations.Idle:
+                                        animation.ValueRW.Value = Animations.Mounting;
+                                        AnimationTagSwitcher(ref state, in entity,Animations.Mounting);
+                                        break;
+                                    default: 
+                                        animation.ValueRW.Value = Animations.Walking;
+                                        AnimationTagSwitcher(ref state, in entity,Animations.Walking);
+                                        break;
+                                }
                                 break;
                         }
                     }
                 }
             }
+        }
+
+        public void AnimationTagSwitcher(ref SystemState _, in Entity entity, Animations animation)
+        {
+            SystemAPI.SetComponentEnabled<IdleAnimationTag>(entity, animation == Animations.Idle);
+            SystemAPI.SetComponentEnabled<WalkingAnimationTag>(entity, animation == Animations.Walking);
+            SystemAPI.SetComponentEnabled<MountingAnimationTag>(entity, animation == Animations.Mounting);
+            SystemAPI.SetComponentEnabled<UnmountingAnimationTag>(entity, animation == Animations.Unmounting);
         }
     }
 }
