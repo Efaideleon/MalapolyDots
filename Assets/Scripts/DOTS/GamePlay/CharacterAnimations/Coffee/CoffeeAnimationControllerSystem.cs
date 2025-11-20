@@ -1,6 +1,5 @@
 using DOTS.Characters;
 using DOTS.Characters.CharactersMaterialAuthoring;
-using DOTS.Characters.CharactersMaterialAuthoring.CharactersTags;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
@@ -11,11 +10,13 @@ namespace DOTS.GamePlay.CharacterAnimations
     [BurstCompile]
     public partial struct CoffeeAnimationControllerSystem : ISystem
     {
+        // TODO: Use a component lookup system for the movestate.
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<AnimationNumberMO>();
-            state.RequireForUpdate<CoffeeMaterialTag>();
             state.RequireForUpdate<PlayerMovementState>();
+            state.RequireForUpdate<CurrentFrameVAT>();
+            state.RequireForUpdate<CurrentAnimationData>();
+            state.RequireForUpdate<CoffeeMaterialTag>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -33,12 +34,17 @@ namespace DOTS.GamePlay.CharacterAnimations
 
             if (run)
             {
-                foreach (var (animation, parent, _, entity) in
+                foreach (var (idle, walking, mounting, unmounting, currAnimationData, currAnimationID, parent) in
                         SystemAPI.Query<
-                        RefRW<CurrentAnimation>,
-                        RefRW<Parent>,
-                        RefRO<CoffeeMaterialTag>
-                        >().WithEntityAccess())
+                        RefRO<IdleAnimationData>,
+                        RefRO<WalkingAnimationData>,
+                        RefRO<MountingAnimationData>,
+                        RefRO<UnmountingAnimationData>,
+                        RefRW<CurrentAnimationData>,
+                        RefRW<CurrentAnimationID>,
+                        RefRW<Parent>
+                        >()
+                        .WithAll<CoffeeMaterialTag>())
                 {
                     if (SystemAPI.HasComponent<PlayerMovementState>(parent.ValueRO.Value))
                     {
@@ -47,28 +53,28 @@ namespace DOTS.GamePlay.CharacterAnimations
                         switch (moveState.Value)
                         {
                             case MoveState.Idle:
-                                switch (animation.ValueRO.Value)
+                                switch (currAnimationID.ValueRO.Value)
                                 {
                                     case Animations.Walking:
-                                        animation.ValueRW.Value = Animations.Unmounting;
-                                        AnimationTagSwitcher(ref state, in entity,Animations.Unmounting);
+                                        currAnimationData.ValueRW.Value = unmounting.ValueRO.Value;
+                                        currAnimationID.ValueRW.Value = Animations.Unmounting;
                                         break;
                                     default: 
-                                        animation.ValueRW.Value = Animations.Idle;
-                                        AnimationTagSwitcher(ref state, in entity,Animations.Idle);
+                                        currAnimationData.ValueRW.Value = idle.ValueRO.Value;
+                                        currAnimationID.ValueRW.Value = Animations.Idle;
                                         break;
                                 }
                                 break;
                             case MoveState.Walking:
-                                switch (animation.ValueRO.Value)
+                                switch (currAnimationID.ValueRO.Value)
                                 {
                                     case Animations.Idle:
-                                        animation.ValueRW.Value = Animations.Mounting;
-                                        AnimationTagSwitcher(ref state, in entity,Animations.Mounting);
+                                        currAnimationData.ValueRW.Value = mounting.ValueRO.Value;
+                                        currAnimationID.ValueRW.Value = Animations.Mounting;
                                         break;
                                     default: 
-                                        animation.ValueRW.Value = Animations.Walking;
-                                        AnimationTagSwitcher(ref state, in entity,Animations.Walking);
+                                        currAnimationData.ValueRW.Value = walking.ValueRO.Value;
+                                        currAnimationID.ValueRW.Value = Animations.Walking;
                                         break;
                                 }
                                 break;
@@ -76,14 +82,6 @@ namespace DOTS.GamePlay.CharacterAnimations
                     }
                 }
             }
-        }
-
-        public void AnimationTagSwitcher(ref SystemState _, in Entity entity, Animations animation)
-        {
-            SystemAPI.SetComponentEnabled<IdleAnimationTag>(entity, animation == Animations.Idle);
-            SystemAPI.SetComponentEnabled<WalkingAnimationTag>(entity, animation == Animations.Walking);
-            SystemAPI.SetComponentEnabled<MountingAnimationTag>(entity, animation == Animations.Mounting);
-            SystemAPI.SetComponentEnabled<UnmountingAnimationTag>(entity, animation == Animations.Unmounting);
         }
     }
 }

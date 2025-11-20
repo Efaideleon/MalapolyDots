@@ -4,87 +4,33 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay.CharacterAnimations
 {
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct RunAnimationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<IdleFrameNumberMO>();
-            state.RequireForUpdate<WalkingFrameNumberMO>();
-            state.RequireForUpdate<MountingFrameNumberMO>();
-            state.RequireForUpdate<UnmountingFrameNumberMO>();
+            state.RequireForUpdate<CurrentFrameVAT>();
+            state.RequireForUpdate<CurrentAnimationData>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
             float dt = SystemAPI.Time.DeltaTime;
 
-            var idleJob = new IdleAnimationJob { dt = dt };
-            idleJob.ScheduleParallel();
-
-            var walkingJob = new WalkingAnimationJob { dt = dt };
-            walkingJob.ScheduleParallel();
-            var mountingJob = new MountingAnimationJob { dt = dt, ecb = GetECB(ref state).AsParallelWriter() };
-            mountingJob.ScheduleParallel();
-            var unmountingJob = new UnmountingAnimationJob { dt = dt, ecb = GetECB(ref state).AsParallelWriter() };
-            unmountingJob.ScheduleParallel();
+            var animationJob = new CharacterAnimationJob { dt = dt, ecb = GetECB(ref state).AsParallelWriter() };
+            animationJob.ScheduleParallel();
         }
 
-        [BurstCompile]
-        public partial struct IdleAnimationJob : IJobEntity
-        {
-            private bool finished;
-            public float dt;
-
-            public void Execute(in IdleAnimationData data, in IdleAnimationTag _,
-                    ref AnimationNumberMO animationNumber, ref IdleFrameNumberMO frame)
-            {
-                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: true);
-            }
-        }
-
-        [BurstCompile]
-        public partial struct WalkingAnimationJob : IJobEntity
-        {
-            private bool finished;
-            public float dt;
-
-            public void Execute(in WalkingAnimationData data, in WalkingAnimationTag _,
-                    ref AnimationNumberMO animationNumber, ref WalkingFrameNumberMO frame)
-            {
-                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: true);
-            }
-        }
-
-        [BurstCompile]
-        public partial struct MountingAnimationJob : IJobEntity
+        //[BurstCompile]
+        public partial struct CharacterAnimationJob : IJobEntity
         {
             private bool finished;
             public float dt;
             public EntityCommandBuffer.ParallelWriter ecb;
 
-            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in MountingAnimationData data, in MountingAnimationTag _,
-                    ref AnimationNumberMO animationNumber, ref MountingFrameNumberMO frame)
+            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in CurrentAnimationData data, ref CurrentFrameVAT frame)
             {
-                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: false);
-                if (finished)
-                {
-                    ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
-                }
-            }
-        }
-
-        [BurstCompile]
-        public partial struct UnmountingAnimationJob : IJobEntity
-        {
-            private bool finished;
-            public float dt;
-            public EntityCommandBuffer.ParallelWriter ecb;
-
-            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in UnmountingAnimationData data, in UnmountingAnimationTag _,
-                    ref AnimationNumberMO animationNumber, ref UnmountingFrameNumberMO frame)
-            {
-                AnimationHelper.RunAnimation(ref animationNumber.Value, ref frame.Value, ref finished, data.Data, in dt, loops: false);
+                RunAnimation(ref frame.Value, ref finished, data.Value, in dt, loops: false);
                 if (finished)
                 {
                     ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
@@ -98,20 +44,13 @@ namespace DOTS.GamePlay.CharacterAnimations
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             return ecb.CreateCommandBuffer(state.WorldUnmanaged);
         }
-    }
 
-    public static class AnimationHelper
-    {
-        public static void RunAnimation(
-                ref float animationNumber,
-                ref float frame,
-                ref bool finished,
-                in AnimationData data,
-                in float dt,
-                bool loops)
+        //[BurstCompile]
+        public static void RunAnimation( ref float frame, ref bool finished, in AnimationData data, in float dt, bool loops)
         {
-            animationNumber = data.Number;
             frame += data.FrameRate * dt;
+            UnityEngine.Debug.Log("running animation");
+            UnityEngine.Debug.Log($"running animation frame: {frame}");
 
             if (frame > data.FrameRange.End)
             {

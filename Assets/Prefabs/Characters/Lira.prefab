@@ -12,9 +12,6 @@ GameObject:
   - component: {fileID: 8791471669437019154}
   - component: {fileID: 4748181107953524453}
   - component: {fileID: 1113876642563757104}
-  - component: {fileID: 8410178035114728388}
-  - component: {fileID: 3325487662415363851}
-  - component: {fileID: 8980561012904892111}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -106,54 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21538cb894744f719e97730439063bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CharactersTags.LiraMaterialTagAuthoring
---- !u!114 &8410178035114728388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023736562857501940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4919bda629c5c4d918117ab21e7f9646, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.AnimationEssentials
---- !u!114 &3325487662415363851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023736562857501940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d99242b210994711ae8f5e92eca0f4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.IdleAnimationMaterialAuthoring
-  Data:
-    Number: 0
-    FrameRate: 30
-    FrameRange:
-      Start: 1
-      End: 40
---- !u!114 &8980561012904892111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023736562857501940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e64eddaa292a4bf7bbdd365f735e4ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.WalkingAnimationMaterialAuthoring
-  Data:
-    Number: 1
-    FrameRate: 30
-    FrameRange:
-      Start: 1
-      End: 40
 --- !u!1 &4072373378481227395
 GameObject:
   m_ObjectHideFlags: 0

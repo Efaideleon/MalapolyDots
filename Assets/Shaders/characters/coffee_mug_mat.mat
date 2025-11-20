@@ -48,8 +48,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_c220a02db9fb431e8e39ddc351b8fb4f_Out_0_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2D_1:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _vat_texture:
+        m_Texture: {fileID: 2800000, guid: ac8a0957c945c984a9ee28ce003f1ac7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -95,6 +103,11 @@ Material:
     - _Float_3: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _current_frame: 0
+    - _speed: 1
+    - _total_frames: 0
+    - _use_time: 0
+    - _y_resolution: 512
     m_Colors:
     - _1_max_values: {r: -1.2, g: 0.6, b: 0.7, a: 0}
     - _1_min_values: {r: 0.9, g: -0.6, b: -0.1, a: 0}
@@ -105,6 +118,8 @@ Material:
     - _4_max_values: {r: -3.6, g: 0.6, b: 1.1, a: 0}
     - _4_min_values: {r: 0, g: -0.6, b: 0, a: 0}
     - _Vector3: {r: 0, g: 0, b: 0, a: 0}
+    - _max: {r: -3.6, g: 0.6, b: 2, a: 0}
+    - _min: {r: 1.4, g: -1.8, b: -0.1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &988541845748864357
