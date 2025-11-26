@@ -1,8 +1,10 @@
 using System;
+using DOTS.DataComponents;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+#nullable enable
 public class TouchCallBack : IComponentData
 {
     public Action<InputAction.CallbackContext> TouchPositionCallback;
@@ -22,6 +24,7 @@ public partial struct TouchInputSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<ClickData>();
         state.RequireForUpdate<ClickRayCastData>();
         state.RequireForUpdate<DeltaClickRayCastData>();
+        state.RequireForUpdate<CurrentCameraMangedObject>();
         state.EntityManager.CreateSingleton(new TouchCallBack { TouchPositionCallback = null });
         state.EntityManager.CreateSingleton(new IsTouchingUIElement { Value = false });
     }
@@ -33,31 +36,36 @@ public partial struct TouchInputSystem : ISystem, ISystemStartStop
         var clickRayCastDataQuery = SystemAPI.QueryBuilder().WithAllRW<ClickRayCastData>().Build();
         var deltaRayCastDataQuery = SystemAPI.QueryBuilder().WithAllRW<DeltaClickRayCastData>().Build();
         var touchCallback = SystemAPI.ManagedAPI.GetSingleton<TouchCallBack>();
+        var currentCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraMangedObject>();
         InputActions.Value.Touch.Enable();
 
-        float rayLenght = 1000f;
+        float rayLength = 1000f;
 
         touchCallback.TouchPositionCallback = ctx =>
         {
+            var position = InputActions.Value.Touch.Position.ReadValue<Vector2>();
             if (ctx.action == InputActions.Value.Touch.Press || ctx.action == InputActions.Value.Touch.Position)
             {
-                var position = InputActions.Value.Touch.Position.ReadValue<Vector2>();
-                var rayData = InputHelperMethods.GetRayData(position);
-                ref var clickData = ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW;
-                ref var rayCastData = ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW;
+                if (currentCamera.Camera != null)
+                {
+                    var rayData = InputHelperMethods.GetRayData(position, currentCamera.Camera);
+                    ref var clickData = ref clickDataQuery.GetSingletonRW<ClickData>().ValueRW;
+                    ref var rayCastData = ref clickRayCastDataQuery.GetSingletonRW<ClickRayCastData>().ValueRW;
 
-                InputHelperMethods.SetClickData(ref clickData, position, ctx.phase);
-                InputHelperMethods.SetRayCastData(ref rayCastData, rayData, rayLenght);
+                    InputHelperMethods.SetClickData(ref clickData, position, ctx.phase);
+                    InputHelperMethods.SetRayCastData(ref rayCastData, rayData, rayLength);
+                }
             }
             else if (ctx.action == InputActions.Value.Touch.DeltaPosition)
             {
-                var position = InputActions.Value.Touch.Position.ReadValue<Vector2>();
-                var deltaPosition = InputActions.Value.Touch.DeltaPosition.ReadValue<Vector2>();
+                if (currentCamera.Camera != null)
+                {
+                    var deltaPosition = InputActions.Value.Touch.DeltaPosition.ReadValue<Vector2>();
+                    var rayData = InputHelperMethods.GetRayBeforeData(position, deltaPosition, currentCamera.Camera);
+                    ref var deltaRayCastData = ref deltaRayCastDataQuery.GetSingletonRW<DeltaClickRayCastData>().ValueRW;
 
-                var rayData = InputHelperMethods.GetRayBeforeData(position, deltaPosition);
-                ref var deltaRayCastData = ref deltaRayCastDataQuery.GetSingletonRW<DeltaClickRayCastData>().ValueRW;
-
-                InputHelperMethods.SetDeltaRayCastData(ref deltaRayCastData, rayLenght, rayData);
+                    InputHelperMethods.SetDeltaRayCastData(ref deltaRayCastData, rayLength, rayData);
+                }
             }
         };
 

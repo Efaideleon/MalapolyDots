@@ -10,13 +10,13 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<PerspectiveCamera>();
+            state.RequireForUpdate<PerspectiveCameraObject>();
             state.RequireForUpdate<MainCameraTransform>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var camComponent = SystemAPI.ManagedAPI.GetSingleton<PerspectiveCamera>();
+            var camComponent = SystemAPI.ManagedAPI.GetSingleton<PerspectiveCameraObject>();
             if (camComponent.camera == null) return;
 
             var cam = camComponent.camera;

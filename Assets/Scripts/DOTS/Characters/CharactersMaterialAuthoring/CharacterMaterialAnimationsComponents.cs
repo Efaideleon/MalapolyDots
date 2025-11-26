@@ -1,7 +1,6 @@
 using System;
 using Unity.Entities;
 using Unity.Rendering;
-using UnityEngine;
 
 namespace DOTS.Characters.CharactersMaterialAuthoring
 {
@@ -36,15 +35,24 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         public float End;
     }
 
-    [Serializable]
     public struct AnimationData
     {
-        [Tooltip("The total number of frames for the animation.")]
-        [SerializeField] public float TotalFrames;
-        [Tooltip("The frame rate for the animation.")]
-        [SerializeField] public float FrameRate;
-        [Tooltip("The frame range for the animation.")]
-        [SerializeField] public FrameRange FrameRange;
+        public float FrameRate;
+        public FrameRange FrameRange;
+        public bool Loops;
+        public Animations AnimationEnum;
+    }
+
+    /// <summary> Holds a BlobArray for all the AnimationData.</summary>
+    public struct AnimationDataBlob
+    {
+        public BlobArray<AnimationData> Clips;
+    }
+
+    /// <summary> Holds a reference to the AnimationDataBlobAsset.</summary>
+    public struct AnimationDataLibrary : IComponentData
+    {
+        public BlobAssetReference<AnimationDataBlob> AnimationDataBlobRef;
     }
 
     public struct AnimationPlayState : IComponentData { public PlayState Value; }

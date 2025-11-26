@@ -1,8 +1,8 @@
-using Unity.Burst;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+#nullable enable
 public static class InputHelperMethods
 {
     public static (float2, RayData) GetClickPositionAndRay()
@@ -16,16 +16,16 @@ public static class InputHelperMethods
 
     public static float2 GetClickPosition(Vector2 position) => new float2(position.x, position.y);
 
-    public static RayData GetRayData(Vector3 position)
+    public static RayData GetRayData(Vector3 position, Camera camera)
     {
-        Ray ray = Camera.main.ScreenPointToRay(position);
+        Ray ray = camera.ScreenPointToRay(position);
         RayData rayData = new() { origin = ray.origin, direction = ray.direction };
         return rayData;
     }
 
-    public static RayData GetRayBeforeData(Vector3 position, Vector3 deltaPosition)
+    public static RayData GetRayBeforeData(Vector3 position, Vector3 deltaPosition, Camera camera)
     {
-        Ray rayBefore = Camera.main.ScreenPointToRay(position - deltaPosition);
+        Ray rayBefore = camera.ScreenPointToRay(position - deltaPosition);
         RayData rayData = new() { origin = rayBefore.origin, direction = rayBefore.direction };
         return rayData;
     }
@@ -33,7 +33,6 @@ public static class InputHelperMethods
     public static void SetClickData(ref ClickData clickData, Vector2 clickPosition, InputActionPhase phase)
     {
         clickData.Position = new float2(clickPosition.x, clickPosition.y);
-        UnityEngine.Debug.Log($"[SetClickData] | Click Phase: {phase}");
         clickData.Phase = phase;
     }
 
@@ -44,10 +43,10 @@ public static class InputHelperMethods
         clickRayCastData.RayEnd = rayData.origin + (rayData.direction * rayLength);
     }
 
-    public static void SetDeltaRayCastData(ref DeltaClickRayCastData clickRayCastData, float rayLenght, RayData rayData)
+    public static void SetDeltaRayCastData(ref DeltaClickRayCastData clickRayCastData, float rayLength, RayData rayData)
     {
         clickRayCastData.RayOrigin = rayData.origin;
         clickRayCastData.RayDirection = rayData.direction;
-        clickRayCastData.RayEnd = rayData.origin + (rayData.direction * rayLenght);
+        clickRayCastData.RayEnd = rayData.origin + (rayData.direction * rayLength);
     }
 }

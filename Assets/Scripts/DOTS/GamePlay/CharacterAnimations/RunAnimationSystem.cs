@@ -1,10 +1,11 @@
 using DOTS.Characters.CharactersMaterialAuthoring;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace DOTS.GamePlay.CharacterAnimations
 {
-    //[BurstCompile]
+    [BurstCompile]
     public partial struct RunAnimationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -17,46 +18,34 @@ namespace DOTS.GamePlay.CharacterAnimations
         {
             float dt = SystemAPI.Time.DeltaTime;
 
-            var animationJob = new CharacterAnimationJob { dt = dt, ecb = GetECB(ref state).AsParallelWriter() };
+            var animationJob = new CharacterAnimationJob { dt = dt };
             animationJob.ScheduleParallel();
         }
 
-        //[BurstCompile]
+        [BurstCompile]
         public partial struct CharacterAnimationJob : IJobEntity
         {
-            private bool finished;
             public float dt;
-            public EntityCommandBuffer.ParallelWriter ecb;
 
-            public void Execute([ChunkIndexInQuery] int chunkIndex, Entity entity, in CurrentAnimationData data, ref CurrentFrameVAT frame)
+            public void Execute(CurrentAnimationData data, ref CurrentFrameVAT frame, ref AnimationPlayState playState)
             {
-                RunAnimation(ref frame.Value, ref finished, data.Value, in dt, loops: false);
-                if (finished)
+                if (playState.Value == PlayState.Finished) return;
+                if (PlayAnimation(ref frame.Value, data.Value, in dt))
                 {
-                    ecb.SetComponent(chunkIndex, entity, new AnimationPlayState { Value = PlayState.Finished });
+                    playState.Value = PlayState.Finished;
                 }
             }
         }
 
-        [BurstCompile]
-        public readonly EntityCommandBuffer GetECB(ref SystemState state)
+        public static bool PlayAnimation(ref float frame, in AnimationData data, in float dt)
         {
-            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
-            return ecb.CreateCommandBuffer(state.WorldUnmanaged);
-        }
-
-        //[BurstCompile]
-        public static void RunAnimation( ref float frame, ref bool finished, in AnimationData data, in float dt, bool loops)
-        {
-            frame += data.FrameRate * dt;
-            UnityEngine.Debug.Log("running animation");
-            UnityEngine.Debug.Log($"running animation frame: {frame}");
-
-            if (frame > data.FrameRange.End)
+            frame = math.clamp(frame + data.FrameRate * dt, data.FrameRange.Start, data.FrameRange.End);
+            if (frame >= data.FrameRange.End)
             {
                 frame = data.FrameRange.Start;
-                if (!loops) finished = true;
+                if (!data.Loops) return true;
             }
+            return false;
         }
     }
 }
