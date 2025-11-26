@@ -5,15 +5,6 @@ using UnityEngine.InputSystem;
 #nullable enable
 public static class InputHelperMethods
 {
-    public static (float2, RayData) GetClickPositionAndRay()
-    {
-        var clickPositionVector = Mouse.current.position.ReadValue();
-        float2 clickPositionFloat2 = new(clickPositionVector.x, clickPositionVector.y);
-        Ray ray = Camera.main.ScreenPointToRay(clickPositionVector);
-        RayData rayData = new() { origin = ray.origin, direction = ray.direction };
-        return (clickPositionFloat2, rayData);
-    }
-
     public static float2 GetClickPosition(Vector2 position) => new float2(position.x, position.y);
 
     public static RayData GetRayData(Vector3 position, Camera camera)
