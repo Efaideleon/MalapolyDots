@@ -41,7 +41,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
              
             cam.transform.SetLocalPositionAndRotation(newCamPosition, newCamRotation);
 
-            state.EntityManager.CreateSingleton(new PerspectiveCamera { camera = cam });
+            state.EntityManager.CreateSingleton(new PerspectiveCameraObject { camera = cam });
         }
 
         public void OnUpdate(ref SystemState state)
@@ -57,7 +57,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
         public GameObject? Instance;
     }
 
-    public class PerspectiveCamera : IComponentData
+    public class PerspectiveCameraObject : IComponentData
     {
         public Camera? camera;
     }

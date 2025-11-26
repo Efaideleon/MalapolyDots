@@ -29,13 +29,13 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            var player = SystemAPI.GetSingleton<CurrentPlayerComponent>();
+            var currPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
 
-            if (!SystemAPI.HasComponent<LocalTransform>(player.entity)) return;
+            if (!SystemAPI.HasComponent<LocalTransform>(currPlayer.entity)) return;
 
-            var playerTransform = SystemAPI.GetComponent<LocalTransform>(player.entity);
+            var currPlayerTransform = SystemAPI.GetComponent<LocalTransform>(currPlayer.entity);
 
-            SystemAPI.GetSingletonRW<PivotPosition>().ValueRW.Value = playerTransform.Position;
+            SystemAPI.GetSingletonRW<PivotPosition>().ValueRW.Value = currPlayerTransform.Position;
         }
     }
 

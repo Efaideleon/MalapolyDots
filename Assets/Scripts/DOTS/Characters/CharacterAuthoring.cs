@@ -1,4 +1,3 @@
-using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.DataComponents;
 using DOTS.GameData;
 using Unity.Entities;
