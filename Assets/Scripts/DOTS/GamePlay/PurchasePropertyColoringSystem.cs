@@ -1,4 +1,3 @@
-using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Burst;
