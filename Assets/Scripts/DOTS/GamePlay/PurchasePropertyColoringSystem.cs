@@ -13,7 +13,7 @@ namespace DOTS.GamePlay
         private const int ColoringThreshold = 100;
         private const int HouseColoringThreshold = 130; // Some building are taller, pick a bigger number.
 
-        private BufferLookup<LinkedEntityGroup> linkedEntitiesBufferLookup; 
+        private BufferLookup<LinkedEntityGroup> linkedEntitiesBufferLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -37,9 +37,9 @@ namespace DOTS.GamePlay
 
             var dt = SystemAPI.Time.DeltaTime;
 
-            DynamicBuffer<LinkedEntityGroup> linkedEntityGroup; 
+            DynamicBuffer<LinkedEntityGroup> linkedEntityGroup;
 
-            foreach (var (tag, houseCounter, entity) in 
+            foreach (var (tag, houseCounter, entity) in
                     SystemAPI.Query
                     <
                         RefRO<PropertySpaceTag>,
@@ -88,31 +88,20 @@ namespace DOTS.GamePlay
                 }
             }
 
-            foreach (var (materialColorSlider, owner, _) in 
-                    SystemAPI.Query<
-                        RefRW<MaterialOverrideColorSlider>,
-                        RefRO<OwnerComponent>,
-                        RefRO<PropertySpaceTag>
-                    >()) //TODO: Add WithChangeFilter<OwnerComponent>?
+            // TODO: Re write into a job and only run while coloring.
+            foreach (var (materialColorSlider, _) in SystemAPI.Query<RefRW<MaterialOverrideColorSlider>, RefRO<PropertySpaceTag>>())
             {
                 var colorSliderRO = materialColorSlider.ValueRO;
                 bool coloring = colorSliderRO.Value < ColoringThreshold;
 
                 if (coloring)
                 {
-                    var ownerID = owner.ValueRO.ID;
                     ref var colorSliderRW = ref materialColorSlider.ValueRW;
-                    bool purchased = ownerID != PropertyConstants.Vacant;
-
-                    //if  (true)
-                    if  (purchased) //BRING BACK
-                    {
-                        Color(ref colorSliderRW.Value, ref dt, ColoringThreshold);
-                    }
+                    Color(ref colorSliderRW.Value, ref dt, ColoringThreshold);
                 }
             }
         }
-        
+
         public readonly void Color(ref float value, ref float dt, int threshold)
         {
             if (value < threshold)
