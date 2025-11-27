@@ -23,8 +23,6 @@ namespace DOTS.GamePlay.CameraSystems
                 var currentPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
                 var currentPivotRotation = SystemAPI.GetComponent<CurrentPivotRotation>(currentPlayer.entity);
                 pivotRotation.ValueRW.Value = currentPivotRotation.Value;
-                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | rotation: {pivotRotation.ValueRO.Value}");
-                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | player id: {playerID.ValueRO.Value}");
             }
         }
     }

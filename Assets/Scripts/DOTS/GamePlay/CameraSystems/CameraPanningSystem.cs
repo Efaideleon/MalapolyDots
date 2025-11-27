@@ -28,7 +28,6 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<MainCameraTranslateData>();
             state.RequireForUpdate<DeltaClickRayCastData>();
             state.RequireForUpdate<ClickRayCastData>();

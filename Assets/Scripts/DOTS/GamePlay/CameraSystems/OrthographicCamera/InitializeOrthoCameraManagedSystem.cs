@@ -10,7 +10,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
     /// <summary> Store a reference to the orthographic camera managed object. </summary>
     public class OrthographicCameraObject : IComponentData
     {
-        public Camera? Camera;
+        public Camera? camera;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
             Camera.main.orthographicSize = camFieldOfView.Value;
 
             var entity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddComponentObject(entity, new OrthographicCameraObject { Camera = Camera.main });
+            state.EntityManager.AddComponentObject(entity, new OrthographicCameraObject { camera = Camera.main });
         }
     }
 }

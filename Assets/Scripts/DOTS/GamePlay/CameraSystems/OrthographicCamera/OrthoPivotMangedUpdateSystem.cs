@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 {
@@ -18,9 +19,9 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
             var orthoPivot = SystemAPI.ManagedAPI.GetSingleton<OrthoCameraPivotInstance>();
             if (orthoPivot.Instance == null) return;
 
-            foreach (var (position, rotation) in SystemAPI.Query<RefRO<PivotPosition>, RefRO<PivotRotation>>())
+            foreach (var localTranform in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<PivotTransformTag>())
             {
-                orthoPivot.Instance.transform.position = position.ValueRO.Value;
+                orthoPivot.Instance.transform.position = localTranform.ValueRO.Position;
             }
         }
     }

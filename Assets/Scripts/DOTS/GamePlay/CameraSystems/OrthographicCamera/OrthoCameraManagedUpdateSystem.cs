@@ -41,11 +41,6 @@ namespace DOTS.GamePlay.CameraSystems
             {
                 Camera.main.transform.Translate(translateData.ValueRO.Delta, Space.World);
             }
-
-            foreach (var fieldOfView in SystemAPI.Query<RefRO<CameraFieldOfView>>().WithChangeFilter<CameraFieldOfView>())
-            {
-                Camera.main.orthographicSize = fieldOfView.ValueRO.Value;
-            }
         }
     }
 }

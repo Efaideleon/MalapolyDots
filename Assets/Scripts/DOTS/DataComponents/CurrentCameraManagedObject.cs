@@ -5,7 +5,7 @@ using UnityEngine;
 #nullable enable
 namespace DOTS.DataComponents
 {
-    public class CurrentCameraMangedObject : IComponentData
+    public class CurrentCameraManagedObject : IComponentData
     {
         public Camera? Camera;
     }

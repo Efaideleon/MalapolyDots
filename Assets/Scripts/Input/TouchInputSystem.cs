@@ -17,7 +17,7 @@ public partial struct TouchInputSystem : ISystem, ISystemStartStop
         state.RequireForUpdate<ClickData>();
         state.RequireForUpdate<ClickRayCastData>();
         state.RequireForUpdate<DeltaClickRayCastData>();
-        state.RequireForUpdate<CurrentCameraMangedObject>();
+        state.RequireForUpdate<CurrentCameraManagedObject>();
         state.EntityManager.CreateSingleton(new IsTouchingUIElement { Value = false });
     }
 
@@ -37,7 +37,7 @@ public partial struct TouchInputSystem : ISystem, ISystemStartStop
         if (touchAction.Press.WasPerformedThisFrame() || touchAction.Position.WasPerformedThisFrame())
         {
             float rayLength = 1000f;
-            var currentCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraMangedObject>();
+            var currentCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraManagedObject>();
             if (currentCamera.Camera != null)
             {
                 var rayData = InputHelperMethods.GetRayData(position, currentCamera.Camera);
@@ -51,7 +51,7 @@ public partial struct TouchInputSystem : ISystem, ISystemStartStop
         if (touchAction.DeltaPosition.WasPerformedThisFrame())
         {
             float rayLength = 1000f;
-            var currentCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraMangedObject>();
+            var currentCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraManagedObject>();
             if (currentCamera.Camera != null)
             {
                 var deltaPosition = inputActions.Value.Touch.DeltaPosition.ReadValue<Vector2>();

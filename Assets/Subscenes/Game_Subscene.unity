@@ -613,12 +613,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823650531}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -26.02, y: 1.85, z: -95.56}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1779011819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &943285337
 GameObject:
@@ -1012,11 +1012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.PerspectiveCamera.PerspectiveCameraAuthoring
   PerspectiveCameraPivotGO: {fileID: 299015536040617363, guid: 03b5f1b713ce047c9b5239fe57c84368, type: 3}
-  offset:
-    x: 0
-    y: 13
-    z: 27
-  angle: 51
+  cameraConfig: {fileID: 11400000, guid: 8f432b62032f04e52a39888b19638daf, type: 2}
 --- !u!4 &1348354910
 Transform:
   m_ObjectHideFlags: 0
@@ -1139,12 +1135,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392476920}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -56.45, y: 1.85, z: -122.52}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1779011819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1392476925
 MonoBehaviour:
@@ -1158,7 +1154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4361cc27e462945e699e79e01801d695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.CameraSceneAuthoring
-  RotationAngle: 250
+  RotationAngle: 225
   RotationSpeed: 1
 --- !u!54 &1392476926
 Rigidbody:
@@ -1232,13 +1228,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.OrthoCameraSetupAuthoring
   OrthographicCameraPivotGO: {fileID: 1303191671506718714, guid: f98452e78b4754040a8fd001efa44bbe, type: 3}
-  CameraOrthographicSize: 14
   CameraTransform: {fileID: 8121963178908400873, guid: a29b8ecfeec0b4eda9a6a56f83e735ef, type: 3}
-  Offset:
-    x: 0
-    y: 13
-    z: 27
-  Angle: 51
+  cameraConfig: {fileID: 11400000, guid: 1d93c09b0e5b648748a32ccdcf76f31c, type: 2}
+--- !u!1 &1779011818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1779011819}
+  m_Layer: 0
+  m_Name: CameraScenes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1779011819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779011818}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1392476924}
+  - {fileID: 823650537}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &14178388349813914
 GameObject:
   m_ObjectHideFlags: 0
@@ -9545,5 +9569,4 @@ SceneRoots:
   - {fileID: 995611167}
   - {fileID: 1338734480}
   - {fileID: 1348354910}
-  - {fileID: 1392476924}
-  - {fileID: 823650537}
+  - {fileID: 1779011819}

@@ -39,11 +39,12 @@ namespace DOTS.GamePlay.CameraSystems
 
     public class OrthoCameraSetupAuthoring : MonoBehaviour
     {
+        [Header("Pivot")]
         [SerializeField] GameObject OrthographicCameraPivotGO;
-        public int CameraOrthographicSize = 14;
+        [Header("Camera")]
         public Transform CameraTransform;
-        public float3 Offset = new (0f, 13f, 27f);
-        public float Angle = 51; // Should limit values between 0 and 360 in inspector.
+        [Header("Perspective Camera Config")]
+        public CameraConfig cameraConfig;
 
         public class CameraBaker : Baker<OrthoCameraSetupAuthoring>
         {
@@ -51,17 +52,21 @@ namespace DOTS.GamePlay.CameraSystems
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
-                AddComponentObject(entity, new OrthographicCameraPivot { gameObject = authoring.OrthographicCameraPivotGO, });
+                AddComponentObject(entity, new OrthographicCameraPivot { gameObject = authoring.OrthographicCameraPivotGO });
 
-                AddComponent(entity, new MainCameraTransform 
+                AddComponent(entity, new MainCameraTransform
                 {
                     Position = authoring.CameraTransform.position,
                     Rotation = authoring.CameraTransform.rotation
                 });
 
                 AddComponent(entity, new MainCameraTranslateData { Delta = default, });
-                AddComponent(entity, new CameraFieldOfView { Value = authoring.CameraOrthographicSize, });
-                AddComponent(entity, new OrthoCamOffset { Offset = authoring.Offset, Angle = math.radians(authoring.Angle) });
+                AddComponent(entity, new CameraFieldOfView { Value = authoring.cameraConfig.fieldOfView });
+                AddComponent(entity, new OrthoCamOffset
+                {
+                    Offset = authoring.cameraConfig.offset,
+                    Angle = math.radians(authoring.cameraConfig.angle)
+                });
             }
         }
     }

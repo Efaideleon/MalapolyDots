@@ -38,7 +38,6 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<StatefulTriggerEvent>();
             state.RequireForUpdate<CameraSceneData>();
             state.RequireForUpdate<CurrentPlayerComponent>();
-            state.RequireForUpdate<MainCameraTransform>();
             state.RequireForUpdate<PivotRotation>();
             state.RequireForUpdate<PivotTransformTag>();
         }

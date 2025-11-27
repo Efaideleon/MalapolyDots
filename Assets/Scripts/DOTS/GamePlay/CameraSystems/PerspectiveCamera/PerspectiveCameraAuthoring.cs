@@ -7,9 +7,10 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 {
     public class PerspectiveCameraAuthoring : MonoBehaviour
     {
+        [Header("Pivot")]
         [SerializeField] GameObject? PerspectiveCameraPivotGO;
-        [SerializeField] float3 offset;
-        [SerializeField] float angle;
+        [Header("Perspective Camera Config")]
+        [SerializeField] CameraConfig? cameraConfig;
 
         public class PerspectiveCameraBaker : Baker<PerspectiveCameraAuthoring>
         {
@@ -18,14 +19,19 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
                 AddComponentObject(entity, new PerspectiveCameraPivotGO { Pivot = authoring.PerspectiveCameraPivotGO });
                 AddComponent(entity, new PerspectiveCameraGOTag { });
-                AddComponent(entity, new PerspectiveCameraConfig { Offset = authoring.offset, Angle = authoring.angle });
+                if (authoring.cameraConfig != null)
+                {
+                    AddComponent(entity, new PerspectiveCameraConfig
+                    {
+                        Offset = authoring.cameraConfig.offset,
+                        Angle = authoring.cameraConfig.angle
+                    });
+                }
             }
         }
     }
 
-    public struct PerspectiveCameraGOTag : IComponentData
-    {
-    }
+    public struct PerspectiveCameraGOTag : IComponentData { }
 
     public class PerspectiveCameraPivotGO : IComponentData
     {

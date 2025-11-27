@@ -24,7 +24,6 @@ namespace DOTS.GamePlay.CameraSystems
             SystemAPI.SetComponent(entity, new PivotTransformTag { });
 
             state.RequireForUpdate<CurrentPlayerComponent>();
-            state.RequireForUpdate<CurrentCameraData>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -39,16 +38,19 @@ namespace DOTS.GamePlay.CameraSystems
         }
     }
 
+    ///<summary>Stores the position for the pivot.</summary>
     public struct PivotPosition : IComponentData
     {
         public float3 Value;
     }
 
+    ///<summary>Stores the rotation for the pivot.</summary>
     public struct PivotRotation : IComponentData
     {
         public quaternion Value;
     }
 
+    ///<summary>Tag to identify the pivot.</summary>
     public struct PivotTransformTag : IComponentData
     { }
 }
