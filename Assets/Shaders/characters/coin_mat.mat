@@ -57,6 +57,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 1120f6d6c29583445961b574090e1fb7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _vat_texture:
+        m_Texture: {fileID: 2800000, guid: d26ee1d8f28b2df439c0140857c698e2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -95,6 +99,11 @@ Material:
     - _Animation_number: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _current_frame: 0
+    - _speed: 0
+    - _total_frames: 0
+    - _use_time: 0
+    - _y_resolution: 0
     m_Colors:
     - _1_max_values: {r: -1.5, g: 0.8, b: 0.1, a: 0}
     - _1_min_values: {r: 1.5, g: -0.8, b: -0.1, a: 0}
@@ -104,5 +113,7 @@ Material:
     - _3_min_values: {r: 0, g: 0, b: 0, a: 0}
     - _4_max_values: {r: 0, g: 0, b: 0, a: 0}
     - _4_min_values: {r: 0, g: 0, b: 0, a: 0}
+    - _max: {r: 0, g: 0, b: 0, a: 0}
+    - _min: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
