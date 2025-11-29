@@ -10,7 +10,7 @@ namespace DOTS.GamePlay.CameraSystems
     /// <summary>
     /// This system enables and disables the `PerspectiveCamera` that we instantiate in the `PerspectiveCameraInstantiateSystem`.
     /// </summary>
-    public partial struct CameraSwitcherManagedSystem : ISystem
+    public partial struct CameraSwitcherManagedSystem : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
         {
@@ -18,12 +18,19 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<OrthographicCameraObject>();
             state.RequireForUpdate<GameStateComponent>();
 
-            if (Camera.main == null)
-            {
-                Debug.LogWarning("[CameraSwitcherManagedSystem] main Camera not found");
-            }
-            state.EntityManager.CreateSingleton(new CurrentCameraManagedObject { Camera = Camera.main });
         }
+
+        public void OnStartRunning(ref SystemState state)
+        {
+            var orthoGraphicCamera = SystemAPI.ManagedAPI.GetSingleton<OrthographicCameraObject>();
+            if (orthoGraphicCamera.camera == null)
+            {
+                Debug.LogWarning("[CameraSwitcherManagedSystem] OrthographicCamera not found");
+            }
+            state.EntityManager.CreateSingleton(new CurrentCameraManagedObject { Camera = orthoGraphicCamera.camera });
+        }
+
+        public void OnStopRunning(ref SystemState state) { }
 
         public void OnUpdate(ref SystemState state)
         {
