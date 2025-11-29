@@ -107,6 +107,8 @@ GameObject:
   - component: {fileID: 6161210268264669672}
   - component: {fileID: 7533372935473678538}
   - component: {fileID: 3076830841739918297}
+  - component: {fileID: 4657504109658379375}
+  - component: {fileID: 826049808926858082}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -186,3 +188,32 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4037385522406736612}
   m_Mesh: {fileID: 1761351246406388664, guid: 501924036e4f2af4d8894de4ce012ff5, type: 3}
+--- !u!114 &4657504109658379375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4037385522406736612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 677109cc7cfc043d08112f5ff81c9bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CharacterTags.AvocadoCharacterTagAuthoring
+--- !u!114 &826049808926858082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4037385522406736612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acaaf3db8bb5d4617be2f667e4cae16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::Assets.Scripts.DOTS.Characters.CharactersMaterialAuthoring.CharactersAnimationAuthoring
+  AnimationClips:
+  - {fileID: 11400000, guid: e77f8e7f3cda6cd4db46b7d1b3e6bbe4, type: 2}
+  - {fileID: 11400000, guid: c7db69407f9ca1145a68ba18df6e6aa2, type: 2}
+  UseTime: 0
+  Speed: 1
