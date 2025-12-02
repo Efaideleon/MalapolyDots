@@ -12,17 +12,17 @@ namespace DOTS.GamePlay
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
-        {   
-            state.RequireForUpdate<BoardIndexComponent>(); 
+        {
+            state.RequireForUpdate<BoardIndexComponent>();
             state.RequireForUpdate<PlayerID>();
             state.RequireForUpdate<PlayerWaypointIndex>();
             state.RequireForUpdate<CurrentPlayerID>();
             state.RequireForUpdate<WayPointBufferElement>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-                    {
-                    ComponentType.ReadOnly<LandedOnSpace>()
-                    });
+            {
+                ComponentType.ReadOnly<LandedOnSpace>()
+            });
 
             SystemAPI.SetComponent(entity, new LandedOnSpace { entity = Entity.Null });
         }
@@ -35,7 +35,7 @@ namespace DOTS.GamePlay
                 if (!flag.ValueRO.Arrived)
                     break;
                 // TODO: delete name Ref here
-                foreach (var (name, playerID, playerWaypointIndex) in 
+                foreach (var (name, playerID, playerWaypointIndex) in
                         SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>())
                 {
                     var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
@@ -50,7 +50,7 @@ namespace DOTS.GamePlay
                     foreach (var (spaceName, _, spaceEntity) in SystemAPI.Query<
                             RefRO<NameComponent>, RefRO<BoardIndexComponent>>().WithEntityAccess())
                     {
-                        if (playerID.ValueRO.Value == currentPlayerID.Value 
+                        if (playerID.ValueRO.Value == currentPlayerID.Value
                                 && wayPointSpace.Name == spaceName.ValueRO.Value)
                         {
                             var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
@@ -59,7 +59,7 @@ namespace DOTS.GamePlay
                         }
                     }
 
-                    if (playerID.ValueRO.Value == currentPlayerID.Value 
+                    if (playerID.ValueRO.Value == currentPlayerID.Value
                             && wayPointSpace.Name == "None")
                     {
                         var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();

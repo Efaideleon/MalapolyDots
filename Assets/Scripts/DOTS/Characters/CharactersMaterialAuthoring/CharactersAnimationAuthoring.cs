@@ -26,7 +26,7 @@ namespace Assets.Scripts.DOTS.Characters.CharactersMaterialAuthoring
                 
                 ref var root = ref builder.ConstructRoot<AnimationDataBlob>();
 
-                var animationsClips = builder.Allocate(ref root.Clips, Enum.GetValues(typeof(Animations)).Length);
+                var animationsClips = builder.Allocate(ref root.Clips, Enum.GetValues(typeof(CharacterAnimations)).Length);
 
                 for (int i = 0; i < authoring.AnimationClips.Length; i++)
                 {
@@ -38,12 +38,11 @@ namespace Assets.Scripts.DOTS.Characters.CharactersMaterialAuthoring
 
                 var animationDataLibrary = new AnimationDataLibrary { AnimationDataBlobRef = blobRef };
                 AddComponent(entity, animationDataLibrary);
-                AddComponent(entity, new CurrentAnimationData { Value = animationDataLibrary.AnimationDataBlobRef.Value.Clips[(int)Animations.Idle] });
                 AddComponent(entity, new CurrentFrameVAT { Value = 0 });
                 AddComponent(entity, new UseTimeVAT { Value = authoring.UseTime });
                 AddComponent(entity, new SpeedVAT { Value = authoring.Speed });
                 AddComponent(entity, new AnimationPlayState { Value = PlayState.NotPlaying });
-                AddComponent(entity, new CurrentAnimationID { Value = Animations.Idle });
+                AddComponent(entity, new CurrentCharacterAnimation { Value = CharacterAnimations.Idle });
             }
         }
     }

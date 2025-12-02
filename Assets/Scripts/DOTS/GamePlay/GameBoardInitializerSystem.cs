@@ -44,6 +44,7 @@ namespace DOTS.GamePlay
                         var currentPlayerID = playerID.ValueRO.Value;
                         state.EntityManager.CreateSingleton( new CurrentPlayerComponent { entity = e });
                         state.EntityManager.CreateSingleton( new CurrentPlayerID { Value = currentPlayerID });
+                        SystemAPI.SetComponentEnabled<ActivePlayer>(e, true);
                     }
                 }
             }

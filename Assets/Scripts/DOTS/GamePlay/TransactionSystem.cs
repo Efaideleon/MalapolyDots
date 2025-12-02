@@ -4,6 +4,7 @@ using DOTS.DataComponents;
 using DOTS.EventBuses;
 using DOTS.GameData;
 using DOTS.GamePlay.ChanceActionSystems;
+using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
@@ -44,6 +45,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<BackDropEventBus>();
             state.RequireForUpdate<LandedOnSpace>();
             state.RequireForUpdate<ChanceBufferEvent>();
+            state.RequireForUpdate<TreasureAnimationBuffer>();
         }
 
         [BurstCompile]
@@ -159,7 +161,9 @@ namespace DOTS.GamePlay
                         }
 
                         var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
+                        var prevPlayerIndex = currentPlayerIndex.ValueRW.Index;
                         var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
+
                         currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
 
                         foreach (var (nameComponent, playerID, entity) in 
@@ -169,11 +173,17 @@ namespace DOTS.GamePlay
                                 >()
                                 .WithEntityAccess())
                         {
+                            if (characterSelectedNames[prevPlayerIndex].Name == nameComponent.ValueRO.Value)
+                            {
+                                SystemAPI.SetComponentEnabled<ActivePlayer>(entity, false);
+                            }
                             if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
                             {
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
                                 SystemAPI.GetSingletonBuffer<ChangeTurnBufferEvent>().Add(new ChangeTurnBufferEvent{});
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
+
+                                SystemAPI.SetComponentEnabled<ActivePlayer>(entity, true);
                             }
                         }
                         
@@ -206,6 +216,13 @@ namespace DOTS.GamePlay
                         UnityEngine.Debug.Log($"[TransactionSystem] | chance transaction.");
                         var chanceBufferEvent = SystemAPI.GetSingletonBuffer<ChanceBufferEvent>();
                         chanceBufferEvent.Add(new ChanceBufferEvent { });
+                    }
+
+                    if (transaction.EventType == TransactionEventType.Treasure)
+                    {
+                        UnityEngine.Debug.Log($"[TransactionSystem] | treasure transaction.");
+                        var chanceBufferEvent = SystemAPI.GetSingletonBuffer<TreasureAnimationBuffer>();
+                        chanceBufferEvent.Add(new TreasureAnimationBuffer { AnimationType = TreasureAnimationType.Close });
                     }
                 }
 

@@ -25,9 +25,14 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new PlayerMovementState { Value = MoveState.Idle });
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
                 AddComponent(authoringEntity, new CurrentPivotRotation { Value = quaternion.identity });
+                AddComponent(authoringEntity, new ActivePlayer { });
+                SetComponentEnabled<ActivePlayer>(authoringEntity, false);
             }
         }
     }
+
+    public struct ActivePlayer : IComponentData, IEnableableComponent
+    { }
 
     public struct PlayerID : IComponentData
     {

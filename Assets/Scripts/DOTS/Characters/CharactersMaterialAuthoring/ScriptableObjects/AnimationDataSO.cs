@@ -12,7 +12,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring.ScriptableObjects
         [Tooltip("The animation should loop or not.")]
         public bool Loops;
         [Tooltip("The animation enum type.")]
-        public Animations AnimationEnum;
+        public CharacterAnimations AnimationEnum;
 
         public AnimationData ToAnimationData()
         {
@@ -21,7 +21,6 @@ namespace DOTS.Characters.CharactersMaterialAuthoring.ScriptableObjects
                 FrameRate = FrameRate,
                 FrameRange = FrameRange,
                 Loops = Loops,
-                AnimationEnum = AnimationEnum
             };
         }
     }

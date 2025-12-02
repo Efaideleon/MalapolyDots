@@ -107,6 +107,8 @@ GameObject:
   - component: {fileID: 4657700761007163078}
   - component: {fileID: 4719750750637782752}
   - component: {fileID: 539765098933694322}
+  - component: {fileID: 535400897174759929}
+  - component: {fileID: 7718988437958812550}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -186,3 +188,32 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &535400897174759929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8808579541116708351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb55db7c172c948bf841d736588b914c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CharacterTags.CoinCharacterTagAuthoring
+--- !u!114 &7718988437958812550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8808579541116708351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acaaf3db8bb5d4617be2f667e4cae16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Characters::Assets.Scripts.DOTS.Characters.CharactersMaterialAuthoring.CharactersAnimationAuthoring
+  AnimationClips:
+  - {fileID: 11400000, guid: 2c9f4f540158abb4d8266544548fce5d, type: 2}
+  - {fileID: 11400000, guid: 9ef8609c7028954489e6bd86e95d5a7f, type: 2}
+  UseTime: 0
+  Speed: 1

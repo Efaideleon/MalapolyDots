@@ -10,13 +10,20 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         Frame = 0
     }
 
-    public enum Animations
+    public enum CharacterAnimations
     {
         Default,
         Idle,
         Walking,
         Mounting,
         Unmounting
+    }
+
+    public enum TreasureAnimations
+    {
+        Default,
+        Open,
+        Close
     }
 
     public enum PlayState
@@ -40,10 +47,12 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         public float FrameRate;
         public FrameRange FrameRange;
         public bool Loops;
-        public Animations AnimationEnum;
     }
 
-    /// <summary> Holds a BlobArray for all the AnimationData.</summary>
+    /// <summary> 
+    /// Holds a BlobArray for all the AnimationData.
+    /// The Clips are access by the Animations enums used during BlobAsset creation.
+    /// </summary>
     public struct AnimationDataBlob
     {
         public BlobArray<AnimationData> Clips;
@@ -60,6 +69,9 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     [MaterialProperty("_current_frame")]
     public struct CurrentFrameVAT : IComponentData { public float Value; }
 
+    [MaterialProperty("_frame")]
+    public struct CurrentTreasureFrameVAT : IComponentData { public float Value; }
+
     [MaterialProperty("_use_time")]
     public struct UseTimeVAT : IComponentData { public float Value; }
 
@@ -70,6 +82,6 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct WalkingAnimationData : IComponentData { public AnimationData Value; }
     public struct MountingAnimationData : IComponentData { public AnimationData Value; }
     public struct UnmountingAnimationData : IComponentData { public AnimationData Value; }
-    public struct CurrentAnimationData : IComponentData { public AnimationData Value; }
-    public struct CurrentAnimationID : IComponentData { public Animations Value; }
+    public struct CurrentCharacterAnimation : IComponentData { public CharacterAnimations Value; }
+    public struct CurrentTreasureAnimation : IComponentData { public TreasureAnimations Value; }
 }

@@ -1,3 +1,4 @@
+using DOTS.Characters;
 using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using DOTS.UI.Mediator.Systems.RollPanelSystems;
@@ -7,24 +8,24 @@ public partial struct ChangeTurnPanelManagedSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<IsCurrentCharacterMoving>();
         state.RequireForUpdate<PanelControllers>();
         state.RequireForUpdate<RollPanelVisibleState>();
     }
 
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var isCurrentCharacterMoving in 
+        foreach (var (playerMoveState, _) in 
                 SystemAPI.Query<
-                RefRO<IsCurrentCharacterMoving>
+                RefRO<PlayerMovementState>,
+                RefRO<ActivePlayer>
                 >()
-                .WithChangeFilter<IsCurrentCharacterMoving>())
+                .WithChangeFilter<PlayerMovementState>())
         {
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
             if (panelControllers != null)
             {
                 var isRollVisible = SystemAPI.GetSingleton<RollPanelVisibleState>().Value;
-                var isVisible = !isCurrentCharacterMoving.ValueRO.Value && !isRollVisible;
+                var isVisible = !(playerMoveState.ValueRO.Value == MoveState.Walking) && !isRollVisible;
                 ChangeTurnPanelContext changeTurnPanelContext = new(){ IsVisible = isVisible };
                 if (panelControllers.changeTurnPanelController != null)
                 {

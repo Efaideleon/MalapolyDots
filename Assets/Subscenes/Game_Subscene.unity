@@ -4752,8 +4752,8 @@ GameObject:
   - component: {fileID: 3682916240443891500}
   - component: {fileID: 46896125807742379}
   - component: {fileID: 8711247910457323758}
-  - component: {fileID: 8711247910457323759}
   - component: {fileID: 8711247910457323760}
+  - component: {fileID: 8711247910457323761}
   m_Layer: 7
   m_Name: Chest 3.001
   m_TagString: Untagged
@@ -5900,6 +5900,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Space: {fileID: 5096177642899546017}
+  AnimationClips:
+  - {fileID: 11400000, guid: e4a1ab8cde17b4aacbe0ca7d4b0b367b, type: 2}
 --- !u!114 &5096177642899546017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6568,8 +6570,8 @@ GameObject:
   - component: {fileID: 8887324668610633655}
   - component: {fileID: 4755272252622838859}
   - component: {fileID: 6773297954888900698}
-  - component: {fileID: 8887324668610633656}
   - component: {fileID: 8887324668610633657}
+  - component: {fileID: 8887324668610633658}
   m_Layer: 7
   m_Name: Chest 2.001
   m_TagString: Untagged
@@ -9084,19 +9086,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8711247910457323759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4035902624517780373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ffbf2668d9214d6f8c422b167edb60f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Space: {fileID: 8711247910457323760}
 --- !u!114 &8711247910457323760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9110,6 +9099,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
   Name: Treasure3
+--- !u!114 &8711247910457323761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035902624517780373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ffbf2668d9214d6f8c422b167edb60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.TreasureSpaceAuthoring
+  Space: {fileID: 8711247910457323760}
+  AnimationClips:
+  - {fileID: 11400000, guid: e4a1ab8cde17b4aacbe0ca7d4b0b367b, type: 2}
 --- !u!23 &8778138324981046298
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9346,19 +9350,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8198769930151593775}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &8887324668610633656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5976819957863236952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ffbf2668d9214d6f8c422b167edb60f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Space: {fileID: 8887324668610633657}
 --- !u!114 &8887324668610633657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9372,6 +9363,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
   Name: Treasure2
+--- !u!114 &8887324668610633658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976819957863236952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ffbf2668d9214d6f8c422b167edb60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.TreasureSpaceAuthoring
+  Space: {fileID: 8887324668610633657}
+  AnimationClips:
+  - {fileID: 11400000, guid: e4a1ab8cde17b4aacbe0ca7d4b0b367b, type: 2}
 --- !u!4 &8890017991811249857
 Transform:
   m_ObjectHideFlags: 0

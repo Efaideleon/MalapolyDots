@@ -11,15 +11,15 @@ namespace DOTS.GamePlay.CharacterAnimations
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<CurrentFrameVAT>();
-            state.RequireForUpdate<CurrentAnimationData>();
+            state.RequireForUpdate<CurrentTreasureFrameVAT>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
             float dt = SystemAPI.Time.DeltaTime;
 
-            var animationJob = new CharacterAnimationJob { dt = dt };
-            animationJob.ScheduleParallel();
+            new CharacterAnimationJob { dt = dt }.ScheduleParallel();
+            new TreasureAnimationJob { dt = dt }.ScheduleParallel();
         }
 
         [BurstCompile]
@@ -27,25 +27,78 @@ namespace DOTS.GamePlay.CharacterAnimations
         {
             public float dt;
 
-            public void Execute(CurrentAnimationData data, ref CurrentFrameVAT frame, ref AnimationPlayState playState)
+            public void Execute(CurrentCharacterAnimation animation, in AnimationDataLibrary animationLibrary,
+                    ref CurrentFrameVAT frame, ref AnimationPlayState playState)
             {
                 if (playState.Value == PlayState.Finished) return;
-                if (PlayAnimation(ref frame.Value, data.Value, in dt))
+                ref var clips = ref animationLibrary.AnimationDataBlobRef.Value.Clips;
+                if ((int)TreasureAnimations.Open >= clips.Length) return;
+
+                if (PlayAnimation(ref frame.Value, clips[(int)animation.Value], in dt, resets: true, PlayDirection.Forward))
                 {
                     playState.Value = PlayState.Finished;
                 }
             }
         }
 
-        public static bool PlayAnimation(ref float frame, in AnimationData data, in float dt)
+        [BurstCompile]
+        public partial struct TreasureAnimationJob : IJobEntity
         {
-            frame = math.clamp(frame + data.FrameRate * dt, data.FrameRange.Start, data.FrameRange.End);
-            if (frame >= data.FrameRange.End)
+            public float dt;
+
+            public void Execute(CurrentTreasureAnimation animation, in AnimationDataLibrary animationLibrary,
+                    ref CurrentTreasureFrameVAT frame, ref AnimationPlayState playState)
             {
-                frame = data.FrameRange.Start;
+                if (playState.Value == PlayState.Finished) return;
+
+                ref var clips = ref animationLibrary.AnimationDataBlobRef.Value.Clips;
+                if ((int)TreasureAnimations.Open > clips.Length) return;
+
+                switch (animation.Value)
+                {
+                    case TreasureAnimations.Open:
+                        if (PlayAnimation(ref frame.Value, clips[(int)TreasureAnimations.Open], in dt, resets: false, PlayDirection.Forward))
+                        {
+                            playState.Value = PlayState.Finished;
+                        }
+                        break;
+                    case TreasureAnimations.Close:
+                        if (PlayAnimation(ref frame.Value, clips[(int)TreasureAnimations.Open], in dt, resets: false, PlayDirection.Reverse))
+                        {
+                            playState.Value = PlayState.Finished;
+                        }
+                        break;
+                }
+            }
+        }
+
+        /// <summary> This functions increase the frame's value. The Start Frame < End Frame. </summary>
+        /// <param name="frame"> The _frame ref from the Material Property to control the current frame in the animation. </param>
+        /// <param name="data"> `AnimationData` Regarding the animation parameters. </param>
+        /// <param name="dt"> Time.DeltaTime </param>
+        /// <param name="resets"> Does the animation frame value reset to Start? </param>
+        /// <param name="playDirection"> Diretion to play the animation. </param>
+        public static bool PlayAnimation(ref float frame, in AnimationData data, in float dt, bool resets, PlayDirection playDirection)
+        {
+            var signedRate = playDirection == PlayDirection.Forward ? data.FrameRate : -data.FrameRate;
+            frame = math.clamp(frame + signedRate * dt, data.FrameRange.Start, data.FrameRange.End);
+            bool outOfBounds = playDirection == PlayDirection.Forward ? frame >= data.FrameRange.End : frame <= data.FrameRange.Start;
+
+            if (outOfBounds)
+            {
+                if (resets)
+                {
+                    frame = playDirection == PlayDirection.Forward ? data.FrameRange.Start : data.FrameRange.End;
+                }
                 if (!data.Loops) return true;
             }
             return false;
+        }
+
+        public enum PlayDirection
+        {
+            Forward,
+            Reverse
         }
     }
 }

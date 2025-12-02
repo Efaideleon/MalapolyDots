@@ -1,3 +1,5 @@
+using DOTS.Characters.CharactersMaterialAuthoring;
+using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
 using DOTS.Utilities.TreasuresBlob;
 using Unity.Burst;
@@ -20,6 +22,7 @@ namespace DOTS.GamePlay
             state.EntityManager.CreateSingleton(new TreasureCard { data = default });
             state.RequireForUpdate<TreasuresDataBlobReference>();
             state.RequireForUpdate<RandomValueComponent>();
+            state.RequireForUpdate<TreasureAnimationBuffer>();
         }
 
         [BurstCompile]
@@ -39,6 +42,11 @@ namespace DOTS.GamePlay
                         var cardChosen = cards[randomIdx];
                         var treasureCard = SystemAPI.GetSingletonRW<TreasureCard>();
                         treasureCard.ValueRW.data = cardChosen.data;
+
+                        // Reset that treasure's open animation.
+                        SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimations.Open;
+                        SystemAPI.GetComponentRW<AnimationPlayState>(landedOnEntity).ValueRW.Value = PlayState.Playing;
+                        UnityEngine.Debug.Log($"[TreasureSystem] | Set Animation to open");
                     }
                 }
             }
