@@ -13,15 +13,8 @@ namespace DOTS.GameSpaces
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
                 AddComponent(entity, new ForSaleSignTag { });
                 AddComponent(entity, new VisibleStateComponent { Value = VisibleState.Visible });
-                AddComponent(entity, new MaterialOverrideFrame { Value = 0 });
             }
         }
-    }
-
-    [MaterialProperty("_frame")]
-    public struct MaterialOverrideFrame : IComponentData
-    {
-        public float Value;
     }
 
     public struct ForSaleSignTag : IComponentData { }
