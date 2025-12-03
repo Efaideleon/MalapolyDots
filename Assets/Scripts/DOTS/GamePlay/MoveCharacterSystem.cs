@@ -47,12 +47,12 @@ namespace DOTS.GamePlay
                     moveState.Value = MoveState.Walking;
                 }
 
-                MoveToTarget(ref localTransform, targetPosition.Value, moveSpeed.Value * dt);
+                MoveToTarget(ref localTransform, in targetPosition.Value, moveSpeed.Value * dt);
             }
         }
 
         [BurstCompile]
-        private static bool MoveToTarget(ref LocalTransform characterTransform, float3 targetPos, float moveSpeed)
+        private static bool MoveToTarget(ref LocalTransform characterTransform, in float3 targetPos, float moveSpeed)
         {
             float3 currentPos = characterTransform.Position;
             float3 delta = targetPos - currentPos;

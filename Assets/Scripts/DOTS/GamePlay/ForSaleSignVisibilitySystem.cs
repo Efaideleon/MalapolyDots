@@ -37,21 +37,19 @@ namespace DOTS.GamePlay
                     Entity entity,
                     [EntityIndexInQuery] int entityInQueryIndex,
                     ref VisibleStateComponent visibleState,
-                    ref MaterialOverrideFrame frame,
                     in ForSaleSignTag _
             )
             {
                 if (visibleState.Value == VisibleState.Hiding)
                 {
-                    frame.Value += dt * speed;
                 }
-                if (frame.Value >= 59)
-                {
-                    visibleState.Value = VisibleState.Hidden;
-
-                    // Hides the ForSaleSign when the animation ends
-                    ecb.AddComponent<DisableRendering>(entityInQueryIndex, entity);
-                }
+                // if ( >= 59)
+                // {
+                //     visibleState.Value = VisibleState.Hidden;
+                //
+                //     // Hides the ForSaleSign when the animation ends
+                //     ecb.AddComponent<DisableRendering>(entityInQueryIndex, entity);
+                // }
             }
         }
 
