@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 4880606608822804452}
   - component: {fileID: 3015701407121885086}
   - component: {fileID: 2929716858901392059}
+  - component: {fileID: 5514854245869467583}
   m_Layer: 0
   m_Name: san_isidrofor_sale_barrier
   m_TagString: Untagged
@@ -339,6 +340,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5514854245869467583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4713560241004426125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34173fdfa054742dd9de6040b7ef1b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.ForSaleSignAuthoring
 --- !u!1 &7643577931433884701
 GameObject:
   m_ObjectHideFlags: 0

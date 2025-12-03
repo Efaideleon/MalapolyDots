@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 2076395395695535771}
   - component: {fileID: 8912007260321092441}
   - component: {fileID: 3556247864473057433}
+  - component: {fileID: 212320700219199736}
   m_Layer: 0
   m_Name: san_pablo_for_sale_barrier
   m_TagString: Untagged
@@ -195,6 +196,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &212320700219199736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3275362657201269444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34173fdfa054742dd9de6040b7ef1b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.ForSaleSignAuthoring
 --- !u!1 &6492903473881374630
 GameObject:
   m_ObjectHideFlags: 0

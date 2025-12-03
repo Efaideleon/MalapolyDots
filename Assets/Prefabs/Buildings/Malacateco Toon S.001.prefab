@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 3193571834789436769}
   - component: {fileID: 6061295477102463410}
   - component: {fileID: 7920077337310422697}
+  - component: {fileID: 412552324190666853}
   m_Layer: 0
   m_Name: malacateco_for_sale_barrier
   m_TagString: Untagged
@@ -180,6 +181,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &412552324190666853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730130045096385835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34173fdfa054742dd9de6040b7ef1b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.ForSaleSignAuthoring
 --- !u!1 &2458976497344712191
 GameObject:
   m_ObjectHideFlags: 0

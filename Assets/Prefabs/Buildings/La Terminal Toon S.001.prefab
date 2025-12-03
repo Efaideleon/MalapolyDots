@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 8974603001257986017}
   - component: {fileID: 6021817748263065374}
   - component: {fileID: 6215781867876318603}
+  - component: {fileID: 2753632326285109855}
   m_Layer: 0
   m_Name: la_terminal_for_sale_barrier
   m_TagString: Untagged
@@ -285,6 +286,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2753632326285109855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8907915031007071225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34173fdfa054742dd9de6040b7ef1b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.ForSaleSignAuthoring
 --- !u!1 &9220313342686278964
 GameObject:
   m_ObjectHideFlags: 0

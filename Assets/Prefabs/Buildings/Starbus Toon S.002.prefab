@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 3118617433839231600}
   - component: {fileID: 2140040724863230945}
   - component: {fileID: 9076819699857517249}
+  - component: {fileID: 3452014172311276603}
   m_Layer: 0
   m_Name: starbus_for_sale_barrier
   m_TagString: Untagged
@@ -429,6 +430,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3452014172311276603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7107302565785631157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34173fdfa054742dd9de6040b7ef1b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.ForSaleSignAuthoring
 --- !u!1001 &1909035616905487136
 PrefabInstance:
   m_ObjectHideFlags: 0

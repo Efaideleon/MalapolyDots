@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 3901421239489408192}
   - component: {fileID: 2285825875130148418}
   - component: {fileID: 6539056998894066186}
+  - component: {fileID: 2912975379162741677}
   m_Layer: 0
   m_Name: mangos_for_sale_barrier
   m_TagString: Untagged
@@ -429,6 +430,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2912975379162741677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7504587757945855582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34173fdfa054742dd9de6040b7ef1b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.ForSaleSignAuthoring
 --- !u!1001 &2727169809719774557
 PrefabInstance:
   m_ObjectHideFlags: 0
