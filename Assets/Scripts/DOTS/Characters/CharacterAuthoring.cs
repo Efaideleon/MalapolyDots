@@ -9,6 +9,7 @@ namespace DOTS.Characters
     public class CharacterAuthoring : MonoBehaviour
     {
         [SerializeField] public string charName;
+        [SerializeField] public float moveSpeed;
 
         class CharactersBaker : Baker<CharacterAuthoring>
         {
@@ -25,10 +26,25 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new PlayerMovementState { Value = MoveState.Idle });
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
                 AddComponent(authoringEntity, new CurrentPivotRotation { Value = quaternion.identity });
+                AddComponent(authoringEntity, new FinalArrived { Value = false });
+                AddComponent(authoringEntity, new RollCount { Value = 0 });
+                AddComponent(authoringEntity, new ReachedTargetPosition { Value = false });
+                AddComponent(authoringEntity, new TargetPosition { Value = default });
+                AddComponent(authoringEntity, new MoveSpeed { Value = authoring.moveSpeed });
                 AddComponent(authoringEntity, new ActivePlayer { });
                 SetComponentEnabled<ActivePlayer>(authoringEntity, false);
             }
         }
+    }
+
+    public struct MoveSpeed: IComponentData
+    {
+        public float Value;
+    }
+
+    public struct RollCount : IComponentData
+    {
+        public int Value;
     }
 
     public struct ActivePlayer : IComponentData, IEnableableComponent
@@ -37,6 +53,21 @@ namespace DOTS.Characters
     public struct PlayerID : IComponentData
     {
         public int Value;
+    }
+
+    public struct FinalArrived : IComponentData
+    {
+        public bool Value;
+    }
+
+    public struct ReachedTargetPosition: IComponentData
+    {
+        public bool Value;
+    }
+
+    public struct TargetPosition : IComponentData
+    {
+        public float3 Value;
     }
 
     public struct PlayerTurnComponent : IComponentData

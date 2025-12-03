@@ -30,9 +30,9 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var flag in SystemAPI.Query<RefRO<ArrivedFlag>>().WithChangeFilter<ArrivedFlag>())
+            foreach (var (arrived, _) in SystemAPI.Query<RefRO<FinalArrived>, RefRO<ActivePlayer>>().WithChangeFilter<FinalArrived>())
             {
-                if (!flag.ValueRO.Arrived)
+                if (!arrived.ValueRO.Value)
                     break;
                 // TODO: delete name Ref here
                 foreach (var (name, playerID, playerWaypointIndex) in

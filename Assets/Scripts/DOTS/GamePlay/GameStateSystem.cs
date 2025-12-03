@@ -1,3 +1,4 @@
+using DOTS.Characters;
 using DOTS.Characters.CharacterSpawner;
 using Unity.Burst;
 using Unity.Entities;
@@ -65,14 +66,14 @@ namespace DOTS.GamePlay
                 }
             }
 
-            foreach (var arrivedFlag in SystemAPI.Query<RefRW<ArrivedFlag>>().WithChangeFilter<ArrivedFlag>())
+            foreach (var (arrived, _) in SystemAPI.Query<RefRW<FinalArrived>, RefRO<ActivePlayer>>().WithChangeFilter<FinalArrived>())
             {
-                if (arrivedFlag.ValueRO.Arrived == true)
+                if (arrived.ValueRO.Value == true)
                 {
                     foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                     {
                         gameState.ValueRW.State = GameState.Landing;
-                        arrivedFlag.ValueRW.Arrived = false;
+                        arrived.ValueRW.Value = false;
                     }
                 }
             }

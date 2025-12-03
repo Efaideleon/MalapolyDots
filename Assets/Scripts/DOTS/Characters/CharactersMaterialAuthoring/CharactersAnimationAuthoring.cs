@@ -35,7 +35,7 @@ namespace Assets.Scripts.DOTS.Characters.CharactersMaterialAuthoring
                 }
 
                 var blobRef = builder.CreateBlobAssetReference<AnimationDataBlob>(Allocator.Persistent);
-
+                AddBlobAsset(ref blobRef, out _);
                 var animationDataLibrary = new AnimationDataLibrary { AnimationDataBlobRef = blobRef };
                 AddComponent(entity, animationDataLibrary);
                 AddComponent(entity, new CurrentFrameVAT { Value = 0 });

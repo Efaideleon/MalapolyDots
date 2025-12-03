@@ -4,6 +4,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Random = Unity.Mathematics.Random;
 using DOTS.GamePlay.DebugAuthoring;
+using DOTS.Characters;
 
 namespace DOTS.GamePlay
 {
@@ -53,6 +54,10 @@ namespace DOTS.GamePlay
                     var customRollValue = rollConfig.customRollValue;
                     rollAmount.ValueRW.Value = isCustomEnabled ? customRollValue : rollAmount.ValueRO.Value;
 #endif
+                    foreach (var (rollCount, _) in SystemAPI.Query<RefRW<RollCount>, RefRO<ActivePlayer>>())
+                    {
+                        rollCount.ValueRW.Value = rollAmount.ValueRO.Value;
+                    }
                 }
 
                 buffer.Clear();
