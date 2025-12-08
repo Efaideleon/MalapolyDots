@@ -1,5 +1,6 @@
 using Unity.Entities;
-using Unity.Rendering;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace DOTS.GameSpaces
@@ -10,7 +11,7 @@ namespace DOTS.GameSpaces
         {
             public override void Bake(ForSaleSignAuthoring authoring)
             {
-                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
+                var entity = GetEntity(authoring, TransformUsageFlags.NonUniformScale);
                 AddComponent(entity, new ForSaleSignTag { });
                 AddComponent(entity, new VisibleStateComponent { Value = VisibleState.Visible });
             }

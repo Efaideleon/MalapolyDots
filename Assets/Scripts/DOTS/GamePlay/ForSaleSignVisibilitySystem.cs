@@ -1,6 +1,7 @@
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 
@@ -22,13 +23,11 @@ namespace DOTS.GamePlay
         public void OnUpdate(ref SystemState state)
         {
             float dt = SystemAPI.Time.DeltaTime;
-            var job = new HideForSaleSignJob
+            new HideForSaleSignJob
             {
                 dt = dt,
                 ecb = GetECB(ref state).AsParallelWriter()
-            };
-            var handle = job.Schedule(state.Dependency);
-            handle.Complete();
+            }.ScheduleParallel();
         }
 
         [BurstCompile]
@@ -38,22 +37,26 @@ namespace DOTS.GamePlay
             public EntityCommandBuffer.ParallelWriter ecb;
 
             public void Execute(
-                    ref LocalTransform localTransform,
+                    Entity entity,
+                    [EntityIndexInQuery] int entityIndexInQuery,
+                    ref PostTransformMatrix postTransformMatrix,
                     ref VisibleStateComponent visibleState,
-                    in ForSaleSignTag _
-            )
+                    in ForSaleSignTag _)
             {
-                var speed = 5;
                 if (visibleState.Value == VisibleState.Hiding)
                 {
-                    localTransform.Position.y += dt * speed;
+                    float speed = 0.7f;
+                    var newY = math.max(0f, postTransformMatrix.Value.c1.y - dt * speed);
+                    var newScale = new float3(1, newY, 1);
+                    postTransformMatrix.Value = float4x4.Scale(newScale);
                 }
-                if (localTransform.Position.y >= 59)
+
+                if (math.length(postTransformMatrix.Value.c1.y) <= 0.01f)
                 {
                     visibleState.Value = VisibleState.Hidden;
 
                     // Hides the ForSaleSign when the animation ends
-                    // ecb.AddComponent<DisableRendering>(entityInQueryIndex, entity);
+                    ecb.AddComponent<DisableRendering>(entityIndexInQuery, entity);
                 }
             }
         }
