@@ -2,11 +2,9 @@ using UnityEngine;
 
 namespace DOTS.GameData.PlacesData
 {
-    [CreateAssetMenu(fileName = "TreasureSpaceSO", menuName = "Scriptable Objects/TreasureSpaceSO")]
-    public class TreasureSpaceData: ScriptableObject
+    [CreateAssetMenu(fileName = "Treasure", menuName = "Scriptable Objects/Space/Treasure")]
+    public class TreasureSpaceData : SpaceData
     {
-        public int id;
-        public string Name;
-        public int boardIndex;
+        public TreasureCard[] Cards;
     }
 }

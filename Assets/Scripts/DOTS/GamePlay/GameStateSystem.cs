@@ -25,6 +25,8 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct GamePlaySystem : ISystem
     {
+        public ComponentLookup<FinalArrived> finalArrivedLookup;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
@@ -32,21 +34,26 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<SpawnFlag>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-                    {
-                    ComponentType.ReadOnly<GameStateComponent>(),
-                    });
+            {
+                ComponentType.ReadOnly<GameStateComponent>(),
+            });
 
             SystemAPI.SetComponent(entity, new GameStateComponent
-                    {
-                    State = GameState.Rolling,
-                    });
+            {
+                State = GameState.Rolling,
+            });
+
+            finalArrivedLookup = SystemAPI.GetComponentLookup<FinalArrived>();
 
             state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<CurrentActivePlayer>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            finalArrivedLookup.Update(ref state);
+
             foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
             {
                 foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
@@ -66,15 +73,17 @@ namespace DOTS.GamePlay
                 }
             }
 
-            foreach (var (arrived, _) in SystemAPI.Query<RefRW<FinalArrived>, RefRO<ActivePlayer>>().WithChangeFilter<FinalArrived>())
+            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (!finalArrivedLookup.HasComponent(activePlayerEntity)) 
+                return;
+
+            if (finalArrivedLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
             {
+                var arrived = finalArrivedLookup.GetRefRW(activePlayerEntity);
                 if (arrived.ValueRO.Value == true)
                 {
-                    foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
-                    {
-                        gameState.ValueRW.State = GameState.Landing;
+                        SystemAPI.GetSingletonRW<GameStateComponent>().ValueRW.State = GameState.Landing;
                         arrived.ValueRW.Value = false;
-                    }
                 }
             }
         }

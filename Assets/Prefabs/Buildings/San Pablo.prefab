@@ -221,7 +221,6 @@ GameObject:
   - component: {fileID: 8528287713243858511}
   - component: {fileID: 8398393173423863242}
   - component: {fileID: 1983013135758652977}
-  - component: {fileID: -82852162014859061}
   m_Layer: 7
   m_Name: San Pablo
   m_TagString: Untagged
@@ -315,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4965972e3f4ab7ab3fcfe55938798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Space: {fileID: -82852162014859061}
+  Data: {fileID: 11400000, guid: 2b8752671d79d4a62a9b6cf0b198cf1c, type: 2}
 --- !u!65 &1983013135758652977
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -337,16 +336,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.100389, y: 3.548813, z: 2.059323}
   m_Center: {x: 0.06003636, y: 1.7616247, z: -4.9745e-41}
---- !u!114 &-82852162014859061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6492903473881374630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1e43ca76a53e40ae9b841db29bbf533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: DOTS.DataComponents::DOTS.DataComponents.SpaceProperties
-  Name: San Pablo

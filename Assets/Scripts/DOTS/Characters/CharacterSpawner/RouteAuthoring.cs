@@ -1,4 +1,3 @@
-using DOTS.DataComponents;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -18,20 +17,6 @@ namespace DOTS.Characters.CharacterSpawner
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
                 float3 spawnPosition = authoring.spawnPoint.transform.position;
                 AddComponent(entity, new SpawnPointComponent { Position = spawnPosition });
-
-                var wayPointsBuffer = AddBuffer<WayPointBufferElement>(entity);
-                for (int i = 0; i < authoring.wayPoints.Length; i++)
-                {
-                    authoring.wayPoints[i].TryGetComponent<SpaceWayPoint>(out var spaceWayPoint);
-                    var name = spaceWayPoint == null ? "None" : spaceWayPoint.space.Name;
-
-                    wayPointsBuffer.Add(new WayPointBufferElement
-                    {
-                        WayPoint = authoring.wayPoints[i].transform.position,
-                        Name = name
-                    });
-                }
-
                 AddComponent(entity, new WayPointsTag { });
 
                 var builder = new BlobBuilder(Allocator.Temp);
@@ -42,13 +27,11 @@ namespace DOTS.Characters.CharacterSpawner
                 for (int i = 0; i < authoring.wayPoints.Length; i++)
                 {
                     authoring.wayPoints[i].TryGetComponent<SpaceWayPoint>(out var spaceWayPoint);
-                    var name = spaceWayPoint == null ? "None" : spaceWayPoint.space.Name;
-                    var isLandingSafe = spaceWayPoint != null;
+                    var isLandingSpot = spaceWayPoint != null;
                     positions[i] = new Waypoint 
                     {
                         Position = authoring.wayPoints[i].transform.position,
-                        Name = name,
-                        IsLandingSpot = isLandingSafe
+                        IsLandingSpot = isLandingSpot
                     };
                 }
 
@@ -68,7 +51,6 @@ namespace DOTS.Characters.CharacterSpawner
     public struct Waypoint : IComponentData
     {
         public float3 Position;
-        public FixedString64Bytes Name;
         public bool IsLandingSpot;
     }
 
@@ -85,7 +67,7 @@ namespace DOTS.Characters.CharacterSpawner
     public struct WayPointBufferElement : IBufferElementData
     {
         public float3 WayPoint;
-        public FixedString64Bytes Name;
+        public int BoardIndex;
     }
 
     public struct WayPointsTag : IComponentData

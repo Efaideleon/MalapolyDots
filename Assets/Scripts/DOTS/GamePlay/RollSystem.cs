@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using DOTS.EventBuses;
 using Unity.Burst;
 using Unity.Entities;
@@ -54,10 +53,9 @@ namespace DOTS.GamePlay
                     var customRollValue = rollConfig.customRollValue;
                     rollAmount.ValueRW.Value = isCustomEnabled ? customRollValue : rollAmount.ValueRO.Value;
 #endif
-                    foreach (var (rollCount, _) in SystemAPI.Query<RefRW<RollCount>, RefRO<ActivePlayer>>())
-                    {
-                        rollCount.ValueRW.Value = rollAmount.ValueRO.Value;
-                    }
+                    var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                    var rollCount = SystemAPI.GetComponentRW<RollCount>(activePlayer);
+                    rollCount.ValueRW.Value = rollAmount.ValueRO.Value;
                 }
 
                 buffer.Clear();

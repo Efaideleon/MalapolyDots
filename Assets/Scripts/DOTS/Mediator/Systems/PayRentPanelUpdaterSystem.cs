@@ -1,3 +1,4 @@
+using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
@@ -15,51 +16,71 @@ namespace DOTS.UI.Systems
     [BurstCompile]
     public partial struct PayRentPanelUpdaterSystem : ISystem
     {
+        public ComponentLookup<SpaceLandedOn> spaceLandedOnLookup;
+        public ComponentLookup<LastPropertyClicked> lastPropertyClickedLookup;
+        public ComponentLookup<PropertySpaceTag> propertySpaceLookup;
+        public ComponentLookup<RentComponent> rentLookup;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.EntityManager.CreateSingleton(new PayRentPanelContextComponent { Value = default });
             state.RequireForUpdate<PayRentPanelContextComponent>();
-            state.RequireForUpdate<LandedOnSpace>();
+            state.RequireForUpdate<SpaceLandedOn>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+
+            spaceLandedOnLookup = SystemAPI.GetComponentLookup<SpaceLandedOn>(true);
+            lastPropertyClickedLookup = SystemAPI.GetComponentLookup<LastPropertyClicked>(true);
+            propertySpaceLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
+            rentLookup = SystemAPI.GetComponentLookup<RentComponent>(true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach ( var clickedProperty in 
-                    SystemAPI.Query<
-                    RefRO<LastPropertyClicked>
-                    >().
-                    WithChangeFilter<LastPropertyClicked>())
+            lastPropertyClickedLookup.Update(ref state);
+            spaceLandedOnLookup.Update(ref state);
+            propertySpaceLookup.Update(ref state);
+            rentLookup.Update(ref state);
+
+            var lastPropertyClickedComponentEntity = SystemAPI.GetSingletonEntity<LastPropertyClicked>();
+            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+
+            if (lastPropertyClickedLookup.HasComponent(lastPropertyClickedComponentEntity)
+                    && lastPropertyClickedLookup.DidChange(lastPropertyClickedComponentEntity, state.LastSystemVersion))
             {
-                if (clickedProperty.ValueRO.entity != Entity.Null)
+                var propertyClickedEntity = lastPropertyClickedLookup[lastPropertyClickedComponentEntity].entity;
+                if (propertyClickedEntity != Entity.Null)
                 {
-                    PayRentPanelContext payRentPanelContext = new()
+                    if (rentLookup.HasComponent(propertyClickedEntity))
                     {
-                        Rent = SystemAPI.GetComponent<RentComponent>(clickedProperty.ValueRO.entity).Value,
-                    };
-                    var panelContext = SystemAPI.GetSingletonRW<PayRentPanelContextComponent>();
-                    panelContext.ValueRW = new PayRentPanelContextComponent { Value = payRentPanelContext };
+                        UpdatePayRentPanel(ref state, rentLookup[propertyClickedEntity].Value);
+                    }
                 }
             }
 
-            foreach ( var landedOnSpace in 
-                    SystemAPI.Query<
-                    RefRO<LandedOnSpace>
-                    >().
-                    WithChangeFilter<LandedOnSpace>())
+            if (spaceLandedOnLookup.HasComponent(activePlayerEntity) && spaceLandedOnLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
             {
-                var landedOnSpaceEntity = landedOnSpace.ValueRO.entity;
-                if (landedOnSpaceEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(landedOnSpaceEntity)) 
+                var spaceLandedOnEntity = spaceLandedOnLookup[activePlayerEntity].entity;
+                if (spaceLandedOnEntity != Entity.Null && propertySpaceLookup.HasComponent(spaceLandedOnEntity))
                 {
-                    PayRentPanelContext payRentPanelContext = new()
+                    if (rentLookup.HasComponent(spaceLandedOnEntity))
                     {
-                        Rent = SystemAPI.GetComponent<RentComponent>(landedOnSpaceEntity).Value,
-                    };
-                    var panelContext = SystemAPI.GetSingletonRW<PayRentPanelContextComponent>();
-                    panelContext.ValueRW = new PayRentPanelContextComponent { Value = payRentPanelContext };
+                        UpdatePayRentPanel(ref state, rentLookup[spaceLandedOnEntity].Value);
+                    }
                 }
             }
+        }
+
+        [BurstCompile]
+        public void UpdatePayRentPanel(ref SystemState _, int rent)
+        {
+            PayRentPanelContext payRentPanelContext = new()
+            {
+                Rent = rent
+            };
+            var panelContext = SystemAPI.GetSingletonRW<PayRentPanelContextComponent>();
+            panelContext.ValueRW = new PayRentPanelContextComponent { Value = payRentPanelContext };
         }
     }
 }

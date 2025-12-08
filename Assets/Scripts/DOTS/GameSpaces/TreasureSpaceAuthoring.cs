@@ -2,16 +2,16 @@ using System;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.Characters.CharactersMaterialAuthoring.ScriptableObjects;
 using DOTS.DataComponents;
+using DOTS.GameData.PlacesData;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Rendering;
 using UnityEngine;
 
 namespace DOTS.GameSpaces
 {
     public class TreasureSpaceAuthoring : MonoBehaviour
     {
-        public SpaceProperties Space;
+        public TreasureSpaceData Data;
         [Header("Animations Clips")]
         public AnimationTreasureDataSO[] AnimationClips;
 
@@ -37,11 +37,11 @@ namespace DOTS.GameSpaces
 
                 var animationDataLibrary = new AnimationDataLibrary { AnimationDataBlobRef = blobRef };
                 AddComponent(entity, animationDataLibrary);
-                AddComponent(entity, new NameComponent { Value = authoring.Space.Name });
-                AddComponent(entity, new SpaceIDComponent { Value = default });
+                AddComponent(entity, new NameComponent { Value = authoring.Data.Name });
+                AddComponent(entity, new SpaceIDComponent { Value = authoring.Data.id });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
                 AddComponent(entity, new TreasureSpaceTag { });
-                AddComponent(entity, new SpaceTypeComponent { Value = SpaceType.Treasure });
+                AddComponent(entity, new SpaceTypeComponent { Value = authoring.Data.SpaceType });
                 AddComponent(entity, new AnimationPlayState { Value = PlayState.NotPlaying });
                 AddComponent(entity, new CurrentTreasureAnimation { Value = TreasureAnimations.Close });
                 AddComponent(entity, new CurrentTreasureFrameVAT { });
@@ -51,10 +51,4 @@ namespace DOTS.GameSpaces
 
     public struct TreasureSpaceTag : IComponentData
     { }
-
-    // [MaterialProperty("")]
-    // public struct TreasureOpenAnimation : IComponentData
-    // {
-    //     public float Value;
-    // }
 }
