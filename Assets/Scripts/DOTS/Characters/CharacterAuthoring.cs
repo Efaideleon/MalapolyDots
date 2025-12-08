@@ -31,10 +31,20 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new ReachedTargetPosition { Value = false });
                 AddComponent(authoringEntity, new TargetPosition { Value = default });
                 AddComponent(authoringEntity, new MoveSpeed { Value = authoring.moveSpeed });
-                AddComponent(authoringEntity, new ActivePlayer { });
-                SetComponentEnabled<ActivePlayer>(authoringEntity, false);
+                AddComponent(authoringEntity, new PlayerBoardIndex { Value = 0 });
+                AddComponent(authoringEntity, new SpaceLandedOn { entity = Entity.Null });
             }
         }
+    }
+
+    public struct SpaceLandedOn : IComponentData
+    {
+        public Entity entity;
+    }
+
+    public struct PlayerBoardIndex : IComponentData
+    {
+        public int Value;
     }
 
     public struct MoveSpeed: IComponentData
@@ -46,9 +56,6 @@ namespace DOTS.Characters
     {
         public int Value;
     }
-
-    public struct ActivePlayer : IComponentData, IEnableableComponent
-    { }
 
     public struct PlayerID : IComponentData
     {

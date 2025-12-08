@@ -46,6 +46,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<LandedOnSpace>();
             state.RequireForUpdate<ChanceBufferEvent>();
             state.RequireForUpdate<TreasureAnimationBuffer>();
+            state.RequireForUpdate<CurrentActivePlayer>();
         }
 
         [BurstCompile]
@@ -173,17 +174,13 @@ namespace DOTS.GamePlay
                                 >()
                                 .WithEntityAccess())
                         {
-                            if (characterSelectedNames[prevPlayerIndex].Name == nameComponent.ValueRO.Value)
-                            {
-                                SystemAPI.SetComponentEnabled<ActivePlayer>(entity, false);
-                            }
                             if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
                             {
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
                                 SystemAPI.GetSingletonBuffer<ChangeTurnBufferEvent>().Add(new ChangeTurnBufferEvent{});
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
 
-                                SystemAPI.SetComponentEnabled<ActivePlayer>(entity, true);
+                                SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
                             }
                         }
                         

@@ -2,11 +2,16 @@ using UnityEngine;
 
 namespace DOTS.GameData.PlacesData
 {
-    [CreateAssetMenu(fileName = "ChancesSpaceDataSO", menuName = "Scriptable Objects/ChancesSpaceDataSO")]
-    public class ChancesSpaceData : ScriptableObject
+    [CreateAssetMenu(fileName = "Chance", menuName = "Scriptable Objects/Space/Chance")]
+    public class ChancesSpaceData : SpaceData
+    {
+        public ChanceActionData[] chancesActionData;
+    }
+
+    [System.Serializable]
+    public struct ChanceActionData
     {
         public int id;
-        public string Name;
-        public int boardIndex;
+        public string msg;
     }
 }

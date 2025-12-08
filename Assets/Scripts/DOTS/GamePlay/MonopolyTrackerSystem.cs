@@ -45,8 +45,9 @@ namespace DOTS.GamePlay
 
                 foreach (var (owner, color)  in SystemAPI.Query<RefRO<OwnerComponent>, RefRO<ColorCodeComponent>>())
                 {
-                    if (color.ValueRO.Value != PropertyColor.White)
+                    if (color.ValueRO.Value != PropertyColor.White && color.ValueRO.Value != PropertyColor.None)
                     {
+                        // TODO: Make sure the color exists in the enum
                         monopolyTracker[(int)color.ValueRO.Value].Add(owner.ValueRO.ID);
                     }
                 }

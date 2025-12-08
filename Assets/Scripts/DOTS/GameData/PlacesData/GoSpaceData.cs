@@ -2,11 +2,8 @@ using UnityEngine;
 
 namespace DOTS.GameData.PlacesData
 {
-    [CreateAssetMenu(fileName = "GoSpaceSO", menuName = "Scriptable Objects/GoSpaceSO")]
-    public class GoSpaceData : ScriptableObject
+    [CreateAssetMenu(fileName = "Go", menuName = "Scriptable Objects/Space/Go")]
+    public class GoSpaceData : SpaceData
     {
-        public int id;
-        public string Name;
-        public int boardIndex;
     }
 }

@@ -1,6 +1,5 @@
 using DOTS.Characters;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -13,8 +12,8 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<RollAmountComponent>();
             state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<CurrentActivePlayer>();
         }
 
         [BurstCompile]
@@ -23,31 +22,18 @@ namespace DOTS.GamePlay
             var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
             if (currGameState.State == GameState.Walking)
             {
-                new MoveCharacterJob
-                {
-                    dt = SystemAPI.Time.DeltaTime
-                }.ScheduleParallel();
-            }
-        }
+                var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                var moveStateRW = SystemAPI.GetComponentRW<PlayerMovementState>(activePlayer);
+                var localTransformRW = SystemAPI.GetComponentRW<LocalTransform>(activePlayer);
+                var targetPosition = SystemAPI.GetComponent<TargetPosition>(activePlayer);
+                var moveSpeed = SystemAPI.GetComponent<MoveSpeed>(activePlayer);
 
-        [BurstCompile]
-        public partial struct MoveCharacterJob : IJobEntity
-        {
-            [ReadOnly] public float dt;
-
-            public void Execute(
-                    ref LocalTransform localTransform,
-                    ref PlayerMovementState moveState,
-                    ref TargetPosition targetPosition,
-                    in MoveSpeed moveSpeed,
-                    in ActivePlayer _)
-            {
-                if (moveState.Value != MoveState.Walking)
+                if (moveStateRW.ValueRO.Value != MoveState.Walking)
                 {
-                    moveState.Value = MoveState.Walking;
+                    moveStateRW.ValueRW.Value = MoveState.Walking;
                 }
 
-                MoveToTarget(ref localTransform, in targetPosition.Value, moveSpeed.Value * dt);
+                MoveToTarget(ref localTransformRW.ValueRW, in targetPosition.Value, moveSpeed.Value * SystemAPI.Time.DeltaTime);
             }
         }
 

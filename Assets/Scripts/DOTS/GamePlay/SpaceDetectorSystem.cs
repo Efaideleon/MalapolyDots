@@ -1,28 +1,29 @@
 using DOTS.Characters;
-using DOTS.Characters.CharacterSpawner;
-using DOTS.DataComponents;
+using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
     [BurstCompile]
-    // [UpdateBefore(typeof(GameUICanvasSystem))]
     public partial struct SpaceDetectorSystem : ISystem
     {
+        public ComponentLookup<FinalArrived> finalArrivedLookup;
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BoardIndexComponent>();
-            state.RequireForUpdate<PlayerID>();
-            state.RequireForUpdate<PlayerWaypointIndex>();
-            state.RequireForUpdate<CurrentPlayerID>();
-            state.RequireForUpdate<WayPointBufferElement>();
+            state.RequireForUpdate<IndexToBoardHashMap>();
+            state.RequireForUpdate<FinalArrived>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<PlayerBoardIndex>();
+            state.RequireForUpdate<SpaceLandedOn>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
             {
                 ComponentType.ReadOnly<LandedOnSpace>()
             });
+
+            finalArrivedLookup = SystemAPI.GetComponentLookup<FinalArrived>();
 
             SystemAPI.SetComponent(entity, new LandedOnSpace { entity = Entity.Null });
         }
@@ -30,41 +31,25 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (arrived, _) in SystemAPI.Query<RefRO<FinalArrived>, RefRO<ActivePlayer>>().WithChangeFilter<FinalArrived>())
+            finalArrivedLookup.Update(ref state);
+
+            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+
+            if (!finalArrivedLookup.HasComponent(activePlayerEntity))
+                return;
+
+            if (finalArrivedLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
             {
-                if (!arrived.ValueRO.Value)
-                    break;
-                // TODO: delete name Ref here
-                foreach (var (name, playerID, playerWaypointIndex) in
-                        SystemAPI.Query<RefRO<NameComponent>, RefRO<PlayerID>, RefRO<PlayerWaypointIndex>>())
+                var arrived = finalArrivedLookup[activePlayerEntity];
+                var spaceLandedOnRW = SystemAPI.GetComponentRW<SpaceLandedOn>(activePlayerEntity);
+                var playerBoardIndex = SystemAPI.GetComponent<PlayerBoardIndex>(activePlayerEntity);
+
+                if (!arrived.Value)
+                    return;
+
+                if (SystemAPI.GetSingleton<IndexToBoardHashMap>().Map.TryGetValue(playerBoardIndex.Value, out Entity spaceEntity))
                 {
-                    var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-
-                    var wayPointsBuffer = SystemAPI.GetSingletonBuffer<WayPointBufferElement>();
-                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | playerWaypointIndex:  {playerWaypointIndex.ValueRO.Value} ");
-                    var wayPointSpace = wayPointsBuffer[playerWaypointIndex.ValueRO.Value];
-                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | space name on: {wayPointSpace.Name} ");
-                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | player id: {playerID.ValueRO.Value} player name: {name.ValueRO.Value} ");
-                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | currentPlayerID: {currentPlayerID.Value} ");
-
-                    foreach (var (spaceName, _, spaceEntity) in SystemAPI.Query<
-                            RefRO<NameComponent>, RefRO<BoardIndexComponent>>().WithEntityAccess())
-                    {
-                        if (playerID.ValueRO.Value == currentPlayerID.Value
-                                && wayPointSpace.Name == spaceName.ValueRO.Value)
-                        {
-                            var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
-                            spaceLandedEntity.ValueRW.entity = spaceEntity;
-                            UnityEngine.Debug.Log($"[SpaceDetectorSystem] | Landed on: {wayPointSpace.Name} ");
-                        }
-                    }
-
-                    if (playerID.ValueRO.Value == currentPlayerID.Value
-                            && wayPointSpace.Name == "None")
-                    {
-                        var spaceLandedEntity = SystemAPI.GetSingletonRW<LandedOnSpace>();
-                        spaceLandedEntity.ValueRW.entity = Entity.Null;
-                    }
+                    spaceLandedOnRW.ValueRW.entity = spaceEntity;
                 }
             }
         }

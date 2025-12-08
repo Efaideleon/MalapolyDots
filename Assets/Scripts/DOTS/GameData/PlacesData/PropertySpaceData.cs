@@ -1,14 +1,14 @@
 using UnityEngine;
+using DOTS.DataComponents;
 
 namespace DOTS.GameData.PlacesData
 {
-    [CreateAssetMenu(fileName = "PropertySpaceSO", menuName = "Scriptable Objects/PropertySpaceSO")]
-    public class PropertySpaceData: ScriptableObject
+    [CreateAssetMenu(fileName = "Property", menuName = "Scriptable Objects/Space/Property")]
+    public class PropertySpaceData : SpaceData
     {
-        public int id;
-        public string Name;
-        public int boardIndex;
         public int price;
-        public int baseRent;
+        public int[] rent;
+        public int rentWithHotel;
+        public PropertyColor Color;
     }
 }

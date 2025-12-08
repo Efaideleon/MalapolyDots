@@ -11,6 +11,7 @@ using DOTS.Utilities.PropertiesBlob;
 using Unity.Collections;
 using DOTS.UI.Utilities.UIButtonEvents;
 using System.Linq;
+using DOTS.GameSpaces;
 
 namespace DOTS.Mediator
 {
@@ -88,7 +89,7 @@ namespace DOTS.Mediator
             state.RequireForUpdate<RollEventBuffer>();
             state.RequireForUpdate<BuyHouseEventBuffer>();
             state.RequireForUpdate<TransactionEventBuffer>();
-            state.RequireForUpdate<PropertiesDataBlobReference>();
+            state.RequireForUpdate<PropertySpaceTag>();
             state.RequireForUpdate<SpriteRegistryComponent>();
             state.RequireForUpdate<LoginData>();
             state.RequireForUpdate<UIButtonDirtyFlag>();

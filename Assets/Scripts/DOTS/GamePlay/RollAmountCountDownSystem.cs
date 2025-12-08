@@ -1,4 +1,5 @@
 using DOTS.Characters;
+using Unity.Burst;
 using Unity.Entities;
 
 namespace DOTS.GamePlay
@@ -8,19 +9,34 @@ namespace DOTS.GamePlay
         public int Value;
     }
 
+    [BurstCompile]
     public partial struct RollAmountCountDownSystem : ISystem
     {
+        public ComponentLookup<RollCount> rollCountLookup;
+
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<RollAmountCountDown>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+
             state.EntityManager.CreateSingleton(new RollAmountCountDown { Value = default });
+            rollCountLookup = SystemAPI.GetComponentLookup<RollCount>();
         }
 
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         { 
-            foreach (var (rollCount, _) in SystemAPI.Query<RefRO<RollCount>, RefRO<ActivePlayer>>().WithChangeFilter<RollCount>())
+            rollCountLookup.Update(ref state);
+
+            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            
+            if (!rollCountLookup.HasComponent(activePlayerEntity)) 
+                return;
+
+            if (rollCountLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
             {
-                SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollCount.ValueRO.Value;
+                SystemAPI.GetSingletonRW<RollAmountCountDown>().ValueRW.Value = rollCountLookup[activePlayerEntity].Value;
             }
         }
     }

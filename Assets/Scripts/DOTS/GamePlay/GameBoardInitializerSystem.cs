@@ -1,15 +1,18 @@
 using DOTS.Characters;
 using DOTS.DataComponents;
-using DOTS.GameData;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
-
     public struct CurrentPlayerID : IComponentData
     {
         public int Value;
+    }
+
+    public struct CurrentActivePlayer : IComponentData
+    {
+        public Entity Entity;
     }
 
     [BurstCompile]
@@ -32,7 +35,7 @@ namespace DOTS.GamePlay
                 state.Enabled = false;
 
                 var firstCharacter = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>()[0].Name;
-                foreach (var (playerName, playerID, e) in 
+                foreach (var (playerName, playerID, e) in
                         SystemAPI.Query<
                         RefRO<NameComponent>,
                         RefRW<PlayerID>
@@ -42,9 +45,10 @@ namespace DOTS.GamePlay
                     if (firstCharacter == playerName.ValueRO.Value)
                     {
                         var currentPlayerID = playerID.ValueRO.Value;
-                        state.EntityManager.CreateSingleton( new CurrentPlayerComponent { entity = e });
-                        state.EntityManager.CreateSingleton( new CurrentPlayerID { Value = currentPlayerID });
-                        SystemAPI.SetComponentEnabled<ActivePlayer>(e, true);
+                        state.EntityManager.CreateSingleton(new CurrentPlayerComponent { entity = e });
+                        state.EntityManager.CreateSingleton(new CurrentPlayerID { Value = currentPlayerID });
+
+                        state.EntityManager.CreateSingleton(new CurrentActivePlayer { Entity = e });
                     }
                 }
             }

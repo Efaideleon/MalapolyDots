@@ -54,8 +54,6 @@ namespace DOTS.GamePlay
                 if (math.length(postTransformMatrix.Value.c1.y) <= 0.01f)
                 {
                     visibleState.Value = VisibleState.Hidden;
-
-                    // Hides the ForSaleSign when the animation ends
                     ecb.AddComponent<DisableRendering>(entityIndexInQuery, entity);
                 }
             }

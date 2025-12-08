@@ -2,12 +2,9 @@ using UnityEngine;
 
 namespace DOTS.GameData.PlacesData
 {
-    [CreateAssetMenu(fileName = "TaxSpaceSO", menuName = "Scriptable Objects/TaxSpaceSO")]
-    public class TaxSpaceData: ScriptableObject
+    [CreateAssetMenu(fileName = "Tax", menuName = "Scriptable Objects/Space/Tax")]
+    public class TaxSpaceData: SpaceData
     {
-        public int id;
-        public string Name;
-        public int boardIndex;
-        public float TaxAmount = 200;
+        public float TaxAmount;
     }
 }
