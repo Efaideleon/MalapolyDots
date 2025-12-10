@@ -38,7 +38,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 7556b3039af2bae4eb3a963bde81f6fb, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2c0861f74d9abe6458e1f23b89b44f96, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OpenVATstandard_f90ce56359ae404f8a7ebc0ed5b56536_openVATnrml_3347946277_Texture2D:
@@ -67,23 +67,41 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
     - _Blink: 0
     - _Blink_1: 0
     - _Boolean: 0
-    - _ColorSlider: 0
+    - _CastShadows: 0
+    - _ColorSlider: 1
+    - _Cull: 2
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    - _ZWriteControl: 0
     - _building_1_slider: 0
     - _building_2_slider: 0
     - _building_3_slider: 0
     - _building_4_slider: 0
     - _cabuz_slider: 0
+    - _dither_size: 1.9
     - _frame: 0
+    - _initial_opacity: 0.5
     - _use_time: 0
     - _y_resolution: 0
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color_1: {r: 0, g: 0, b: 0, a: 0}
+    - _initial_opacity: {r: 0, g: 0, b: 0, a: 0}
     - _max_values: {r: 0, g: 0, b: 0, a: 0}
     - _min_values: {r: 0, g: 0, b: 0, a: 0}
+    - _saturation: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
