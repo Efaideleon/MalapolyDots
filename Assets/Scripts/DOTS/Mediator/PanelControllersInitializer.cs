@@ -77,6 +77,11 @@ namespace DOTS.Mediator
     }
 #nullable disable
 
+    public class PanelControllersManagerComponent : IComponentData
+    {
+        public PanelControllersManager Manager;
+    }
+
     public partial struct PanelControllersInitializer : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -107,6 +112,7 @@ namespace DOTS.Mediator
             state.EntityManager.CreateSingleton(new ButtonsPointerMoveEventCallback { Callback = null });
             state.EntityManager.CreateSingleton(new ButtonsPointerUpEventCallback { Callback = null });
             state.EntityManager.CreateSingleton(new AllUIButtons { Buttons = null });
+            state.EntityManager.CreateSingleton(new PanelControllersManagerComponent { Manager = new() });
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -338,6 +344,18 @@ namespace DOTS.Mediator
                 OwnerID = default,
                 CurrentPlayerID = default
             };
+
+            var panelControllersManager = SystemAPI.ManagedAPI.GetSingleton<PanelControllersManagerComponent>().Manager;
+
+            panelControllersManager.Register(DataComponents.SpaceType.Go, panelControllers.goPanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.Tax, panelControllers.payTaxPanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.Jail, panelControllers.jailPanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.Chance, panelControllers.chancePanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.Parking, panelControllers.parkingPanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.GoToJail, panelControllers.goToJailPanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.Property, panelControllers.purchasePropertyPanelController);
+            panelControllersManager.Register(DataComponents.SpaceType.Treasure, panelControllers.treasurePanelController);
+
             PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);
             SystemAPI.ManagedAPI.GetSingleton<PopupManagers>().propertyPopupManager = propertyPopupManager;
             var backdropEntityQuery = SystemAPI.QueryBuilder().WithAllRW<BackDropEventBus>().Build();

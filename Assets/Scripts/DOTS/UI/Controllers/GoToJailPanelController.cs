@@ -10,7 +10,7 @@ namespace DOTS.UI.Controllers
         public string Title;
     }
 
-    public class GoToJailPanelController : IDisposable
+    public class GoToJailPanelController : IDisposable, IPanelControllerNew<GoToJailPanelContext>
     {
         
         public GoToJailPanel Panel { get; private set; }
@@ -24,7 +24,10 @@ namespace DOTS.UI.Controllers
             SubscribeEvents();
         }
 
+        [Obsolete("This method is deprecated")]
         public void ShowPanel() => Panel.Show();
+
+        [Obsolete("This method is deprecated")]
         public void HidePanel() => Panel.Hide();
 
         private void SubscribeEvents()
@@ -33,6 +36,7 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked += Panel.Hide;
         }
 
+        [Obsolete("This method is deprecated")]
         public void Update()
         {
             Panel.TitleLabel.text = Context.Title;
@@ -55,6 +59,21 @@ namespace DOTS.UI.Controllers
         {
             Panel.OkButton.clickable.clicked -= DispatchEvents;
             Panel.OkButton.clickable.clicked -= Panel.Hide;
+        }
+
+        public void Update(GoToJailPanelContext data)
+        {
+            Panel.TitleLabel.text = data.Title;
+        }
+
+        public void Show()
+        {
+            Panel.Show();
+        }
+
+        public void Hide()
+        {
+            Panel.Hide();
         }
     }
 }

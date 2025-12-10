@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DOTS.UI.Panels;
 using DOTS.UI.Utilities.UIButtonEvents;
@@ -9,7 +10,7 @@ namespace DOTS.UI.Controllers
         public int Amount;
     }
 
-    public class PayTaxPanelController
+    public class PayTaxPanelController : IPanelControllerNew<PayTaxPanelController>
     {
         public TaxPanel Panel { get; private set; }
         private readonly List<IButtonEvent> _buttonEvents;
@@ -23,7 +24,10 @@ namespace DOTS.UI.Controllers
             SubscribeEvents();
         }
 
+        [Obsolete("This method is deprecated.")]
         public void ShowPanel() => Panel.Show();
+
+        [Obsolete("This method is deprecated.")]
         public void HidePanel() => Panel.Hide();
 
         private void SubscribeEvents()
@@ -33,6 +37,7 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked += Panel.Hide;
         }
 
+        [Obsolete("This method is deprecated.")]
         public void Update()
         {
             Panel.AmountLabel.text = Context.Amount.ToString();
@@ -43,6 +48,21 @@ namespace DOTS.UI.Controllers
             foreach(var buttonEvent in _buttonEvents)
                 Panel.OkButton.clickable.clicked += buttonEvent.DispatchEvent;
             Panel.OkButton.clickable.clicked -= Panel.Hide;
+        }
+
+        public void Update(PayTaxPanelController data)
+        {
+            Panel.AmountLabel.text = Context.Amount.ToString();
+        }
+
+        public void Show()
+        {
+            Panel.Show();
+        }
+
+        public void Hide()
+        {
+            Panel.Hide();
         }
     }
 }

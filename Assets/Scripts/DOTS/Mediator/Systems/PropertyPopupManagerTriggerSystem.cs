@@ -41,7 +41,7 @@ namespace DOTS.Mediator.Systems
             if (!spaceLandedOnLookup.HasComponent(activePlayerEntity)) return;
 
             Entity spaceLanded = spaceLandedOnLookup[activePlayerEntity].entity;
-            if (propertySpaceLookup.HasComponent(spaceLanded)) return;
+            if (!propertySpaceLookup.HasComponent(spaceLanded)) return;
 
             GameState gameState = gameStateLookup[gameStateEntity].State;
 

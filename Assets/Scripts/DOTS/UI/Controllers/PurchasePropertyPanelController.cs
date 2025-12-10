@@ -1,3 +1,4 @@
+using System;
 using DOTS.EventBuses;
 using DOTS.UI.Panels;
 using Unity.Collections;
@@ -18,7 +19,7 @@ namespace DOTS.UI.Controllers
         public Sprite sprite;
     }
 
-    public class PurchasePropertyPanelController
+    public class PurchasePropertyPanelController : IPanelControllerNew<PurchasePropertyPanelContext>
     {
         public PurchasePropertyPanel PurchasePropertyPanel { get; private set; }
         public PurchasePropertyPanelContext Context { get; set; }
@@ -41,6 +42,7 @@ namespace DOTS.UI.Controllers
         public void SetAudioSource(AudioSource audioSource) => AudioSource = audioSource;
         public void SetClickSound(AudioClip audioClip) => ClickSound = audioClip;
 
+        [Obsolete("This method is deprecated")]
         public void Update()
         {
             PurchasePropertyPanel.Image.style.backgroundImage = new StyleBackground(ManagedContext.sprite);
@@ -48,6 +50,7 @@ namespace DOTS.UI.Controllers
             PurchasePropertyPanel.PriceLabel.text = Context.Price.ToString();
         }
 
+        [Obsolete("This method is deprecated")]
         public void ShowPanel() => PurchasePropertyPanel.Show();
 
         private void SubscribeEvents()
@@ -91,6 +94,26 @@ namespace DOTS.UI.Controllers
             // On Decline Pressed.
             PurchasePropertyPanel.DeclineButton.clickable.clicked += PlaySound;
             PurchasePropertyPanel.DeclineButton.clickable.clicked += PurchasePropertyPanel.Hide;
+        }
+
+        public void Update(PurchasePropertyPanelContext data)
+        {
+            // TODO: This line should use data.
+            // TODO: A key should be passed on data. The sprite registry should be a depenency.
+            PurchasePropertyPanel.Image.style.backgroundImage = new StyleBackground(ManagedContext.sprite); 
+
+            PurchasePropertyPanel.NameLabel.text = data.Name.ToString();
+            PurchasePropertyPanel.PriceLabel.text = data.Price.ToString();
+        }
+
+        public void Show()
+        {
+            PurchasePropertyPanel.Show();
+        }
+
+        public void Hide()
+        {
+            PurchasePropertyPanel.Hide();
         }
     }
 }

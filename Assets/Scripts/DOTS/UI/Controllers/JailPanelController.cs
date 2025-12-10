@@ -10,7 +10,7 @@ namespace DOTS.UI.Controllers
         public string Title;
     }
 
-    public class JailPanelController : IDisposable
+    public class JailPanelController : IDisposable, IPanelControllerNew<JailPanelContext>
     {        
         public JailPanel Panel { get; private set; }
         public EntityQuery TransactionEventBusQuery { get; private set; }
@@ -23,7 +23,10 @@ namespace DOTS.UI.Controllers
             SubscribeEvents();
         }
 
+        [Obsolete("This method is deprecated")]
         public void ShowPanel() => Panel.Show();
+
+        [Obsolete("This method is deprecated")]
         public void HidePanel() => Panel.Hide();
 
         private void SubscribeEvents()
@@ -32,6 +35,7 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked += Panel.Hide;
         }
 
+        [Obsolete("This method is deprecated")]
         public void Update()
         {
             Panel.TitleLabel.text = Context.Title;
@@ -64,6 +68,21 @@ namespace DOTS.UI.Controllers
             Panel.OkButton.clickable.clicked -= DispatchEvents;
             Panel.OkButton.clickable.clicked -= Panel.Hide;
             isDisposed = true;
+        }
+
+        public void Update(JailPanelContext data)
+        {
+            Panel.TitleLabel.text = data.Title;
+        }
+
+        public void Show()
+        {
+            Panel.Show();
+        }
+
+        public void Hide()
+        {
+            Panel.Hide();
         }
     }
 }
