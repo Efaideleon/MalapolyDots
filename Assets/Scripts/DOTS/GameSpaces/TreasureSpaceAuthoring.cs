@@ -45,10 +45,22 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new AnimationPlayState { Value = PlayState.NotPlaying });
                 AddComponent(entity, new CurrentTreasureAnimation { Value = TreasureAnimations.Close });
                 AddComponent(entity, new CurrentTreasureFrameVAT { });
+
+                var cards = AddBuffer<TreasureCardsBuffer>(entity);
+                foreach (var card in authoring.Data.Cards)
+                {
+                    cards.Add(new TreasureCardsBuffer { id = card.id, msg = card.msg });
+                }
             }
         }
     }
 
     public struct TreasureSpaceTag : IComponentData
     { }
+
+    public struct TreasureCardsBuffer : IBufferElementData
+    {
+        public int id;
+        public FixedString64Bytes msg;
+    }
 }
