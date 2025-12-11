@@ -39,23 +39,21 @@ namespace DOTS.Mediator.Systems
             if (!spaceLandedOnLookup.HasComponent(activePlayerEntity)) return;
 
             GameState gameState = gameStateLookup[gameStateEntity].State;
+            if (gameState != GameState.Landing) return;
 
-            if (gameState == GameState.Landing)
-            {
-                // The place where the player lands on.
-                Entity placeEntity = spaceLandedOnLookup[activePlayerEntity].entity;
+            // The place where the player lands on.
+            Entity placeEntity = spaceLandedOnLookup[activePlayerEntity].entity;
 
-                // The place type where the player is at.
-                SpaceType spaceType = spaceTypeLookup[placeEntity].Value;
-                if (!spaceTypeLookup.HasComponent(placeEntity)) return;
+            // The place type where the player is at.
+            SpaceType spaceType = spaceTypeLookup[placeEntity].Value;
+            if (!spaceTypeLookup.HasComponent(placeEntity)) return;
 
-                // Get the panels controllers registry.
-                var controllersManager = SystemAPI.ManagedAPI.GetSingleton<PanelControllersManagerComponent>().Manager;
-                if (controllersManager == null) return;
+            // Get the panels controllers registry.
+            var controllersManager = SystemAPI.ManagedAPI.GetSingleton<PanelControllersManagerComponent>().Manager;
+            if (controllersManager == null) return;
 
-                // Show the respective panel based on type.
-                controllersManager.Show(spaceType);
-            }
+            // Show the respective panel based on type.
+            controllersManager.Show(spaceType);
         }
     }
 }
