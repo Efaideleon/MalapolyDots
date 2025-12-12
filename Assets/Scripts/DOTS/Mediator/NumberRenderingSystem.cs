@@ -31,24 +31,35 @@ namespace DOTS.Mediator
             //
             var assets = SystemAPI.ManagedAPI.GetSingleton<AssetsMaterial>();
 
+            var entity = SystemAPI.GetSingletonEntity<QuadDataBuffer>();
+            var pos = SystemAPI.GetComponent<LocalToWorld>(entity);
             var meshDesc = new RenderMeshDescription(ShadowCastingMode.Off, false);
-
             var renderMeshArray = new RenderMeshArray(new[] { assets.material }, new[] { assets.mesh });
 
-            var quadEntity = state.EntityManager.CreateEntity();
 
-            RenderMeshUtility.AddComponents(
-                    quadEntity,
-                    state.EntityManager,
-                    meshDesc,
-                    renderMeshArray,
-                    MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0)
-            );
+            for (int i = 0; i < 100; i++)
+            {
+                var quadEntity = state.EntityManager.CreateEntity();
+                RenderMeshUtility.AddComponents(
+                        quadEntity,
+                        state.EntityManager,
+                        meshDesc,
+                        renderMeshArray,
+                        MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0)
+                );
+                state.EntityManager.AddComponentData(quadEntity, new UVOffsetOverride
+                {
+                    Value = new float2(UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0, 10f))
+                });
+                state.EntityManager.AddComponentData(quadEntity, LocalTransform.FromPosition(
+                    pos.Position + new float3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(0, 1f), 0f))
+                );
+            }
 
-            state.EntityManager.AddComponentData(quadEntity, new UVOffsetOverride { Value = new float2(0, 1) });
+            state.Enabled = false;
 
-            state.EntityManager.AddComponentData(quadEntity, new LocalToWorld());
 
+            // state.EntityManager.Instantiate(quadEntity);
             // var entity = SystemAPI.GetSingletonEntity<QuadDataBuffer>();
             // var pos = SystemAPI.GetComponent<LocalToWorld>(entity).Position;
             //
@@ -61,6 +72,7 @@ namespace DOTS.Mediator
             // var block3 = new MaterialPropertyBlock();
             //
             // block1.SetVector("_UV0", new Vector4(q1.UV0.x, q1.UV0.y, 0, 0));
+            //
             // block1.SetVector("_UV1", new Vector4(q1.UV1.x, q1.UV1.y, 0, 0));
             //
             // block2.SetVector("_UV0", new Vector4(q2.UV0.x, q2.UV0.y, 0, 0));
