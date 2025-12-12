@@ -37,7 +37,7 @@ namespace DOTS.Mediator
             var renderMeshArray = new RenderMeshArray(new[] { assets.material }, new[] { assets.mesh });
 
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 900; i++)
             {
                 var quadEntity = state.EntityManager.CreateEntity();
                 RenderMeshUtility.AddComponents(
