@@ -57,7 +57,7 @@ namespace DOTS.Mediator
                         MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0)
                 );
                 state.EntityManager.AddComponentData(quadEntity, new UVScaleOverride { Value = new float2(1f, 1f)});
-                state.EntityManager.AddComponentData(quadEntity, new UVOffsetOverride { Value = new float2(0, 0) });
+                state.EntityManager.AddComponentData(quadEntity, new UVOffsetOverride { Value = offset  });
                 state.EntityManager.AddComponentData(quadEntity, LocalTransform.FromPosition(
                     pos.Position + new float3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(0, 1f), 0f))
                 );

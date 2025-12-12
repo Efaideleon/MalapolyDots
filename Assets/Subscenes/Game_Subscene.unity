@@ -423,7 +423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 612084557}
-  - component: {fileID: 612084556}
+  - component: {fileID: 612084558}
   m_Layer: 0
   m_Name: MaterialAssets
   m_TagString: Untagged
@@ -431,20 +431,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &612084556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 612084555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64bccaeb6da9a442c8f6f0f10e49400c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.Mediator::DOTS.Mediator.MaterialAssetsAuthoring
-  mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  material: {fileID: 2100000, guid: 9154174f5bb70484d8cf89db6a0ed077, type: 2}
 --- !u!4 &612084557
 Transform:
   m_ObjectHideFlags: 0
@@ -460,6 +446,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &612084558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612084555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cfd8ca6b3e8541bebd16d45743dabdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Mediator::DOTS.Mediator.NumbersMaterialAssetsAuthoring
+  mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  material: {fileID: 2100000, guid: 9154174f5bb70484d8cf89db6a0ed077, type: 2}
 --- !u!1 &623444461
 GameObject:
   m_ObjectHideFlags: 0
