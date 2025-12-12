@@ -32,17 +32,22 @@ namespace DOTS.Mediator
             var entity = SystemAPI.GetSingletonEntity<QuadDataBuffer>();
             var pos = SystemAPI.GetComponent<LocalToWorld>(entity).Position;
 
-            QuadData q1 = new() { UV0 = new float2(0, 0), UV1 = new float2(0.5f, 1f) };
-            QuadData q2 = new() { UV0 = new float2(0, 0.5f), UV1 = new float2(1, 1) };
+            QuadData q1 = new() { UV0 = new float2(0, 0), UV1 = new float2(0.2f, 1f) };
+            QuadData q2 = new() { UV0 = new float2(0.2f, 0f), UV1 = new float2(0.4f, 1f) };
+            QuadData q3 = new() { UV0 = new float2(0.4f, 0f), UV1 = new float2(0.8f, 1f) };
 
             var block1 = new MaterialPropertyBlock();
             var block2 = new MaterialPropertyBlock();
+            var block3 = new MaterialPropertyBlock();
 
             block1.SetVector("_UV0", new Vector4(q1.UV0.x, q1.UV0.y, 0, 0));
             block1.SetVector("_UV1", new Vector4(q1.UV1.x, q1.UV1.y, 0, 0));
 
             block2.SetVector("_UV0", new Vector4(q2.UV0.x, q2.UV0.y, 0, 0));
             block2.SetVector("_UV1", new Vector4(q2.UV1.x, q2.UV1.y, 0, 0));
+
+            block3.SetVector("_UV0", new Vector4(q3.UV0.x, q3.UV0.y, 0, 0));
+            block3.SetVector("_UV1", new Vector4(q3.UV1.x, q3.UV1.y, 0, 0));
 
             Graphics.DrawMesh
             (
@@ -55,7 +60,7 @@ namespace DOTS.Mediator
                 block1
             );
 
-            var offset = new float3(0.2f, 0, 0);
+            var offset = new float3(1, 0, 0);
             Graphics.DrawMesh
             (
                 assets.mesh,
@@ -65,6 +70,18 @@ namespace DOTS.Mediator
                 null,
                 0,
                 block2
+            );
+
+            var offset2 = new float3(2, 0, 0);
+            Graphics.DrawMesh
+            (
+                assets.mesh,
+                float4x4.Translate(pos + offset2),
+                assets.material,
+                0,
+                null,
+                0,
+                block3
             );
         }
     }
