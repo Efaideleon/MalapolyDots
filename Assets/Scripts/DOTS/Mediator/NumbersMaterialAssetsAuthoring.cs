@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace DOTS.Mediator
 {
-    public class MaterialAssetsAuthoring : MonoBehaviour
+    public class NumbersMaterialAssetsAuthoring : MonoBehaviour
     {
         public Mesh mesh;
         public Material material;
 
-        public class MaterialAssetsBaker : Baker<MaterialAssetsAuthoring>
+        public class MaterialAssetsBaker : Baker<NumbersMaterialAssetsAuthoring>
         {
-            public override void Bake(MaterialAssetsAuthoring authoring)
+            public override void Bake(NumbersMaterialAssetsAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
                 AddComponentObject(entity, new AssetsMaterial 
