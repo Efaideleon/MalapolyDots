@@ -35,8 +35,19 @@ namespace DOTS.Mediator
             var meshDesc = new RenderMeshDescription(ShadowCastingMode.Off, false);
             var renderMeshArray = new RenderMeshArray(new[] { assets.material }, new[] { assets.mesh });
 
-            for (int i = 0; i < 1025; i++)
+            float2 offset = new();
+            for (int i = 0; i < 2; i++)
             {
+                if (i == 0)
+                {
+                    offset = new float2(0, 0.75f);
+                }
+
+                if (i == 1)
+                {
+                    offset = new float2(0.25f, 0.75f);
+                }
+
                 var quadEntity = state.EntityManager.CreateEntity();
                 RenderMeshUtility.AddComponents(
                         quadEntity,
@@ -45,10 +56,8 @@ namespace DOTS.Mediator
                         renderMeshArray,
                         MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0)
                 );
-                state.EntityManager.AddComponentData(quadEntity, new UVOffsetOverride
-                {
-                    Value = new float2(UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0, 10f))
-                });
+                state.EntityManager.AddComponentData(quadEntity, new UVScaleOverride { Value = new float2(1f, 1f)});
+                state.EntityManager.AddComponentData(quadEntity, new UVOffsetOverride { Value = new float2(0, 0) });
                 state.EntityManager.AddComponentData(quadEntity, LocalTransform.FromPosition(
                     pos.Position + new float3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(0, 1f), 0f))
                 );
@@ -65,6 +74,12 @@ namespace DOTS.Mediator
 
     [MaterialProperty("_UVOffset")]
     public struct UVOffsetOverride : IComponentData
+    {
+        public float2 Value;
+    }
+
+    [MaterialProperty("_UVScale")]
+    public struct UVScaleOverride : IComponentData
     {
         public float2 Value;
     }
