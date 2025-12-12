@@ -49,40 +49,43 @@ namespace DOTS.Mediator
             block3.SetVector("_UV0", new Vector4(q3.UV0.x, q3.UV0.y, 0, 0));
             block3.SetVector("_UV1", new Vector4(q3.UV1.x, q3.UV1.y, 0, 0));
 
-            Graphics.DrawMesh
-            (
-                assets.mesh,
-                float4x4.Translate(pos),
-                assets.material,
-                0,
-                null,
-                0,
-                block1
-            );
+            for (int i = 0; i < 300; i++)
+            {
+                Graphics.DrawMesh
+                    (
+                     assets.mesh,
+                     float4x4.Translate(pos),
+                     assets.material,
+                     0,
+                     null,
+                     0,
+                     block1
+                    );
 
-            var offset = new float3(1, 0, 0);
-            Graphics.DrawMesh
-            (
-                assets.mesh,
-                float4x4.Translate(pos + offset),
-                assets.material,
-                0,
-                null,
-                0,
-                block2
-            );
+                var offset = new float3(1, 0, 0);
+                Graphics.DrawMesh
+                    (
+                     assets.mesh,
+                     float4x4.Translate(pos + offset),
+                     assets.material,
+                     0,
+                     null,
+                     0,
+                     block2
+                    );
 
-            var offset2 = new float3(2, 0, 0);
-            Graphics.DrawMesh
-            (
-                assets.mesh,
-                float4x4.Translate(pos + offset2),
-                assets.material,
-                0,
-                null,
-                0,
-                block3
-            );
+                var offset2 = new float3(2, 0, 0);
+                Graphics.DrawMesh
+                    (
+                     assets.mesh,
+                     float4x4.Translate(pos + offset2),
+                     assets.material,
+                     0,
+                     null,
+                     0,
+                     block3
+                    );
+            }
         }
     }
 
