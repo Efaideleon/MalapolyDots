@@ -18,8 +18,8 @@ namespace DOTS.Mediator
         private BufferLookup<LinkedEntityGroup> linkedEntityGroupLookup;
         private ComponentLookup<PriceTagPivotTag> priceTagPivotLookup;
         private const int MAX_NUMBER_OF_QUADS = 8;
-        private const float QUAD_WIDTH = 0.6f;
-        private const float Q_SIGN_OFFSET = 0.5f;
+        private const float QUAD_WIDTH = 0.3f;
+        private const float Q_SIGN_OFFSET = 0.2f;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -42,7 +42,7 @@ namespace DOTS.Mediator
             var ecb = GetECB(ref state);
             var prefab = SystemAPI.GetSingleton<QuadEntityPrefab>();
 
-            new SpawnPriceQuadsJob 
+            new SpawnPriceQuadsJob
             {
                 QuadPrefab = prefab.Value,
                 linkedEntityGroupLookup = linkedEntityGroupLookup,
@@ -75,8 +75,14 @@ namespace DOTS.Mediator
                         {
                             var offset = i == 0 ? new float3(-Q_SIGN_OFFSET, 0, 0) : 0;
                             var quadPos = i * new float3(QUAD_WIDTH, 0, 0) + offset;
+                            var quadScale = 0.5f;
 
-                            LocalTransform quadTransform = LocalTransform.FromPosition(quadPos);
+                            LocalTransform quadTransform = LocalTransform.FromPositionRotationScale
+                            (
+                                quadPos,
+                                quaternion.identity,
+                                quadScale
+                            );
                             Entity quadEntity = ecb.Instantiate(index, QuadPrefab);
 
                             ecb.SetComponent(index, quadEntity, quadTransform);
