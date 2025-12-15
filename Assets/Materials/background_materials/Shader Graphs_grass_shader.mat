@@ -26,6 +26,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _SampleTexture2D_162b744ab7e64042ac5db862c66045da_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 96de3b454c7d62d4e83ed8f10a12c9b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_16877a17d324411cba5f20567ffd29df_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 64cb4b4e1f5495a4bb2a659c0ba20af6, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -38,12 +42,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 1354009a55c526f458e9afddf4ac579c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_9779fb8799374ebabe308e1230ef4b7b_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: edc6c6d46af980743962fb0b47706179, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_a67ff90821934c00a00ec4d2ac575542_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: bcaf769813a259045a8061dbc1723af3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_bcb2775fe526476db8bcdc85ff322e15_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: ed3be0c4445c72a4888ca10fc8c06e4f, type: 3}
+        m_Texture: {fileID: 2800000, guid: ea8932598513e0340b210caa2d72fc23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_be01f64c77ed4607a2be36ae06f20c55_Texture_1_Texture2D:
@@ -55,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _shadow_map:
-        m_Texture: {fileID: 2800000, guid: e7f27459cd683744b960756f28e3d97f, type: 3}
+        m_Texture: {fileID: 2800000, guid: ea8932598513e0340b210caa2d72fc23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -72,7 +80,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Float: 0.1
+    - _Float: 1.05
     - _Float_1: 0.1
     - _MAINLIGHTSHADOWS: 0
     - _MAINLIGHTSHADOWSCASCADE: 0
@@ -88,7 +96,7 @@ Material:
     - _Grass_Leaves_Tiling: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _Mask_Tiling: {r: 0.01, g: 0.01, b: 0, a: 0}
     - _Vector2: {r: 0.01, g: 0.01, b: 0, a: 0}
-    - _grass_color: {r: 0.59568727, g: 0.8553459, b: 0, a: 1}
+    - _grass_color: {r: 0.69724774, g: 1, b: 0, a: 1}
     - _tiling: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
