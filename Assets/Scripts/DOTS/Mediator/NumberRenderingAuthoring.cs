@@ -11,16 +11,7 @@ namespace DOTS.Mediator
         {
             public override void Bake(NumberRenderingAuthoring authoring)
             {
-                var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-                AddBuffer<QuadDataBuffer>(entity);
             }
         }
-    }
-
-    public struct QuadDataBuffer : IBufferElementData
-    {
-        public float3 Position;
-        public float2 UV0;
-        public float2 UV1;
     }
 }

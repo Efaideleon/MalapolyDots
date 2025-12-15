@@ -44,7 +44,7 @@ namespace DOTS.GamePlay
                         var treasureCard = SystemAPI.GetSingletonRW<TreasureCard>();
                         treasureCard.ValueRW.data = cardChosen.msg;
 
-                        UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCard.ValueRO.data.ToString()}");
+//                        UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCard.ValueRO.data.ToString()}");
 
                         // Reset that treasure's open animation.
                         SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimations.Open;

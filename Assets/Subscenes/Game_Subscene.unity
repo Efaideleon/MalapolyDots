@@ -510,6 +510,51 @@ MonoBehaviour:
   coffeePrefab: {fileID: 2335879554087428046, guid: ac99846991266456387fa9f6e228ff32, type: 3}
   liraPrefab: {fileID: 4072373378481227395, guid: 9479c2c325bd2420aa3cd23b8f0181ab, type: 3}
   tuctucPrefab: {fileID: 269774476757490099, guid: 9c2702a1cc0a94861ab482cb7a8b1b50, type: 3}
+--- !u!1 &770200181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 770200182}
+  - component: {fileID: 770200183}
+  m_Layer: 0
+  m_Name: NumberQuadAuthoring
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &770200182
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770200181}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &770200183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770200181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b166202ae784ec692978f9aca0dfc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Mediator::DOTS.Mediator.NumberQuadAuthoring
+  quadPrefab: {fileID: 1838671129544422477, guid: 66f81d9eea8c64c368438a21c3accab1, type: 3}
 --- !u!1 &823650531
 GameObject:
   m_ObjectHideFlags: 0
@@ -8344,3 +8389,4 @@ SceneRoots:
   - {fileID: 1375425916}
   - {fileID: 1928764107}
   - {fileID: 612084557}
+  - {fileID: 770200182}

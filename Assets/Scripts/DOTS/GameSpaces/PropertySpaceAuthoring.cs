@@ -60,6 +60,10 @@ namespace DOTS.GameSpaces
                 {
                     rentBuffer.Add(new BaseRentBuffer { Value = rent });
                 }
+
+                // Components for quads
+                AddBuffer<QuadDataBuffer>(entity);
+                AddBuffer<QuadsEntitiesBuffer>(entity);
             }
         }
     }
@@ -71,5 +75,10 @@ namespace DOTS.GameSpaces
     public struct BlinkingFlagMaterialOverride : IComponentData
     {
         public float Value;
+    }
+
+    public struct QuadsEntitiesBuffer : IBufferElementData
+    {
+        public Entity Entity;
     }
 }

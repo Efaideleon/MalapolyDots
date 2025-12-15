@@ -17,7 +17,6 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<PerspectiveCameraObject>();
             state.RequireForUpdate<OrthographicCameraObject>();
             state.RequireForUpdate<GameStateComponent>();
-
         }
 
         public void OnStartRunning(ref SystemState state)
