@@ -14,7 +14,6 @@ namespace DOTS.GamePlay.CameraSystems
         InProgress
     }
 
-    [UpdateAfter(typeof(CameraSceneManagerSystem))]
     [BurstCompile]
     public partial struct CameraRotationSystem : ISystem
     {

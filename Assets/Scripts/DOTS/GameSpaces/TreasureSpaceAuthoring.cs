@@ -35,6 +35,8 @@ namespace DOTS.GameSpaces
 
                 var blobRef = builder.CreateBlobAssetReference<AnimationDataBlob>(Allocator.Persistent);
 
+                AddBlobAsset(ref blobRef, out var hash);
+
                 var animationDataLibrary = new AnimationDataLibrary { AnimationDataBlobRef = blobRef };
                 AddComponent(entity, animationDataLibrary);
                 AddComponent(entity, new NameComponent { Value = authoring.Data.Name });

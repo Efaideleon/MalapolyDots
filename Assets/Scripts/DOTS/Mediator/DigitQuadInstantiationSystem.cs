@@ -11,12 +11,13 @@ namespace DOTS.Mediator
     ///<summary>
     /// This systems Instantiates all the quads into their correct position.
     /// Sets the quads entities as children of the price pivot.
+    /// This system assumes that PricePivotTransformTag Entity has a parent PriceTagPivotTag Entity that has a parent PropertySpaceTag Entity.
+    /// It also assumes that the PropertySpaceTag Entity has a QuadsEntitiesBuffer.
     ///</summary>
     [BurstCompile]
     public partial struct DigitQuadInstantiationSystem : ISystem
     {
-        private BufferLookup<LinkedEntityGroup> linkedEntityGroupLookup;
-        private ComponentLookup<PriceTagPivotTag> priceTagPivotLookup;
+        private ComponentLookup<Parent> parentComponentLookup;
         private const int MAX_NUMBER_OF_QUADS = 8;
         private const float QUAD_WIDTH = 0.3f;
         private const float Q_SIGN_OFFSET = 0.2f;
@@ -24,20 +25,20 @@ namespace DOTS.Mediator
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<AssetsMaterial>();
             state.RequireForUpdate<NumberToUVOffset>();
             state.RequireForUpdate<QuadEntityPrefab>();
             state.RequireForUpdate<PriceTagPivotTag>();
+            state.RequireForUpdate<PricePivotTransformTag>();
+            state.RequireForUpdate<PropertySpaceTag>();
+            state.RequireForUpdate<QuadsEntitiesBuffer>();
 
-            linkedEntityGroupLookup = SystemAPI.GetBufferLookup<LinkedEntityGroup>();
-            priceTagPivotLookup = SystemAPI.GetComponentLookup<PriceTagPivotTag>(true);
+            parentComponentLookup = SystemAPI.GetComponentLookup<Parent>(true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            linkedEntityGroupLookup.Update(ref state);
-            priceTagPivotLookup.Update(ref state);
+            parentComponentLookup.Update(ref state);
 
             var ecb = GetECB(ref state);
             var prefab = SystemAPI.GetSingleton<QuadEntityPrefab>();
@@ -45,8 +46,7 @@ namespace DOTS.Mediator
             new SpawnPriceQuadsJob
             {
                 QuadPrefab = prefab.Value,
-                linkedEntityGroupLookup = linkedEntityGroupLookup,
-                priceTagPivotLookup = priceTagPivotLookup,
+                parentComponentLookup = parentComponentLookup,
                 ecb = ecb.AsParallelWriter()
             }.ScheduleParallel();
 
@@ -57,39 +57,29 @@ namespace DOTS.Mediator
         public partial struct SpawnPriceQuadsJob : IJobEntity
         {
             public Entity QuadPrefab;
-            [ReadOnly] public BufferLookup<LinkedEntityGroup> linkedEntityGroupLookup;
-            [ReadOnly] public ComponentLookup<PriceTagPivotTag> priceTagPivotLookup;
+            [ReadOnly] public ComponentLookup<Parent> parentComponentLookup;
             public EntityCommandBuffer.ParallelWriter ecb;
 
-            public void Execute([ChunkIndexInQuery] int index, Entity placeEntity, DynamicBuffer<QuadsEntitiesBuffer> _)
+            public void Execute([ChunkIndexInQuery] int index, Entity priceTranformEntity, PricePivotTransformTag _)
             {
-                var linkedEntityGroup = linkedEntityGroupLookup[placeEntity];
+                if (!parentComponentLookup.HasComponent(priceTranformEntity)) return;
+                var parentEntity = parentComponentLookup[priceTranformEntity];
 
-                foreach (var child in linkedEntityGroup)
+                if (!parentComponentLookup.HasComponent(parentEntity.Value)) return;
+                var placeEntity = parentComponentLookup[parentEntity.Value];
+
+                for (int i = 0; i < MAX_NUMBER_OF_QUADS; i++)
                 {
-                    // There can be multiple price pivots in a place.
-                    if (priceTagPivotLookup.HasComponent(child.Value))
-                    {
-                        var pivotEntity = child.Value;
-                        for (int i = 0; i < MAX_NUMBER_OF_QUADS; i++)
-                        {
-                            var offset = i == 0 ? new float3(-Q_SIGN_OFFSET, 0, 0) : 0;
-                            var quadPos = i * new float3(QUAD_WIDTH, 0, 0) + offset;
-                            var quadScale = 0.5f;
+                    var offset = i == 0 ? new float3(-Q_SIGN_OFFSET, 0, 0) : 0;
+                    var quadPos = i * new float3(QUAD_WIDTH, 0, 0) + offset;
+                    var quadScale = 0.5f;
 
-                            LocalTransform quadTransform = LocalTransform.FromPositionRotationScale
-                            (
-                                quadPos,
-                                quaternion.identity,
-                                quadScale
-                            );
-                            Entity quadEntity = ecb.Instantiate(index, QuadPrefab);
+                    LocalTransform quadTransform = LocalTransform.FromPositionRotationScale(quadPos, quaternion.identity, quadScale);
 
-                            ecb.SetComponent(index, quadEntity, quadTransform);
-                            ecb.AddComponent(index, quadEntity, new Parent { Value = pivotEntity });
-                            ecb.AppendToBuffer(index, placeEntity, new QuadsEntitiesBuffer { Entity = quadEntity });
-                        }
-                    }
+                    Entity quadEntity = ecb.Instantiate(index, QuadPrefab);
+                    ecb.SetComponent(index, quadEntity, quadTransform);
+                    ecb.AddComponent(index, quadEntity, new Parent { Value = priceTranformEntity });
+                    ecb.AppendToBuffer(index, placeEntity.Value, new QuadsEntitiesBuffer { Entity = quadEntity });
                 }
             }
         }
