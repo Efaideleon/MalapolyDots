@@ -6,5 +6,10 @@ namespace DOTS.Mediator.PanelScriptableObjects
     public class ChancePanelSO : ScriptableObject
     {
         public string TitleLabel;
+        
+        public void OnEnable()
+        {
+            TitleLabel = "";
+        }
     }
 }

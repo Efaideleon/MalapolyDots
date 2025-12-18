@@ -21,7 +21,7 @@ namespace DOTS.UI.Systems
             state.EntityManager.CreateSingleton(new SpaceActionsPanelContextComponent { Value = default });
             state.RequireForUpdate<SpaceActionsPanelContextComponent>();
             state.RequireForUpdate<LastPropertyClicked>();
-            state.RequireForUpdate<PropertyEventComponent>();
+            state.RequireForUpdate<LastPropertyInteracted>();
         }
 
         [BurstCompile]
@@ -52,7 +52,7 @@ namespace DOTS.UI.Systems
                 }
             }
 
-            foreach (var property in SystemAPI.Query<RefRO<PropertyEventComponent>>().WithChangeFilter<PropertyEventComponent>())
+            foreach (var property in SystemAPI.Query<RefRO<LastPropertyInteracted>>().WithChangeFilter<LastPropertyInteracted>())
             {
                 var propertyEntity = property.ValueRO.entity;
                 if (propertyEntity != Entity.Null)

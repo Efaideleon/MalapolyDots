@@ -1,41 +1,48 @@
+using DOTS.DataComponents;
+using DOTS.GameSpaces;
 using DOTS.Mediator;
-using DOTS.UI.Controllers;
-using DOTS.UI.Systems;
 using Unity.Entities;
 
+[UpdateInGroup(typeof(PresentationSystemGroup))]
 public partial struct PurchasePropertyPanelUpdaterManagedSystem : ISystem
 {
+    private ComponentLookup<LastPropertyInteracted> lastPropertyInteractedLookup;
+    private ComponentLookup<PropertySpaceTag> propertyLookup;
+
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<PurchasePropertyPanelContextComponent>();
-        state.RequireForUpdate<PanelControllers>();
+        state.RequireForUpdate<LastPropertyInteracted>();
         state.RequireForUpdate<SpriteRegistryComponent>();
+        state.RequireForUpdate<PropertySpaceTag>();
+        state.RequireForUpdate<PriceComponent>();
+        state.RequireForUpdate<NameComponent>();
+        state.RequireForUpdate<PurchasePropertyPanelData>();
+
+        lastPropertyInteractedLookup = SystemAPI.GetComponentLookup<LastPropertyInteracted>(true);
+        propertyLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
     }
 
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var purchasePropertyPanelContext in
-                SystemAPI.Query<
-                RefRO<PurchasePropertyPanelContextComponent>
-                >()
-                .WithChangeFilter<PurchasePropertyPanelContextComponent>())
-        {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            var spriteRegistry = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>();
-            if (panelControllers != null && spriteRegistry.Value != null)
-            {
-                if (panelControllers.purchasePropertyPanelController != null)
-                {
-                    // TODO: not consistent with the PurhcaseHousePanel.
-                    // Here we assigned the Context to the controller instead of the panel itself
-                    var context = purchasePropertyPanelContext.ValueRO.Value;
-                    spriteRegistry.Value.TryGetValue(context.Name, out var sprite); 
-                    panelControllers.purchasePropertyPanelController.Context = context;
-                    panelControllers.purchasePropertyPanelController.ManagedContext.sprite = sprite;
-                    panelControllers.purchasePropertyPanelController.Update();
-                }
-            }
-        }
+        lastPropertyInteractedLookup.Update(ref state);
+        propertyLookup.Update(ref state);
 
+        var entity = SystemAPI.GetSingletonEntity<LastPropertyInteracted>();
+        if (!lastPropertyInteractedLookup.DidChange(entity, state.LastSystemVersion)) return;
+
+        var propertyEntity = lastPropertyInteractedLookup[entity].entity;
+        if (!propertyLookup.HasComponent(propertyEntity)) return;
+
+        var name = SystemAPI.GetComponent<NameComponent>(propertyEntity).Value;
+        var price = SystemAPI.GetComponent<PriceComponent>(propertyEntity).Value;
+
+        var spriteRegistry = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>();
+        spriteRegistry.Value.TryGetValue(name, out var sprite);
+
+        var panel = SystemAPI.ManagedAPI.GetSingleton<PurchasePropertyPanelData>().Panel;
+
+        panel.NameLabel = name.ToString();
+        panel.PriceLabel = price.ToString();
+        panel.Image = sprite;
     }
 }

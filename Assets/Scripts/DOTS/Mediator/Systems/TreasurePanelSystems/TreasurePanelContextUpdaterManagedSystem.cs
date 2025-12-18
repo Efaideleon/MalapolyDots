@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace DOTS.Mediator.Systems.TreasurePanelSystems
 {
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct TreasurePanelContextUpdaterManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

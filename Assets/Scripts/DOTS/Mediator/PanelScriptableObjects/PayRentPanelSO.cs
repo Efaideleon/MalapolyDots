@@ -6,5 +6,10 @@ namespace DOTS.Mediator.PanelScriptableObjects
     public class PayRentPanelSO : ScriptableObject
     {
         public string message;
+
+        public void OnEnable()
+        {
+            message = "";
+        }
     }
 }

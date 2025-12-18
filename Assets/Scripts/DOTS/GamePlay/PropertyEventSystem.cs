@@ -1,3 +1,4 @@
+using DOTS.Characters;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
@@ -12,36 +13,53 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct PropertyEventSystem : ISystem
     {
+        private ComponentLookup<SpaceLandedOn> spaceLandedOnLookup;
+        private ComponentLookup<PropertySpaceTag> propertySpaceLookup;
+        private ComponentLookup<LastPropertyClicked> lastPropertyClickedLookup;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton(new PropertyEventComponent { entity = Entity.Null });
+            state.EntityManager.CreateSingleton(new LastPropertyInteracted { entity = Entity.Null });
+            state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
+
             state.RequireForUpdate<LastPropertyClicked>();
             state.RequireForUpdate<PropertySpaceTag>();
-            state.RequireForUpdate<LandedOnSpace>();
-            state.EntityManager.CreateSingleton(new LastPropertyClicked { entity = Entity.Null });
+            state.RequireForUpdate<CurrentActivePlayer>();
+
+            spaceLandedOnLookup = SystemAPI.GetComponentLookup<SpaceLandedOn>(true);
+            propertySpaceLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
+            lastPropertyClickedLookup = SystemAPI.GetComponentLookup<LastPropertyClicked>(true);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var lastPropertyClicked in SystemAPI.Query<RefRO<LastPropertyClicked>>().WithChangeFilter<LastPropertyClicked>())
+            spaceLandedOnLookup.Update(ref state);
+            propertySpaceLookup.Update(ref state);
+            lastPropertyClickedLookup.Update(ref state);
+
+            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            var lpcRefEntity = SystemAPI.GetSingletonEntity<LastPropertyClicked>();
+            var lastSystemVersion = state.LastSystemVersion;
+
+            // Recording the property entity we last clicked.
+            if (lastPropertyClickedLookup.DidChange(lpcRefEntity, lastSystemVersion))
             {
-                if (lastPropertyClicked.ValueRO.entity != Entity.Null && 
-                        SystemAPI.HasComponent<PropertySpaceTag>(lastPropertyClicked.ValueRO.entity))
+                var lastPropertyClickedEntity = lastPropertyClickedLookup[lpcRefEntity].entity;
+                if (propertySpaceLookup.HasComponent(lastPropertyClickedEntity))
                 {
-                    var propertyEvent = SystemAPI.GetSingletonRW<PropertyEventComponent>();
-                    propertyEvent.ValueRW.entity = lastPropertyClicked.ValueRO.entity;
+                    SystemAPI.GetSingletonRW<LastPropertyInteracted>().ValueRW.entity = lastPropertyClickedEntity;
                 }
             }
 
-            foreach (var onLandSpace in SystemAPI.Query<RefRO<LandedOnSpace>>().WithChangeFilter<LandedOnSpace>())
+            // Recording the property entity we landed on.
+            if (spaceLandedOnLookup.DidChange(activePlayerEntity, lastSystemVersion))
             {
-                var onLandEntity = onLandSpace.ValueRO.entity;
-                if (onLandEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(onLandEntity))
+                var onLandSpaceEntity = spaceLandedOnLookup[activePlayerEntity].entity;
+                if (propertySpaceLookup.HasComponent(onLandSpaceEntity))
                 {
-                    var propertyEvent = SystemAPI.GetSingletonRW<PropertyEventComponent>();
-                    propertyEvent.ValueRW.entity = onLandEntity;
+                    SystemAPI.GetSingletonRW<LastPropertyInteracted>().ValueRW.entity = onLandSpaceEntity;
                 }
             }
         }

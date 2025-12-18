@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 namespace DOTS.Mediator.PanelScriptableObjects
@@ -7,5 +6,10 @@ namespace DOTS.Mediator.PanelScriptableObjects
     public class RollPanelSO : ScriptableObject
     {
         public string RollAmount;
+
+        public void OnEnable()
+        {
+            RollAmount = "";
+        }
     }
 }

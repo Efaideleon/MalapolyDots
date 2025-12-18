@@ -47,9 +47,11 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<ChanceBufferEvent>();
             state.RequireForUpdate<TreasureAnimationBuffer>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<SpaceLandedOn>();
+            state.RequireForUpdate<PropertySpaceTag>();
         }
 
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             foreach (var transactionBuffer in SystemAPI.Query<DynamicBuffer<TransactionEventBuffer>>().WithChangeFilter<TransactionEventBuffer>())
@@ -60,33 +62,26 @@ namespace DOTS.GamePlay
                 var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
                 foreach (var transaction in transactionBuffer)
                 {
+                    // Sent by the ui.
                     if (transaction.EventType == TransactionEventType.PayRent)
                     {
-                        foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
+                        var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                        var spaceLandedOnEntity = SystemAPI.GetComponent<SpaceLandedOn>(activePlayerEntity).entity;
+
+                        // Did we land on a property.
+                        if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLandedOnEntity))
                         {
-                            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                            if (playerID.ValueRO.Value == currentPlayerID.Value)
+                            // Does the property have an owner.
+                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).OwnerEntity;
+                            if (ownerEntity != Entity.Null)
                             {
-                                // Get the rent to pay
-                                var property = SystemAPI.GetSingleton<LandedOnSpace>();
-                                int rent = SystemAPI.GetComponent<RentComponent>(property.entity).Value;
+                                var rent = SystemAPI.GetComponent<RentComponent>(spaceLandedOnEntity).Value;
+                                var playerMoney = SystemAPI.GetComponentRW<MoneyComponent>(activePlayerEntity);
+                                var ownerMoney = SystemAPI.GetComponentRW<MoneyComponent>(ownerEntity);
 
-                                // Charge the rent from the player paying
+                                // Rent transaction.
                                 playerMoney.ValueRW.Value -= rent;
-
-                                // Add the money from the rent to the right owner
-                                int ownerID = SystemAPI.GetComponentRO<OwnerComponent>(property.entity).ValueRO.ID;
-                                foreach (var (otherPlayerMoney, otherPlayerID) in 
-                                        SystemAPI.Query<
-                                        RefRW<MoneyComponent>,
-                                        RefRO<PlayerID>
-                                        >())
-                                {
-                                    if (ownerID == otherPlayerID.ValueRO.Value)
-                                    {
-                                        otherPlayerMoney.ValueRW.Value += rent;
-                                    }
-                                }
+                                ownerMoney.ValueRW.Value += rent;
                             }
                         }
                     }
@@ -94,12 +89,12 @@ namespace DOTS.GamePlay
                     // Purchase the property if possible
                     if (transaction.EventType == TransactionEventType.Purchase)
                     {
-                        foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
+                        foreach (var (playerID, playerMoney, playerEntity) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>().WithEntityAccess())
                         {
                             var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
                             if (playerID.ValueRO.Value == currentPlayerID.Value)
                             {
-                                var property = SystemAPI.GetSingleton<PropertyEventComponent>();
+                                var property = SystemAPI.GetSingleton<LastPropertyInteracted>();
                                 var landOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
 
                                 // TODO: Check if the current player is on property entity to be able to buy it
@@ -125,11 +120,13 @@ namespace DOTS.GamePlay
                                     )
                                 {
                                     var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
+                                    var ownerEntity = SystemAPI.GetComponentRW<OwnerByEntityComponent>(property.entity);
                                     if (owner.ValueRO.ID == PropertyConstants.Vacant)
                                     {
                                         var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
                                         playerMoney.ValueRW.Value -= price.Value;
                                         owner.ValueRW.ID = playerID.ValueRO.Value;
+                                        ownerEntity.ValueRW.OwnerEntity = playerEntity;
 
                                         if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
                                                SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))

@@ -9,5 +9,12 @@ namespace DOTS.Mediator.PanelScriptableObjects
         public string PropertyName; 
         public string BuyingHouseCounter; 
         public string HousesOwnedCounter;
+
+        public void OnEnable()
+        {
+            PropertyName = "";
+            BuyingHouseCounter = "";
+            HousesOwnedCounter = "";
+        }
     }
 }

@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 namespace DOTS.Mediator.PanelScriptableObjects
@@ -7,5 +6,10 @@ namespace DOTS.Mediator.PanelScriptableObjects
     public class TaxPanelSO : ScriptableObject
     {
         public string AmountLabel; 
+
+        public void OnEnable()
+        {
+            AmountLabel = "";
+        }
     }
 }
