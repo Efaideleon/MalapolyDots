@@ -18,6 +18,8 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 
         public void OnStartRunning(ref SystemState state)
         {
+            if (SystemAPI.ManagedAPI.HasSingleton<PerspectiveCameraObject>()) return;
+
             var entity = SystemAPI.GetSingletonEntity<PerspectiveCameraGOTag>();
             var cameraGO = state.EntityManager.GetComponentObject<PerspectiveCameraPivotGO>(entity);
 
