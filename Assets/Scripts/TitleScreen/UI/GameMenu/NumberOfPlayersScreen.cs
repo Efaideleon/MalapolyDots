@@ -15,7 +15,7 @@ namespace UI.GameMenu
 
     public static class NumberOfPlayersScreenData
     {
-        public static ButtonPlayerData[] Buttons = 
+        public static readonly ButtonPlayerData[] Buttons = 
         {
             new("num-of-players_2-button", 2),
             new("num-of-players_3-button", 3),

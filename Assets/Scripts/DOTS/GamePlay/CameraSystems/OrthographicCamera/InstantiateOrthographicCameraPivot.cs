@@ -13,6 +13,8 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 
         public void OnStartRunning(ref SystemState state)
         {
+            if (SystemAPI.ManagedAPI.HasSingleton<OrthoCameraPivotInstance>()) return;
+
             var orthographicCameraPivot = SystemAPI.ManagedAPI.GetSingleton<OrthographicCameraPivot>();
             if (orthographicCameraPivot.gameObject == null) return;
 

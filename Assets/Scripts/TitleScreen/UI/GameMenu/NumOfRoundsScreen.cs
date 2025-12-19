@@ -13,7 +13,7 @@ public readonly struct ButtonData
 
 public static class NumOfRoundsButtonData 
 {
-    public static ButtonData[] Buttons = 
+    public static readonly ButtonData[] Buttons = 
     {
         new("8-rounds-button", 8),
         new("12-rounds-button", 12),
