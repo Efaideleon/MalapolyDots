@@ -59,9 +59,6 @@
             "m_Id": "a63db3ee20d6472b80e42bec34c200af"
         },
         {
-            "m_Id": "d00a91440a454eddb097d0c2c6b5467f"
-        },
-        {
             "m_Id": "b341b46470d8497a9c82a11710b35010"
         }
     ],
@@ -455,6 +452,20 @@
                     "m_Id": "7d327eeef7f94e70b25ba13580311ce9"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "3c597ad230ec46d8b9fc5035e1104927"
+                },
+                "m_SlotId": 1
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "604f777643b140d2bbf544732e2c80f3"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -889,20 +900,6 @@
                     "m_Id": "f90ce56359ae404f8a7ebc0ed5b56536"
                 },
                 "m_SlotId": 1049369254
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "9c44b40366cd4867b2de74070268c45f"
-                },
-                "m_SlotId": 2
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "604f777643b140d2bbf544732e2c80f3"
-                },
-                "m_SlotId": 1
             }
         },
         {
@@ -2342,18 +2339,18 @@
     "promotedFromAssetID": "",
     "promotedFromCategoryName": "",
     "promotedOrdering": -1,
-    "m_Name": "Blink",
+    "m_Name": "blink",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Blink",
-    "m_DefaultReferenceName": "_Blink",
+    "m_RefNameGeneratedByDisplayName": "blink",
+    "m_DefaultReferenceName": "_blink",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
     "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
+    "overrideHLSLDeclaration": true,
+    "hlslDeclarationOverride": 3,
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
@@ -2536,6 +2533,9 @@
     "m_ChildObjectList": [
         {
             "m_Id": "0a33d1cd4ede4f7c968259b83018e2ee"
+        },
+        {
+            "m_Id": "2815ec91ed03416897df1f36b34ba5d3"
         }
     ]
 }
@@ -3870,10 +3870,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2724.800048828125,
-            "y": -1868.0,
-            "width": 103.199951171875,
-            "height": 33.599853515625
+            "x": -2724.999755859375,
+            "y": -1868.999755859375,
+            "width": 101.999755859375,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -4078,6 +4078,31 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Tangent"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "650c5b8004d8480390434ec6fa4daebb",
+    "m_Id": -1243487038,
+    "m_DisplayName": "uvmap",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_uvmap",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -5578,10 +5603,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2812.80029296875,
-            "y": -1754.400146484375,
+            "x": -2831.0,
+            "y": -1665.0,
             "width": 208.0,
-            "height": 301.5999755859375
+            "height": 302.0
         }
     },
     "m_Slots": [
@@ -6614,18 +6639,6 @@
         "m_Guid": ""
     },
     "m_DefaultType": 0
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
-    "m_ObjectId": "d00a91440a454eddb097d0c2c6b5467f",
-    "m_Name": "Blink",
-    "m_ChildObjectList": [
-        {
-            "m_Id": "2815ec91ed03416897df1f36b34ba5d3"
-        }
-    ]
 }
 
 {
@@ -7693,6 +7706,9 @@
             "m_Id": "53fd1ac588d4438d80e1bc56cca082d6"
         },
         {
+            "m_Id": "650c5b8004d8480390434ec6fa4daebb"
+        },
+        {
             "m_Id": "066b03d6c0cd4e43bfdd0dc77db7ba5a"
         },
         {
@@ -7900,7 +7916,7 @@
     "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
     "m_ObjectId": "fc5c830ee7c54dd997abea13dbf855ca",
     "m_Id": 0,
-    "m_DisplayName": "Blink",
+    "m_DisplayName": "blink",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

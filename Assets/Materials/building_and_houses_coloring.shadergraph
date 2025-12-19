@@ -1936,6 +1936,31 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "155e8cf0b82c41a7aa683de502f88a94",
+    "m_Id": -1243487038,
+    "m_DisplayName": "uvmap",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_uvmap",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "15ee7d1ba3fb45f99f725dc371201ca9",
     "m_Id": 2,
@@ -2677,8 +2702,8 @@
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
     "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
+    "overrideHLSLDeclaration": true,
+    "hlslDeclarationOverride": 3,
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
@@ -8141,6 +8166,9 @@
         },
         {
             "m_Id": "53fd1ac588d4438d80e1bc56cca082d6"
+        },
+        {
+            "m_Id": "155e8cf0b82c41a7aa683de502f88a94"
         },
         {
             "m_Id": "066b03d6c0cd4e43bfdd0dc77db7ba5a"

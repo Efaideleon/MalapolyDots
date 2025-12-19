@@ -32,30 +32,31 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new HouseCount { Value = 0 });
                 AddComponent(entity, new MaterialOverrideColorSlider { Value = 0 });
                 AddComponent(entity, new ForSaleComponent { entity = default });
+                AddComponent(entity, new BlinkingFlagMaterialOverride { Value = 0f });
 
-                if (!authoring.TryGetComponent<MeshRenderer>(out var renderer))
-                {
-                    Debug.LogWarning(
-                            @$"[PropertySpaceAuthoring] | 
-                            Entity {authoring.name} is missing a MeshRenderer.
-                            Sikipping material property components");
-                }
-                else
-                {
-                    var material = renderer.sharedMaterial;
-                    if (material != null && material.HasProperty(BlinkPropertyName))
-                    {
-                        AddComponent(entity, new BlinkingFlagMaterialOverride { });
-                    }
-                    else
-                    {
-                        Debug.LogWarning(
-                                @$"[PropertySpaceAuthoring] | 
-                                Material {material?.name} on object {authoring.name}
-                                does not have the {BlinkPropertyName} property defined.");
-                    }
-                }
-
+                // if (!authoring.TryGetComponent<MeshRenderer>(out var renderer))
+                // {
+                //     Debug.LogWarning(
+                //             @$"[PropertySpaceAuthoring] | 
+                //             Entity {authoring.name} is missing a MeshRenderer.
+                //             Sikipping material property components");
+                // }
+                // else
+                // {
+                //     var material = renderer.sharedMaterial;
+                //     if (material != null && material.HasProperty(BlinkPropertyName))
+                //     {
+                //         AddComponent(entity, new BlinkingFlagMaterialOverride { Value = 0f });
+                //     }
+                //     else
+                //     {
+                //         Debug.LogWarning(
+                //                 @$"[PropertySpaceAuthoring] | 
+                //                 Material {material?.name} on object {authoring.name}
+                //                 does not have the {BlinkPropertyName} property defined.");
+                //     }
+                // }
+                //
                 var rentBuffer = AddBuffer<BaseRentBuffer>(entity);
                 foreach (var rent in authoring.Data.rent)
                 {
@@ -72,7 +73,7 @@ namespace DOTS.GameSpaces
     public struct PropertySpaceTag : IComponentData
     { }
 
-    [MaterialProperty("_Blink")]
+    [MaterialProperty("_blink")]
     public struct BlinkingFlagMaterialOverride : IComponentData
     {
         public float Value;

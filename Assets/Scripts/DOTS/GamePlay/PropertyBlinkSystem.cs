@@ -9,6 +9,7 @@ namespace DOTS.GamePlay
         private ComponentLookup<PropertySpaceTag> propertyLookup;
         private ComponentLookup<BlinkingFlagMaterialOverride> blinkingMaterialLookup;
         private ComponentLookup<GameStateComponent> gameStateLookup;
+        private BufferLookup<PlayerArrivedEventBuffer> playerArrivedBufferLookup;
 
         public void OnCreate(ref SystemState state)
         {
@@ -16,44 +17,54 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<BlinkingFlagMaterialOverride>();
             state.RequireForUpdate<PropertySpaceTag>();
+            state.RequireForUpdate<PlayerArrivedEventBuffer>();
 
-            blinkingMaterialLookup = SystemAPI.GetComponentLookup<BlinkingFlagMaterialOverride>(true);
+            blinkingMaterialLookup = SystemAPI.GetComponentLookup<BlinkingFlagMaterialOverride>();
             propertyLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
             gameStateLookup = SystemAPI.GetComponentLookup<GameStateComponent>(true);
+            playerArrivedBufferLookup = SystemAPI.GetBufferLookup<PlayerArrivedEventBuffer>(true);
 
             state.EntityManager.CreateSingleton(new PreviousPropertyLandedOn { Entity = Entity.Null });
         }
 
         public void OnUpdate(ref SystemState state)
         {
+            var lastSystemVersion = state.LastSystemVersion;
             propertyLookup.Update(ref state);
             blinkingMaterialLookup.Update(ref state);
             gameStateLookup.Update(ref state);
+            playerArrivedBufferLookup.Update(ref state);
 
+            var arrivedBufferEntity = SystemAPI.GetSingletonEntity<PlayerArrivedEventBuffer>();
             var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             var spaceLandedOn = SystemAPI.GetComponent<SpaceLandedOn>(activePlayer);
-            var arrived = SystemAPI.GetComponent<FinalArrived>(activePlayer);
 
             // Player arrived at a property.
-            if (arrived.Value && propertyLookup.HasComponent(spaceLandedOn.entity))
+            if (playerArrivedBufferLookup.DidChange(arrivedBufferEntity, lastSystemVersion))
             {
-                if (blinkingMaterialLookup.HasComponent(spaceLandedOn.entity))
+                UnityEngine.Debug.Log($"[PropertyBlinkSystem] | arrived on property!");
+                if(propertyLookup.HasComponent(spaceLandedOn.entity))
                 {
-                    var blinking = blinkingMaterialLookup.GetRefRW(spaceLandedOn.entity);
-                    blinking.ValueRW.Value = 1f;
-                    SystemAPI.GetSingletonRW<PreviousPropertyLandedOn>().ValueRW.Entity = spaceLandedOn.entity;
+                    if (blinkingMaterialLookup.HasComponent(spaceLandedOn.entity))
+                    {
+                        var blinking = blinkingMaterialLookup.GetRefRW(spaceLandedOn.entity);
+                        blinking.ValueRW.Value = 1f;
+                        UnityEngine.Debug.Log($"[PropertyBlinkSystem] | turning blinking on!");
+                        SystemAPI.GetSingletonRW<PreviousPropertyLandedOn>().ValueRW.Entity = spaceLandedOn.entity;
+                    }
                 }
             }
 
             // Player is moving
             var gameStateEntity = SystemAPI.GetSingletonEntity<GameStateComponent>();
-            if (gameStateLookup.DidChange(gameStateEntity, state.LastSystemVersion))
+            if (gameStateLookup.DidChange(gameStateEntity, lastSystemVersion))
             {
                 // Disable blinking.
                 var previousPropertyEntity = SystemAPI.GetSingleton<PreviousPropertyLandedOn>().Entity;
                 if (previousPropertyEntity != Entity.Null)
                 {
                     blinkingMaterialLookup.GetRefRW(previousPropertyEntity).ValueRW.Value = 0f;
+                    UnityEngine.Debug.Log($"[PropertyBlinkSystem] | turning blinking off");
                 }
             }
         }
