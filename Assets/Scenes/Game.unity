@@ -5290,6 +5290,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1548523290}
     m_Modifications:
+    - target: {fileID: 4080973840156388049, guid: 9070a3a62ed144fa4be4aa1cef45fb08, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 23c6f728fb398954489cd3553f0e6fe5, type: 2}
     - target: {fileID: 6012727763130203122, guid: 9070a3a62ed144fa4be4aa1cef45fb08, type: 3}
       propertyPath: m_LocalPosition.x
       value: -69.235535
@@ -31013,6 +31017,10 @@ PrefabInstance:
     - target: {fileID: 4306064403468807614, guid: fe1d297853f74ad45b61c918e0d5cf2c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 4322659168723640431, guid: fe1d297853f74ad45b61c918e0d5cf2c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -146.36
       objectReference: {fileID: 0}
     - target: {fileID: 4323136952815010265, guid: fe1d297853f74ad45b61c918e0d5cf2c, type: 3}
       propertyPath: m_CastShadows
