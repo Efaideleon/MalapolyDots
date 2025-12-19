@@ -24,18 +24,15 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: e669fb35ad833e9498bb6f2bdef90820, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _ALPHATEST_ON
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: TransparentCutout
+  stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -87,6 +84,8 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
+    - _blink: 0
+    - _blink345: 0
     - _building_1_slider: 1
     - _building_2_slider: 1
     - _building_3_slider: 1
