@@ -1,5 +1,6 @@
 using DOTS.DataComponents;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace DOTS.GamePlay.LandingPropertyIcons
@@ -13,7 +14,7 @@ namespace DOTS.GamePlay.LandingPropertyIcons
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
                 AddComponent(entity, new OwnerIconTag { });
                 AddComponent(entity, new UVOffsetOverride { });
-                AddComponent(entity, new UVScaleOverride { });
+                AddComponent(entity, new UVScaleOverride { Value = new float2(1f, 1f) });
             }
         }
     }
