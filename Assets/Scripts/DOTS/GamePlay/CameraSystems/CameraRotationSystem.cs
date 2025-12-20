@@ -41,6 +41,7 @@ namespace DOTS.GamePlay.CameraSystems
             state.RequireForUpdate<PivotTransformTag>();
         }
 
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
@@ -97,7 +98,7 @@ namespace DOTS.GamePlay.CameraSystems
         /// <summary>
         /// Animates the pivot to rotate to an absolute target angle in the world space. 
         /// </summary>
-        //[BurstCompile]
+        [BurstCompile]
         private partial struct AnimatePivotJob : IJobEntity
         {
             /// <summary> The entity for the pivot transform being animated.</summary>

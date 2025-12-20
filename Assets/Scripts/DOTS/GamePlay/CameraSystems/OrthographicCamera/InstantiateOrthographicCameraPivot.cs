@@ -29,6 +29,8 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
                 ComponentType.ReadOnly<OrthoCameraPivotInstanceTag>(),
             });
 
+            UnityEngine.Debug.Log($"[InstantiateOrthographicCameraPivot] | pivot position: {pivotGO.transform.position}");
+            UnityEngine.Debug.Log($"[InstantiateOrthographicCameraPivot] | pivot rotation: {pivotGO.transform.rotation}");
             state.EntityManager.SetComponentData(entity, new OrthoCameraPivotInstance { Instance = pivotGO });
             SystemAPI.SetComponent(entity, new OrthoCameraPivotInstanceTag {});
         }
