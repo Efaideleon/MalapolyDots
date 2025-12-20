@@ -1,3 +1,4 @@
+using DOTS.DataComponents;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;

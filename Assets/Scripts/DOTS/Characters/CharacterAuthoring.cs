@@ -10,6 +10,7 @@ namespace DOTS.Characters
     {
         [SerializeField] public string charName;
         [SerializeField] public float moveSpeed;
+        [SerializeField] public CharactersEnum charactersEnum;
 
         class CharactersBaker : Baker<CharacterAuthoring>
         {
@@ -33,8 +34,25 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new MoveSpeed { Value = authoring.moveSpeed });
                 AddComponent(authoringEntity, new PlayerBoardIndex { Value = 0 });
                 AddComponent(authoringEntity, new SpaceLandedOn { entity = Entity.Null });
+                AddComponent(authoringEntity, new CharactersEnumComponent { Value = authoring.charactersEnum });
             }
         }
+    }
+
+    public enum CharactersEnum
+    {
+        Default,
+        Avocado,
+        Bird,
+        Coin,
+        Coffee,
+        Tuctuc,
+        Lira
+    }
+
+    public struct CharactersEnumComponent : IComponentData
+    {
+        public CharactersEnum Value;
     }
 
     public struct SpaceLandedOn : IComponentData

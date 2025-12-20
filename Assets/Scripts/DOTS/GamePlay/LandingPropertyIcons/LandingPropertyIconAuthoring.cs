@@ -1,3 +1,4 @@
+using DOTS.DataComponents;
 using Unity.Entities;
 using UnityEngine;
 
@@ -5,20 +6,18 @@ namespace DOTS.GamePlay.LandingPropertyIcons
 {
     public class LandingPropertyIconAuthoring : MonoBehaviour
     {
-        public GameObject IconPrefab;
-
         public class LandingPropertyIconBaker : Baker<LandingPropertyIconAuthoring>
         {
             public override void Bake(LandingPropertyIconAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-                AddComponentObject(entity, new IconPrefabGameObject { IconPrefab = authoring.IconPrefab });
+                AddComponent(entity, new IconPrefabTag { });
+                AddComponent(entity, new UVOffsetOverride { });
+                AddComponent(entity, new UVScaleOverride { });
             }
         }
     }
 
-    public class IconPrefabGameObject : IComponentData
-    {
-        public GameObject IconPrefab;
-    }
+    public struct IconPrefabTag : IComponentData
+    { }
 }
