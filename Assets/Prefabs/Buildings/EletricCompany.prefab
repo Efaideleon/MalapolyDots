@@ -136,7 +136,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5959191902011700593}
-  - {fileID: 1591925325759196014}
   - {fileID: 5638695348541672951}
   - {fileID: 8980857260231167123}
   m_Father: {fileID: 0}
@@ -211,37 +210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 2d671d6a59d1a4371bf2de39d211a6e1, type: 2}
---- !u!1 &7580426182069726474
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1591925325759196014}
-  m_Layer: 0
-  m_Name: electricity_owner_icon_pos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1591925325759196014
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7580426182069726474}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -11.681265, y: -5.118041, z: -12.0513}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9045319925588921968}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4594917629687589810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -297,8 +265,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6735323581997499656}
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+--- !u!1 &8858813853867819280 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+  m_PrefabInstance: {fileID: 4594917629687589810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6735323581997499656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858813853867819280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!4 &8980857260231167123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}

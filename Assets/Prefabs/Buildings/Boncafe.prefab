@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &780444623882684695
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6156660270142489526}
-  m_Layer: 0
-  m_Name: boncafe_owner_icon_pos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6156660270142489526
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 780444623882684695}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -11.495291, y: -1.3080409, z: 2.9100075}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4681870058788402011}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2538664639944145661
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +35,6 @@ Transform:
   m_Children:
   - {fileID: 5327370218616962452}
   - {fileID: 1110609131401603175}
-  - {fileID: 6156660270142489526}
   - {fileID: 5971844604740321067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -319,13 +287,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8623185993464892088}
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
 --- !u!4 &5327370218616962452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
   m_PrefabInstance: {fileID: 759025697930664629}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5745503126620762135 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+  m_PrefabInstance: {fileID: 759025697930664629}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8623185993464892088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745503126620762135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!1001 &8433700610870939854
 PrefabInstance:
   m_ObjectHideFlags: 0

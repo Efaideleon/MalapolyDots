@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6906895359543489132
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1580066614245792011}
-  m_Layer: 0
-  m_Name: terminal_owner_icon_pos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1580066614245792011
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6906895359543489132}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.737856, y: -1.1380408, z: 0.07179642}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7237523086528732465}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8907915031007071225
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +138,6 @@ Transform:
   m_Children:
   - {fileID: 6189993824692412172}
   - {fileID: 8974603001257986017}
-  - {fileID: 1580066614245792011}
   - {fileID: 6067864265203791490}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -319,8 +287,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4307088177930412463}
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+--- !u!1 &6032000837552689807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+  m_PrefabInstance: {fileID: 1621649579453937709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4307088177930412463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6032000837552689807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!4 &6189993824692412172 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}

@@ -35,7 +35,6 @@ Transform:
   m_Children:
   - {fileID: 5389696480800882700}
   - {fileID: 4342804795092898471}
-  - {fileID: 1608072823338874264}
   - {fileID: 6100394761635210258}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -130,37 +129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.PropertySpaceAuthoring
   Data: {fileID: 11400000, guid: b54c540a84aee4f72a2e97533faab823, type: 2}
---- !u!1 &5861235276600774830
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1608072823338874264}
-  m_Layer: 0
-  m_Name: farmacia_higia_owner_icon_pos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1608072823338874264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5861235276600774830}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -7.3353786, y: -1.2980409, z: 2.2568016}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5607352598613550917}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7272188217080108085
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,13 +287,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1750282514344811724}
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
 --- !u!4 &5389696480800882700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
   m_PrefabInstance: {fileID: 696381468572329773}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5521046178277854607 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+  m_PrefabInstance: {fileID: 696381468572329773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1750282514344811724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521046178277854607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!1001 &8305257512748157943
 PrefabInstance:
   m_ObjectHideFlags: 0

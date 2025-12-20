@@ -72,7 +72,7 @@ namespace DOTS.GamePlay
                         if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLandedOnEntity))
                         {
                             // Does the property have an owner.
-                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).OwnerEntity;
+                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
                             if (ownerEntity != Entity.Null)
                             {
                                 var rent = SystemAPI.GetComponent<RentComponent>(spaceLandedOnEntity).Value;
@@ -126,7 +126,7 @@ namespace DOTS.GamePlay
                                         var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
                                         playerMoney.ValueRW.Value -= price.Value;
                                         owner.ValueRW.ID = playerID.ValueRO.Value;
-                                        ownerEntity.ValueRW.OwnerEntity = playerEntity;
+                                        ownerEntity.ValueRW.Entity = playerEntity;
 
                                         if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
                                                SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))

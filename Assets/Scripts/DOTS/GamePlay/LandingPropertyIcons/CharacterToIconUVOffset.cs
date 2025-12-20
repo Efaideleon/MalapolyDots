@@ -27,7 +27,7 @@ namespace DOTS.GamePlay.LandingPropertyIcons
 
                 var blobAssetRef = builder.CreateBlobAssetReference<CharacterToIconBlobAsset>(Allocator.Persistent);
                 AddBlobAsset(ref blobAssetRef, out var hash);
-                AddComponent(entity, new CharacterNametoIconUVMapBlobReference { map = blobAssetRef });
+                AddComponent(entity, new CharacterNametoIconUVMapBlobReference { Reference = blobAssetRef });
                 builder.Dispose();
             }
         }
@@ -40,6 +40,6 @@ namespace DOTS.GamePlay.LandingPropertyIcons
 
     public struct CharacterNametoIconUVMapBlobReference : IComponentData
     {
-        public BlobAssetReference<CharacterToIconBlobAsset> map;
+        public BlobAssetReference<CharacterToIconBlobAsset> Reference;
     }
 }

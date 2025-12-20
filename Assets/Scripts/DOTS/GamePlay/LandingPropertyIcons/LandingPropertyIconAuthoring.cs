@@ -11,13 +11,13 @@ namespace DOTS.GamePlay.LandingPropertyIcons
             public override void Bake(LandingPropertyIconAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
-                AddComponent(entity, new IconPrefabTag { });
+                AddComponent(entity, new OwnerIconTag { });
                 AddComponent(entity, new UVOffsetOverride { });
                 AddComponent(entity, new UVScaleOverride { });
             }
         }
     }
 
-    public struct IconPrefabTag : IComponentData
+    public struct OwnerIconTag : IComponentData
     { }
 }
