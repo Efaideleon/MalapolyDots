@@ -9,7 +9,7 @@ namespace DOTS.GamePlay
         private ComponentLookup<PropertySpaceTag> propertyLookup;
         private ComponentLookup<BlinkingFlagMaterialOverride> blinkingMaterialLookup;
         private ComponentLookup<GameStateComponent> gameStateLookup;
-        private BufferLookup<PlayerArrivedEventBuffer> playerArrivedBufferLookup;
+        private BufferLookup<PlayerArrivedAtDestinationEvent> playerArrivedBufferLookup;
 
         public void OnCreate(ref SystemState state)
         {
@@ -17,12 +17,12 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<BlinkingFlagMaterialOverride>();
             state.RequireForUpdate<PropertySpaceTag>();
-            state.RequireForUpdate<PlayerArrivedEventBuffer>();
+            state.RequireForUpdate<PlayerArrivedAtDestinationEvent>();
 
             blinkingMaterialLookup = SystemAPI.GetComponentLookup<BlinkingFlagMaterialOverride>();
             propertyLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
             gameStateLookup = SystemAPI.GetComponentLookup<GameStateComponent>(true);
-            playerArrivedBufferLookup = SystemAPI.GetBufferLookup<PlayerArrivedEventBuffer>(true);
+            playerArrivedBufferLookup = SystemAPI.GetBufferLookup<PlayerArrivedAtDestinationEvent>(true);
 
             state.EntityManager.CreateSingleton(new PreviousPropertyLandedOn { Entity = Entity.Null });
         }
@@ -35,7 +35,7 @@ namespace DOTS.GamePlay
             gameStateLookup.Update(ref state);
             playerArrivedBufferLookup.Update(ref state);
 
-            var arrivedBufferEntity = SystemAPI.GetSingletonEntity<PlayerArrivedEventBuffer>();
+            var arrivedBufferEntity = SystemAPI.GetSingletonEntity<PlayerArrivedAtDestinationEvent>();
             var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             var spaceLandedOn = SystemAPI.GetComponent<SpaceLandedOn>(activePlayer);
 

@@ -28,7 +28,7 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
                 AddComponent(authoringEntity, new CurrentPivotRotation { Value = quaternion.identity });
                 AddComponent(authoringEntity, new FinalArrived { Value = false });
-                AddComponent(authoringEntity, new RollCount { Value = 0 });
+                AddComponent(authoringEntity, new RemainingMoves { Value = 0 });
                 AddComponent(authoringEntity, new ReachedTargetPosition { Value = false });
                 AddComponent(authoringEntity, new TargetPosition { Value = default });
                 AddComponent(authoringEntity, new MoveSpeed { Value = authoring.moveSpeed });
@@ -70,7 +70,7 @@ namespace DOTS.Characters
         public float Value;
     }
 
-    public struct RollCount : IComponentData
+    public struct RemainingMoves : IComponentData
     {
         public int Value;
     }

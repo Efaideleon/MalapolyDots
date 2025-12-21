@@ -16,7 +16,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<PlayerWaypointIndex>();
             state.RequireForUpdate<PlayerBoardIndex>();
-            state.RequireForUpdate<PlayerArrivedEventBuffer>();
+            state.RequireForUpdate<PlayerArrivedAtDestinationEvent>();
         }
 
         [BurstCompile]
@@ -43,7 +43,7 @@ namespace DOTS.GamePlay
                 currentWaypointIndex.ValueRW.Value = targetWayPointIndex;
                 if (target.IsLandingSpot)
                 {
-                    var rollCount = SystemAPI.GetComponentRW<RollCount>(activePlayerEntity);
+                    var rollCount = SystemAPI.GetComponentRW<RemainingMoves>(activePlayerEntity);
                     rollCount.ValueRW.Value -= 1;
 
                     var playerBoardIndex = SystemAPI.GetComponentRW<PlayerBoardIndex>(activePlayerEntity);
@@ -53,7 +53,7 @@ namespace DOTS.GamePlay
                     {
                         var finalArrived = SystemAPI.GetComponentRW<FinalArrived>(activePlayerEntity);
                         finalArrived.ValueRW.Value = true;
-                        SystemAPI.GetSingletonBuffer<PlayerArrivedEventBuffer>().Add(new PlayerArrivedEventBuffer { });
+                        SystemAPI.GetSingletonBuffer<PlayerArrivedAtDestinationEvent>().Add(new PlayerArrivedAtDestinationEvent { });
 
                         moveState.ValueRW.Value = MoveState.Idle;
                     }

@@ -17,13 +17,13 @@ namespace DOTS.GamePlay.LandingPropertyIcons
                 ref var root = ref builder.ConstructRoot<CharacterToIconBlobAsset>();
                 var arrayBuilder = builder.Allocate(ref root.array, 7); 
 
-                arrayBuilder[(int)CharactersEnum.Default] = new float2(0.33f, 0);
-                arrayBuilder[(int)CharactersEnum.Avocado] = new float2(0, 0.66f);
-                arrayBuilder[(int)CharactersEnum.Coffee] = new float2(0.33f, 0.66f);
-                arrayBuilder[(int)CharactersEnum.Bird] = new float2(0.66f, 0.66f);
-                arrayBuilder[(int)CharactersEnum.Lira] = new float2(0, 0.33f);
-                arrayBuilder[(int)CharactersEnum.Tuctuc] = new float2(0.33f, 0.33f);
-                arrayBuilder[(int)CharactersEnum.Coin] = new float2(0.66f, 0.33f);
+                arrayBuilder[(int)CharactersEnum.Default] = new float2(0.33f, -0.66f);
+                arrayBuilder[(int)CharactersEnum.Avocado] = new float2(0, 0);
+                arrayBuilder[(int)CharactersEnum.Coffee] = new float2(0.33f, 0);
+                arrayBuilder[(int)CharactersEnum.Bird] = new float2(0.66f, 0);
+                arrayBuilder[(int)CharactersEnum.Lira] = new float2(0, -0.33f);
+                arrayBuilder[(int)CharactersEnum.Tuctuc] = new float2(0.33f, -0.33f);
+                arrayBuilder[(int)CharactersEnum.Coin] = new float2(0.66f, -0.33f);
 
                 var blobAssetRef = builder.CreateBlobAssetReference<CharacterToIconBlobAsset>(Allocator.Persistent);
                 AddBlobAsset(ref blobAssetRef, out var hash);

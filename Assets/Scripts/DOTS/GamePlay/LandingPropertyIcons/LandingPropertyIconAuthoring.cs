@@ -13,7 +13,7 @@ namespace DOTS.GamePlay.LandingPropertyIcons
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
                 AddComponent(entity, new OwnerIconTag { });
-                AddComponent(entity, new UVOffsetOverride { });
+                AddComponent(entity, new UVOffsetOverride { Value = new float2(0.33f, -0.66f)});
                 AddComponent(entity, new UVScaleOverride { Value = new float2(1f, 1f) });
             }
         }
