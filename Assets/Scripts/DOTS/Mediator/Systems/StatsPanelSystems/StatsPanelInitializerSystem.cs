@@ -12,12 +12,15 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
             state.RequireForUpdate<MoneyComponent>();
             state.RequireForUpdate<PanelControllers>();
             state.RequireForUpdate<CurrentPlayerID>();
+            state.RequireForUpdate<GameScreenInitializedFlag>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
+            // This system should only run when all the panel geometry has been calculated.
+            // But the first the panel needs to placed on screen.
+            // Currently No panels are screen when this system runs.
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            bool allPanelsInitialized = false;
             foreach (var (name, money) in
                     SystemAPI.Query<RefRO<NameComponent>, RefRO<MoneyComponent>>().WithChangeFilter<MoneyComponent>())
             {
@@ -32,20 +35,20 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                         };
                         panelControllers.statsPanelController.Context = newContext;
                         panelControllers.statsPanelController.InitializePanel();
-                        allPanelsInitialized = true;
                     }
                 }
             }
 
-            if (allPanelsInitialized)
-                if (panelControllers != null)
-                    if (panelControllers.statsPanelController != null)
-                    {
-                        panelControllers.statsPanelController.SelectPanel(0);
-                        panelControllers.statsPanelController.SetPanelsInitialPositions();
-                        panelControllers.statsPanelController.ShiftPanelsRegistry();
-                        state.Enabled = false;
-                    }
+            if (panelControllers?.statsPanelController != null)
+            {
+                if (panelControllers?.statsPanelController.SmallPanelsContainer.resolvedStyle.width > 0)
+                {
+                    panelControllers.statsPanelController.SelectPanel(0);
+                    panelControllers.statsPanelController.SetPanelsInitialPositions();
+                    //panelControllers.statsPanelController.ShiftPanelsRegistry();
+                    state.Enabled = false;
+                }
+            }
         }
     }
 }

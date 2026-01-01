@@ -27,7 +27,7 @@ namespace DOTS.GamePlay.PropertyAnimations
                             case TreasureAnimationType.Close:
                                 UnityEngine.Debug.Log($"[TreasureAnimationSystem] | Treasure event to close.");
                                 SystemAPI.GetComponentRW<AnimationPlayState>(currentSpace.entity).ValueRW.Value = PlayState.Playing;
-                                SystemAPI.GetComponentRW<CurrentTreasureAnimation>(currentSpace.entity).ValueRW.Value = TreasureAnimations.Close;
+                                SystemAPI.GetComponentRW<CurrentTreasureAnimation>(currentSpace.entity).ValueRW.Value = TreasureAnimation.Close;
                                 break;
                         }
                     }

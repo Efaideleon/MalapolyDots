@@ -12,7 +12,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring.ScriptableObjects
         [Tooltip("The animation should loop or not.")]
         public bool Loops;
         [Tooltip("The animation enum type.")]
-        public TreasureAnimations AnimationEnum;
+        public TreasureAnimation AnimationEnum;
 
         public AnimationData ToAnimationData()
         {

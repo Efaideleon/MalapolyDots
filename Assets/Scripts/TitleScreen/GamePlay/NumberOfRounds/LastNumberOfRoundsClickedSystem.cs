@@ -26,6 +26,7 @@ public partial struct LastNumberOfRoundsClickedSystem : ISystem
         {
             foreach (var e in eventBuffer)
             {
+                UnityEngine.Debug.Log($"[LastNumberOfRoundsClickedSystem] | e.NumberOfRounds {e.NumberOfRounds}");
                 SystemAPI.GetSingletonRW<LastNumberOfRoundsClicked>().ValueRW.Value = e.NumberOfRounds;
             }
             eventBuffer.Clear();

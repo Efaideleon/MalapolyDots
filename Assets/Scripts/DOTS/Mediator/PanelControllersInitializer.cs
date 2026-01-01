@@ -294,6 +294,7 @@ namespace DOTS.Mediator
 
             // Instantiating the Stats Panel for each player
             panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext(), characterSpriteRegistry);
+
             foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
             {
                 foreach (var character in characterBuffer)
@@ -302,6 +303,7 @@ namespace DOTS.Mediator
                     VisualElement playerNameMoneyPanelElement = tree.Instantiate();
                     PlayerNameMoneyPanel panel = new(playerNameMoneyPanelElement);
                     var characterName = character.Name.ToString();
+                    UnityEngine.Debug.Log($"[PanelControllersInitializer] | panel to register width : {panel.Root.resolvedStyle.width}");
                     panelControllers.statsPanelController.RegisterPanel(characterName, panel);
                 }
             }
@@ -353,7 +355,7 @@ namespace DOTS.Mediator
             panelControllersManager.Register(DataComponents.SpaceType.Chance, panelControllers.chancePanelController);
             panelControllersManager.Register(DataComponents.SpaceType.Parking, panelControllers.parkingPanelController);
             panelControllersManager.Register(DataComponents.SpaceType.GoToJail, panelControllers.goToJailPanelController);
-            panelControllersManager.Register(DataComponents.SpaceType.Property, panelControllers.purchasePropertyPanelController);
+            // panelControllersManager.Register(DataComponents.SpaceType.Property, panelControllers.purchasePropertyPanelController);
             panelControllersManager.Register(DataComponents.SpaceType.Treasure, panelControllers.treasurePanelController);
 
             PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);

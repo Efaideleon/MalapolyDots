@@ -51,15 +51,15 @@ public partial struct LoginSystem : ISystem
         state.EntityManager.CreateSingletonBuffer<CharacterSelectedEventBuffer>();
         state.EntityManager.CreateSingletonBuffer<NumberOfRoundsEventBuffer>();
         state.EntityManager.CreateSingletonBuffer<NumberOfPlayersEventBuffer>();
-        state.EntityManager.CreateSingleton( new IsCharacterAvailable { Value = false, CharacterSelectedButton = default });
-        state.EntityManager.CreateSingleton( new LastCharacterClicked { Value = default });
-        state.EntityManager.CreateSingleton( new NumOfPlayerPicking { Value = 1 });
-        var loginEntity = state.EntityManager.CreateEntity( stackalloc ComponentType[] 
+        state.EntityManager.CreateSingleton(new IsCharacterAvailable { Value = false, CharacterSelectedButton = default });
+        state.EntityManager.CreateSingleton(new LastCharacterClicked { Value = new CharacterButton { State = AvailableState.Unavailable, Type = Character.None } });
+        state.EntityManager.CreateSingleton(new NumOfPlayerPicking { Value = 1 });
+        var loginEntity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
         {
             ComponentType.ReadOnly<LoginData>(),
             ComponentType.ReadOnly<CharacterSelectedNameBuffer>(),
         });
-        SystemAPI.SetComponent(loginEntity, new LoginData { NumberOfRounds = default, NumberOfPlayers = default});
+        SystemAPI.SetComponent(loginEntity, new LoginData { NumberOfRounds = default, NumberOfPlayers = default });
         state.RequireForUpdate<CharacterSelectedEventBuffer>();
         state.RequireForUpdate<NumberOfRoundsEventBuffer>();
         state.RequireForUpdate<NumberOfPlayersEventBuffer>();
@@ -72,7 +72,7 @@ public partial struct LoginSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var eventBuffer in 
+        foreach (var eventBuffer in
                 SystemAPI.Query<
                     DynamicBuffer<NumberOfPlayersEventBuffer>
                 >()
@@ -90,7 +90,7 @@ public partial struct LoginSystem : ISystem
             eventBuffer.Clear();
         }
 
-        foreach (var eventBuffer in 
+        foreach (var eventBuffer in
                 SystemAPI.Query<
                     DynamicBuffer<CharacterSelectedEventBuffer>
                 >()

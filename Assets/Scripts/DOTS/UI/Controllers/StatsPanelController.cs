@@ -40,6 +40,7 @@ namespace DOTS.UI.Controllers
         public void RegisterPanel(string character, PlayerNameMoneyPanel panel)
         {
             SmallPanelsContainer.Add(panel.Root);
+            UnityEngine.Debug.Log($"[StatsPanelController] | registering panel width : {panel.Root.resolvedStyle.width}");
             StatsPanelRegistry.Add(character, panel);
         }
 
@@ -47,7 +48,7 @@ namespace DOTS.UI.Controllers
         {
             var panel = StatsPanelRegistry[Context.Name.ToString()];
             var sprite = _characterSpriteRegistry[Context.Name.ToString()];
-            _statsPanelsPositionsCalculator.CalculatePanelPosition(panel.Root);
+            _statsPanelsPositionsCalculator.AddPanel(panel.Root);
             panel.SetSprite(sprite);
             panel.UpdatePlayerNameLabelText(Context.Name.ToString());
             panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
@@ -55,10 +56,12 @@ namespace DOTS.UI.Controllers
 
         public void SetPanelsInitialPositions()
         {
+            _statsPanelsPositionsCalculator.CalculatePositions();
             int idx = StatsPanelRegistry.Count - 1;
             foreach (var kvp in StatsPanelRegistry)
             {
                 var panel = kvp.Value;
+                UnityEngine.Debug.Log($"[StatsPanelController] | panel Width: {panel.Root.resolvedStyle.width}");
                 if (idx == StatsPanelRegistry.Count - 1)
                     TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
                 else
@@ -108,9 +111,9 @@ namespace DOTS.UI.Controllers
             SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
 
-        private void TranslatePanel<T>(PlayerNameMoneyPanel panel, T value, Func<T, PanelPositionTopRight> GetPosition)
+        private void TranslatePanel<T>(PlayerNameMoneyPanel panel, T value, Func<T, OffsetFromTopRight> GetPosition)
         {
-            PanelPositionTopRight position = GetPosition(value);
+            OffsetFromTopRight position = GetPosition(value);
             panel.Root.style.translate = new Translate(-position.Right, position.Top);
         }
 

@@ -1,4 +1,5 @@
 using DOTS.GamePlay;
+using DOTS.Mediator.Authoring;
 using Unity.Entities;
 
 namespace DOTS.Mediator.Systems.TreasurePanelSystems

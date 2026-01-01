@@ -2,28 +2,23 @@ using DOTS.Mediator.PanelScriptableObjects;
 using Unity.Entities;
 using UnityEngine;
 
-namespace DOTS.Mediator
+namespace DOTS.Mediator.Authoring
 {
-    public class UIPanelsAuthoring : MonoBehaviour
+    public class PurchasePanelAuthoring : MonoBehaviour
     {
-        public TreasurePanelSO treasurePanelSO;
         public PurchasePropertyPanelSO purchasePropertyPanelSO;
-
-        public class UIPanelsBaker : Baker<UIPanelsAuthoring>
+        public class PurchasePanelBaker : Baker<PurchasePanelAuthoring>
         {
-            public override void Bake(UIPanelsAuthoring authoring)
+            public override void Bake(PurchasePanelAuthoring authoring)
             {
                 var panelEntity = GetEntity(authoring, TransformUsageFlags.None);
-                AddComponentObject(panelEntity, new TreasurePanelData { Panel = authoring.treasurePanelSO });
                 AddComponentObject(panelEntity, new PurchasePropertyPanelData { Panel = authoring.purchasePropertyPanelSO });
+                AddComponent(panelEntity, new PurchasePropertyPanelTag { });
             }
         }
     }
-
-    public class TreasurePanelData : IComponentData
-    {
-        public TreasurePanelSO Panel;
-    }
+    public struct PurchasePropertyPanelTag : IComponentData
+    { }
 
     public class PurchasePropertyPanelData : IComponentData
     {

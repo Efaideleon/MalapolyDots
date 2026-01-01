@@ -68,22 +68,33 @@ public partial struct ScreenChangeSystem : ISystem
                         }
                         break;
                     case ScreenType.CharacterSelection:
-                        var characterSelected = SystemAPI.GetSingleton<LastCharacterClicked>().Value;
-                        if (characterSelected.State == AvailableState.Available)
+                        // Last character clicked must be cleared after it gets confirmed.
+                        ref var characterSelected = ref SystemAPI.GetSingletonRW<LastCharacterClicked>().ValueRW;
+
+                        // If the character is not available, do nothing.
+                        if (characterSelected.Value.State != AvailableState.Available)
+                            break;
+
+                        // Assume NumOfPlayerPicking is initialized to 1.
+                        var currPlayerNum = SystemAPI.GetSingletonRW<NumOfPlayerPicking>();
+                        var totalNumOfPlayers = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
+
+                        bool isLastPlayerPicking = currPlayerNum.ValueRO.Value >= totalNumOfPlayers;
+
+                        // Confirm the character selection.
+                        currPlayerNum.ValueRW.Value += 1;
+                        SystemAPI.GetSingletonBuffer<ConfirmButtonEventBuffer>()
+                            .Add(new ConfirmButtonEventBuffer { character = characterSelected.Value.Type });
+
+                        // Clear the LastCharacterClicked
+                        characterSelected.Value.Type = Character.None;
+                        characterSelected.Value.State = AvailableState.Unavailable;
+
+                        // If it's the last player picking, go the next screen.
+                        if (isLastPlayerPicking)
                         {
-                            var currPlayerNum = SystemAPI.GetSingletonRW<NumOfPlayerPicking>();
-                            var totalNumOfPlayers = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
-                            if (currPlayerNum.ValueRO.Value < totalNumOfPlayers + 1)
-                            {
-                                currPlayerNum.ValueRW.Value += 1;
-                                SystemAPI.GetSingletonBuffer<ConfirmButtonEventBuffer>()
-                                    .Add(new ConfirmButtonEventBuffer{ character = characterSelected.Type });
-                            }
-                            if (currPlayerNum.ValueRW.Value == totalNumOfPlayers + 1)
-                            {
-                                titleScreenControllers.CharacterSelectionControler.HideScreen();
-                                titleScreenControllers.NumOfRoundsController.ShowScreen();
-                            }
+                            titleScreenControllers.CharacterSelectionControler.HideScreen();
+                            titleScreenControllers.NumOfRoundsController.ShowScreen();
                         }
                         break;
                     case ScreenType.NumOfRounds:
