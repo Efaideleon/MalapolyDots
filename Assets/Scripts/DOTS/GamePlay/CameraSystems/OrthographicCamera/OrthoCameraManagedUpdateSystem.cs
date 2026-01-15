@@ -1,3 +1,5 @@
+using DOTS.GamePlay.CameraSystems.Components;
+using Input;
 using Unity.Entities;
 using UnityEngine;
 
@@ -7,7 +9,7 @@ using UnityEngine;
 // ======================================================================
 
 #nullable enable
-namespace DOTS.GamePlay.CameraSystems
+namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 {
     ///<summary>
     ///This system uses and updates managed properties from the `Camera.main`.

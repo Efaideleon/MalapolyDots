@@ -1,5 +1,6 @@
-using Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents;
 using DOTS.UI.Panels;
+using DOTS.UI.Panels.HideAndShowPanelStateMachineComponents;
+using DOTS.UI.Panels.Interfaces;
 using DOTS.UI.Utilities.UIButtonEvents;
 using UnityEngine.UIElements;
 

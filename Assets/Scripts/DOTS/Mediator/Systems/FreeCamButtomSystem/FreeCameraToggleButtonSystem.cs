@@ -1,10 +1,10 @@
 using System;
-using DOTS.GamePlay.CameraSystems;
+using DOTS.GamePlay.CameraSystems.Components;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DOTS.Mediator.Systems
+namespace DOTS.Mediator.Systems.FreeCamButtomSystem
 {
     internal class ButtonManagedData : IComponentData
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 // This system initializes the components for camera properties to be used by others DOTS systems
 // It does NOT get the a reference to the actual Camera in the scene.
 // ============================================================================================
-namespace DOTS.GamePlay.CameraSystems
+namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 {
     public struct MainCameraTransform : IComponentData
     {

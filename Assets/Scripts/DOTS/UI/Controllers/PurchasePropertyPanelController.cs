@@ -1,6 +1,7 @@
 using System;
 using DOTS.EventBuses;
 using DOTS.UI.Panels;
+using DOTS.UI.Panels.Interfaces;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;

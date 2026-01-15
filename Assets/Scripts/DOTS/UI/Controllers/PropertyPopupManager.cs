@@ -1,7 +1,8 @@
 using DOTS.Constants;
 using DOTS.DataComponents;
+using DOTS.UI.Panels;
 
-namespace DOTS.UI.Panels
+namespace DOTS.UI.Controllers
 {
     public struct PropertyPopupManagerContext
     {

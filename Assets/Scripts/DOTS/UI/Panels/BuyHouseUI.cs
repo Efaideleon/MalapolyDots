@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using Unity.Collections;
-using UnityEngine.UIElements;
-
-namespace Assets.Scripts.DOTS.UI.UIPanels
+namespace DOTS.UI.Panels
 {
     // Legacy code
     /*

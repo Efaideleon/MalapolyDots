@@ -1,48 +1,52 @@
 using System;
-using Assets.Scripts.DOTS.UI.Panels.StateMachineUtilities;
+using DOTS.UI.Panels.Interfaces;
+using DOTS.UI.Panels.StateMachineUtilities;
 
-public class ShowPanelState : State
+namespace DOTS.UI.Panels.HideAndShowPanelStateMachineComponents.States
 {
-    private readonly IPanel _panel; 
-    public bool IsPlaying = false; 
-    public Action OnFinishedPlaying;
-    public bool _isCurrentState = false;
-
-    public ShowPanelState(IPanel panel)
-    { 
-        _panel = panel;
-    }
-
-    public void UpdateIsPlaying(bool value)
+    public class ShowPanelState : State
     {
-        if (_isCurrentState)
-        {
-            IsPlaying = value;
+        private readonly IPanel _panel; 
+        public bool IsPlaying = false; 
+        public Action OnFinishedPlaying;
+        public bool _isCurrentState = false;
+
+        public ShowPanelState(IPanel panel)
+        { 
+            _panel = panel;
         }
-    }
 
-    public override void Enter()
-    {
-#if UNITY_EDITOR
-        UnityEngine.Debug.Log("[ShowPanelState] | Entering ShowState");
-#endif
-        IsPlaying = true;
-        _isCurrentState = true;
-    }
+        public void UpdateIsPlaying(bool value)
+        {
+            if (_isCurrentState)
+            {
+                IsPlaying = value;
+            }
+        }
 
-    public override void Execute()
-    {
+        public override void Enter()
+        {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("[ShowPanelState] | Executing ShowState");
+            UnityEngine.Debug.Log("[ShowPanelState] | Entering ShowState");
 #endif
-        _panel.Show();
-    }
+            IsPlaying = true;
+            _isCurrentState = true;
+        }
 
-    public override void Exit()
-    {
+        public override void Execute()
+        {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("[ShowPanelState] | Exiting ShowState");
+            UnityEngine.Debug.Log("[ShowPanelState] | Executing ShowState");
 #endif
-        _isCurrentState = false;
+            _panel.Show();
+        }
+
+        public override void Exit()
+        {
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log("[ShowPanelState] | Exiting ShowState");
+#endif
+            _isCurrentState = false;
+        }
     }
 }

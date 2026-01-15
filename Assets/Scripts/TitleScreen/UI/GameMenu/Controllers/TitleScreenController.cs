@@ -1,34 +1,38 @@
+using TitleScreen.GamePlay;
 using Unity.Entities;
 
-public class TitleScreenController
+namespace TitleScreen.UI.GameMenu.Controllers
 {
-    public TitleScreen Screen {get; private set; }
-    private EntityQuery _changeScreenQuery;
-
-    public TitleScreenController(TitleScreen screen)
+    public class TitleScreenController
     {
-        Screen = screen;
-        SubscribeEvents();
-    }
+        public TitleScreen Screen {get; private set; }
+        private EntityQuery _changeScreenQuery;
 
-    public void SetChangeScreenEventBufferQuery(EntityQuery query) => _changeScreenQuery = query; 
-    public void ShowScreen() => Screen.Show();
-    public void HideScreen() => Screen.Hide();
+        public TitleScreenController(TitleScreen screen)
+        {
+            Screen = screen;
+            SubscribeEvents();
+        }
 
-    private void SubscribeEvents()
-    {
-        Screen.StartButton.clickable.clicked += DispatchScreenChangeEvent;
-    }
+        public void SetChangeScreenEventBufferQuery(EntityQuery query) => _changeScreenQuery = query; 
+        public void ShowScreen() => Screen.Show();
+        public void HideScreen() => Screen.Hide();
 
-    private void DispatchScreenChangeEvent()
-    {
-        if (_changeScreenQuery != null)
-            _changeScreenQuery.GetSingletonBuffer<ChangeScreenEventBuffer>()
-                .Add(new ChangeScreenEventBuffer { ScreenType = ScreenType.Title });
-    }
+        private void SubscribeEvents()
+        {
+            Screen.StartButton.clickable.clicked += DispatchScreenChangeEvent;
+        }
 
-    public void Dispose()
-    {
-        Screen.StartButton.clickable.clicked -= DispatchScreenChangeEvent;
+        private void DispatchScreenChangeEvent()
+        {
+            if (_changeScreenQuery != null)
+                _changeScreenQuery.GetSingletonBuffer<ChangeScreenEventBuffer>()
+                    .Add(new ChangeScreenEventBuffer { ScreenType = ScreenType.Title });
+        }
+
+        public void Dispose()
+        {
+            Screen.StartButton.clickable.clicked -= DispatchScreenChangeEvent;
+        }
     }
 }

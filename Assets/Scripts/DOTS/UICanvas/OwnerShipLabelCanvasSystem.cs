@@ -6,76 +6,76 @@ using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 
-#nullable enable
-using UnityObject = UnityEngine.Object;
-
-public class LabelGOsComponent : IComponentData
+namespace DOTS.UICanvas
 {
-    public Dictionary<FixedString64Bytes, GameObject>? GameObjects;
-}
-
-public class CanvasGORef : IComponentData
-{
-    public GameObject? CanvasGO;
-}
-
-public partial struct OwnerShipLabelCanvasSystem : ISystem, ISystemStartStop
-{
-    public void OnCreate(ref SystemState state)
+    public class LabelGOsComponent : IComponentData
     {
-        state.RequireForUpdate<OwnerShipLabelCanvasReference>();
-        state.RequireForUpdate<PropertySpaceTag>();
-        state.RequireForUpdate<LabelGOsComponent>();
-        state.RequireForUpdate<CanvasGORef>();
-        state.EntityManager.CreateSingleton(new LabelGOsComponent { GameObjects = new() });
-        state.EntityManager.CreateSingleton(new CanvasGORef { CanvasGO = null });
+        public Dictionary<FixedString64Bytes, GameObject>? GameObjects;
     }
 
-    public void OnStartRunning(ref SystemState state)
+    public class CanvasGORef : IComponentData
     {
-        var canvasRef = SystemAPI.ManagedAPI.GetSingleton<OwnerShipLabelCanvasReference>();
-        if (canvasRef == null)
-            return;
+        public GameObject? CanvasGO;
+    }
 
-        if (canvasRef.CanvasGO == null || canvasRef.LabelGO == null)
-            return;
-
-        var canvasGO = UnityObject.Instantiate(canvasRef.CanvasGO);
-        SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>().CanvasGO = canvasGO;
-
-        var labelGOsRef = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>(); 
-        foreach (var (name, _) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PropertySpaceTag>>())
+    public partial struct OwnerShipLabelCanvasSystem : ISystem, ISystemStartStop
+    {
+        public void OnCreate(ref SystemState state)
         {
-            var labelGO = UnityObject.Instantiate(canvasRef.LabelGO, canvasGO.transform);
-            labelGO.SetActive(false);
-            labelGOsRef?.GameObjects?.Add(name.ValueRO.Value, labelGO);
+            state.RequireForUpdate<OwnerShipLabelCanvasReference>();
+            state.RequireForUpdate<PropertySpaceTag>();
+            state.RequireForUpdate<LabelGOsComponent>();
+            state.RequireForUpdate<CanvasGORef>();
+            state.EntityManager.CreateSingleton(new LabelGOsComponent { GameObjects = new() });
+            state.EntityManager.CreateSingleton(new CanvasGORef { CanvasGO = null });
         }
-    }
 
-    public void OnUpdate(ref SystemState state)
-    {
-        if (Camera.main == null) return;
-        var canvasGO = SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>();
-        if (canvasGO.CanvasGO != null)
+        public void OnStartRunning(ref SystemState state)
         {
-            var labelGOs = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>().GameObjects;
-            var canvas = canvasGO.CanvasGO.GetComponent<Canvas>();
-            foreach (var (name, transfrom, _) in SystemAPI.Query<RefRO<NameComponent>, RefRO<LocalTransform>, RefRO<PropertySpaceTag>>())
+            var canvasRef = SystemAPI.ManagedAPI.GetSingleton<OwnerShipLabelCanvasReference>();
+            if (canvasRef == null)
+                return;
+
+            if (canvasRef.CanvasGO == null || canvasRef.LabelGO == null)
+                return;
+
+            var canvasGO = Object.Instantiate(canvasRef.CanvasGO);
+            SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>().CanvasGO = canvasGO;
+
+            var labelGOsRef = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>(); 
+            foreach (var (name, _) in SystemAPI.Query<RefRO<NameComponent>, RefRO<PropertySpaceTag>>())
             {
-                RectTransform canvasRect = canvasGO.CanvasGO.GetComponent<RectTransform>();
-                RectTransform labelRect = labelGOs[name.ValueRO.Value].GetComponent<RectTransform>();
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                var labelGO = Object.Instantiate(canvasRef.LabelGO, canvasGO.transform);
+                labelGO.SetActive(false);
+                labelGOsRef?.GameObjects?.Add(name.ValueRO.Value, labelGO);
+            }
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            if (Camera.main == null) return;
+            var canvasGO = SystemAPI.ManagedAPI.GetSingleton<CanvasGORef>();
+            if (canvasGO.CanvasGO != null)
+            {
+                var labelGOs = SystemAPI.ManagedAPI.GetSingleton<LabelGOsComponent>().GameObjects;
+                var canvas = canvasGO.CanvasGO.GetComponent<Canvas>();
+                foreach (var (name, transfrom, _) in SystemAPI.Query<RefRO<NameComponent>, RefRO<LocalTransform>, RefRO<PropertySpaceTag>>())
+                {
+                    RectTransform canvasRect = canvasGO.CanvasGO.GetComponent<RectTransform>();
+                    RectTransform labelRect = labelGOs[name.ValueRO.Value].GetComponent<RectTransform>();
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(
                         canvasRect, Camera.main.WorldToScreenPoint(transfrom.ValueRO.Position),
                         canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
                         out var localPoint);
-                var currentLocalPoint = localPoint;
-                labelRect.anchoredPosition = new Vector2(currentLocalPoint.x, currentLocalPoint.y + 30);
-                // labelRect.anchoredPosition = localPoint; 
+                    var currentLocalPoint = localPoint;
+                    labelRect.anchoredPosition = new Vector2(currentLocalPoint.x, currentLocalPoint.y + 30);
+                    // labelRect.anchoredPosition = localPoint; 
+                }
+                //state.Enabled = true; // TODO: enable when the camera follows the player
             }
-            //state.Enabled = true; // TODO: enable when the camera follows the player
         }
-    }
 
-    public void OnStopRunning(ref SystemState state)
-    { }
+        public void OnStopRunning(ref SystemState state)
+        { }
+    }
 }

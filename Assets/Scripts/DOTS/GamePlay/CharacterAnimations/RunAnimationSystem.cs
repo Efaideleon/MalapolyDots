@@ -18,7 +18,7 @@ namespace DOTS.GamePlay.CharacterAnimations
         {
             float dt = SystemAPI.Time.DeltaTime;
 
-            new CharacterAnimationJob { dt = dt }.ScheduleParallel();
+            //new CharacterAnimationJob { dt = dt }.ScheduleParallel();
             new TreasureAnimationJob { dt = dt }.ScheduleParallel();
         }
 
@@ -32,12 +32,14 @@ namespace DOTS.GamePlay.CharacterAnimations
             {
                 if (playState.Value == PlayState.Finished) return;
                 ref var clips = ref animationLibrary.AnimationDataBlobRef.Value.Clips;
-                if ((int)TreasureAnimations.Open >= clips.Length) return;
 
-                if (PlayAnimation(ref frame.Value, clips[(int)animation.Value], in dt, resets: true, PlayDirection.Forward))
-                {
-                    playState.Value = PlayState.Finished;
-                }
+                // ?????
+                // if ((int)CharacterAnimation.Idle >= clips.Length) return;
+                //
+                // if (PlayAnimation(ref frame.Value, clips[(int)animation.Value], in dt, resets: true, PlayDirection.Forward))
+                // {
+                //     playState.Value = PlayState.Finished;
+                // }
             }
         }
 
@@ -52,22 +54,22 @@ namespace DOTS.GamePlay.CharacterAnimations
                 if (playState.Value == PlayState.Finished) return;
 
                 ref var clips = ref animationLibrary.AnimationDataBlobRef.Value.Clips;
-                if ((int)TreasureAnimations.Open > clips.Length) return;
+                // if ((int)TreasureAnimation.Open > clips.Length) return;
 
                 switch (animation.Value)
                 {
-                    case TreasureAnimations.Open:
-                        if (PlayAnimation(ref frame.Value, clips[(int)TreasureAnimations.Open], in dt, resets: false, PlayDirection.Forward))
-                        {
-                            playState.Value = PlayState.Finished;
-                        }
-                        break;
-                    case TreasureAnimations.Close:
-                        if (PlayAnimation(ref frame.Value, clips[(int)TreasureAnimations.Open], in dt, resets: false, PlayDirection.Reverse))
-                        {
-                            playState.Value = PlayState.Finished;
-                        }
-                        break;
+                    // case TreasureAnimation.Open:
+                    //     if (PlayAnimation(ref frame.Value, clips[(int)TreasureAnimation.Open], in dt, resets: false, PlayDirection.Forward))
+                    //     {
+                    //         playState.Value = PlayState.Finished;
+                    //     }
+                    //     break;
+                    // case TreasureAnimation.Close:
+                    //     if (PlayAnimation(ref frame.Value, clips[(int)TreasureAnimation.Open], in dt, resets: false, PlayDirection.Reverse))
+                    //     {
+                    //         playState.Value = PlayState.Finished;
+                    //     }
+                    //     break;
                 }
             }
         }

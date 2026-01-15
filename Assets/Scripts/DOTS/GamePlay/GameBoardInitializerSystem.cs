@@ -1,5 +1,7 @@
 using DOTS.Characters;
 using DOTS.DataComponents;
+using TitleScreen.GamePlay;
+using TitleScreen.SceneManager;
 using Unity.Burst;
 using Unity.Entities;
 

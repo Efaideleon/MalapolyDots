@@ -1,14 +1,14 @@
 using Unity.Entities;
 using UnityEngine;
 
-public struct ABLESTUFF
-{
-    public string PetName;
-}
-
-#nullable enable
 namespace DOTS.Characters
 {
+    public struct ABLESTUFF
+    {
+        public string PetName;
+    }
+
+#nullable enable
     public class CharactersAuthoring : MonoBehaviour
     {
         private ABLESTUFF a = new ABLESTUFF { PetName = null };

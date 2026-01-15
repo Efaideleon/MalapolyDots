@@ -1,48 +1,52 @@
 using System;
-using Assets.Scripts.DOTS.UI.Panels.StateMachineUtilities;
+using DOTS.UI.Panels.Interfaces;
+using DOTS.UI.Panels.StateMachineUtilities;
 
-public class HidePanelState : State
+namespace DOTS.UI.Panels.HideAndShowPanelStateMachineComponents.States
 {
-    private readonly IPanel _panel; 
-    public bool IsPlaying = false; 
-    public Action OnFinishedPlaying;
-    public bool _isCurrentState = false;
-
-    public HidePanelState(IPanel panel)
-    { 
-        _panel = panel;
-    }
-
-    public void UpdateIsPlaying(bool value)
+    public class HidePanelState : State
     {
-        if (_isCurrentState)
-        {
-            IsPlaying = value;
+        private readonly IPanel _panel; 
+        public bool IsPlaying = false; 
+        public Action OnFinishedPlaying;
+        public bool _isCurrentState = false;
+
+        public HidePanelState(IPanel panel)
+        { 
+            _panel = panel;
         }
-    }
 
-    public override void Enter()
-    {
-#if UNITY_EDITOR
-        UnityEngine.Debug.Log("[HidePanelState] | Entering HideState");
-#endif
-        _isCurrentState = true;
-        IsPlaying = true;
-    }
+        public void UpdateIsPlaying(bool value)
+        {
+            if (_isCurrentState)
+            {
+                IsPlaying = value;
+            }
+        }
 
-    public override void Execute()
-    {
+        public override void Enter()
+        {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("[HidePanelState] | Executing HideState");
+            UnityEngine.Debug.Log("[HidePanelState] | Entering HideState");
 #endif
-        _panel.Hide();
-    }
+            _isCurrentState = true;
+            IsPlaying = true;
+        }
 
-    public override void Exit()
-    {
+        public override void Execute()
+        {
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("[HidePanelState] | Exiting HideState");
+            UnityEngine.Debug.Log("[HidePanelState] | Executing HideState");
 #endif
-        _isCurrentState = false;
+            _panel.Hide();
+        }
+
+        public override void Exit()
+        {
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log("[HidePanelState] | Exiting HideState");
+#endif
+            _isCurrentState = false;
+        }
     }
 }

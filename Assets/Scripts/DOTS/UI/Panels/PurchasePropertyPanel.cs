@@ -1,4 +1,5 @@
 using UnityEngine.UIElements;
+using IPanel = DOTS.UI.Panels.Interfaces.IPanel;
 
 namespace DOTS.UI.Panels
 {

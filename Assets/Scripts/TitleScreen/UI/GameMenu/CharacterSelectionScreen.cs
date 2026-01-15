@@ -1,8 +1,9 @@
-﻿using Unity.Collections;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
-public class CharacterSelectionScreen
+namespace TitleScreen.UI.GameMenu
 {
+    public class CharacterSelectionScreen
+    {
         private readonly VisualElement _root;
         public Button[] CharButtons = new Button[6];
         private readonly string[] _characterButtonsClassNames = 
@@ -30,4 +31,5 @@ public class CharacterSelectionScreen
 
         public void Hide() => _root.style.display = DisplayStyle.None;
         public void Show() => _root.style.display = DisplayStyle.Flex;
+    }
 }

@@ -2,17 +2,20 @@
 // **Camera Panning System**
 // * Pans the camera by dragging finger on floor.
 // ========================================================================
-using DOTS.GamePlay.CameraSystems;
+
+using DOTS.EventBuses;
+using DOTS.GamePlay.CameraSystems.Components;
+using DOTS.GamePlay.CameraSystems.OrthographicCamera;
+using Input;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 using RaycastHit = Unity.Physics.RaycastHit;
 
-namespace DOTS.GamePlay
+namespace DOTS.GamePlay.CameraSystems
 {
     public struct CameraPanState : IComponentData
     {

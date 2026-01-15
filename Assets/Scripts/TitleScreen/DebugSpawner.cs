@@ -1,21 +1,24 @@
 using Unity.Collections;
 using Unity.Entities;
 
-public partial struct DebugSpawner : ISystem
+namespace TitleScreen
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct DebugSpawner : ISystem
     {
-        state.RequireForUpdate<DebugStruct>();
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        EntityCommandBuffer ecb = new(Allocator.Temp);
-        foreach ( var (_, entity) in SystemAPI.Query<RefRO<DebugStruct>>().WithEntityAccess())
+        public void OnCreate(ref SystemState state)
         {
-            var instance = ecb.Instantiate(entity);
+            state.RequireForUpdate<DebugStruct>();
         }
-        ecb.Playback(state.EntityManager);
-        state.Enabled = false;
+
+        public void OnUpdate(ref SystemState state)
+        {
+            EntityCommandBuffer ecb = new(Allocator.Temp);
+            foreach ( var (_, entity) in SystemAPI.Query<RefRO<DebugStruct>>().WithEntityAccess())
+            {
+                var instance = ecb.Instantiate(entity);
+            }
+            ecb.Playback(state.EntityManager);
+            state.Enabled = false;
+        }
     }
 }

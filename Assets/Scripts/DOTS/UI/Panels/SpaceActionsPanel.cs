@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UIElements;
+using IPanel = DOTS.UI.Panels.Interfaces.IPanel;
 
 namespace DOTS.UI.Panels
 {

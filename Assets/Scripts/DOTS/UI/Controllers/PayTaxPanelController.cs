@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DOTS.UI.Panels;
+using DOTS.UI.Panels.Interfaces;
 using DOTS.UI.Utilities.UIButtonEvents;
 
 namespace DOTS.UI.Controllers

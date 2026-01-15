@@ -1,6 +1,7 @@
+using TitleScreen.UI.GameMenu.Controllers;
 using UnityEngine.UIElements;
 
-namespace UI.GameMenu
+namespace TitleScreen.UI.GameMenu
 {
     public readonly struct ButtonPlayerData
     {

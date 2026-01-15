@@ -7,20 +7,20 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct variableName : ISystem
     {
-        public BufferLookup<PlayerArrivedEventBuffer> playerArrivedEventBufferLookup;
+        public BufferLookup<PlayerArrivedAtDestinationEvent> playerArrivedEventBufferLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingletonBuffer<PlayerArrivedEventBuffer>();
-            playerArrivedEventBufferLookup = SystemAPI.GetBufferLookup<PlayerArrivedEventBuffer>();
+            state.EntityManager.CreateSingletonBuffer<PlayerArrivedAtDestinationEvent>();
+            playerArrivedEventBufferLookup = SystemAPI.GetBufferLookup<PlayerArrivedAtDestinationEvent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             playerArrivedEventBufferLookup.Update(ref state);
-            var bufferEntity = SystemAPI.GetSingletonEntity<PlayerArrivedEventBuffer>();
+            var bufferEntity = SystemAPI.GetSingletonEntity<PlayerArrivedAtDestinationEvent>();
             if (playerArrivedEventBufferLookup.DidChange(bufferEntity, state.LastSystemVersion))
             {
                 playerArrivedEventBufferLookup[bufferEntity].Clear();
@@ -28,6 +28,6 @@ namespace DOTS.GamePlay
         }
     }
 
-    public struct PlayerArrivedEventBuffer : IBufferElementData
+    public struct PlayerArrivedAtDestinationEvent : IBufferElementData
     { }
 }

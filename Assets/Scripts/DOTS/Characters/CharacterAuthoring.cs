@@ -1,3 +1,5 @@
+using Assets.Scripts.DOTS.DataComponents;
+using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.DataComponents;
 using DOTS.GameData;
 using Unity.Entities;
@@ -10,6 +12,7 @@ namespace DOTS.Characters
     {
         [SerializeField] public string charName;
         [SerializeField] public float moveSpeed;
+        [SerializeField] public CharactersEnum charactersEnum;
 
         class CharactersBaker : Baker<CharacterAuthoring>
         {
@@ -27,14 +30,21 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
                 AddComponent(authoringEntity, new CurrentPivotRotation { Value = quaternion.identity });
                 AddComponent(authoringEntity, new FinalArrived { Value = false });
-                AddComponent(authoringEntity, new RollCount { Value = 0 });
+                AddComponent(authoringEntity, new RemainingMoves { Value = 0 });
                 AddComponent(authoringEntity, new ReachedTargetPosition { Value = false });
                 AddComponent(authoringEntity, new TargetPosition { Value = default });
                 AddComponent(authoringEntity, new MoveSpeed { Value = authoring.moveSpeed });
                 AddComponent(authoringEntity, new PlayerBoardIndex { Value = 0 });
                 AddComponent(authoringEntity, new SpaceLandedOn { entity = Entity.Null });
+                AddComponent(authoringEntity, new CharactersEnumComponent { Value = authoring.charactersEnum });
+
             }
         }
+    }
+
+    public struct CharactersEnumComponent : IComponentData
+    {
+        public CharactersEnum Value;
     }
 
     public struct SpaceLandedOn : IComponentData
@@ -47,12 +57,12 @@ namespace DOTS.Characters
         public int Value;
     }
 
-    public struct MoveSpeed: IComponentData
+    public struct MoveSpeed : IComponentData
     {
         public float Value;
     }
 
-    public struct RollCount : IComponentData
+    public struct RemainingMoves : IComponentData
     {
         public int Value;
     }
@@ -67,7 +77,7 @@ namespace DOTS.Characters
         public bool Value;
     }
 
-    public struct ReachedTargetPosition: IComponentData
+    public struct ReachedTargetPosition : IComponentData
     {
         public bool Value;
     }

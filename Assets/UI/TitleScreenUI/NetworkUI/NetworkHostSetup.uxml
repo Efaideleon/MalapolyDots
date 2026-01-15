@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Label text="Rules " name="TitleLabel" style="-unity-text-align: upper-center; font-size: 18px; -unity-font-style: bold;"/>
+    <ui:DropdownField label="Number of Players:" name="NumOfPlayersDropdownField" choices="1,2,3,4,5,6" style="font-size: 18px; -unity-font-style: bold;"/>
+    <ui:DropdownField label="Number of Rounds:" name="NumOfRoundsDropdownField" choices="8,10,12" style="font-size: 18px; -unity-font-style: bold;"/>
+    <ui:Button text="Start Hosting" name="StartHostingButton"/>
+</ui:UXML>

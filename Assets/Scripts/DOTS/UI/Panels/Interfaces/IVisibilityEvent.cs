@@ -1,4 +1,7 @@
-public interface IVisibilityEvent
+namespace DOTS.UI.Panels.Interfaces
 {
-    public void Execute();
+    public interface IVisibilityEvent
+    {
+        public void Execute();
+    }
 }

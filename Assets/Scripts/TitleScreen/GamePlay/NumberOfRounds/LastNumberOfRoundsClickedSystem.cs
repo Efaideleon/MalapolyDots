@@ -1,34 +1,38 @@
 using Unity.Burst;
 using Unity.Entities;
 
-public struct LastNumberOfRoundsClicked : IComponentData
+namespace TitleScreen.GamePlay.NumberOfRounds
 {
-    public int Value;
-}
-
-[BurstCompile]
-public partial struct LastNumberOfRoundsClickedSystem : ISystem
-{
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
+    public struct LastNumberOfRoundsClicked : IComponentData
     {
-        state.EntityManager.CreateSingleton<LastNumberOfRoundsClicked>();
+        public int Value;
     }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    public partial struct LastNumberOfRoundsClickedSystem : ISystem
     {
-        foreach (var eventBuffer in 
-                SystemAPI.Query<
-                    DynamicBuffer<NumberOfRoundsEventBuffer>
-                >()
-                .WithChangeFilter<NumberOfRoundsEventBuffer>())
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            foreach (var e in eventBuffer)
+            state.EntityManager.CreateSingleton<LastNumberOfRoundsClicked>();
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var eventBuffer in 
+                     SystemAPI.Query<
+                             DynamicBuffer<NumberOfRoundsEventBuffer>
+                         >()
+                         .WithChangeFilter<NumberOfRoundsEventBuffer>())
             {
-                SystemAPI.GetSingletonRW<LastNumberOfRoundsClicked>().ValueRW.Value = e.NumberOfRounds;
+                foreach (var e in eventBuffer)
+                {
+                    UnityEngine.Debug.Log($"[LastNumberOfRoundsClickedSystem] | e.NumberOfRounds {e.NumberOfRounds}");
+                    SystemAPI.GetSingletonRW<LastNumberOfRoundsClicked>().ValueRW.Value = e.NumberOfRounds;
+                }
+                eventBuffer.Clear();
             }
-            eventBuffer.Clear();
         }
     }
 }

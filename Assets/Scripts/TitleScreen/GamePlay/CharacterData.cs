@@ -1,23 +1,26 @@
-public enum Character
+namespace TitleScreen.GamePlay
 {
-    None,
-    Avocado,
-    Bird,
-    Coin,
-    Lira,
-    Mug,
-    TucTuc
-}
-
-public static class CharacterData
-{
-    public static readonly Character[] AllCharacters = new []
+    public enum Character
     {
-        Character.Avocado,
-        Character.Bird,
-        Character.Coin,
-        Character.Lira,
-        Character.Mug,
-        Character.TucTuc,
-    };
+        None,
+        Avocado,
+        Bird,
+        Coin,
+        Lira,
+        Mug,
+        TucTuc
+    }
+
+    public static class CharacterData
+    {
+        public static readonly Character[] AllCharacters = new []
+        {
+            Character.Avocado,
+            Character.Bird,
+            Character.Coin,
+            Character.Lira,
+            Character.Mug,
+            Character.TucTuc,
+        };
+    }
 }

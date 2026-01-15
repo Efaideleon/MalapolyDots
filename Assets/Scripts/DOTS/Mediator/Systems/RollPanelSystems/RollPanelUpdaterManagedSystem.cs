@@ -2,26 +2,29 @@ using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
-public partial struct RollPanelUpdaterManagedSystem : ISystem
+namespace DOTS.Mediator.Systems.RollPanelSystems
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct RollPanelUpdaterManagedSystem : ISystem
     {
-        state.RequireForUpdate<RollAmountCountDown>();
-        state.RequireForUpdate<PanelControllers>();
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var rollAmount in SystemAPI.Query<RefRO<RollAmountCountDown>>().WithChangeFilter<RollAmountCountDown>())
+        public void OnCreate(ref SystemState state)
         {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
+            state.RequireForUpdate<RollAmountCountDown>();
+            state.RequireForUpdate<PanelControllers>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var rollAmount in SystemAPI.Query<RefRO<RollAmountCountDown>>().WithChangeFilter<RollAmountCountDown>())
             {
-                if (panelControllers.rollPanelController != null)
+                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                if (panelControllers != null)
                 {
-                    RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.Value };
-                    panelControllers.rollPanelController.Context = rollPanelContext;
-                    panelControllers.rollPanelController.Update();
+                    if (panelControllers.rollPanelController != null)
+                    {
+                        RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.Value };
+                        panelControllers.rollPanelController.Context = rollPanelContext;
+                        panelControllers.rollPanelController.Update();
+                    }
                 }
             }
         }

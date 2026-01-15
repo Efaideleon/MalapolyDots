@@ -1,70 +1,74 @@
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.UI.Controllers;
+using Input;
 using Unity.Entities;
 using UnityEngine.InputSystem;
 
-public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
+namespace DOTS.Mediator.Systems
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
     {
-        state.RequireForUpdate<ShowActionsPanelBuffer>();
-        state.RequireForUpdate<PanelControllers>();
-        state.RequireForUpdate<ClickedPropertyComponent>();
-        state.RequireForUpdate<ClickData>();
-        state.RequireForUpdate<LastPropertyClicked>();
-    }
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var buffer in SystemAPI.Query<DynamicBuffer<ShowActionsPanelBuffer>>().WithChangeFilter<ShowActionsPanelBuffer>())
+        public void OnCreate(ref SystemState state)
         {
-            foreach (var e in buffer)
-            {
-                var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                if (panelControllers == null)
-                    break;
-                if (panelControllers.spaceActionsPanelController == null)
-                    break;
-                if (panelControllers.backdropController == null)
-                    break;
-
-                UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Show space actions panels");
-                panelControllers.spaceActionsPanelController.ShowPanel();
-                panelControllers.backdropController.ShowBackdrop();
-            }
-            buffer.Clear();
+            state.RequireForUpdate<ShowActionsPanelBuffer>();
+            state.RequireForUpdate<PanelControllers>();
+            state.RequireForUpdate<ClickedPropertyComponent>();
+            state.RequireForUpdate<ClickData>();
+            state.RequireForUpdate<LastPropertyClicked>();
         }
-
-        foreach (var clickedProperty in
-                SystemAPI.Query<
-                RefRW<ClickedPropertyComponent>
-                >()
-                .WithChangeFilter<ClickedPropertyComponent>())
+        public void OnUpdate(ref SystemState state)
         {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<ShowActionsPanelBuffer>>().WithChangeFilter<ShowActionsPanelBuffer>())
             {
-                if (panelControllers.spaceActionsPanelController != null)
+                foreach (var e in buffer)
                 {
-                    if (clickedProperty.ValueRO.entity != Entity.Null)
+                    var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                    if (panelControllers == null)
+                        break;
+                    if (panelControllers.spaceActionsPanelController == null)
+                        break;
+                    if (panelControllers.backdropController == null)
+                        break;
+
+                    UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Show space actions panels");
+                    panelControllers.spaceActionsPanelController.ShowPanel();
+                    panelControllers.backdropController.ShowBackdrop();
+                }
+                buffer.Clear();
+            }
+
+            foreach (var clickedProperty in
+                     SystemAPI.Query<
+                             RefRW<ClickedPropertyComponent>
+                         >()
+                         .WithChangeFilter<ClickedPropertyComponent>())
+            {
+                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                if (panelControllers != null)
+                {
+                    if (panelControllers.spaceActionsPanelController != null)
                     {
-                        var clickPhase = clickedProperty.ValueRO.ClickPhase;
-                        UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | clickData.Phase {clickPhase}");
-                        var lastPropertyClicked = SystemAPI.GetSingletonRW<LastPropertyClicked>();
-
-                        if (SystemAPI.HasComponent<NameComponent>(clickedProperty.ValueRO.entity))
+                        if (clickedProperty.ValueRO.entity != Entity.Null)
                         {
-                            var name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity);
-                            UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Entity Hit: {name.Value}");
-                        }
-                        lastPropertyClicked.ValueRW.entity = clickedProperty.ValueRO.entity;
+                            var clickPhase = clickedProperty.ValueRO.ClickPhase;
+                            UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | clickData.Phase {clickPhase}");
+                            var lastPropertyClicked = SystemAPI.GetSingletonRW<LastPropertyClicked>();
 
-                        switch (clickPhase)
-                        {
-                            case InputActionPhase.Canceled:
-                                panelControllers.spaceActionsPanelController.ShowPanel();
-                                panelControllers.backdropController.ShowBackdrop();
-                                break;
+                            if (SystemAPI.HasComponent<NameComponent>(clickedProperty.ValueRO.entity))
+                            {
+                                var name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity);
+                                UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Entity Hit: {name.Value}");
+                            }
+                            lastPropertyClicked.ValueRW.entity = clickedProperty.ValueRO.entity;
+
+                            switch (clickPhase)
+                            {
+                                case InputActionPhase.Canceled:
+                                    panelControllers.spaceActionsPanelController.ShowPanel();
+                                    panelControllers.backdropController.ShowBackdrop();
+                                    break;
+                            }
                         }
                     }
                 }

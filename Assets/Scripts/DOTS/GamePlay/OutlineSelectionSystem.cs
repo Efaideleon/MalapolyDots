@@ -24,7 +24,7 @@ namespace DOTS.GamePlay
                         RefRO<ClickedPropertyComponent>
                     >()
                     .WithChangeFilter<ClickedPropertyComponent>())
-            { 
+            {
                 var clickedEntity = clickedProperty.ValueRO.entity;
 
                 var lastPropertyOutlined = SystemAPI.GetSingletonRW<LastPropertyOutlined>();
@@ -64,6 +64,6 @@ namespace DOTS.GamePlay
         {
             var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             return ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
-         }
+        }
     }
 }

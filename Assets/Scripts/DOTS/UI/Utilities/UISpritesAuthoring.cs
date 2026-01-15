@@ -1,21 +1,24 @@
 using Unity.Entities;
 using UnityEngine;
 
-public class UISpritesAuthoring : MonoBehaviour
+namespace DOTS.UI.Utilities
 {
-    [SerializeField] public Texture2D textureAtlas;
-
-    public class SpritesBaker : Baker<UISpritesAuthoring>
+    public class UISpritesAuthoring : MonoBehaviour
     {
-        public override void Bake(UISpritesAuthoring authoring)
+        [SerializeField] public Texture2D textureAtlas;
+
+        public class SpritesBaker : Baker<UISpritesAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.None);
-            AddComponentObject(entity, new UISpriteComponent { Atlas = authoring.textureAtlas });
+            public override void Bake(UISpritesAuthoring authoring)
+            {
+                var entity = GetEntity(authoring, TransformUsageFlags.None);
+                AddComponentObject(entity, new UISpriteComponent { Atlas = authoring.textureAtlas });
+            }
         }
-    }
 
-    public class UISpriteComponent : IComponentData
-    {
-        public Texture2D Atlas;
+        public class UISpriteComponent : IComponentData
+        {
+            public Texture2D Atlas;
+        }
     }
 }

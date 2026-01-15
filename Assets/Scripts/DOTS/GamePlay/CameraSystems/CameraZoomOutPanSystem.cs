@@ -1,3 +1,5 @@
+using DOTS.GamePlay.CameraSystems.Components;
+using DOTS.GamePlay.CameraSystems.OrthographicCamera;
 using Unity.Entities;
 
 namespace DOTS.GamePlay.CameraSystems

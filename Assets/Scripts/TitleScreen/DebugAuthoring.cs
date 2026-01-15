@@ -1,19 +1,22 @@
 using Unity.Entities;
 using UnityEngine;
 
-public class DebugAuthoring : MonoBehaviour
+namespace TitleScreen
 {
-    [SerializeField] GameObject prefab;
-
-    public class DebugBaker : Baker<DebugAuthoring>
+    public class DebugAuthoring : MonoBehaviour
     {
-        public override void Bake(DebugAuthoring authoring)
+        [SerializeField] GameObject prefab;
+
+        public class DebugBaker : Baker<DebugAuthoring>
         {
-            var entity = GetEntity(authoring.prefab, TransformUsageFlags.None);
-            AddComponent(entity, new DebugStruct { });
+            public override void Bake(DebugAuthoring authoring)
+            {
+                var entity = GetEntity(authoring.prefab, TransformUsageFlags.None);
+                AddComponent(entity, new DebugStruct { });
+            }
         }
     }
-}
 
-public struct DebugStruct : IComponentData
-{ }
+    public struct DebugStruct : IComponentData
+    { }
+}

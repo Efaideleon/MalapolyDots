@@ -1,9 +1,10 @@
 using System;
-using System.Linq;
-using Assets.Scripts.DOTS.UI.Panels.StateMachineUtilities;
+using DOTS.UI.Panels.HideAndShowPanelStateMachineComponents.States;
+using DOTS.UI.Panels.StateMachineUtilities;
 using UnityEngine.UIElements;
+using IPanel = DOTS.UI.Panels.Interfaces.IPanel;
 
-namespace Assets.Scripts.DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
+namespace DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
 {
     public enum PanelVisibility
     {

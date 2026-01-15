@@ -54,7 +54,7 @@ namespace DOTS.GamePlay
                     rollAmount.ValueRW.Value = isCustomEnabled ? customRollValue : rollAmount.ValueRO.Value;
 #endif
                     var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
-                    var rollCount = SystemAPI.GetComponentRW<RollCount>(activePlayer);
+                    var rollCount = SystemAPI.GetComponentRW<RemainingMoves>(activePlayer);
                     rollCount.ValueRW.Value = rollAmount.ValueRO.Value;
                 }
 

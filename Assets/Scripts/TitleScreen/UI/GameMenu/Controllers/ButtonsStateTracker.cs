@@ -1,32 +1,36 @@
 using System.Collections.Generic;
+using TitleScreen.GamePlay;
 
-public class ButtonsStateTracker
+namespace TitleScreen.UI.GameMenu.Controllers
 {
-    private readonly Dictionary<Character, AvailableState> _buttonStateTracker;
-
-    public ButtonsStateTracker()
+    public class ButtonsStateTracker
     {
-        _buttonStateTracker = new();
-    }
+        private readonly Dictionary<Character, AvailableState> _buttonStateTracker;
 
-    public void RegisterButton(Character buttonType)
-    {
-        _buttonStateTracker.TryAdd(buttonType, AvailableState.Available);
-    }
-
-    public void UpdateState(Character buttonType, AvailableState state)
-    {
-        _buttonStateTracker[buttonType] = state; 
-    }
-
-    public bool TryGetState(Character buttonType, out AvailableState state)
-    {
-        if (_buttonStateTracker.TryGetValue(buttonType, out var outState))
+        public ButtonsStateTracker()
         {
-            state = outState;
-            return true;
+            _buttonStateTracker = new();
         }
-        state = outState;
-        return false;
+
+        public void RegisterButton(Character buttonType)
+        {
+            _buttonStateTracker.TryAdd(buttonType, AvailableState.Available);
+        }
+
+        public void UpdateState(Character buttonType, AvailableState state)
+        {
+            _buttonStateTracker[buttonType] = state; 
+        }
+
+        public bool TryGetState(Character buttonType, out AvailableState state)
+        {
+            if (_buttonStateTracker.TryGetValue(buttonType, out var outState))
+            {
+                state = outState;
+                return true;
+            }
+            state = outState;
+            return false;
+        }
     }
 }

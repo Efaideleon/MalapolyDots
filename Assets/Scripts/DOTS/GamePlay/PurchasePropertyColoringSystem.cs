@@ -1,5 +1,6 @@
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
+using DOTS.GameSpaces.HouseAuthoring;
 using Unity.Burst;
 using Unity.Entities;
 

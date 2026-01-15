@@ -6,6 +6,8 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using DOTS.GameData;
 using DOTS.DataComponents;
+using TitleScreen.GamePlay;
+using TitleScreen.SceneManager;
 using UnityEngine;
 
 namespace DOTS.Characters.CharacterSpawner

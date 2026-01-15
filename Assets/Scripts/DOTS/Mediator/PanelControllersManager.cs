@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DOTS.DataComponents;
+using DOTS.UI.Panels.Interfaces;
 
 namespace DOTS.Mediator
 {

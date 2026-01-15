@@ -2,32 +2,35 @@ using DOTS.EventBuses;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
-public partial struct BackDropSystem : ISystem
+namespace DOTS.Mediator.Systems.BackDropSystem
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct BackDropSystem : ISystem
     {
-        state.RequireForUpdate<BackDropEventBus>();
-        state.RequireForUpdate<PanelControllers>();
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var buffer in SystemAPI.Query<DynamicBuffer<BackDropEventBus>>().WithChangeFilter<BackDropEventBus>())
+        public void OnCreate(ref SystemState state)
         {
-            var controller = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            // this is bogus as it the buffer won't get cleared if the controller is null
-            if (controller == null)
-                break;
-            if (controller.backdropController == null)
-                break;
+            state.RequireForUpdate<BackDropEventBus>();
+            state.RequireForUpdate<PanelControllers>();
+        }
 
-            foreach (var _ in buffer)
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<BackDropEventBus>>().WithChangeFilter<BackDropEventBus>())
             {
-                UnityEngine.Debug.Log("[BackDropSystem] | Hiding Panels from the Backdrop system");
-                controller.backdropController.HidePanelsAndButton();
-            }
+                var controller = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                // this is bogus as it the buffer won't get cleared if the controller is null
+                if (controller == null)
+                    break;
+                if (controller.backdropController == null)
+                    break;
 
-            buffer.Clear();
+                foreach (var _ in buffer)
+                {
+                    UnityEngine.Debug.Log("[BackDropSystem] | Hiding Panels from the Backdrop system");
+                    controller.backdropController.HidePanelsAndButton();
+                }
+
+                buffer.Clear();
+            }
         }
     }
 }

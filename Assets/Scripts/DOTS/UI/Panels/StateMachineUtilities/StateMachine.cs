@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.DOTS.UI.Panels.StateMachineUtilities
+namespace DOTS.UI.Panels.StateMachineUtilities
 {
     public class Transition
     {

@@ -1,16 +1,19 @@
 using UnityEngine.UIElements;
 
-public class TitleScreen
+namespace TitleScreen.UI.GameMenu
 {
-    private VisualElement _root;
-    public Button StartButton { get; private set; }
-
-    public TitleScreen(VisualElement root)
+    public class TitleScreen
     {
-        _root = root.Q<VisualElement>("TitleScreen");
-        StartButton = _root.Q<Button>("start-button");
-    }
+        private VisualElement _root;
+        public Button StartButton { get; private set; }
+
+        public TitleScreen(VisualElement root)
+        {
+            _root = root.Q<VisualElement>("TitleScreen");
+            StartButton = _root.Q<Button>("start-button");
+        }
     
-    public void Hide() => _root.style.display = DisplayStyle.None;
-    public void Show() => _root.style.display = DisplayStyle.Flex;
+        public void Hide() => _root.style.display = DisplayStyle.None;
+        public void Show() => _root.style.display = DisplayStyle.Flex;
+    }
 }

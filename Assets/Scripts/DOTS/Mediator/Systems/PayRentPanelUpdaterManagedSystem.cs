@@ -1,29 +1,31 @@
 using DOTS.UI.Controllers;
-using DOTS.UI.Systems;
 using Unity.Entities;
 
-public partial struct PayRentPanelUpdaterManagedSystem : ISystem
+namespace DOTS.Mediator.Systems
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct PayRentPanelUpdaterManagedSystem : ISystem
     {
-        state.RequireForUpdate<PayRentPanelContextComponent>();
-        state.RequireForUpdate<PanelControllers>();
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var payRentPanelContext in SystemAPI.Query<
-                RefRO<PayRentPanelContextComponent>
-                >()
-                .WithChangeFilter<PayRentPanelContextComponent>())
+        public void OnCreate(ref SystemState state)
         {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
+            state.RequireForUpdate<PayRentPanelContextComponent>();
+            state.RequireForUpdate<PanelControllers>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var payRentPanelContext in SystemAPI.Query<
+                             RefRO<PayRentPanelContextComponent>
+                         >()
+                         .WithChangeFilter<PayRentPanelContextComponent>())
             {
-                if (panelControllers.payRentPanelController != null)
+                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                if (panelControllers != null)
                 {
-                    panelControllers.payRentPanelController.Context = payRentPanelContext.ValueRO.Value;
-                    panelControllers.payRentPanelController.Update();
+                    if (panelControllers.payRentPanelController != null)
+                    {
+                        panelControllers.payRentPanelController.Context = payRentPanelContext.ValueRO.Value;
+                        panelControllers.payRentPanelController.Update();
+                    }
                 }
             }
         }

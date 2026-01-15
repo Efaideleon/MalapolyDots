@@ -2,7 +2,7 @@ using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
-namespace DOTS.UI.Mediator.Systems.RollPanelSystems
+namespace DOTS.Mediator.Systems.RollPanelSystems
 {
     public struct RollPanelVisibleState : IComponentData
     {

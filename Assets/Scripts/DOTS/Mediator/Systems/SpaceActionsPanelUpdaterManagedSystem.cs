@@ -1,29 +1,31 @@
 using DOTS.UI.Controllers;
-using DOTS.UI.Systems;
 using Unity.Entities;
 
-public partial struct SpaceActionsPanelUpdaterManagedSystem : ISystem
+namespace DOTS.Mediator.Systems
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct SpaceActionsPanelUpdaterManagedSystem : ISystem
     {
-        state.RequireForUpdate<SpaceActionsPanelContextComponent>();
-        state.RequireForUpdate<PanelControllers>();
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var spaceActionsContext in
-                SystemAPI.Query<
-                RefRO<SpaceActionsPanelContextComponent>
-                >()
-                .WithChangeFilter<SpaceActionsPanelContextComponent>())
+        public void OnCreate(ref SystemState state)
         {
-            PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            if (panelControllers != null)
+            state.RequireForUpdate<SpaceActionsPanelContextComponent>();
+            state.RequireForUpdate<PanelControllers>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var spaceActionsContext in
+                     SystemAPI.Query<
+                             RefRO<SpaceActionsPanelContextComponent>
+                         >()
+                         .WithChangeFilter<SpaceActionsPanelContextComponent>())
             {
-                if (panelControllers.spaceActionsPanelController != null)
+                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                if (panelControllers != null)
                 {
-                    panelControllers.spaceActionsPanelController.Context = spaceActionsContext.ValueRO.Value;
+                    if (panelControllers.spaceActionsPanelController != null)
+                    {
+                        panelControllers.spaceActionsPanelController.Context = spaceActionsContext.ValueRO.Value;
+                    }
                 }
             }
         }

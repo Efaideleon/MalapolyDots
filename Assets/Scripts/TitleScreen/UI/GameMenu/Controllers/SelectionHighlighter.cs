@@ -1,23 +1,26 @@
 using System;
 
-public class SelectionHighlighter<T>
+namespace TitleScreen.UI.GameMenu.Controllers
 {
-    private T _previous;
-    private readonly Action<T> _enable;
-    private readonly Action<T> _disable;
-
-    public SelectionHighlighter(Action<T> enable, Action<T> disable)
+    public class SelectionHighlighter<T>
     {
-        _enable = enable;
-        _disable = disable;
-    }
+        private T _previous;
+        private readonly Action<T> _enable;
+        private readonly Action<T> _disable;
 
-    public void Select(T current)
-    {
-        if (_previous != null)
-            _disable(_previous);
+        public SelectionHighlighter(Action<T> enable, Action<T> disable)
+        {
+            _enable = enable;
+            _disable = disable;
+        }
 
-        _enable(current);
-        _previous = current;
+        public void Select(T current)
+        {
+            if (_previous != null)
+                _disable(_previous);
+
+            _enable(current);
+            _previous = current;
+        }
     }
 }

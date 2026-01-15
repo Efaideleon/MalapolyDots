@@ -1,3 +1,0 @@
-namespace DOTS.GamePlay.LandingPropertyIcons
-{
-}

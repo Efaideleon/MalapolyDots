@@ -1,48 +1,54 @@
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
-using DOTS.Mediator;
+using DOTS.Mediator.Authoring;
 using Unity.Entities;
 
-[UpdateInGroup(typeof(PresentationSystemGroup))]
-public partial struct PurchasePropertyPanelUpdaterManagedSystem : ISystem
+namespace DOTS.Mediator.Systems
 {
-    private ComponentLookup<LastPropertyInteracted> lastPropertyInteractedLookup;
-    private ComponentLookup<PropertySpaceTag> propertyLookup;
-
-    public void OnCreate(ref SystemState state)
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    public partial struct PurchasePropertyPanelUpdaterManagedSystem : ISystem
     {
-        state.RequireForUpdate<LastPropertyInteracted>();
-        state.RequireForUpdate<SpriteRegistryComponent>();
-        state.RequireForUpdate<PropertySpaceTag>();
-        state.RequireForUpdate<PriceComponent>();
-        state.RequireForUpdate<NameComponent>();
-        state.RequireForUpdate<PurchasePropertyPanelData>();
+        private ComponentLookup<LastPropertyInteracted> lastPropertyInteractedLookup;
+        private ComponentLookup<PropertySpaceTag> propertyLookup;
 
-        lastPropertyInteractedLookup = SystemAPI.GetComponentLookup<LastPropertyInteracted>(true);
-        propertyLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
-    }
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<LastPropertyInteracted>();
+            state.RequireForUpdate<SpriteRegistryComponent>();
+            state.RequireForUpdate<PropertySpaceTag>();
+            state.RequireForUpdate<PriceComponent>();
+            state.RequireForUpdate<NameComponent>();
+            state.RequireForUpdate<PurchasePropertyPanelData>();
 
-    public void OnUpdate(ref SystemState state)
-    {
-        lastPropertyInteractedLookup.Update(ref state);
-        propertyLookup.Update(ref state);
+            lastPropertyInteractedLookup = SystemAPI.GetComponentLookup<LastPropertyInteracted>(true);
+            propertyLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
+        }
 
-        var entity = SystemAPI.GetSingletonEntity<LastPropertyInteracted>();
-        if (!lastPropertyInteractedLookup.DidChange(entity, state.LastSystemVersion)) return;
+        public void OnUpdate(ref SystemState state)
+        {
+            lastPropertyInteractedLookup.Update(ref state);
+            propertyLookup.Update(ref state);
 
-        var propertyEntity = lastPropertyInteractedLookup[entity].entity;
-        if (!propertyLookup.HasComponent(propertyEntity)) return;
+            // Changes that trigger the system to update the purchase property panel data.
+            var entity = SystemAPI.GetSingletonEntity<LastPropertyInteracted>();
+            if (!lastPropertyInteractedLookup.DidChange(entity, state.LastSystemVersion)) return;
 
-        var name = SystemAPI.GetComponent<NameComponent>(propertyEntity).Value;
-        var price = SystemAPI.GetComponent<PriceComponent>(propertyEntity).Value;
+            var propertyEntity = lastPropertyInteractedLookup[entity].entity;
+            if (!propertyLookup.HasComponent(propertyEntity)) return;
 
-        var spriteRegistry = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>();
-        spriteRegistry.Value.TryGetValue(name, out var sprite);
+            // Getting the data for the purchase property panel.
+            var name = SystemAPI.GetComponent<NameComponent>(propertyEntity).Value;
+            var price = SystemAPI.GetComponent<PriceComponent>(propertyEntity).Value;
 
-        var panel = SystemAPI.ManagedAPI.GetSingleton<PurchasePropertyPanelData>().Panel;
+            var spriteRegistry = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>();
+            spriteRegistry.Value.TryGetValue(name, out var sprite);
 
-        panel.NameLabel = name.ToString();
-        panel.PriceLabel = price.ToString();
-        panel.Image = sprite;
+            // Update the data to the scriptable object.
+            var panel = SystemAPI.ManagedAPI.GetSingleton<PurchasePropertyPanelData>().Panel;
+
+            panel.NameLabel = name.ToString();
+            panel.PriceLabel = price.ToString();
+            panel.Image = sprite;
+        }
     }
 }

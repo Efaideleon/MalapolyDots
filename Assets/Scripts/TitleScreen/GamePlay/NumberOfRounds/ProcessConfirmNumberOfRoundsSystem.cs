@@ -1,34 +1,37 @@
 using Unity.Burst;
 using Unity.Entities;
 
-public struct NumberOfRoundsConfirmEventBuffer : IBufferElementData { }
-
-[BurstCompile]
-public partial struct ProcessConfirmNumberOfRoundsSystem : ISystem
+namespace TitleScreen.GamePlay.NumberOfRounds
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
-        state.EntityManager.CreateSingletonBuffer<NumberOfRoundsConfirmEventBuffer>();
-        state.RequireForUpdate<LoginData>();
-        state.RequireForUpdate<LastNumberOfRoundsClicked>();
-    }
+    public struct NumberOfRoundsConfirmEventBuffer : IBufferElementData { }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    public partial struct ProcessConfirmNumberOfRoundsSystem : ISystem
     {
-        foreach (var buffer in 
-                SystemAPI.Query<
-                DynamicBuffer<NumberOfRoundsConfirmEventBuffer>
-                >()
-                .WithChangeFilter<NumberOfRoundsConfirmEventBuffer>())
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
         {
-            foreach (var _ in buffer)
+            state.EntityManager.CreateSingletonBuffer<NumberOfRoundsConfirmEventBuffer>();
+            state.RequireForUpdate<LoginData>();
+            state.RequireForUpdate<LastNumberOfRoundsClicked>();
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var buffer in 
+                     SystemAPI.Query<
+                             DynamicBuffer<NumberOfRoundsConfirmEventBuffer>
+                         >()
+                         .WithChangeFilter<NumberOfRoundsConfirmEventBuffer>())
             {
-                var numOfRounds = SystemAPI.GetSingleton<LastNumberOfRoundsClicked>().Value;
-                SystemAPI.GetSingletonRW<LoginData>().ValueRW.NumberOfRounds = numOfRounds;
+                foreach (var _ in buffer)
+                {
+                    var numOfRounds = SystemAPI.GetSingleton<LastNumberOfRoundsClicked>().Value;
+                    SystemAPI.GetSingletonRW<LoginData>().ValueRW.NumberOfRounds = numOfRounds;
+                }
+                buffer.Clear();
             }
-            buffer.Clear();
         }
     }
 }

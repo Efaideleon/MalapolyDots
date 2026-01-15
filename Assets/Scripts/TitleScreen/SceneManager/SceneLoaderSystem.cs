@@ -1,17 +1,19 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public enum SceneID
+namespace TitleScreen.SceneManager
 {
-    Default = -1,
-    Menu = 0,
-    Game = 1,
-}
-
-public class SceneLoadersSystem : MonoBehaviour
-{
-    public void LoadSceneBySceneIDEnum(SceneID sceneID)
+    public enum SceneID
     {
-        SceneManager.LoadSceneAsync((int)sceneID);
+        Default = -1,
+        Menu = 0,
+        Game = 1,
+    }
+
+    public class SceneLoadersSystem : MonoBehaviour
+    {
+        public void LoadSceneBySceneIDEnum(SceneID sceneID)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync((int)sceneID);
+        }
     }
 }

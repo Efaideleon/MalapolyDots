@@ -5,7 +5,7 @@ using DOTS.UI.Panels;
 using Unity.Burst;
 using Unity.Entities;
 
-namespace DOTS.UI.Systems
+namespace DOTS.Mediator.Systems
 {
     public struct PurhcaseHousePanelContextComponent : IComponentData
     {

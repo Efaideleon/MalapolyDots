@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct LastPropertyInteracted : IComponentData
+namespace DOTS.DataComponents
 {
-    public Entity entity;
+    public struct LastPropertyInteracted : IComponentData
+    {
+        public Entity entity;
+    }
 }

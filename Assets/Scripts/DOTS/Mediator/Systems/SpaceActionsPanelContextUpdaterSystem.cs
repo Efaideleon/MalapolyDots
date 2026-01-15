@@ -5,7 +5,7 @@ using DOTS.UI.Controllers;
 using Unity.Burst;
 using Unity.Entities;
 
-namespace DOTS.UI.Systems
+namespace DOTS.Mediator.Systems
 {
     public struct SpaceActionsPanelContextComponent : IComponentData
     {

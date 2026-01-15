@@ -4,6 +4,6 @@ namespace DOTS.DataComponents
 {
     public struct OwnerByEntityComponent : IComponentData
     {
-        public Entity OwnerEntity;
+        public Entity Entity;
     }
 }

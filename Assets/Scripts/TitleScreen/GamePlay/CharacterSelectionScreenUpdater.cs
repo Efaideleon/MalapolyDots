@@ -1,32 +1,36 @@
+using TitleScreen.UI.GameMenu.Controllers;
 using Unity.Entities;
 
-public partial struct CharacterSelectionScreenUpdater : ISystem
+namespace TitleScreen.GamePlay
 {
-    public void OnCreate(ref SystemState state)
+    public partial struct CharacterSelectionScreenUpdater : ISystem
     {
-        state.RequireForUpdate<NumOfPlayerPicking>();
-        state.RequireForUpdate<TitleScreenControllers>();
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        foreach (var playerNumber in
-                SystemAPI.Query<
-                    RefRO<NumOfPlayerPicking>
-                >()
-                .WithChangeFilter<NumOfPlayerPicking>())
+        public void OnCreate(ref SystemState state)
         {
-            var controllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
-            if (controllers == null)
-                break;
-            if (controllers.CharacterSelectionControler == null)
-                break;
+            state.RequireForUpdate<NumOfPlayerPicking>();
+            state.RequireForUpdate<TitleScreenControllers>();
+        }
 
-            controllers.CharacterSelectionControler.Context = new CharacterSelectionContext
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var playerNumber in
+                     SystemAPI.Query<
+                             RefRO<NumOfPlayerPicking>
+                         >()
+                         .WithChangeFilter<NumOfPlayerPicking>())
             {
-                PlayerNumber = playerNumber.ValueRO.Value
-            };
-            controllers.CharacterSelectionControler.Update();
+                var controllers = SystemAPI.ManagedAPI.GetSingleton<TitleScreenControllers>();
+                if (controllers == null)
+                    break;
+                if (controllers.CharacterSelectionControler == null)
+                    break;
+
+                controllers.CharacterSelectionControler.Context = new CharacterSelectionContext
+                {
+                    PlayerNumber = playerNumber.ValueRO.Value
+                };
+                controllers.CharacterSelectionControler.Update();
+            }
         }
     }
 }

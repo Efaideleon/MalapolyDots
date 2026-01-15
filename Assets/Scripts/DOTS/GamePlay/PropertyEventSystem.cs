@@ -1,4 +1,5 @@
 using DOTS.Characters;
+using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;

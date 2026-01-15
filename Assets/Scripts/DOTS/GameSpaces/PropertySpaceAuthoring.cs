@@ -24,7 +24,7 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new PriceComponent { Value = authoring.Data.price });
                 AddComponent(entity, new SpaceTypeComponent { Value = authoring.Data.SpaceType });
                 AddComponent(entity, new OwnerComponent { ID = PropertyConstants.Vacant });
-                AddComponent(entity, new OwnerByEntityComponent { OwnerEntity = Entity.Null });
+                AddComponent(entity, new OwnerByEntityComponent { Entity = Entity.Null });
                 AddComponent(entity, new PropertySpaceTag { });
                 AddComponent(entity, new RentComponent { Value = 0 });
                 AddComponent(entity, new ColorCodeComponent { Value = authoring.Data.Color });

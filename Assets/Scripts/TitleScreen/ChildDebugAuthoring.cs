@@ -1,14 +1,17 @@
 using Unity.Entities;
 using UnityEngine;
 
-public class ChildDebugAuthoring : MonoBehaviour
+namespace TitleScreen
 {
-    public class ChildDebugBaker : Baker<ChildDebugAuthoring>
+    public class ChildDebugAuthoring : MonoBehaviour
     {
-        public override void Bake(ChildDebugAuthoring authoring)
+        public class ChildDebugBaker : Baker<ChildDebugAuthoring>
         {
-            var entity = GetEntity(authoring, TransformUsageFlags.None);
-            AddComponent(entity, new DebugStruct { });
+            public override void Bake(ChildDebugAuthoring authoring)
+            {
+                var entity = GetEntity(authoring, TransformUsageFlags.None);
+                AddComponent(entity, new DebugStruct { });
+            }
         }
     }
 }

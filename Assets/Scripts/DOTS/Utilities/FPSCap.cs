@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class SetFPS : MonoBehaviour
+namespace DOTS.Utilities
 {
-    void Awake()
+    public class SetFPS : MonoBehaviour
     {
+        void Awake()
+        {
 // #if UNITY_EDITOR
 //         Application.targetFrameRate = 15;
 //         QualitySettings.vSyncCount = 0;
 // #endif
-        // QualitySettings.vSyncCount = 0;
-        // Application.targetFrameRate = 60;
+            // QualitySettings.vSyncCount = 0;
+            // Application.targetFrameRate = 60;
+        }
     }
 }

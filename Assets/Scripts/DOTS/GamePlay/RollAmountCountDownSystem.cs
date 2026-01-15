@@ -12,7 +12,7 @@ namespace DOTS.GamePlay
     [BurstCompile]
     public partial struct RollAmountCountDownSystem : ISystem
     {
-        public ComponentLookup<RollCount> rollCountLookup;
+        public ComponentLookup<RemainingMoves> rollCountLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -21,7 +21,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<CurrentActivePlayer>();
 
             state.EntityManager.CreateSingleton(new RollAmountCountDown { Value = default });
-            rollCountLookup = SystemAPI.GetComponentLookup<RollCount>();
+            rollCountLookup = SystemAPI.GetComponentLookup<RemainingMoves>();
         }
 
         [BurstCompile]

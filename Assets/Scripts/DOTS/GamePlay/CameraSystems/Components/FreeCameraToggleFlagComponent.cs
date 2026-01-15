@@ -1,6 +1,6 @@
-using Unity.Entities; 
+using Unity.Entities;
 
-namespace DOTS.GamePlay.CameraSystems
+namespace DOTS.GamePlay.CameraSystems.Components
 {
     /// <summary>
     /// True: FreeCam is on, False: FreeCam is false

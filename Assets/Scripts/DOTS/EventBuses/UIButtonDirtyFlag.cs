@@ -1,6 +1,9 @@
 using Unity.Entities;
 
-public struct UIButtonDirtyFlag : IComponentData
+namespace DOTS.EventBuses
 {
-    public bool Value;
+    public struct UIButtonDirtyFlag : IComponentData
+    {
+        public bool Value;
+    }
 }

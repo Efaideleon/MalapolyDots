@@ -1,4 +1,7 @@
 using Unity.Entities;
 
-public struct HouseClusterTag : IComponentData
-{ }
+namespace DOTS.GameSpaces.HouseAuthoring
+{
+    public struct HouseClusterTag : IComponentData
+    { }
+}

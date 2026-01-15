@@ -1,18 +1,21 @@
-public interface IPanelController
+namespace DOTS.UI.Panels.Interfaces
 {
-    public void ShowPanel();
-    public void HidePanel();
-}
+    public interface IPanelController
+    {
+        public void ShowPanel();
+        public void HidePanel();
+    }
 
-public interface IPanelControllerSimple
-{
-    public void Show();
-    public void Hide();
-}
+    public interface IPanelControllerSimple
+    {
+        public void Show();
+        public void Hide();
+    }
 
-public interface IPanelControllerNew<T> : IPanelControllerSimple
-{
-    public void Update(T data);
-    public void Dispose();
-    //public void SetEventBufferQuery();
+    public interface IPanelControllerNew<T> : IPanelControllerSimple
+    {
+        public void Update(T data);
+        public void Dispose();
+        //public void SetEventBufferQuery();
+    }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using DOTS.UI.Panels.Interfaces;
 using UnityEngine.UIElements;
+using IPanel = DOTS.UI.Panels.Interfaces.IPanel;
 
 namespace DOTS.UI.Controllers
 {

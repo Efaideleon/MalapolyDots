@@ -6,6 +6,7 @@ using DOTS.GameData;
 using DOTS.GamePlay.ChanceActionSystems;
 using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
+using TitleScreen.GamePlay;
 using Unity.Burst;
 using Unity.Entities;
 
@@ -16,7 +17,7 @@ namespace DOTS.GamePlay
         public int Index;
     }
 
-    public struct ChangeTurnBufferEvent : IBufferElementData
+    public struct ChangeTurnEvent : IBufferElementData
     {}
 
     public struct CurrentRound : IComponentData
@@ -33,7 +34,7 @@ namespace DOTS.GamePlay
         {
             currentTurn = 0;
             state.EntityManager.CreateSingleton(new CharacterNameIndex { Index = 0 });
-            state.EntityManager.CreateSingletonBuffer<ChangeTurnBufferEvent>();
+            state.EntityManager.CreateSingletonBuffer<ChangeTurnEvent>();
             state.EntityManager.CreateSingleton(new CurrentRound { Value = 0 });
 
             state.RequireForUpdate<GameDataComponent>();
@@ -72,7 +73,7 @@ namespace DOTS.GamePlay
                         if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLandedOnEntity))
                         {
                             // Does the property have an owner.
-                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).OwnerEntity;
+                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
                             if (ownerEntity != Entity.Null)
                             {
                                 var rent = SystemAPI.GetComponent<RentComponent>(spaceLandedOnEntity).Value;
@@ -126,7 +127,7 @@ namespace DOTS.GamePlay
                                         var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
                                         playerMoney.ValueRW.Value -= price.Value;
                                         owner.ValueRW.ID = playerID.ValueRO.Value;
-                                        ownerEntity.ValueRW.OwnerEntity = playerEntity;
+                                        ownerEntity.ValueRW.Entity = playerEntity;
 
                                         if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
                                                SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
@@ -174,7 +175,7 @@ namespace DOTS.GamePlay
                             if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
                             {
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
-                                SystemAPI.GetSingletonBuffer<ChangeTurnBufferEvent>().Add(new ChangeTurnBufferEvent{});
+                                SystemAPI.GetSingletonBuffer<ChangeTurnEvent>().Add(new ChangeTurnEvent{});
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
 
                                 SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
