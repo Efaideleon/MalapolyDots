@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets.Scripts.DOTS.DataComponents;
 using DOTS.DataComponents;
 using TitleScreen.NetworkUI.Authoring;
 using TitleScreen.NetworkUI.Components;
@@ -33,6 +34,10 @@ namespace TitleScreen.NetworkUI.Systems
                 UnityEngine.Object.Destroy(uiGameObject);
                 return;
             }
+
+            var entityReference = state.EntityManager.CreateEntity();
+            state.EntityManager.AddComponent<GameObjectReference>(entityReference);
+            state.EntityManager.AddComponentData(entityReference, new GameObjectReference { Instance = uiGameObject });
 
             var gameMenuRoot = uiDocument.rootVisualElement;
 

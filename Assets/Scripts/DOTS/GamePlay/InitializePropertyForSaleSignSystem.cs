@@ -22,6 +22,9 @@ namespace DOTS.GamePlay
             
             foreach ( var (forSaleSign, _, entity) in SystemAPI.Query<RefRW<ForSaleComponent>, RefRO<PropertySpaceTag>>().WithEntityAccess())
             {
+                if (!SystemAPI.HasBuffer<LinkedEntityGroup>(entity))
+                    return;
+
                 var linkedEntityGroup = SystemAPI.GetBuffer<LinkedEntityGroup>(entity);
 
                 foreach (var child in linkedEntityGroup)

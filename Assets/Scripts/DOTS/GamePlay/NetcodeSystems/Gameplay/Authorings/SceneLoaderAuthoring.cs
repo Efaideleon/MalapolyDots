@@ -1,5 +1,5 @@
 using Unity.Entities;
-using Unity.Entities.Serialization;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings
@@ -11,11 +11,14 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings
         {
             public override void Bake(SceneLoaderAuthoring authoring)
             {
-                var reference = new EntitySceneReference(authoring.Scene);
                 var entity = GetEntity(TransformUsageFlags.None);
+
+                var path = AssetDatabase.GetAssetPath(authoring.Scene);
+                var guid = AssetDatabase.GUIDFromAssetPath(path);
+
                 AddComponent(entity, new SceneLoader
                 {
-                    SceneReference = reference
+                    SceneGUID = guid,
                 });
             }
         }
@@ -23,6 +26,6 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings
 
     public struct SceneLoader : IComponentData
     {
-        public EntitySceneReference SceneReference;
+        public Unity.Entities.Hash128 SceneGUID;
     }
 }
