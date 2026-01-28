@@ -31,7 +31,7 @@ namespace DOTS.GamePlay
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<RollAmountComponent>();
-            state.RequireForUpdate<SpawnFlag>();
+            state.RequireForUpdate<CharactersSpawnedTag>();
 
             var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
             {

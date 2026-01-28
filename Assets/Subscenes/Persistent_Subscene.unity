@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &204943684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 204943686}
+  - component: {fileID: 204943685}
+  m_Layer: 0
+  m_Name: GamePhaseSpawnerAuthoring
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &204943685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204943684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f4d30aa4d7aa4bf9be4bf6606ce5f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings.GamePhaseSpawnerAuthoring
+  Prefab: {fileID: 2998960225741675139, guid: 5cfd151848ec743c9be37d8debdfa69e, type: 3}
+--- !u!4 &204943686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204943684}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456626712
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,8 +253,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42c80c7b5428c4bec9e3c1c73fe7ce0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings.PrepickedCharacterSpawnerAuthoring
-  GhostPrefab: {fileID: 8411307033144156951, guid: caba67b6897a8484685c7c674c2b9928, type: 3}
---- !u!1 &686271861
+  GhostPrefab:
+  - {fileID: 8411307033144156951, guid: f6bc9099e3d8e436e8d41a9c1a05c29c, type: 3}
+  - {fileID: 6701612166188043050, guid: caba67b6897a8484685c7c674c2b9928, type: 3}
+  - {fileID: 8220917382647788194, guid: e42d2d0397c674e89adf6883bf11d0ec, type: 3}
+  - {fileID: 8171548551178403213, guid: e11f46db4e9354231b39ca1726b75e68, type: 3}
+  - {fileID: 6691580524182414918, guid: 8132859aaa11d4b37acf01a5ff7448a3, type: 3}
+  - {fileID: 5935379458499230168, guid: 4fa7937fc364d405a9ac6c932f80307a, type: 3}
+--- !u!1 &617365447
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,22 +268,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 686271862}
-  - component: {fileID: 686271863}
+  - component: {fileID: 617365449}
+  - component: {fileID: 617365448}
   m_Layer: 0
-  m_Name: CurrentSceneAuthoring
+  m_Name: PerspectiveCameraAuthoring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &686271862
+--- !u!114 &617365448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617365447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99bf8b31748e5461b8a12a707553d27e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.PerspectiveCamera.PerspectiveCameraAuthoring
+  PerspectiveCameraPivotGO: {fileID: 299015536040617363, guid: 03b5f1b713ce047c9b5239fe57c84368, type: 3}
+  cameraConfig: {fileID: 11400000, guid: 8f432b62032f04e52a39888b19638daf, type: 2}
+--- !u!4 &617365449
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686271861}
+  m_GameObject: {fileID: 617365447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -241,19 +306,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &686271863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686271861}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 250b62a682d694760b1cb92bad3d8176, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings.SceneGhostReferenceAuthoring
-  Prefab: {fileID: 8160784380874965672, guid: 7a97edfa10f82473bb4c030921af2de8, type: 3}
 --- !u!1 &1828002379
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a62af4d515441a89b3c3ede9c13b9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings.SceneLoaderAuthoring
-  Scene: {fileID: 102900000, guid: dc9f1c73b09d14a10861aac3a6540558, type: 3}
+  GameScene: {fileID: 102900000, guid: dc9f1c73b09d14a10861aac3a6540558, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -306,4 +358,5 @@ SceneRoots:
   - {fileID: 456626713}
   - {fileID: 517507963}
   - {fileID: 1828002381}
-  - {fileID: 686271862}
+  - {fileID: 204943686}
+  - {fileID: 617365449}

@@ -1,4 +1,3 @@
-using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings;
 using Unity.Entities;
 using Unity.Scenes;
 
@@ -10,7 +9,6 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<CurrentScene>();
-            state.RequireForUpdate<CurrentSharedScene>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -24,8 +22,6 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
                 UnityEngine.Debug.Log($"[SetupStartSceneSystem] | Running.");
                 if (SceneSystem.IsSceneLoaded(state.WorldUnmanaged, entity))
                 {
-                    SystemAPI.GetSingletonRW<CurrentSharedScene>().ValueRW.SceneGUID = sceneReference.ValueRO.SceneGUID;
-
                     UnityEngine.Debug.Log($"[SetupStartSceneSystem] | Getting current scene.");
 
                     var tagEntity = ecb.CreateEntity();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct InstantiateOrthographicCameraPivot : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -23,7 +24,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 
             if (pivotGO == null) return;
 
-            var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[] 
+            var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
             {
                 ComponentType.ReadOnly<OrthoCameraPivotInstance>(),
                 ComponentType.ReadOnly<OrthoCameraPivotInstanceTag>(),
@@ -32,7 +33,28 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
             UnityEngine.Debug.Log($"[InstantiateOrthographicCameraPivot] | pivot position: {pivotGO.transform.position}");
             UnityEngine.Debug.Log($"[InstantiateOrthographicCameraPivot] | pivot rotation: {pivotGO.transform.rotation}");
             state.EntityManager.SetComponentData(entity, new OrthoCameraPivotInstance { Instance = pivotGO });
-            SystemAPI.SetComponent(entity, new OrthoCameraPivotInstanceTag {});
+            SystemAPI.SetComponent(entity, new OrthoCameraPivotInstanceTag { });
+
+            // Get the child components that has the Camera
+            var cam = pivotGO.GetComponentInChildren<Camera>();
+
+            // Set the camera initial position with respect to the pivot.
+            var camConfig = SystemAPI.GetSingleton<OrthoCamOffset>();
+
+            var player = new float3(0, 0, 0);
+            var newCamPosition = player + camConfig.Offset;
+
+            float3 forward = math.normalize(player - newCamPosition);
+            var newCamRotation = quaternion.LookRotationSafe(forward, math.up());
+
+            var camFieldOfView = SystemAPI.GetSingleton<CameraFieldOfView>();
+            cam.transform.SetLocalPositionAndRotation(newCamPosition, newCamRotation);
+            cam.orthographic = true;
+            cam.orthographicSize = camFieldOfView.Value;
+
+            var cameObjEntity = state.EntityManager.CreateEntity();
+            state.EntityManager.AddComponentObject(cameObjEntity, new OrthographicCameraObject { camera = cam });
+            UnityEngine.Debug.Log($"[InstantiateOrthographicCameraPivot] | Instantiating orthogrphic camera pivot");
         }
 
         public void OnUpdate(ref SystemState state)

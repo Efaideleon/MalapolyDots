@@ -27,6 +27,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 
         public void OnUpdate(ref SystemState state)
         {
+            // TODO: Use OrthographicCameraObject instead of Camera.main
             if (Camera.main == null) return;
 
             foreach (var transform in SystemAPI.Query<RefRW<MainCameraTransform>>().WithChangeFilter<MainCameraTransform>())

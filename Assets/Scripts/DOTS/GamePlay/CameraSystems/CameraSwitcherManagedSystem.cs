@@ -10,13 +10,14 @@ namespace DOTS.GamePlay.CameraSystems
     /// <summary>
     /// This system enables and disables the `PerspectiveCamera` that we instantiate in the `PerspectiveCameraInstantiateSystem`.
     /// </summary>
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct CameraSwitcherManagedSystem : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PerspectiveCameraObject>();
             state.RequireForUpdate<OrthographicCameraObject>();
-            state.RequireForUpdate<GameStateComponent>();
+            //state.RequireForUpdate<GameStateComponent>();
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -33,23 +34,24 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
-            {
-                var currCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraManagedObject>();
-                Camera? targetCamera; 
-
-                targetCamera = gameState.ValueRO.State switch
-                {
-                    GameState.Walking => SystemAPI.ManagedAPI.GetSingleton<PerspectiveCameraObject>().camera,
-                    GameState.Rolling => SystemAPI.ManagedAPI.GetSingleton<OrthographicCameraObject>().camera,
-                    _ => null
-                };
-
-                if (targetCamera != null)
-                {
-                    SetActiveCamera(currCamera, targetCamera);
-                }
-            }
+            // GameState should be a ghost component
+            // foreach (var gameState in SystemAPI.Query<RefRO<GameStateComponent>>().WithChangeFilter<GameStateComponent>())
+            // {
+            //     var currCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraManagedObject>();
+            //     Camera? targetCamera; 
+            //
+            //     targetCamera = gameState.ValueRO.State switch
+            //     {
+            //         GameState.Walking => SystemAPI.ManagedAPI.GetSingleton<PerspectiveCameraObject>().camera,
+            //         GameState.Rolling => SystemAPI.ManagedAPI.GetSingleton<OrthographicCameraObject>().camera,
+            //         _ => null
+            //     };
+            //
+            //     if (targetCamera != null)
+            //     {
+            //         SetActiveCamera(currCamera, targetCamera);
+            //     }
+            // }
         }
 
         private void SetActiveCamera(CurrentCameraManagedObject current, Camera? target)

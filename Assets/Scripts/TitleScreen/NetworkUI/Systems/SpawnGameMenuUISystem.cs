@@ -38,6 +38,7 @@ namespace TitleScreen.NetworkUI.Systems
             var entityReference = state.EntityManager.CreateEntity();
             state.EntityManager.AddComponent<GameObjectReference>(entityReference);
             state.EntityManager.AddComponentData(entityReference, new GameObjectReference { Instance = uiGameObject });
+            state.EntityManager.AddComponent<GameMenuTag>(entityReference);
 
             var gameMenuRoot = uiDocument.rootVisualElement;
 
@@ -141,4 +142,7 @@ namespace TitleScreen.NetworkUI.Systems
         public List<NetworkPanelBase> AllPanels;
         public Dictionary<GameMenuPhase, NetworkPanelBase> PanelLookup;
     }
+
+    public struct GameMenuTag : IComponentData
+    { }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 #nullable enable
 namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PerspectiveCameraInstantiateSystem : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -13,7 +14,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
             state.RequireForUpdate<PerspectiveCameraPivotGO>();
             state.RequireForUpdate<PerspectiveCameraGOTag>();
             state.RequireForUpdate<PerspectiveCameraConfig>();
-            state.RequireForUpdate<CurrentPlayerComponent>();
+            //state.RequireForUpdate<CurrentPlayerComponent>();
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -44,6 +45,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
             cam.transform.SetLocalPositionAndRotation(newCamPosition, newCamRotation);
 
             state.EntityManager.CreateSingleton(new PerspectiveCameraObject { camera = cam });
+            UnityEngine.Debug.Log($"[PerspectiveCameraInstantiateSystem] | Instantiating Perspective Camera");
         }
 
         public void OnUpdate(ref SystemState state)

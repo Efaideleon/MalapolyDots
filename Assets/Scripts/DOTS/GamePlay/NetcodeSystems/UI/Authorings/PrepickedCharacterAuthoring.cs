@@ -7,6 +7,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings
 {
     public class PrepickedCharacterAuthoring : MonoBehaviour
     {
+        public GameObject Prefab;
         public CharactersEnum Character;
 
         public class PrepickedCharacterBaker : Baker<PrepickedCharacterAuthoring>
@@ -16,6 +17,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
                 AddComponent(entity, new PrepickedCharacter
                 {
+                    Prefab = GetEntity(authoring.Prefab, TransformUsageFlags.Dynamic),
                     PrePicked = false,
                     Character = authoring.Character,
                     Owner = default
