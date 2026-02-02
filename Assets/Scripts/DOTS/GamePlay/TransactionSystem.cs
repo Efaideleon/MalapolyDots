@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.Constants;
 using DOTS.DataComponents;
@@ -48,6 +49,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<ChanceBufferEvent>();
             state.RequireForUpdate<TreasureAnimationBuffer>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<SpaceLandedOn>();
             state.RequireForUpdate<PropertySpaceTag>();
         }

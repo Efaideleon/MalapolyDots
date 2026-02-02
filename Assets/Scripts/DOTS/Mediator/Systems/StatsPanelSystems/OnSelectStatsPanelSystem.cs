@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.UI.Controllers;
@@ -14,6 +15,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
             state.RequireForUpdate<NameComponent>();
             state.RequireForUpdate<MoneyComponent>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
 
             changeTurnEventBufferLookup = SystemAPI.GetBufferLookup<ChangeTurnEvent>();

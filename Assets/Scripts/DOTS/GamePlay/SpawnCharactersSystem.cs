@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems;
 using Unity.Jobs;
+using Unity.NetCode;
 
 namespace DOTS.Characters.CharacterSpawner
 {
@@ -18,7 +19,7 @@ namespace DOTS.Characters.CharacterSpawner
         public NativeArray<float3> Positions;
 
         [ReadOnly]
-        public NativeArray<Entity> Prefabs;
+        public NativeList<CharacterToSpawn> Prefabs;
 
         [BurstCompile]
         public void Execute(int index)
@@ -27,10 +28,9 @@ namespace DOTS.Characters.CharacterSpawner
         }
 
         [BurstCompile]
-        private void InstantiatePrefab(EntityCommandBuffer.ParallelWriter ecbParallel, Entity prefab, float3 position, int sort_key)
+        private void InstantiatePrefab(EntityCommandBuffer.ParallelWriter ecbParallel, CharacterToSpawn characterToSpawn, float3 position, int sort_key)
         {
-            var instance = ecbParallel.Instantiate(sort_key, prefab);
-            UnityEngine.Debug.Log($"[SpawnCharactersSystem] | Spawning a character ghost");
+            var instance = ecbParallel.Instantiate(sort_key, characterToSpawn.Prefab);
             ecbParallel.SetComponent(sort_key, instance, new LocalTransform
             {
                 Rotation = quaternion.identity,
@@ -38,6 +38,7 @@ namespace DOTS.Characters.CharacterSpawner
                 Scale = 1f
             });
 
+            ecbParallel.SetComponent(sort_key, instance, new GhostOwner { NetworkId = characterToSpawn.OwnerNetworkId });
             ecbParallel.SetComponent(sort_key, instance, new PlayerID { Value = sort_key });
         }
     }
@@ -50,41 +51,32 @@ namespace DOTS.Characters.CharacterSpawner
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<GamePhaseGhostComponent>();
-            //state.RequireForUpdate<SpawnPointComponent>();
+            state.RequireForUpdate<SpawnPointComponent>();
         }
 
         //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            //UnityEngine.Debug.Log($"[SpawnCharactersSystem] | is this running?");
             if (SystemAPI.HasSingleton<CharactersSpawnedTag>())
                 return;
 
             if (SystemAPI.GetSingleton<GamePhaseGhostComponent>().GamePhase == GamePhase.Game)
             {
-                int numOfCharactersPicked = 0;
-
+                NativeList<CharacterToSpawn> charactersPicked = new(Allocator.TempJob);
                 foreach (var character in SystemAPI.Query<RefRO<PrepickedCharacter>>())
                 {
                     if (character.ValueRO.PrePicked != default)
                     {
-                        numOfCharactersPicked++;
-                    }
-                }
-                NativeArray<Entity> charactersPicked = new(numOfCharactersPicked, Allocator.TempJob);
-
-                int i = 0;
-                foreach (var character in SystemAPI.Query<RefRO<PrepickedCharacter>>())
-                {
-                    if (character.ValueRO.PrePicked != default)
-                    {
-                        charactersPicked[i] = character.ValueRO.Prefab;
-                        i++;
+                        charactersPicked.Add(new CharacterToSpawn
+                        {
+                            Prefab = character.ValueRO.Prefab,
+                            OwnerNetworkId = character.ValueRO.OwnerNetworkId
+                        });
                     }
                 }
 
-                //var spawnCenter = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
-                float3 spawnCenter = default;
+                var spawnCenter = SystemAPI.GetSingleton<SpawnPointComponent>().Position;
+                var numOfCharactersPicked = charactersPicked.Length;
                 var positions = new NativeArray<float3>(numOfCharactersPicked, Allocator.TempJob);
                 var spawnRadius = 4;
                 CalculatePositions(positions, spawnCenter, spawnRadius);
@@ -127,6 +119,12 @@ namespace DOTS.Characters.CharacterSpawner
                 positions[i] = new float3(x, 0f, y) + spawnPosition;
             }
         }
+    }
+
+    public struct CharacterToSpawn
+    {
+        public Entity Prefab;
+        public int OwnerNetworkId;
     }
 
     public struct CharactersSpawnedTag : IComponentData

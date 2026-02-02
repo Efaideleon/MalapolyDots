@@ -20,7 +20,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings
                     Prefab = GetEntity(authoring.Prefab, TransformUsageFlags.Dynamic),
                     PrePicked = false,
                     Character = authoring.Character,
-                    Owner = default
+                    OwnerNetworkId = default
                 });
             }
         }

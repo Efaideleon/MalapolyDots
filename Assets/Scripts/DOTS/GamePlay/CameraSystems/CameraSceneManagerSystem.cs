@@ -10,6 +10,7 @@ using Unity.Physics.Systems;
 namespace DOTS.GamePlay.CameraSystems
 {
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
     [UpdateBefore(typeof(PhysicsSystemGroup))]
     public partial struct CameraSceneManagerSystem : ISystem

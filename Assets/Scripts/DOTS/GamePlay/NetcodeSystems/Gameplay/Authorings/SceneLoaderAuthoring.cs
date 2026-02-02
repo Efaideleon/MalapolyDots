@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.NetCode;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,14 +19,16 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings
 
                 AddComponent(entity, new SceneLoader
                 {
-                    GameSceneGUID = guid,
+                    GameSceneGuid = guid
                 });
             }
         }
     }
 
+    [GhostComponent]
     public struct SceneLoader : IComponentData
     {
-        public Unity.Entities.Hash128 GameSceneGUID;
+        [GhostField]
+        public Unity.Entities.Hash128 GameSceneGuid;
     }
 }

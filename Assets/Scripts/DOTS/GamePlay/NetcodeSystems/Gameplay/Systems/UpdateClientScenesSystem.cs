@@ -13,6 +13,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay
         {
             state.RequireForUpdate<SceneLoader>();
             state.RequireForUpdate<GamePhaseGhostComponent>();
+            state.RequireForUpdate<NetworkStreamInGame>();
             state.EntityManager.CreateSingleton(new ClientSceneLoadState { GameSceneRequested = false });
         }
 
@@ -27,26 +28,31 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay
                 case GamePhase.Game:
                     if (!loadState.GameSceneRequested)
                     {
-                        foreach (var (_, e) in SystemAPI.Query<RefRO<NetworkId>>().WithEntityAccess())
-                        {
-                            UnityEngine.Debug.Log(
-                                    $"[SERVER] Before scene load | Conn {e} InGame=" +
-                                    state.EntityManager.HasComponent<NetworkStreamInGame>(e)
-                                    );
-                        }
-                        SceneSystem.LoadSceneAsync(state.WorldUnmanaged, scenes.GameSceneGUID);
-                        state.EntityManager.DestroyEntity(SystemAPI.GetSingletonEntity<GameMenuTag>());
-                        UnityEngine.Debug.Log($"[UpdateClientScenesSystem] | Setting Client Game Scene, Deleting StartMenuUIGameObject");
+                        var sceneEntity = SceneSystem.LoadSceneAsync(state.WorldUnmanaged, scenes.GameSceneGuid);
                         loadState.GameSceneRequested = true;
+                        loadState.SceneEntity = sceneEntity;
                     }
                     break;
+            }
+
+            if (!loadState.GameSceneLoaded && loadState.SceneEntity != Entity.Null && SceneSystem.IsSceneLoaded(state.WorldUnmanaged, loadState.SceneEntity))
+            {
+                UnityEngine.Debug.Log("[Client] Game scene fully loaded");
+                state.EntityManager.DestroyEntity(SystemAPI.GetSingletonEntity<GameMenuTag>());
+                UnityEngine.Debug.Log($"[UpdateClientScenesSystem] | Setting Client Game Scene, Deleting StartMenuUIGameObject");
+                loadState.GameSceneLoaded = true;
             }
         }
     }
 
+    public struct ClientGameSceneLoadedRPC : IRpcCommand
+    { }
+
     public struct ClientSceneLoadState : IComponentData
     {
         public bool GameSceneRequested;
+        public bool GameSceneLoaded;
+        public Entity SceneEntity;
     }
 }
 

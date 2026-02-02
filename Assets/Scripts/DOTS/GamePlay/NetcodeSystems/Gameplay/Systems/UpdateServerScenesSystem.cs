@@ -33,7 +33,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay
                                     state.EntityManager.HasComponent<NetworkStreamInGame>(e)
                                     );
                         }
-                        SceneSystem.LoadSceneAsync(state.WorldUnmanaged, scenes.GameSceneGUID);
+                        SceneSystem.LoadSceneAsync(state.WorldUnmanaged, scenes.GameSceneGuid);
                         loadState.GameSceneRequested = true;
                     }
                     break;

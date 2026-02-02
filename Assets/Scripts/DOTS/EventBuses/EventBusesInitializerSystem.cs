@@ -32,6 +32,7 @@ namespace DOTS.EventBuses
         public TransactionEventType EventType;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct EventBusesInitializerSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

@@ -14,7 +14,6 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
             state.RequireForUpdate<PerspectiveCameraPivotGO>();
             state.RequireForUpdate<PerspectiveCameraGOTag>();
             state.RequireForUpdate<PerspectiveCameraConfig>();
-            //state.RequireForUpdate<CurrentPlayerComponent>();
         }
 
         public void OnStartRunning(ref SystemState state)

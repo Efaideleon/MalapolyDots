@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using Unity.Entities;
 
 namespace DOTS.GamePlay

@@ -20,7 +20,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
                 foreach (var playerConnectionData in SystemAPI.Query<RefRW<PlayerConnectionData>>())
                 {
                     var networkId = SystemAPI.GetComponent<NetworkId>(req.ValueRO.SourceConnection);
-                    if (playerConnectionData.ValueRO.Owner == networkId.Value && !playerConnectionData.ValueRO.IsLockedIn)
+                    if (playerConnectionData.ValueRO.OwnerNetworkId == networkId.Value && !playerConnectionData.ValueRO.IsLockedIn)
                     {
                         playerConnectionData.ValueRW.CharacterSelected = prepickCharacter.ValueRO.Character;
                     }

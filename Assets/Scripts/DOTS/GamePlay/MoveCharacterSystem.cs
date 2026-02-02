@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using Unity.Burst;
 using Unity.Entities;
@@ -14,6 +15,7 @@ namespace DOTS.GamePlay
         {
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         [BurstCompile]

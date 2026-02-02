@@ -4,9 +4,11 @@ using Unity.Entities;
 using Random = Unity.Mathematics.Random;
 using DOTS.GamePlay.DebugAuthoring;
 using DOTS.Characters;
+using Assets.Scripts.DOTS.GamePlay;
 
 namespace DOTS.GamePlay
 {
+    // TODO: Make this a ghost?
     public struct RollAmountComponent : IComponentData
     {
         public int Value;
@@ -17,6 +19,7 @@ namespace DOTS.GamePlay
         public Random Value;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct RollSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -24,9 +27,9 @@ namespace DOTS.GamePlay
             uint seed = (uint)System.Environment.TickCount;  
             state.EntityManager.CreateSingleton(new RandomValueComponent { Value = new Random(seed) });
             state.EntityManager.CreateSingleton(new RollAmountComponent { Value = default });
-            state.RequireForUpdate<RollAmountComponent>();
             state.RequireForUpdate<RollEventBuffer>();
-            state.RequireForUpdate<RandomValueComponent>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
 #if UNITY_EDITOR
             state.RequireForUpdate<RollConfig>();
 #endif

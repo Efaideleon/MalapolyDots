@@ -8,6 +8,7 @@ using Unity.Transforms;
 namespace DOTS.Mediator
 {
     using PivotRotation = GamePlay.CameraSystems.PivotRotation;
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct RotateTagPivotSystem : ISystem
     {
         private ComponentLookup<LocalToWorld> ltwLookup;

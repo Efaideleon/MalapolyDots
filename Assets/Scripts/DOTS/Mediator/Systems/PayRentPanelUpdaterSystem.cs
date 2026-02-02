@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
@@ -28,6 +29,7 @@ namespace DOTS.Mediator.Systems
             state.RequireForUpdate<PayRentPanelContextComponent>();
             state.RequireForUpdate<SpaceLandedOn>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
 
             spaceLandedOnLookup = SystemAPI.GetComponentLookup<SpaceLandedOn>(true);
             lastPropertyClickedLookup = SystemAPI.GetComponentLookup<LastPropertyClicked>(true);

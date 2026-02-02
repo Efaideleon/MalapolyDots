@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay.CameraSystems.TriggerSimulationEvent;
@@ -15,6 +16,7 @@ namespace DOTS.GamePlay.CameraSystems
     }
 
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct CameraRotationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -36,7 +38,7 @@ namespace DOTS.GamePlay.CameraSystems
 
             state.RequireForUpdate<StatefulTriggerEvent>();
             state.RequireForUpdate<CameraSceneData>();
-            state.RequireForUpdate<CurrentPlayerComponent>();
+            state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<PivotRotation>();
             state.RequireForUpdate<PivotTransformTag>();
         }
@@ -46,10 +48,10 @@ namespace DOTS.GamePlay.CameraSystems
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
 
-            var currentPlayer = SystemAPI.GetSingletonRW<CurrentPlayerComponent>();
-            if (currentPlayer.ValueRO.entity == Entity.Null || !SystemAPI.Exists(currentPlayer.ValueRO.entity)) return;
+            var currentPlayer = SystemAPI.GetSingleton<CurrentActivePlayer>();
+            if (currentPlayer.Entity == Entity.Null || !SystemAPI.Exists(currentPlayer.Entity)) return;
             
-            var currentPlayerPivotRotation = SystemAPI.GetComponentRW<CurrentPivotRotation>(currentPlayer.ValueRO.entity);
+            var currentPlayerPivotRotation = SystemAPI.GetComponentRW<CurrentPivotRotation>(currentPlayer.Entity);
             var pivotEntity = SystemAPI.GetSingletonEntity<PivotTransformTag>();
 
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<StatefulTriggerEvent>>().WithChangeFilter<StatefulTriggerEvent>())
@@ -87,7 +89,7 @@ namespace DOTS.GamePlay.CameraSystems
             var job = new AnimatePivotJob
             {
                 pivotEntity = pivotEntity,
-                playerEntity = currentPlayer.ValueRO.entity,
+                playerEntity = currentPlayer.Entity,
                 dt = deltaTime,
                 ecb = GetECB(ref state).AsParallelWriter()
             };

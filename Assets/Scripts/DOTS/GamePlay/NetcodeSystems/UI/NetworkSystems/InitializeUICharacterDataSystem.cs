@@ -53,7 +53,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
         public CharactersEnum Character;
 
         [GhostField]
-        public int Owner;
+        public int OwnerNetworkId;
 
         [GhostField]
         public bool PrePicked;

@@ -1,4 +1,4 @@
-using DOTS.DataComponents;
+using Assets.Scripts.DOTS.GamePlay;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -8,6 +8,7 @@ namespace DOTS.GamePlay.CameraSystems
     /// <summary>
     /// This systems matches the position of the player to the position of the pivot.
     /// </summary>
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PivotFollowPlayerSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -23,16 +24,18 @@ namespace DOTS.GamePlay.CameraSystems
             SystemAPI.SetComponent(entity, new PivotRotation { Value = quaternion.identity });
             SystemAPI.SetComponent(entity, new PivotTransformTag { });
 
-            state.RequireForUpdate<CurrentPlayerComponent>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
+
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var currPlayer = SystemAPI.GetSingleton<CurrentPlayerComponent>();
+            var currPlayer = SystemAPI.GetSingleton<CurrentActivePlayer>();
 
-            if (!SystemAPI.HasComponent<LocalTransform>(currPlayer.entity)) return;
+            if (!SystemAPI.HasComponent<LocalTransform>(currPlayer.Entity)) return;
 
-            var currPlayerTransform = SystemAPI.GetComponent<LocalTransform>(currPlayer.entity);
+            var currPlayerTransform = SystemAPI.GetComponent<LocalToWorld>(currPlayer.Entity);
 
             SystemAPI.GetSingletonRW<PivotPosition>().ValueRW.Value = currPlayerTransform.Position;
         }

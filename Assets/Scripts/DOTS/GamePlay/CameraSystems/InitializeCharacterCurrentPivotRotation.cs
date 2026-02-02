@@ -5,6 +5,7 @@ using Unity.Mathematics;
 
 namespace DOTS.GamePlay.CameraSystems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct InitializeCharacterCurrentPivotRotation : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -15,12 +16,12 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            state.Enabled = false;
             var camConfig = SystemAPI.GetSingleton<PerspectiveCameraConfig>();
             foreach (var currPivotRotation in SystemAPI.Query<RefRW<CurrentPivotRotation>>())
             {
                 currPivotRotation.ValueRW.Value = quaternion.AxisAngle(new float3(0, 1, 0), camConfig.Angle);
             }
+            state.Enabled = false;
         }
     }
 }

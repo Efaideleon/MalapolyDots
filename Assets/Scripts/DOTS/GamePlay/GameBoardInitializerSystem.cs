@@ -1,59 +1,59 @@
+using Assets.Scripts.DOTS.GamePlay;
+using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings;
 using DOTS.Characters;
+using DOTS.Characters.CharacterSpawner;
 using DOTS.DataComponents;
-using TitleScreen.GamePlay;
-using TitleScreen.SceneManager;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
-    public struct CurrentPlayerID : IComponentData
-    {
-        public int Value;
-    }
-
-    public struct CurrentActivePlayer : IComponentData
-    {
-        public Entity Entity;
-    }
 
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct GameBoardInitializerSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             // Initializing the Current Player ID
-            state.RequireForUpdate<CharacterSelectedNameBuffer>();
+            state.RequireForUpdate<CharactersSpawnedTag>();
+            state.RequireForUpdate<GamePhaseGhostComponent>();
+            state.RequireForUpdate<CurrentPlayerID>();
+            state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<PlayerID>();
-            state.RequireForUpdate<SceneLoaded>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            if (SystemAPI.GetSingleton<SceneLoaded>().ID == SceneID.Game)
-            {
-                state.Enabled = false;
+            if (SystemAPI.HasSingleton<GameBoardInitializedTag>())
+                return;
 
-                var firstCharacter = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>()[0].Name;
-                foreach (var (playerName, playerID, e) in
-                        SystemAPI.Query<
-                        RefRO<NameComponent>,
-                        RefRW<PlayerID>
-                        >()
-                        .WithEntityAccess())
+            if (SystemAPI.GetSingleton<GamePhaseGhostComponent>().GamePhase == GamePhase.Game)
+            {
+                UnityEngine.Debug.Log($"[GameBoardInitializerSystem] | Creating current active player ghost and id ghost ..");
+
+                foreach (var (playerID, e) in SystemAPI.Query<RefRW<PlayerID>>().WithEntityAccess())
                 {
-                    if (firstCharacter == playerName.ValueRO.Value)
+                    if (playerID.ValueRO.Value == 0)
                     {
                         var currentPlayerID = playerID.ValueRO.Value;
                         state.EntityManager.CreateSingleton(new CurrentPlayerComponent { entity = e });
-                        state.EntityManager.CreateSingleton(new CurrentPlayerID { Value = currentPlayerID });
 
-                        state.EntityManager.CreateSingleton(new CurrentActivePlayer { Entity = e });
+                        var currentPlayerIDEntity = SystemAPI.GetSingletonEntity<CurrentPlayerID>();
+                        state.EntityManager.SetComponentData(currentPlayerIDEntity, new CurrentPlayerID { Value = currentPlayerID });
+
+                        var currentActivePlayerEntity = SystemAPI.GetSingletonEntity<CurrentActivePlayer>();
+                        state.EntityManager.SetComponentData(currentActivePlayerEntity, new CurrentActivePlayer { Entity = e });
                     }
                 }
+
+                state.EntityManager.CreateSingleton<GameBoardInitializedTag>();
             }
         }
     }
+
+    public struct GameBoardInitializedTag : IComponentData
+    { }
 }

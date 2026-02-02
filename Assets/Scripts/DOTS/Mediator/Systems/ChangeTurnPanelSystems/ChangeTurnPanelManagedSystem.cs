@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.GamePlay;
 using DOTS.Mediator.Systems.RollPanelSystems;
@@ -15,6 +16,7 @@ namespace DOTS.Mediator.Systems.ChangeTurnPanelSystems
             state.RequireForUpdate<PanelControllers>();
             state.RequireForUpdate<RollPanelVisibleState>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
 
             playerMovementStateLookup = SystemAPI.GetComponentLookup<PlayerMovementState>();
         }

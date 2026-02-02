@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
@@ -27,6 +28,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<LastPropertyClicked>();
             state.RequireForUpdate<PropertySpaceTag>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
 
             spaceLandedOnLookup = SystemAPI.GetComponentLookup<SpaceLandedOn>(true);
             propertySpaceLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
