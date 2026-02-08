@@ -1,16 +1,23 @@
+using Assets.Scripts.DOTS.GamePlay;
+using DOTS.Characters;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 {
     ///<summary>
     ///Updates the transform for the manage instance of the orthographic pivot.
     ///</summary>
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct OrthoPivotManagedUpdateSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<OrthoCameraPivotInstanceTag>();
             state.RequireForUpdate<PivotTransformTag>();
+            state.RequireForUpdate<NetworkStreamInGame>();
         }
 
         public void OnUpdate(ref SystemState state)

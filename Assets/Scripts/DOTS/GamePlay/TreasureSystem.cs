@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.GamePlay.PropertyAnimations;
@@ -23,6 +24,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<RandomValueComponent>();
             state.RequireForUpdate<TreasureAnimationBuffer>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<SpaceLandedOn>();
         }
 

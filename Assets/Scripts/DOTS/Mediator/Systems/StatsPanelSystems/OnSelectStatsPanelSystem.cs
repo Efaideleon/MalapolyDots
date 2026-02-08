@@ -1,57 +1,55 @@
+using Assets.Scripts.DOTS.GamePlay;
+using Assets.Scripts.DOTS.Mediator.Systems;
 using DOTS.DataComponents;
-using DOTS.GamePlay;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
 namespace DOTS.Mediator.Systems.StatsPanelSystems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct OnSelectStatsPanelSystem : ISystem
     {
-        public BufferLookup<ChangeTurnEvent> changeTurnEventBufferLookup;
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<NameComponent>();
             state.RequireForUpdate<MoneyComponent>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
-
-            changeTurnEventBufferLookup = SystemAPI.GetBufferLookup<ChangeTurnEvent>();
+            state.RequireForUpdate<StatsPanelRegistrationCompleteTag>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var lastSystemVersion = state.LastSystemVersion;
-            changeTurnEventBufferLookup.Update(ref state);
-
-            var changeTurnEntity = SystemAPI.GetSingletonEntity<ChangeTurnEvent>();
-
-            var shiftPanels = false;
-
-            if (changeTurnEventBufferLookup.DidChange(changeTurnEntity, lastSystemVersion))
+            foreach (var activePlayer in SystemAPI.Query<RefRO<CurrentActivePlayer>>().WithChangeFilter<CurrentActivePlayer>())
             {
-                var buffer = changeTurnEventBufferLookup[changeTurnEntity];
-                foreach (var e in buffer)
-                {
-                    shiftPanels = true;
-                }
-                buffer.Clear();
-            }
-
-            if (shiftPanels)
-            {
-                var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
-                var activePlayerName = SystemAPI.GetComponent<NameComponent>(activePlayerEntity);
+                var activePlayerName = SystemAPI.GetComponent<NameComponent>(activePlayer.ValueRO.Entity);
 
                 UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 1?");
 
                 PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
                 if (panelControllers?.statsPanelController != null)
                 {
-                    UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 2 name: {activePlayerName.Value}");
-                    panelControllers.statsPanelController.SelectPanel(activePlayerName.Value);
-                    panelControllers.statsPanelController.ShiftPanelsRegistry();
-                    panelControllers.statsPanelController.TranslateAllPanels();
+                    var highlightedPanel = panelControllers.statsPanelController.GetHighlightedPanel();
+
+                    if (highlightedPanel == null)
+                    {
+                        UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | why is this null");
+                    }
+
+                    var playerPanel = panelControllers.statsPanelController.StatsPanelRegistry[activePlayerName.Value.ToString()];
+                    if (playerPanel != null && highlightedPanel != null)
+                    {
+                        // if the panel for the active player is not selected then select it and rotate the panels?
+                        if (!playerPanel.Equals(highlightedPanel))
+                        {
+                            UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 2 name: {activePlayerName.Value}");
+                            panelControllers.statsPanelController.HighlightPanel(activePlayerName.Value);
+                            panelControllers.statsPanelController.ShiftPanelsRegistry();
+                            panelControllers.statsPanelController.TranslateAllPanels();
+                        }
+                    }
                 }
             }
         }

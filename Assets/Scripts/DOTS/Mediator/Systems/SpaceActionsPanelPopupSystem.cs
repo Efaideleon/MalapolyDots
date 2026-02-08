@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
@@ -22,6 +23,7 @@ namespace DOTS.Mediator.Systems
             state.RequireForUpdate<PropertySpaceTag>();
             state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<SpaceLandedOn>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
 
             state.EntityManager.CreateSingletonBuffer<ShowActionsPanelBuffer>();
 

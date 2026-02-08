@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings;
 using TitleScreen.NetworkUI.Components;
 using TitleScreen.NetworkUI.Panels;
 using TitleScreen.NetworkUI.Systems;

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 6888822848561313315}
   - component: {fileID: 5228238547162112879}
   - component: {fileID: 2910727369806217284}
+  - component: {fileID: 267493678803043214}
+  - component: {fileID: -3096670667709201091}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -98,6 +100,44 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &267493678803043214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834787314817034854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Entities.Hybrid::Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring
+--- !u!114 &-3096670667709201091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834787314817034854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.NetCode.Authoring.Hybrid::Unity.NetCode.GhostAuthoringComponent
+  DefaultGhostMode: 2
+  SupportedGhostModes: 3
+  OptimizationMode: 0
+  Importance: 1
+  MaxSendRate: 0
+  prefabId: c4bd09c0e2b10425292c6669f9307719
+  HasOwner: 1
+  SupportAutoCommandTarget: 1
+  TrackInterpolationDelay: 0
+  GhostGroup: 0
+  UsePreSerialization: 0
+  UseSingleBaseline: 0
+  RollbackPredictedSpawnedGhostState: 0
+  RollbackPredictionOnStructuralChanges: 1
 --- !u!1 &8808579541116708351
 GameObject:
   m_ObjectHideFlags: 0

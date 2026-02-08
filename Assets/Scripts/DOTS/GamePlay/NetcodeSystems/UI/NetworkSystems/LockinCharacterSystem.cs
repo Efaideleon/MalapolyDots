@@ -21,7 +21,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
                 var networkId = SystemAPI.GetComponent<NetworkId>(req.ValueRO.SourceConnection);
                 foreach (var playerConnectionData in SystemAPI.Query<RefRW<PlayerConnectionData>>())
                 {
-                    if (networkId.Value == playerConnectionData.ValueRO.Owner)
+                    if (networkId.Value == playerConnectionData.ValueRO.OwnerNetworkId)
                     {
                         playerConnectionData.ValueRW.IsLockedIn = true;
                     }

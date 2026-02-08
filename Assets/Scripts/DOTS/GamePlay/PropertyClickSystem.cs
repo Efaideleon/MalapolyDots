@@ -18,6 +18,7 @@ namespace DOTS.GamePlay
         public bool Value;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     [UpdateAfter(typeof(RayCastSystem))]
     [BurstCompile]
@@ -26,8 +27,9 @@ namespace DOTS.GamePlay
         public void OnCreate(ref SystemState state)
         {
             state.EntityManager.CreateSingleton<ClickedPropertyComponent>();
-            state.EntityManager.CreateSingleton(new UIButtonDirtyFlag { Value = false }); // might need to move this somewhere else; create system
             state.EntityManager.CreateSingleton(new IsSamePropertyClicked { Value = false });
+
+            state.RequireForUpdate<UIButtonDirtyFlag>();
             state.RequireForUpdate<ClickData>();
             state.RequireForUpdate<ClickedPropertyComponent>();
             state.RequireForUpdate<RayCastResult>();

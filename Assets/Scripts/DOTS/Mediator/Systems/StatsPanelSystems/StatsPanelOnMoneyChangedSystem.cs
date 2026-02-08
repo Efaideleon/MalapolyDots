@@ -1,10 +1,13 @@
+using Assets.Scripts.DOTS.Mediator.Systems;
 using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.UI.Controllers;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.Mediator.Systems.StatsPanelSystems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct StatsPanelOnMoneyChangedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -13,6 +16,9 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
             state.RequireForUpdate<NameComponent>();
             state.RequireForUpdate<MoneyComponent>();
             state.RequireForUpdate<PanelControllers>();
+            state.RequireForUpdate<NetworkStreamInGame>();
+            state.RequireForUpdate<GameScreenInitializedFlag>();
+            state.RequireForUpdate<StatsPanelRegistrationCompleteTag>();
         }
 
         public void OnUpdate(ref SystemState state)

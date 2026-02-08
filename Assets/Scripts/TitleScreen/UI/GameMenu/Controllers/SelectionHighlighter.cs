@@ -14,6 +14,8 @@ namespace TitleScreen.UI.GameMenu.Controllers
             _disable = disable;
         }
 
+        public T GetCurrent() => _previous;
+
         public void Select(T current)
         {
             if (_previous != null)

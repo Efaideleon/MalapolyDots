@@ -16,14 +16,20 @@ namespace DOTS.GameSpaces.Selection
             if (SystemAPI.ManagedAPI.TryGetSingleton<SelectionMaterials>(out var materials))
             {
                 var graphicsSystem = state.World.GetExistingSystemManaged<EntitiesGraphicsSystem>();
-                BatchMaterialID selectionMatID = graphicsSystem.RegisterMaterial(materials.Selection);
-                BatchMaterialID noSelectionMatID = graphicsSystem.RegisterMaterial(materials.NoSelection);
-                state.EntityManager.CreateSingleton(new SelectionMaterialsID
+                if (graphicsSystem == null)
+                    return;
+
+                if (materials.Selection != null && materials.NoSelection != null)
                 {
-                    SelectionMaterialID = selectionMatID,
-                    NoSelectionMaterialID = noSelectionMatID
-                });
-                state.Enabled = false;
+                    BatchMaterialID selectionMatID = graphicsSystem.RegisterMaterial(materials.Selection);
+                    BatchMaterialID noSelectionMatID = graphicsSystem.RegisterMaterial(materials.NoSelection);
+                    state.EntityManager.CreateSingleton(new SelectionMaterialsID
+                    {
+                        SelectionMaterialID = selectionMatID,
+                        NoSelectionMaterialID = noSelectionMatID
+                    });
+                    state.Enabled = false;
+                }
             }
         }
     }

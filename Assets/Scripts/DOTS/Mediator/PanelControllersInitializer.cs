@@ -13,6 +13,9 @@ using DOTS.UI.Utilities.UIButtonEvents;
 using System.Linq;
 using DOTS.GameSpaces;
 using TitleScreen.GamePlay;
+using DOTS.DataComponents;
+using DOTS.Characters;
+using Unity.NetCode;
 
 namespace DOTS.Mediator
 {
@@ -83,23 +86,28 @@ namespace DOTS.Mediator
         public PanelControllersManager Manager;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PanelControllersInitializer : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
         {
+            // This come from authoring files or are created here.
             state.RequireForUpdate<CanvasReferenceComponent>();
             state.RequireForUpdate<PanelControllers>();
             state.RequireForUpdate<PopupManagers>();
             state.RequireForUpdate<AudioSourceComponent>();
             state.RequireForUpdate<ClickSoundClipComponent>();
+            state.RequireForUpdate<SpriteRegistryComponent>();
+            state.RequireForUpdate<PropertySpaceTag>();
             state.RequireForUpdate<RollEventBuffer>();
             state.RequireForUpdate<BuyHouseEventBuffer>();
             state.RequireForUpdate<TransactionEventBuffer>();
-            state.RequireForUpdate<PropertySpaceTag>();
-            state.RequireForUpdate<SpriteRegistryComponent>();
-            state.RequireForUpdate<LoginData>();
-            state.RequireForUpdate<UIButtonDirtyFlag>();
             state.RequireForUpdate<UIButtonEventBus>();
+            state.RequireForUpdate<UIButtonDirtyFlag>();
+            state.RequireForUpdate<NetworkStreamInGame>();
+
+            //state.RequireForUpdate<LoginData>();
+            state.EntityManager.CreateSingleton(new UIButtonDirtyFlag { Value = false });
             state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
             state.EntityManager.CreateSingleton(new SpriteRegistryComponent { Value = null });
@@ -137,6 +145,7 @@ namespace DOTS.Mediator
             }
 
             // Registering the properties sprites to their respective name
+            // TODO: This should happen in the server.
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
             Dictionary<FixedString64Bytes, Sprite> characterSpriteRegistry = new();
             var sprites = canvasRef.spaceSprites;
@@ -164,7 +173,7 @@ namespace DOTS.Mediator
             if (playerNameMoneyContainer == null)
                 return;
 
-#region Foreground Container Click Detection and Buttons
+            #region Foreground Container Click Detection and Buttons
             var foregroundContainer = uiDocument.rootVisualElement.Q<VisualElement>("foreground");
             if (foregroundContainer == null)
             {
@@ -174,21 +183,21 @@ namespace DOTS.Mediator
             SystemAPI.ManagedAPI.GetSingleton<ForegroundContainterComponent>().Value = foregroundContainer;
 
             var buttonDirtyFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonDirtyFlag>().Build();
-            SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback = (PointerEnterEvent evt) => 
+            SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback = (PointerEnterEvent evt) =>
             {
                 evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
                 Debug.Log("[PanelControllersInitializer] | Clicked on UIToolkit Element");
             };
 
-            SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback = (PointerMoveEvent evt) => 
+            SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback = (PointerMoveEvent evt) =>
             {
                 evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
                 Debug.Log("[PanelControllersInitializer] | Moving on UIToolkit Element");
             };
 
-            SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback = (PointerUpEvent evt) => 
+            SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback = (PointerUpEvent evt) =>
             {
                 evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
@@ -205,7 +214,7 @@ namespace DOTS.Mediator
             var allButtons = uiDocument.rootVisualElement.Query<Button>().ToList();
 
             // Names of buttons that raycast can still go through.
-            List<string> raycastableButtonNames = new List<string> ()
+            List<string> raycastableButtonNames = new List<string>()
             {
                 backdrop.name
             };
@@ -213,15 +222,15 @@ namespace DOTS.Mediator
             var buttonsBlockingRaycast = allButtons.Where(button => !raycastableButtonNames.Contains(button.name));
             SystemAPI.ManagedAPI.GetSingleton<AllUIButtons>().Buttons = allButtons;
 
-            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback = (PointerEnterEvent evt) => 
+            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback = (PointerEnterEvent evt) =>
             {
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
             };
-            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback = (PointerMoveEvent evt) => 
+            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback = (PointerMoveEvent evt) =>
             {
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
             };
-            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback = (PointerUpEvent evt) => 
+            SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback = (PointerUpEvent evt) =>
             {
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
             };
@@ -236,7 +245,7 @@ namespace DOTS.Mediator
                 button.RegisterCallback(buttonsMoveCallback);
                 button.RegisterCallback(buttonsUpCallback);
             }
-#endregion
+            #endregion
 
             PurchasePropertyPanelContext purchasePropertyPanelContext = new() { Name = default, Price = default, };
             PurchaseHousePanelContext purchaseHousePanelContext = new() { Name = default, HousesOwned = default, Price = default };
@@ -294,20 +303,8 @@ namespace DOTS.Mediator
             }
 
             // Instantiating the Stats Panel for each player
+            // TODO: the characterSpriteRegistry should be read from the server, before loading it here?
             panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext(), characterSpriteRegistry);
-
-            foreach (var characterBuffer in SystemAPI.Query<DynamicBuffer<CharacterSelectedNameBuffer>>())
-            {
-                foreach (var character in characterBuffer)
-                {
-                    var tree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
-                    VisualElement playerNameMoneyPanelElement = tree.Instantiate();
-                    PlayerNameMoneyPanel panel = new(playerNameMoneyPanelElement);
-                    var characterName = character.Name.ToString();
-                    UnityEngine.Debug.Log($"[PanelControllersInitializer] | panel to register width : {panel.Root.resolvedStyle.width}");
-                    panelControllers.statsPanelController.RegisterPanel(characterName, panel);
-                }
-            }
 
             var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             var hideBackDropEvent = new HideBackDropEvent(panelControllers.backdropController);
@@ -320,6 +317,8 @@ namespace DOTS.Mediator
             var payTaxButtonEvents = new List<IButtonEvent> { payTaxTransactionEvent, hideBackDropEvent };
             panelControllers.payTaxPanelController = new(payTaxPanel, payTaxPanelContext, payTaxButtonEvents);
 
+            // TODO Maybe having everything separate and calling it separate is better to reduce the number of dependencies
+            // where it's being called...
             panelControllers.treasurePanelController = new(treasurePanel, treasurePanelContext);
             panelControllers.chancePanelController = new(chancePanel, chancePanelContext);
             panelControllers.jailPanelController = new(jailPanel, jailPanelContext);

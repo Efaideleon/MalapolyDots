@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
@@ -17,6 +18,7 @@ namespace DOTS.Mediator.Systems
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<SpaceLandedOn>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<PanelControllersManagerComponent>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
             state.RequireForUpdate<SpaceTypeComponent>();

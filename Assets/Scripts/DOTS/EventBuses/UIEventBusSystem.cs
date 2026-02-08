@@ -6,6 +6,7 @@ namespace DOTS.EventBuses
     public struct UIButtonEventBus : IBufferElementData
     { }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct UIEventBusSystem : ISystem
     {

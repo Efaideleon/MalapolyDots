@@ -1,6 +1,8 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace DOTS.GamePlay
 {
@@ -19,6 +21,7 @@ namespace DOTS.GamePlay
         {
             state.RequireForUpdate<RollAmountCountDown>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
 
             state.EntityManager.CreateSingleton(new RollAmountCountDown { Value = default });
             rollCountLookup = SystemAPI.GetComponentLookup<RemainingMoves>();

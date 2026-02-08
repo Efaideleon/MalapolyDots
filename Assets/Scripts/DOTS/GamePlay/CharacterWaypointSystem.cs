@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Transforms;
 using Unity.Burst;
 using Unity.Mathematics;
+using Assets.Scripts.DOTS.GamePlay;
 
 namespace DOTS.GamePlay
 {
@@ -17,6 +18,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<PlayerWaypointIndex>();
             state.RequireForUpdate<PlayerBoardIndex>();
             state.RequireForUpdate<PlayerArrivedAtDestinationEvent>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         [BurstCompile]

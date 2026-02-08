@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.GameSpaces;
 using Unity.Burst;
@@ -15,6 +16,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<IndexToBoardHashMap>();
             state.RequireForUpdate<FinalArrived>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<PlayerBoardIndex>();
             state.RequireForUpdate<SpaceLandedOn>();
 

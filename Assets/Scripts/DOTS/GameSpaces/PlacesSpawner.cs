@@ -6,6 +6,10 @@ using Unity.Jobs;
 
 namespace DOTS.GameSpaces
 {
+    // TODO:
+    // 1. Change this to run in the server.
+    // 2. The buildings should spawn as ghosts.
+    //
     [BurstCompile]
     public partial struct PlacesSpawnJob : IJobParallelFor
     {

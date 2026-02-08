@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.GameSpaces;
 using Unity.Entities;
@@ -14,6 +15,7 @@ namespace DOTS.GamePlay
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<BlinkingFlagMaterialOverride>();
             state.RequireForUpdate<PropertySpaceTag>();
@@ -37,6 +39,10 @@ namespace DOTS.GamePlay
 
             var arrivedBufferEntity = SystemAPI.GetSingletonEntity<PlayerArrivedAtDestinationEvent>();
             var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+
+            if (activePlayer == Entity.Null)
+                return;
+
             var spaceLandedOn = SystemAPI.GetComponent<SpaceLandedOn>(activePlayer);
 
             // Player arrived at a property.

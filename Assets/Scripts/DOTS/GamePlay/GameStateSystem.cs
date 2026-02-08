@@ -1,7 +1,9 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using DOTS.Characters.CharacterSpawner;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
@@ -17,12 +19,8 @@ namespace DOTS.GamePlay
         public bool Flag;
     }
 
-    public struct GameStateComponent : IComponentData
-    {
-        public GameState State;
-    }
-
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct GamePlaySystem : ISystem
     {
         public ComponentLookup<FinalArrived> finalArrivedLookup;
@@ -31,22 +29,13 @@ namespace DOTS.GamePlay
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<RollAmountComponent>();
-            state.RequireForUpdate<SpawnFlag>();
-
-            var entity = state.EntityManager.CreateEntity(stackalloc ComponentType[]
-            {
-                ComponentType.ReadOnly<GameStateComponent>(),
-            });
-
-            SystemAPI.SetComponent(entity, new GameStateComponent
-            {
-                State = GameState.Rolling,
-            });
+            state.RequireForUpdate<CharactersSpawnedTag>();
+            state.RequireForUpdate<GameStateComponent>();
 
             finalArrivedLookup = SystemAPI.GetComponentLookup<FinalArrived>();
 
-            state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         [BurstCompile]

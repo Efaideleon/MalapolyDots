@@ -5,6 +5,8 @@ namespace DOTS.GameSpaces
 {
     public class PlacesAuthoring : MonoBehaviour
     {
+        // TODO:
+        // This should be prefab ghosts.
         public GameObject[] propertiesPrefab;
 
         public class PlacesBaker : Baker<PlacesAuthoring>

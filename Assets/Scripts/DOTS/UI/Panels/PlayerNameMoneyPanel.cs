@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class PlayerNameMoneyPanel
+    public class PlayerNameMoneyPanel : IEquatable<PlayerNameMoneyPanel>
     {
         public VisualElement Root { get; private set; }
         public Label PlayerNameLabel { get; private set; }
@@ -34,6 +34,8 @@ namespace DOTS.UI.Panels
             AddAnimationProperties();
             DisableHighlightActivePlayerPanel();
         }
+
+        public bool IsOnScreen => Root.resolvedStyle.width > 0;
 
         public void UpdatePlayerNameLabelText(string text)
         {
@@ -65,6 +67,16 @@ namespace DOTS.UI.Panels
         public void SetSprite(Sprite sprite)
         {
             Icon.style.backgroundImage = new StyleBackground(sprite);
+        }
+
+        public bool Equals(PlayerNameMoneyPanel other)
+        {
+            if (other != null)
+            {
+                UnityEngine.Debug.Log($"[PlayerNameMoneyPanel] | comparing : {PlayerNameLabel.text} to {other.PlayerNameLabel.text}");
+                return PlayerNameLabel.text.Equals(other.PlayerNameLabel.text);
+            }
+            return false;
         }
     }
 }

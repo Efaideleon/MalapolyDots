@@ -68,7 +68,7 @@ LightmapSettings:
     m_TextureCompression: 1
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
-    m_BakeBackend: 1
+    m_BakeBackend: 2
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 512
@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &456626712
+--- !u!1 &780317663
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,67 +127,35 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 456626713}
-  - component: {fileID: 456626714}
+  - component: {fileID: 780317665}
+  - component: {fileID: 780317664}
   m_Layer: 0
-  m_Name: CanvasAuthoring
+  m_Name: SceneLoaderAuthoring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &456626713
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456626712}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.58916, y: 4.77388, z: 22.19609}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &456626714
+--- !u!114 &780317664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456626712}
+  m_GameObject: {fileID: 780317663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33ee9cabc2cdc41f2bf6a00f5c4022dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 06a62af4d515441a89b3c3ede9c13b9e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: TitleScreen.Runtime::GameMenuUIAuthoring
-  documentGO: {fileID: 7462312649226715604, guid: 7fb1794c7dc344e51b7ec4776ad0bca3, type: 3}
---- !u!1 &517507962
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 517507963}
-  - component: {fileID: 517507964}
-  m_Layer: 0
-  m_Name: BootStrapAuthoring
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &517507963
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings.SceneLoaderAuthoring
+  Scene: {fileID: 102900000, guid: f19b9fc17916449c99a1369fee081aaf, type: 3}
+--- !u!4 &780317665
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517507962}
+  m_GameObject: {fileID: 780317663}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -196,22 +164,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &517507964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517507962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42c80c7b5428c4bec9e3c1c73fe7ce0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings.PrepickedCharacterSpawnerAuthoring
-  GhostPrefab: {fileID: 8411307033144156951, guid: caba67b6897a8484685c7c674c2b9928, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 456626713}
-  - {fileID: 517507963}
+  - {fileID: 780317665}
