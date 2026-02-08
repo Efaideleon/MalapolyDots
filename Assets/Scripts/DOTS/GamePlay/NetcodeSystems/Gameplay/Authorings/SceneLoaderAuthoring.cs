@@ -24,6 +24,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings
         }
     }
 
+    [GhostComponent]
     public struct SceneLoader : IComponentData
     {
         public Unity.Entities.Hash128 GameSceneGuid;

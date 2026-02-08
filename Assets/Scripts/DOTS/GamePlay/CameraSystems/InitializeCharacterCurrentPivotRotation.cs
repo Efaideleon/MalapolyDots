@@ -35,7 +35,6 @@ namespace DOTS.GamePlay.CameraSystems
             {
                 SystemAPI.GetSingletonRW<PivotRotation>().ValueRW.Value = initialRotation;
             }
-
             state.Enabled = false;
         }
     }
