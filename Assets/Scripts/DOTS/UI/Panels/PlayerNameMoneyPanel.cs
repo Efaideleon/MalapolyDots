@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,19 +33,19 @@ namespace DOTS.UI.Panels
 
             Root.AddToClassList("default-uxml");
             AddAnimationProperties();
-            DisableHighlightActivePlayerPanel();
+            DisableHighlightPanel();
         }
 
         public bool IsOnScreen => Root.resolvedStyle.width > 0;
 
-        public void UpdatePlayerNameLabelText(string text)
+        public void SetName(FixedString64Bytes text)
         {
-            PlayerNameLabel.text = text;
+            PlayerNameLabel.text = text.ToString();
         }
 
-        public void UpdatePlayerMoneyLabelText(string text)
+        public void SetMoney(FixedString64Bytes text)
         {
-            PlayerMoneyLabel.text = text;
+            PlayerMoneyLabel.text = text.ToString();
         }
 
         private void AddAnimationProperties()
@@ -54,12 +55,12 @@ namespace DOTS.UI.Panels
             Root.style.transitionTimingFunction = new List<EasingFunction> { new(EasingMode.EaseInOut) };
         }
 
-        public void HighlightActivePlayerPanel()
+        public void HighlightPanel()
         {
             _container.AddToClassList("current-player-panel");
         }
 
-        public void DisableHighlightActivePlayerPanel()
+        public void DisableHighlightPanel()
         {
             _container.RemoveFromClassList("current-player-panel");
         }

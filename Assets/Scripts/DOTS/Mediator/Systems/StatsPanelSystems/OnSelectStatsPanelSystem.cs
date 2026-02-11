@@ -45,8 +45,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                         if (!playerPanel.Equals(highlightedPanel))
                         {
                             UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 2 name: {activePlayerName.Value}");
-                            panelControllers.statsPanelController.HighlightPanel(activePlayerName.Value);
-                            panelControllers.statsPanelController.ShiftPanelsRegistry();
+                            panelControllers.statsPanelController.ShiftPanels();
                             panelControllers.statsPanelController.TranslateAllPanels();
                         }
                     }

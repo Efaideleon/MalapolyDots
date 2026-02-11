@@ -40,8 +40,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                             Name = name.ValueRO.Value.ToString(),
                             Money = money.ValueRO.Value.ToString()
                         };
-                        panelControllers.statsPanelController.Context = statsPanelContext;
-                        panelControllers.statsPanelController.Update();
+                        panelControllers.statsPanelController.Update(statsPanelContext);
                     }
                 }
             }

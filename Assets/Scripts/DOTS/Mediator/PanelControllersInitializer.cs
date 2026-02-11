@@ -304,7 +304,7 @@ namespace DOTS.Mediator
 
             // Instantiating the Stats Panel for each player
             // TODO: the characterSpriteRegistry should be read from the server, before loading it here?
-            panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext(), characterSpriteRegistry);
+            panelControllers.statsPanelController = new(playerNameMoneyContainer, characterSpriteRegistry);
 
             var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             var hideBackDropEvent = new HideBackDropEvent(panelControllers.backdropController);

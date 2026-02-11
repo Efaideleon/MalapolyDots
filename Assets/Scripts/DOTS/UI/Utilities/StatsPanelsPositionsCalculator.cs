@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Utilities
@@ -11,46 +12,39 @@ namespace DOTS.UI.Utilities
 
     public class StatsPanelsPositionsCalculator
     {
-        private readonly List<VisualElement> _panels; 
-        private readonly List<OffsetFromTopRight> _offsetFromTopRightPositions; 
+        private readonly List<OffsetFromTopRight> _positions;
+        private float ContainerWidth => _container.resolvedStyle.width;
         private readonly VisualElement _container;
-        private float ContainerWidth => _container == null ? 0 : _container.resolvedStyle.width;
 
         public StatsPanelsPositionsCalculator(VisualElement container)
         {
+            _positions = new();
             _container = container;
-            _panels = new();
-            _offsetFromTopRightPositions = new();
         }
 
-        public void AddPanel(VisualElement panel)
+        // this can only be called when the container's width is resolved.
+        public void CalculatePositions(float panelWidth, int numOfPanels)
         {
-            _panels.Add(panel);
-        }
-    
-        public void CalculatePositions()
-        {
-            var numOfPanels = _panels.Count;
-            for (int i = 0; i < numOfPanels; i++)
+            LinkedList<OffsetFromTopRight> linkedList = new();
+
+            // Working from right to left.
+            for (int i = 0; i < numOfPanels - 1; i++)
             {
-                var width = _panels[i].resolvedStyle.width;
-                var offsetFromRight = width * i;
-                _offsetFromTopRightPositions.Add(new OffsetFromTopRight { Top = 0, Right = offsetFromRight });
+                var offsetFromRight = panelWidth * i;
+                var panelPositon = new OffsetFromTopRight { Top = 0, Right = offsetFromRight };
+                linkedList.AddFirst(panelPositon);
             }
+
+            var highlightPanelPosition = new OffsetFromTopRight { Top = 130, Right = ContainerWidth - panelWidth };;
+            linkedList.AddFirst(highlightPanelPosition);
+
+            _positions.Clear();
+            _positions.AddRange(linkedList.ToList());
         }
 
-        public OffsetFromTopRight GetCurrentPlayerPanelPosition(VisualElement panel)
+        public OffsetFromTopRight GetPosition(int idx)
         {
-            UnityEngine.Debug.Log($"[StatsPanelsPositionsCalculator] | positon = 130, right  = {ContainerWidth - panel.resolvedStyle.width} ");
-            UnityEngine.Debug.Log($"[StatsPanelsPositionsCalculator] | right  container width= {ContainerWidth} ");
-            UnityEngine.Debug.Log($"[StatsPanelsPositionsCalculator] | right  panel width= {panel.resolvedStyle.width} ");
-            return new OffsetFromTopRight { Top = 130, Right = ContainerWidth - panel.resolvedStyle.width };
-        }
-
-        public OffsetFromTopRight GetPanelPosition(int idx)
-        {
-            UnityEngine.Debug.Log($"[StatsPanelsPositionsCalculator] | regular panel top = {_offsetFromTopRightPositions[idx].Top} right {_offsetFromTopRightPositions[idx].Right}   ");
-            return _offsetFromTopRightPositions[idx]; 
+            return _positions[idx];
         }
     }
 }

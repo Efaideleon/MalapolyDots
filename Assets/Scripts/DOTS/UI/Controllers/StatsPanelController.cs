@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DOTS.UI.Panels;
 using DOTS.UI.Utilities;
-using TitleScreen.UI.GameMenu.Controllers;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,34 +17,28 @@ namespace DOTS.UI.Controllers
 
     public class StatsPanelController
     {
-        public Dictionary<string, PlayerNameMoneyPanel> StatsPanelRegistry { get; private set; }
-
-        public FixedString64Bytes CurrentPlayerName { get; private set; }
-        // Use the list wherever order is need.
-        public StatsPanelContext Context { get; set; }
+        public Dictionary<FixedString64Bytes, PlayerNameMoneyPanel> StatsPanelRegistry { get; private set; }
         public VisualElement SmallPanelsContainer { get; private set; }
         private readonly List<PlayerNameMoneyPanel> _statsPanels;
         private readonly StatsPanelsPositionsCalculator _statsPanelsPositionsCalculator;
-        private readonly SelectionHighlighter<PlayerNameMoneyPanel> _selectionHighlighter;
         private readonly Dictionary<FixedString64Bytes, Sprite> _characterSpriteRegistry;
 
-        public StatsPanelController(VisualElement smallPanelsContainer, StatsPanelContext context, Dictionary<FixedString64Bytes, Sprite> characterSpritesRegistry)
+        public StatsPanelController(VisualElement smallPanelsContainer, Dictionary<FixedString64Bytes, Sprite> characterSpritesRegistry)
         {
             SmallPanelsContainer = smallPanelsContainer;
             SmallPanelsContainer.style.visibility = Visibility.Hidden;
 
             _characterSpriteRegistry = characterSpritesRegistry;
-            _selectionHighlighter = new(HighlightActivePanel, DisableHighlightActivePanel);
             _statsPanelsPositionsCalculator = new(SmallPanelsContainer);
             _statsPanels = new();
 
-            StatsPanelRegistry = new Dictionary<string, PlayerNameMoneyPanel>();
-            Context = context;
+            StatsPanelRegistry = new Dictionary<FixedString64Bytes, PlayerNameMoneyPanel>();
         }
 
-        private void HighlightActivePanel(PlayerNameMoneyPanel panel) => panel.HighlightActivePlayerPanel();
-        private void DisableHighlightActivePanel(PlayerNameMoneyPanel panel) => panel.DisableHighlightActivePlayerPanel();
-
+        /// <summary>
+        /// Creates a panel and registers to a name from the orderedNames into a dictionary.
+        /// Also Adds the panel into a VisualElement contianer.
+        /// </summary>
         public void SetupPanels(IReadOnlyList<string> orderedNames)
         {
             foreach (var name in orderedNames)
@@ -72,7 +65,11 @@ namespace DOTS.UI.Controllers
             return panel;
         }
 
-        public bool AllPanelsOnScreen
+        /// <summary>
+        /// Check if all the stats panels width has been resolved (is on screen).
+        /// </summary>
+        /// <returns> True if width has been resolved for ALL stats panels.</returns>
+        public bool IsWidthResolvedForAllPanels
         {
             get
             {
@@ -85,126 +82,128 @@ namespace DOTS.UI.Controllers
             }
         }
 
-        public void InitializePanel()
+        public void InitializePanel(StatsPanelContext context)
         {
-            UnityEngine.Debug.Log($"[StatsPanelController] | Initializing Panel: {Context.Name.ToString()}");
-            StatsPanelRegistry.TryGetValue(Context.Name.ToString(), out var panel);
-            var sprite = _characterSpriteRegistry[Context.Name.ToString()];
-            _statsPanelsPositionsCalculator.AddPanel(panel.Root);
-            panel.SetSprite(sprite);
-            panel.UpdatePlayerNameLabelText(Context.Name.ToString());
-            panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
+            if (StatsPanelRegistry.TryGetValue(context.Name, out var panel))
+            {
+                if (_characterSpriteRegistry.TryGetValue(context.Name, out var sprite))
+                {
+                    panel.SetSprite(sprite);
+                    panel.SetName(context.Name);
+                    panel.SetMoney(context.Money);
+                }
+                else
+                {
+                    new Exception($"{context.Name} is not in the _characterSpriteRegistry. Can't load panel data.");
+                }
+            }
+            else
+            {
+                new Exception($"{context.Name} is not in the StatsPanelRegistry, Can't initialize panel.");
+            }
         }
 
         ///<summary>
-        ///Set the initialize position of the stats panels, including the current player's panel.
+        /// Set the initialize position of the stats panels, including the current player's panel.
+        /// This method must be called after the width for the panels has been resolved.
         ///</summary>
         public void SetPanelsInitialPositions()
         {
-            _statsPanelsPositionsCalculator.CalculatePositions();
-            int idx = _statsPanels.Count - 1;
-            foreach (var panel in _statsPanels)
+            int numOfPanels = _statsPanels.Count;
+            if (_statsPanels.Count == 0)
             {
-                UnityEngine.Debug.Log($"[StatsPanelController] | panel Width: {panel.Root.resolvedStyle.width}");
-                if (idx == _statsPanels.Count - 1)
-                    TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
-                else
-                    TranslatePanel(panel, idx, _statsPanelsPositionsCalculator.GetPanelPosition);
-                idx--;
+                new ArgumentOutOfRangeException("_statsPanels is not initialized");
             }
 
+            if (_statsPanels[0].Root.resolvedStyle.width == 0)
+            {
+                new Exception("Unresolved stats panels width.");
+            }
+
+            _statsPanels[0].HighlightPanel();
+            _statsPanelsPositionsCalculator.CalculatePositions(_statsPanels[0].Root.resolvedStyle.width, numOfPanels);
+            TranslateAllPanels();
             SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
 
         public void TranslateAllPanels()
         {
-            // get the last panel.
-            int idx = _statsPanels.Count - 1;
-            foreach (var panel in _statsPanels)
+            int numOfPanels = _statsPanels.Count;
+
+            for (int i = 0; i < numOfPanels; i++)
             {
-                int capturedIndex = idx;
-                panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
-                // if we are the first panel move to the back
-                if (idx == 0)
+                var panel = _statsPanels[i];
+                bool isLastPanel = i == numOfPanels - 1;
+
+                if (isLastPanel)
                 {
-                    panel.Root.style.transitionDuration = new List<TimeValue> { new(0f, TimeUnit.Second) };
-                    panel.Root.style.translate = new Translate(350, 0);
-                    panel.Root.schedule.Execute((_) =>
-                    {
-                        TranslatePanel(panel, capturedIndex, _statsPanelsPositionsCalculator.GetPanelPosition);
-                    }).ExecuteLater(0);
+                    MovePanelToRightOffscreen(panel);
                 }
 
-                if (capturedIndex == _statsPanels.Count - 1)
-                {
-                    panel.Root.schedule.Execute((_) =>
-                    {
-                        TranslatePanel(panel, panel.Root, _statsPanelsPositionsCalculator.GetCurrentPlayerPanelPosition);
-                    }).ExecuteLater(0);
-                }
-                if ((capturedIndex != _statsPanels.Count - 1) && (capturedIndex != 0))
-                {
-                    panel.Root.schedule.Execute((_) =>
-                    {
-                        TranslatePanel(panel, capturedIndex, _statsPanelsPositionsCalculator.GetPanelPosition);
-                    }).ExecuteLater(0);
-                }
-                idx--;
+                AnimatePanelTranslationByOrder(panel, i);
             }
-
-            SmallPanelsContainer.style.visibility = Visibility.Visible;
         }
 
-        private void TranslatePanel<T>(PlayerNameMoneyPanel panel, T value, Func<T, OffsetFromTopRight> GetPosition)
+        private void MovePanelToRightOffscreen(PlayerNameMoneyPanel panel)
         {
-            OffsetFromTopRight position = GetPosition(value);
+            panel.Root.style.transitionDuration = new List<TimeValue> { new(0f, TimeUnit.Second) };
+            panel.Root.style.translate = new Translate(350, 0);
+        }
+
+        private void AnimatePanelTranslationByOrder(PlayerNameMoneyPanel panel, int order)
+        {
+            panel.Root.schedule.Execute((_) =>
+            {
+                panel.Root.style.transitionDuration = new List<TimeValue> { new(1f, TimeUnit.Second) };
+                TranslatePanel(panel, order);
+            }).ExecuteLater(0);
+        }
+
+        private void TranslatePanel(PlayerNameMoneyPanel panel, int order)
+        {
+            OffsetFromTopRight position = _statsPanelsPositionsCalculator.GetPosition(order);
             panel.Root.style.translate = new Translate(-position.Right, position.Top);
         }
 
-        public void ShiftPanelsRegistry()
+        public void ShiftPanels()
         {
             UnityEngine.Debug.Log($"[StatsPanelController] | shifting panels");
-            var entries = _statsPanels;
-            if (entries.Count == 0)
+            if (_statsPanels.Count == 0)
                 return;
 
-            var firstEntry = entries.First();
-            entries.RemoveAt(0);
-            entries.Insert(entries.Count, firstEntry);
-        }
+            _statsPanels[0].DisableHighlightPanel();
 
-        public void HighlightPanel(int idx)
-        {
-            var panel = _statsPanels[idx];
-            _selectionHighlighter.Select(panel);
-        }
-        public void HighlightPanel(FixedString64Bytes characterName)
-        {
-            var panel = StatsPanelRegistry[characterName.ToString()];
-            UnityEngine.Debug.Log($"[StatsPanelController] | Selecting panel for: {characterName.ToString()}");
-            _selectionHighlighter.Select(panel);
+            var firstEntry = _statsPanels.First();
+            _statsPanels.RemoveAt(0);
+            _statsPanels.Insert(_statsPanels.Count, firstEntry);
+
+            _statsPanels[0].HighlightPanel();
         }
 
         public PlayerNameMoneyPanel GetHighlightedPanel()
         {
-            return _selectionHighlighter.GetCurrent();
+            if (_statsPanels.Count == 0)
+            {
+                new ArgumentOutOfRangeException("_statsPanels is empty. No currently highlighted panel. Call InitializePanel to load panels.");
+            }
+            return _statsPanels[0];
         }
 
-        public void TranslatePanelsAndShiftRegistry()
+        /// <summary>
+        /// Updates the stats panel's context.
+        /// </summary>
+        /// <param name="context" The name of the panel to update and it's new content </param>
+        public void Update(StatsPanelContext context)
         {
-            TranslateAllPanels();
-            ShiftPanelsRegistry();
-        }
-
-        public void Update()
-        {
-            UnityEngine.Debug.Log($"[StatsPanelController] | Registry size: {StatsPanelRegistry.Count}");
-
-            // TODO: There is an error here. the name is not found.
-            var panel = StatsPanelRegistry[Context.Name.ToString()];
-            UnityEngine.Debug.Log($"[StatsPanelController] | Updating panel: {Context.Name}");
-            panel.UpdatePlayerNameLabelText(Context.Name.ToString());
-            panel.UpdatePlayerMoneyLabelText(Context.Money.ToString());
+            if (StatsPanelRegistry.TryGetValue(context.Name, out var panel))
+            {
+                panel.SetName(context.Name);
+                panel.SetMoney(context.Money);
+            }
+            else
+            {
+                new Exception($"{context.Name} is not a valid key for StatsPanelRegistry. Call InitializePanel() to load panels");
+            }
         }
     }
 }

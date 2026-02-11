@@ -25,7 +25,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
             // Currently No panels are screen when this system runs.
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
-            if (!panelControllers.statsPanelController.AllPanelsOnScreen)
+            if (!panelControllers.statsPanelController.IsWidthResolvedForAllPanels)
             {
                 UnityEngine.Debug.Log($"[InitializeStatsPanelSystem] | Not all stats panels on screen.");
                 return;
@@ -42,8 +42,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                             Name = name.ValueRO.Value,
                             Money = money.ValueRO.Value.ToString()
                         };
-                        panelControllers.statsPanelController.Context = newContext;
-                        panelControllers.statsPanelController.InitializePanel();
+                        panelControllers.statsPanelController.InitializePanel(newContext);
                     }
                 }
             }
@@ -53,8 +52,6 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                 if (panelControllers?.statsPanelController.SmallPanelsContainer.resolvedStyle.width > 0)
                 {
                     UnityEngine.Debug.Log($"[StatsPanelInitializerSystem] | StatsPanelRegistry size: {panelControllers.statsPanelController.StatsPanelRegistry.Count}");
-                    panelControllers.statsPanelController.HighlightPanel(0);
-
                     // This method should be only after all the stats panels appear on screen.
                     // It sets the first panels as the current player's panel.
                     panelControllers.statsPanelController.SetPanelsInitialPositions();
