@@ -1,5 +1,5 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using DOTS.Characters;
 using DOTS.Characters.CharacterSpawner;
 using Unity.Burst;
 using Unity.Entities;
@@ -35,13 +35,17 @@ namespace DOTS.GamePlay
             finalArrivedLookup = SystemAPI.GetComponentLookup<FinalArrived>();
 
             state.RequireForUpdate<CurrentActivePlayer>();
-            state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             finalArrivedLookup.Update(ref state);
+            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (activePlayerEntity == null)
+            {
+                return;
+            }
 
             foreach (var playerID in SystemAPI.Query<RefRO<CurrentPlayerID>>().WithChangeFilter<CurrentPlayerID>())
             {
@@ -53,16 +57,17 @@ namespace DOTS.GamePlay
 
             foreach (var rollComponent in SystemAPI.Query<RefRO<RollAmountComponent>>().WithChangeFilter<RollAmountComponent>())
             {
+                UnityEngine.Debug.Log($"[GamePlaySystem] | RollAmountChanged");
                 if (rollComponent.ValueRO.Value > 0)
                 {
                     foreach (var gameState in SystemAPI.Query<RefRW<GameStateComponent>>())
                     {
+                        UnityEngine.Debug.Log($"[GamePlaySystem] | Setting gamestate to walking");
                         gameState.ValueRW.State = GameState.Walking;
                     }
                 }
             }
 
-            var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             if (!finalArrivedLookup.HasComponent(activePlayerEntity)) 
                 return;
 

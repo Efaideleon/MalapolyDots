@@ -29,28 +29,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                 UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 1?");
 
                 PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                if (panelControllers?.statsPanelController != null)
-                {
-                    var highlightedPanel = panelControllers.statsPanelController.GetHighlightedPanel();
-
-                    if (highlightedPanel == null)
-                    {
-                        UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | why is this null");
-                    }
-
-                    var playerPanel = panelControllers.statsPanelController.StatsPanelRegistry[activePlayerName.Value.ToString()];
-                    if (playerPanel != null && highlightedPanel != null)
-                    {
-                        // if the panel for the active player is not selected then select it and rotate the panels?
-                        if (!playerPanel.Equals(highlightedPanel))
-                        {
-                            UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 2 name: {activePlayerName.Value}");
-                            panelControllers.statsPanelController.HighlightPanel(activePlayerName.Value);
-                            panelControllers.statsPanelController.ShiftPanelsRegistry();
-                            panelControllers.statsPanelController.TranslateAllPanels();
-                        }
-                    }
-                }
+                panelControllers.statsPanelController.SetCurrentPanel(activePlayerName.Value);
             }
         }
     }

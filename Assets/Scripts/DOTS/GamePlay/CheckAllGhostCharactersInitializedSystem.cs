@@ -1,6 +1,6 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings;
-using DOTS.Characters;
 using DOTS.Characters.CharacterSpawner;
 using Unity.Entities;
 using Unity.NetCode;

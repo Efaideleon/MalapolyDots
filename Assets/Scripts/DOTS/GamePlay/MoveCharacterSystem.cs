@@ -1,5 +1,5 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using DOTS.Characters;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -7,6 +7,8 @@ using Unity.Transforms;
 
 namespace DOTS.GamePlay
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    [UpdateAfter(typeof(CharacterWaypointSystem))]
     [BurstCompile]
     public partial struct MoveCharacterSystem : ISystem
     {
@@ -15,16 +17,20 @@ namespace DOTS.GamePlay
         {
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<CurrentActivePlayer>();
-            state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
+            var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (activePlayer == default)
+            {
+                return;
+            }
+
             if (currGameState.State == GameState.Walking)
             {
-                var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
                 var moveStateRW = SystemAPI.GetComponentRW<PlayerMovementState>(activePlayer);
                 var localTransformRW = SystemAPI.GetComponentRW<LocalTransform>(activePlayer);
                 var targetPosition = SystemAPI.GetComponent<TargetPosition>(activePlayer);

@@ -1,5 +1,5 @@
 using System;
-using DOTS.Characters;
+using Assets.Scripts.DOTS.Characters;
 using DOTS.DataComponents;
 using Unity.Collections;
 using Unity.Entities;

@@ -1,20 +1,20 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using DOTS.Characters;
-using DOTS.GamePlay;
-using DOTS.Mediator.Systems.RollPanelSystems;
+using Assets.Scripts.DOTS.UI.Controllers;
 using DOTS.UI.Controllers;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.Mediator.Systems.ChangeTurnPanelSystems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct ChangeTurnPanelManagedSystem : ISystem
     {
         public ComponentLookup<PlayerMovementState> playerMovementStateLookup;
 
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<PanelControllers>();
-            state.RequireForUpdate<RollPanelVisibleState>();
+            state.RequireForUpdate<PanelControllerService>();
             state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<GhostDataLoadedTag>();
 
@@ -26,41 +26,41 @@ namespace DOTS.Mediator.Systems.ChangeTurnPanelSystems
             playerMovementStateLookup.Update(ref state);
 
             var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
-
-            if (playerMovementStateLookup.HasComponent(activePlayerEntity))
+            if (activePlayerEntity == Entity.Null)
             {
-                if (playerMovementStateLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
-                {
-                    var playerMoveState = playerMovementStateLookup[activePlayerEntity];
-                    PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                    if (panelControllers != null)
-                    {
-                        var isRollVisible = SystemAPI.GetSingleton<RollPanelVisibleState>().Value;
-                        var isVisible = !(playerMoveState.Value == MoveState.Walking) && !isRollVisible;
-                        ChangeTurnPanelContext changeTurnPanelContext = new() { IsVisible = isVisible };
-                        if (panelControllers.changeTurnPanelController != null)
-                        {
-                            panelControllers.changeTurnPanelController.Context = changeTurnPanelContext;
-                            panelControllers.changeTurnPanelController.UpdateVisibility();
-                        }
-                    }
-                }
+                return;
             }
 
-            foreach (var isRollVisible in SystemAPI.Query<RefRO<RollPanelVisibleState>>().WithChangeFilter<RollPanelVisibleState>())
+            var service = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
+            var hasTurnPanel = service.TryGet<ChangeTurnPanelController>(out var turnPanel);
+            var hasRollPanel = service.TryGet<RollPanelController>(out var rollPanel);
+            if (!hasRollPanel || !hasTurnPanel)
             {
-                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                if (panelControllers != null)
-                {
-                    var isVisible = !isRollVisible.ValueRO.Value;
-                    ChangeTurnPanelContext changeTurnPanelContext = new() { IsVisible = isVisible };
-                    if (panelControllers.changeTurnPanelController != null)
-                    {
-                        panelControllers.changeTurnPanelController.Context = changeTurnPanelContext;
-                        panelControllers.changeTurnPanelController.UpdateVisibility();
-                    }
-                }
+                return;
             }
+            var clientId = SystemAPI.GetSingleton<NetworkId>();
+            var playerId = SystemAPI.GetComponent<GhostOwner>(activePlayerEntity);
+            bool isLocalPlayer = clientId.Value == playerId.NetworkId;
+
+            var playerMoveState = playerMovementStateLookup[activePlayerEntity];
+
+            var isRollVisible = rollPanel.IsVisible;
+            var shouldTurnBeVisible = !(playerMoveState.Value == MoveState.Walking) && !isRollVisible && isLocalPlayer;
+
+            if (shouldTurnBeVisible && turnPanel.IsVisible)
+            {
+                return;
+            }
+
+            if (!shouldTurnBeVisible && turnPanel.IsHiding)
+            {
+                return;
+            }
+
+            UnityEngine.Debug.Log($"[ChangeTurnPanelManagedSystem] | shouldTurnBeVisible: {shouldTurnBeVisible}");
+            ChangeTurnPanelContext changeTurnPanelContext = new() { IsVisible = shouldTurnBeVisible };
+            turnPanel.Context = changeTurnPanelContext;
+            turnPanel.UpdateVisibility();
         }
     }
 }

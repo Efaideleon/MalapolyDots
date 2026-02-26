@@ -16,6 +16,7 @@ using TitleScreen.GamePlay;
 using DOTS.DataComponents;
 using DOTS.Characters;
 using Unity.NetCode;
+using Assets.Scripts.DOTS.UI.Controllers;
 
 namespace DOTS.Mediator
 {
@@ -259,7 +260,6 @@ namespace DOTS.Mediator
             GoToJailPanelContext goToJailPanelContext = new() { Title = "GoToJail" };
             GoPanelContext goPanelContext = new() { Title = "Go" };
 
-            RollPanelContext rollPanelContext = new();
             ChangeTurnPanelContext changeTurnPanelContext = new();
 
             RollPanel rollPanel = new(botPanelRoot);
@@ -304,7 +304,8 @@ namespace DOTS.Mediator
 
             // Instantiating the Stats Panel for each player
             // TODO: the characterSpriteRegistry should be read from the server, before loading it here?
-            panelControllers.statsPanelController = new(playerNameMoneyContainer, new StatsPanelContext(), characterSpriteRegistry);
+            var panelTree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
+            panelControllers.statsPanelController = new(playerNameMoneyContainer, characterSpriteRegistry, panelTree);
 
             var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             var hideBackDropEvent = new HideBackDropEvent(panelControllers.backdropController);
@@ -325,7 +326,7 @@ namespace DOTS.Mediator
             panelControllers.parkingPanelController = new(parkingPanel, parkingPanelContext);
             panelControllers.goToJailPanelController = new(goToJailPanel, goToJailPanelContext);
             panelControllers.goPanelController = new(goPanel, goPanelContext);
-            panelControllers.rollPanelController = new(rollPanel, rollPanelContext);
+            panelControllers.rollPanelController = new(rollPanel);
             panelControllers.changeTurnPanelController = new(changeTurnPanel, changeTurnPanelContext);
 
             var setButtonUIFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonEventBus>().Build();
@@ -362,7 +363,10 @@ namespace DOTS.Mediator
             SystemAPI.ManagedAPI.GetSingleton<PopupManagers>().propertyPopupManager = propertyPopupManager;
             var backdropEntityQuery = SystemAPI.QueryBuilder().WithAllRW<BackDropEventBus>().Build();
             // Button Actions
+
+            // Clicking on the Roll button.
             var rollEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<RollEventBuffer>().Build();
+
             var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
             panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
@@ -374,6 +378,11 @@ namespace DOTS.Mediator
             panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
             panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery, backdropEntityQuery);
+
+            state.EntityManager.CreateSingleton(new PanelControllerService { });
+            var panelControllerService = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
+            panelControllerService.Register(panelControllers.rollPanelController);
+            panelControllerService.Register(panelControllers.changeTurnPanelController);
 
             state.EntityManager.CreateSingleton(new GameScreenInitializedFlag { Value = true });
         }
@@ -390,6 +399,7 @@ namespace DOTS.Mediator
             panelsController.payRentPanelController.Dispose();
             panelsController.rollPanelController.Dispose();
             panelsController.backdropController.Dispose();
+            panelsController.statsPanelController.Dispose();
 
             var foregroundContainer = SystemAPI.ManagedAPI.GetSingleton<ForegroundContainterComponent>().Value;
             var enterCallback = SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback;

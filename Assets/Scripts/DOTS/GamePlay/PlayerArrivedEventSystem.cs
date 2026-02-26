@@ -3,9 +3,10 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     [BurstCompile]
-    public partial struct variableName : ISystem
+    public partial struct PlayerArrivedEventSystem : ISystem
     {
         public BufferLookup<PlayerArrivedAtDestinationEvent> playerArrivedEventBufferLookup;
 

@@ -1,4 +1,4 @@
-using DOTS.Characters;
+using Assets.Scripts.DOTS.Characters;
 using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;

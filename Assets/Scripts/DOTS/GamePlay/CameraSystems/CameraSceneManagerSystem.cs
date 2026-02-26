@@ -1,4 +1,4 @@
-using DOTS.Characters;
+using Assets.Scripts.DOTS.Characters;
 using DOTS.GamePlay.CameraSystems.TriggerSimulationEvent;
 using Unity.Burst;
 using Unity.Collections;

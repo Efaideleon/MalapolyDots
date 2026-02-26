@@ -4,6 +4,7 @@ using Unity.Entities;
 
 namespace DOTS.Mediator.Systems.RollPanelSystems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct RollPanelUpdaterManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -21,9 +22,7 @@ namespace DOTS.Mediator.Systems.RollPanelSystems
                 {
                     if (panelControllers.rollPanelController != null)
                     {
-                        RollPanelContext rollPanelContext = new(){ AmountRolled = rollAmount.ValueRO.Value };
-                        panelControllers.rollPanelController.Context = rollPanelContext;
-                        panelControllers.rollPanelController.Update();
+                        panelControllers.rollPanelController.Update(rollAmount.ValueRO.Value);
                     }
                 }
             }

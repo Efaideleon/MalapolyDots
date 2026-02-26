@@ -1,16 +1,19 @@
-using DOTS.Characters;
 using DOTS.Characters.CharacterSpawner;
 using Unity.Entities;
 using Unity.Transforms;
 using Unity.Burst;
 using Unity.Mathematics;
 using Assets.Scripts.DOTS.GamePlay;
+using Assets.Scripts.DOTS.Characters;
 
 namespace DOTS.GamePlay
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [BurstCompile]
     public partial struct CharacterWaypointSystem : ISystem
     {
+        private const float ReachedWaypointDistanceSq = 0.001f;
+
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<WaypointsBlobRef>();
@@ -18,13 +21,17 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<PlayerWaypointIndex>();
             state.RequireForUpdate<PlayerBoardIndex>();
             state.RequireForUpdate<PlayerArrivedAtDestinationEvent>();
-            state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (activePlayerEntity == default)
+            {
+                return;
+            }
+
             var moveState = SystemAPI.GetComponentRW<PlayerMovementState>(activePlayerEntity);
 
             if (moveState.ValueRO.Value != MoveState.Walking) return;
@@ -36,13 +43,14 @@ namespace DOTS.GamePlay
 
             ref var waypointsBloblAsset = ref waypointsRef.Value;
             ref var waypoints = ref waypointsBloblAsset.Waypoints;
-            int targetWayPointIndex = (currentWaypointIndex.ValueRO.Value + 1) % waypoints.Length;
+            int currentIndex = currentWaypointIndex.ValueRO.Value;
+            int targetWayPointIndex = (currentIndex + 1) % waypoints.Length;
             var target = waypoints[targetWayPointIndex];
-            targetPosition.ValueRW.Value = target.Position;
 
-            if (math.distancesq(localTransform.Position, targetPosition.ValueRO.Value) < 0.001)
+            if (math.distancesq(localTransform.Position, target.Position) < ReachedWaypointDistanceSq)
             {
-                currentWaypointIndex.ValueRW.Value = targetWayPointIndex;
+                currentIndex = targetWayPointIndex;
+                currentWaypointIndex.ValueRW.Value = currentIndex;
                 if (target.IsLandingSpot)
                 {
                     var rollCount = SystemAPI.GetComponentRW<RemainingMoves>(activePlayerEntity);
@@ -60,7 +68,12 @@ namespace DOTS.GamePlay
                         moveState.ValueRW.Value = MoveState.Idle;
                     }
                 }
+
+                targetWayPointIndex = (currentIndex + 1) % waypoints.Length;
+                target = waypoints[targetWayPointIndex];
             }
+
+            targetPosition.ValueRW.Value = target.Position;
         }
     }
 }

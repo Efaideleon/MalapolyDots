@@ -10,18 +10,58 @@ namespace DOTS.UI.Controllers
         public bool IsVisible;
     }
 
-    public class RollPanelController
+    public enum VisibilityState
+    {
+        Visible,
+        NotVisible,
+    }
+
+    public enum RollPanelState
+    {
+        Ready,
+        CountingDown,
+        Hidden
+    }
+
+    public sealed class RollPanelController
     {
         public RollPanel Panel { get; private set; }
         public EntityQuery RollAmountQuery { get; private set; }
-        public RollPanelContext Context {get; set; }
+        private VisibilityState _visibilityState;
+        public RollPanelState State { get; private set; }
 
-        public RollPanelController(RollPanel rollPanel, RollPanelContext context)
+        public RollPanelController(RollPanel rollPanel)
         {
             Panel = rollPanel;
-            Context = context;
             SubscribeEvents();
+            State = RollPanelState.Ready;
         }
+
+        public void SetState(RollPanelState state)
+        {
+            if (State == state)
+                return;
+
+            State = state;
+            switch(state)
+            {
+                case RollPanelState.Ready:
+                    ShowPanel();
+                    ShowRollButton();
+                    break;
+                case RollPanelState.CountingDown:
+                    ShowPanel();
+                    HideRollButton();
+                    break;
+                case RollPanelState.Hidden:
+                    HidePanel();
+                    HideRollButton();
+                    break;
+            }
+        }
+
+        public bool IsVisible => _visibilityState == VisibilityState.Visible;
+        public bool IsHiding => _visibilityState == VisibilityState.NotVisible;
 
         public void SubscribeEvents()
         {
@@ -29,21 +69,24 @@ namespace DOTS.UI.Controllers
             Panel.RollButton.clickable.clicked += Panel.HideRollButton;
         }
 
-        public void ShowPanel()
+        private void ShowPanel()
         {
             Panel.Show();
-            Context = new RollPanelContext { AmountRolled = Context.AmountRolled, IsVisible = true };
+            _visibilityState = VisibilityState.Visible;
         }
 
-        public void HidePanel() 
+        private void HidePanel()
         {
             Panel.Hide();
-            Context = new RollPanelContext { AmountRolled = Context.AmountRolled, IsVisible = false };
+            _visibilityState = VisibilityState.NotVisible;
         }
 
-        public void Update()
+        private void ShowRollButton() => Panel.ShowRollButton();
+        private void HideRollButton() => Panel.HideRollButton();
+
+        public void Update(int rollAmount)
         {
-            Panel.UpdateRollLabel(Context.AmountRolled.ToString());
+            Panel.UpdateRollLabel(rollAmount.ToString());
         }
 
         public void SetEventBufferQuery(EntityQuery query) => RollAmountQuery = query;

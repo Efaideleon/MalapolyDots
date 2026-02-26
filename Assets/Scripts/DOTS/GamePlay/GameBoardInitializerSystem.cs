@@ -1,6 +1,6 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings;
-using DOTS.Characters;
 using DOTS.Characters.CharacterSpawner;
 using DOTS.DataComponents;
 using Unity.Burst;

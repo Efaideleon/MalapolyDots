@@ -1,5 +1,5 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using DOTS.Characters;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
 using Unity.Burst;

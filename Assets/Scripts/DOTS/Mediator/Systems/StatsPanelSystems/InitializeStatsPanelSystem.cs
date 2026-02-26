@@ -18,16 +18,11 @@ namespace Assets.Scripts.DOTS.Mediator.Systems
             state.RequireForUpdate<NetworkStreamInGame>();
             state.RequireForUpdate<GeneralGhostStates>();
             state.RequireForUpdate<PlayersSortedByNetId>();
-            state.RequireForUpdate<UIPanelResolved>();
             state.RequireForUpdate<GhostDataLoadedTag>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var panelsResolved = SystemAPI.GetSingleton<UIPanelResolved>();
-            if (!panelsResolved.IsStatsPanelResolved)
-                return;
-
             var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
             if (panelControllers.statsPanelController == null)
                 return;
@@ -44,6 +39,7 @@ namespace Assets.Scripts.DOTS.Mediator.Systems
                 orderedNames.Add(player.Name.ToString());
             }
 
+            // TODO: create the stats panel here?
             panelControllers.statsPanelController.SetupPanels(orderedNames);
 
             state.EntityManager.CreateSingleton<StatsPanelRegistrationCompleteTag>();

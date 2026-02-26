@@ -15,6 +15,10 @@ namespace DOTS.UI.Controllers
         public EntityQuery TransactionEventBufferQuery { get; private set; }
         public EntityQuery BackDropEventBusQuery { get; private set; }
         public ChangeTurnPanelContext Context { get; set; }
+        private VisibilityState VisibilityState { get; set; }
+
+        public bool IsVisible => VisibilityState == VisibilityState.Visible;
+        public bool IsHiding => VisibilityState == VisibilityState.NotVisible;
 
         public ChangeTurnPanelController(ChangeTurnPanel panel, ChangeTurnPanelContext context)
         {
@@ -26,9 +30,15 @@ namespace DOTS.UI.Controllers
         public void UpdateVisibility()
         {
             if (Context.IsVisible)
+            {
+                VisibilityState = VisibilityState.Visible;
                 ChangeTurnPanel.Show();
+            }
             else
+            {
+                VisibilityState = VisibilityState.NotVisible;
                 ChangeTurnPanel.Hide();
+            }
         }
 
         public void SubscribeEvents()

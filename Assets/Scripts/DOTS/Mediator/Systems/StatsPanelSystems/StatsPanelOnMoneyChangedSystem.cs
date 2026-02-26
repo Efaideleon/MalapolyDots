@@ -1,5 +1,5 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.Mediator.Systems;
-using DOTS.Characters;
 using DOTS.DataComponents;
 using DOTS.UI.Controllers;
 using Unity.Entities;
@@ -40,8 +40,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                             Name = name.ValueRO.Value.ToString(),
                             Money = money.ValueRO.Value.ToString()
                         };
-                        panelControllers.statsPanelController.Context = statsPanelContext;
-                        panelControllers.statsPanelController.Update();
+                        panelControllers.statsPanelController.LoadPanelData(statsPanelContext);
                     }
                 }
             }

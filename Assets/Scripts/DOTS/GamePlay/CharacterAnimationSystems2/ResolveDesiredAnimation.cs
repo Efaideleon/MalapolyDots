@@ -1,4 +1,4 @@
-using DOTS.Characters;
+using Assets.Scripts.DOTS.Characters;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using Unity.Burst;
 using Unity.Collections;

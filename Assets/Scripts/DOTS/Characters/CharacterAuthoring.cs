@@ -4,9 +4,10 @@ using DOTS.DataComponents;
 using DOTS.GameData;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 using UnityEngine;
 
-namespace DOTS.Characters
+namespace Assets.Scripts.DOTS.Characters
 {
     public class CharacterAuthoring : MonoBehaviour
     {
@@ -62,8 +63,10 @@ namespace DOTS.Characters
         public float Value;
     }
 
+    [GhostComponent]
     public struct RemainingMoves : IComponentData
     {
+        [GhostField]
         public int Value;
     }
 

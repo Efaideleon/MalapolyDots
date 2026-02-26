@@ -4,11 +4,11 @@ using Unity.Burst;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings;
-using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems;
 using Unity.Jobs;
 using Unity.NetCode;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings;
+using Assets.Scripts.DOTS.Characters;
 
 namespace DOTS.Characters.CharacterSpawner
 {

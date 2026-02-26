@@ -1,21 +1,42 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DOTS.UI.Panels
 {
-    public class PlayerNameMoneyPanel : IEquatable<PlayerNameMoneyPanel>
+    public interface IAnimatablePanel
+    {
+        public int DisplayIndex { get; set; }
+        public void AnimateTranslation(List<TimeValue> duration, StatsPanelPosition position);
+    }
+
+    public class Panel
     {
         public VisualElement Root { get; private set; }
+
+        public Panel(VisualElement root)
+        {
+            Root = root;
+        }
+
+        public float ResolvedWidth => Root.resolvedStyle.width;
+
+    }
+
+    public class PlayerNameMoneyPanel : Panel, IEquatable<PlayerNameMoneyPanel> , IAnimatablePanel
+    {
+        public int ID { get; private set; }
         public Label PlayerNameLabel { get; private set; }
         public Label PlayerMoneyLabel { get; private set; }
         public VisualElement Icon { get; private set; }
         private readonly VisualElement _container;
+        public int DisplayIndex { get; set; }
 
-        public PlayerNameMoneyPanel(VisualElement root)
+        public PlayerNameMoneyPanel(VisualElement root, int id) : base(root)
         {
-            Root = root;
+            ID = id;
             Root.name = "PlayerNameMoneyPanel";
             if (Root == null)
             {
@@ -32,19 +53,19 @@ namespace DOTS.UI.Panels
 
             Root.AddToClassList("default-uxml");
             AddAnimationProperties();
-            DisableHighlightActivePlayerPanel();
+            DisableHighlightPanel();
         }
 
         public bool IsOnScreen => Root.resolvedStyle.width > 0;
 
-        public void UpdatePlayerNameLabelText(string text)
+        public void SetName(FixedString64Bytes text)
         {
-            PlayerNameLabel.text = text;
+            PlayerNameLabel.text = text.ToString();
         }
 
-        public void UpdatePlayerMoneyLabelText(string text)
+        public void SetMoney(FixedString64Bytes text)
         {
-            PlayerMoneyLabel.text = text;
+            PlayerMoneyLabel.text = text.ToString();
         }
 
         private void AddAnimationProperties()
@@ -54,12 +75,12 @@ namespace DOTS.UI.Panels
             Root.style.transitionTimingFunction = new List<EasingFunction> { new(EasingMode.EaseInOut) };
         }
 
-        public void HighlightActivePlayerPanel()
+        public void HighlightPanel()
         {
             _container.AddToClassList("current-player-panel");
         }
 
-        public void DisableHighlightActivePlayerPanel()
+        public void DisableHighlightPanel()
         {
             _container.RemoveFromClassList("current-player-panel");
         }
@@ -74,9 +95,31 @@ namespace DOTS.UI.Panels
             if (other != null)
             {
                 UnityEngine.Debug.Log($"[PlayerNameMoneyPanel] | comparing : {PlayerNameLabel.text} to {other.PlayerNameLabel.text}");
-                return PlayerNameLabel.text.Equals(other.PlayerNameLabel.text);
+                return ID == other.ID;
             }
             return false;
         }
+
+        public void AnimateTranslation(List<TimeValue> duration, StatsPanelPosition position)
+        {
+            Root.schedule.Execute((_) =>
+            {
+                Root.style.transitionDuration = duration;
+                Root.style.translate = new Translate(position.Right, position.Top);
+            }).ExecuteLater(0);
+        }
     }
+
+    public struct StatsPanelPosition
+    {
+        public float Top { get; private set; }
+        public float Right { get; private set; }
+
+        public StatsPanelPosition(float top, float right)
+        {
+            Top = top;
+            Right = right;
+        }
+    }
+
 }

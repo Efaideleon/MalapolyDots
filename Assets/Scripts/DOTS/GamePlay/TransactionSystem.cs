@@ -1,7 +1,7 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems;
 using Assets.Scripts.DOTS.Mediator;
-using DOTS.Characters;
 using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.EventBuses;

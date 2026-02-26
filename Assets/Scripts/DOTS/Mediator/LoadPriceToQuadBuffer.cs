@@ -12,6 +12,7 @@ namespace DOTS.Mediator
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<QuadDataBuffer>();
+            state.RequireForUpdate<NumberToUVOffset>();
         }
 
         public void OnUpdate(ref SystemState state)

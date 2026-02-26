@@ -1,5 +1,5 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using DOTS.Characters;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
