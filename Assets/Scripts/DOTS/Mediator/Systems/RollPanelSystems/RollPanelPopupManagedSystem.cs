@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using Assets.Scripts.DOTS.UI.Controllers;
 using DOTS.GamePlay;
@@ -37,6 +38,7 @@ namespace DOTS.Mediator.Systems.RollPanelSystems
             rollPanel.SetState(newPanelState);
         }
 
+        // TODO: the current state depends if its the current active or not.
         private readonly RollPanelState GetPanelState(GameState gameState, bool isLocalPlayer)
         {
             if (!isLocalPlayer)

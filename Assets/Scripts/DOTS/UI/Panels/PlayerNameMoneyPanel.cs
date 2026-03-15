@@ -22,7 +22,6 @@ namespace DOTS.UI.Panels
         }
 
         public float ResolvedWidth => Root.resolvedStyle.width;
-
     }
 
     public class PlayerNameMoneyPanel : Panel, IEquatable<PlayerNameMoneyPanel> , IAnimatablePanel

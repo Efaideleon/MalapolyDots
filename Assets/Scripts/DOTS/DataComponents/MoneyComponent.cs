@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.DataComponents
 {
@@ -6,5 +7,4 @@ namespace DOTS.DataComponents
     {
         public int Value;
     }
-
 }

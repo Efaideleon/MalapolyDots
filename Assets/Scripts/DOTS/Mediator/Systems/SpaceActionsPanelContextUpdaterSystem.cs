@@ -13,6 +13,7 @@ namespace DOTS.Mediator.Systems
         public SpaceActionsPanelContext Value;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct SpaceActionsPanelContextUpdaterSystem : ISystem
     {
@@ -20,7 +21,6 @@ namespace DOTS.Mediator.Systems
         public void OnCreate(ref SystemState state)
         {
             state.EntityManager.CreateSingleton(new SpaceActionsPanelContextComponent { Value = default });
-            state.RequireForUpdate<SpaceActionsPanelContextComponent>();
             state.RequireForUpdate<LastPropertyClicked>();
             state.RequireForUpdate<LastPropertyInteracted>();
         }

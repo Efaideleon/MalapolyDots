@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using Assets.Scripts.DOTS.Mediator.Systems;
 using DOTS.DataComponents;
@@ -12,6 +13,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<MoneyComponent>();
+            state.RequireForUpdate<GhostMoneyComponet>();
             state.RequireForUpdate<PanelControllers>();
             state.RequireForUpdate<CurrentPlayerID>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
@@ -25,7 +27,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
             // Currently No panels are screen when this system runs.
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
-            foreach (var (name, money) in SystemAPI.Query<RefRO<NameComponent>, RefRO<MoneyComponent>>())
+            foreach (var (name, money) in SystemAPI.Query<RefRO<NameComponent>, RefRO<GhostMoneyComponet>>())
             {
                 if (panelControllers != null)
                 {

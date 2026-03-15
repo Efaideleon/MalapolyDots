@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7734793258024285099}
   - component: {fileID: 8957008818489591462}
   - component: {fileID: 4293678911266670602}
+  - component: {fileID: -4306038360086841875}
+  - component: {fileID: 3812573023055279631}
   m_Layer: 7
   m_Name: LaMunicipalidad
   m_TagString: Untagged
@@ -129,6 +131,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.959557, y: 2.9774783, z: 2.9483585}
   m_Center: {x: 0.00077819824, y: 1.4887391, z: -0.330728}
+--- !u!114 &-4306038360086841875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713985271708359067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Entities.Hybrid::Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring
+--- !u!114 &3812573023055279631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713985271708359067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.NetCode.Authoring.Hybrid::Unity.NetCode.GhostAuthoringComponent
+  HasOwner: 0
+  SupportAutoCommandTarget: 1
+  TrackInterpolationDelay: 0
+  GhostGroup: 0
+  UsePreSerialization: 0
+  UseSingleBaseline: 0
+  RollbackPredictedSpawnedGhostState: 0
+  RollbackPredictionOnStructuralChanges: 1
+  DefaultGhostMode: 0
+  SupportedGhostModes: 3
+  OptimizationMode: 0
+  Importance: 1
+  MaxSendRate: 0
+  prefabId: baf6770af10f64be4bca2625a8bbf521
 --- !u!1 &2304891634539821690
 GameObject:
   m_ObjectHideFlags: 0

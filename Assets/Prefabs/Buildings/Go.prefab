@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7085499923789123706}
   - component: {fileID: 1572756985287337967}
   - component: {fileID: 4686989367459958746}
+  - component: {fileID: 4883026410014284332}
+  - component: {fileID: -1828388724112545078}
   m_Layer: 7
   m_Name: Go
   m_TagString: Untagged
@@ -104,3 +106,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.GameSpaces::DOTS.GameSpaces.GoSpaceAuthoring
   Data: {fileID: 11400000, guid: b79b9baa7f5b541ffbaf8bbc326a698d, type: 2}
+--- !u!114 &4883026410014284332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312554825311356198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Entities.Hybrid::Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring
+--- !u!114 &-1828388724112545078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312554825311356198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.NetCode.Authoring.Hybrid::Unity.NetCode.GhostAuthoringComponent
+  HasOwner: 0
+  SupportAutoCommandTarget: 1
+  TrackInterpolationDelay: 0
+  GhostGroup: 0
+  UsePreSerialization: 0
+  UseSingleBaseline: 0
+  RollbackPredictedSpawnedGhostState: 0
+  RollbackPredictionOnStructuralChanges: 1
+  DefaultGhostMode: 0
+  SupportedGhostModes: 3
+  OptimizationMode: 0
+  Importance: 1
+  MaxSendRate: 0
+  prefabId: 10d2d098092f44662b97aa0ef29490e2

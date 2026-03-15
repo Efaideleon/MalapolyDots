@@ -1,3 +1,4 @@
+using DOTS.GameSpaces;
 using Unity.Entities;
 using Unity.NetCode;
 

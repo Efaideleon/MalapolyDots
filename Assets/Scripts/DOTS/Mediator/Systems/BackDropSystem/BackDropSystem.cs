@@ -1,15 +1,18 @@
-using DOTS.EventBuses;
+using Assets.Scripts.DOTS.Characters;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 
 namespace DOTS.Mediator.Systems.BackDropSystem
 {
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct BackDropSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BackDropEventBus>();
             state.RequireForUpdate<PanelControllers>();
+            state.EntityManager.CreateSingleton<BackDropLastProcessedTick>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -32,5 +35,10 @@ namespace DOTS.Mediator.Systems.BackDropSystem
                 buffer.Clear();
             }
         }
+    }
+
+    public struct BackDropLastProcessedTick : IComponentData
+    {
+        public uint Tick;
     }
 }

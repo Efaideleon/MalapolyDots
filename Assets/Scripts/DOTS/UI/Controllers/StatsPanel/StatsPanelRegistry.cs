@@ -4,6 +4,11 @@ using Unity.Collections;
 
 namespace Assets.Scripts.DOTS.UI.Controllers.StatsPanel
 {
+    public interface IPanelRegistry
+    {
+        public bool TryGet(FixedString64Bytes key, out PlayerNameMoneyPanel panel);
+    }
+
     public class StatsPanelRegistry
     {
         public IReadOnlyDictionary<FixedString64Bytes, PlayerNameMoneyPanel> StatsPanelsLookup => _registry;
@@ -22,31 +27,18 @@ namespace Assets.Scripts.DOTS.UI.Controllers.StatsPanel
         public void Initialize(IReadOnlyList<string> list)
         {
             _registry.Clear();
+            _panelsList.Clear();
             foreach (var value in list)
             {
                 var panel = _panelFactory.CreatePanel();
                 _registry.TryAdd(value, panel);
-            }
-
-            _panelsList.Clear();
-            foreach (var value in list)
-            {
-                _registry.TryGetValue(value, out var panel);
-                {
-                    _panelsList.Add(panel);
-                }
+                _panelsList.Add(panel);
             }
         }
 
-        public bool TryGetPanel(FixedString64Bytes key, out PlayerNameMoneyPanel panel)
+        public bool TryGet(FixedString64Bytes key, out PlayerNameMoneyPanel panel)
         {
-            if (_registry.TryGetValue(key, out var outPanel))
-            {
-                panel = outPanel;
-                return true;
-            }
-            panel = null;
-            return false;
+            return _registry.TryGetValue(key, out panel);
         }
     }
 }

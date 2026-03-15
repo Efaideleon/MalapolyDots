@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.DataComponents;
 using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings;
 using Unity.Entities;
 using Unity.NetCode;

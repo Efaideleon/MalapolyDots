@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.DataComponents;
 using Unity.Entities;
 
 namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
@@ -22,8 +23,4 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
         }
     }
 
-    public struct CurrentScene : IComponentData
-    {
-        public Hash128 sceneGUID;
-    }
 }

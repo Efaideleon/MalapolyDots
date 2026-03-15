@@ -12,6 +12,8 @@ namespace DOTS.EventBuses
 
     public struct RollEventBuffer : IBufferElementData { }
 
+    public struct PurchasePropertyEventBuffer : IBufferElementData { }
+
     public enum TransactionEventType
     {
         Purchase,
@@ -49,6 +51,8 @@ namespace DOTS.EventBuses
             var transactionEventEntity = state.EntityManager.CreateEntity();
             state.EntityManager.AddBuffer<TransactionEventBuffer>(transactionEventEntity);
 
+            var purchasePropertyEventBus = state.EntityManager.CreateEntity();
+            state.EntityManager.AddBuffer<PurchasePropertyEventBuffer>(purchasePropertyEventBus);
         }
 
         public void OnUpdate(ref SystemState state)

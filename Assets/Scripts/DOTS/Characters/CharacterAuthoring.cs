@@ -22,8 +22,10 @@ namespace Assets.Scripts.DOTS.Characters
                 // character entity
                 var authoringEntity = GetEntity(authoring, TransformUsageFlags.None);
 
+                // There is a ghost onwer comp attached when its spawned.
                 AddComponent(authoringEntity, new NameComponent { Value = authoring.charName });
                 AddComponent(authoringEntity, new MoneyComponent { Value = 500_000 });
+                AddComponent(authoringEntity, new GhostMoneyComponet { Value = 500_000 });
                 AddComponent(authoringEntity, new PrefabTag());
                 AddComponent(authoringEntity, new PlayerWaypointIndex { Value = 0 });
                 AddComponent(authoringEntity, new CharacterFlag { });
@@ -38,9 +40,28 @@ namespace Assets.Scripts.DOTS.Characters
                 AddComponent(authoringEntity, new PlayerBoardIndex { Value = 0 });
                 AddComponent(authoringEntity, new SpaceLandedOn { entity = Entity.Null });
                 AddComponent(authoringEntity, new CharactersEnumComponent { Value = authoring.charactersEnum });
-
+                AddComponent<TouchRayCastDataInput>(authoringEntity);
+                AddComponent<TouchPositionInput>(authoringEntity);
+                AddComponent<TouchStartedInput>(authoringEntity);
+                AddComponent<TouchCanceledInput>(authoringEntity);
+                AddComponent<ClickedPropertyComponent>(authoringEntity);
+                AddComponent<HitCastResult>(authoringEntity);
+                AddBuffer<BackDropEventBus>(authoringEntity);
+                AddComponent<UITappedPropertyEvent>(authoringEntity);
+                AddComponent<ActivePlayer>(authoringEntity);
             }
         }
+    }
+
+    [GhostComponent]
+    [GhostEnabledBit]
+    public struct ActivePlayer : IComponentData, IEnableableComponent { }
+
+    [GhostComponent]
+    public struct GhostMoneyComponet : IComponentData
+    {
+        [GhostField]
+        public int Value;
     }
 
     public struct CharactersEnumComponent : IComponentData
@@ -48,13 +69,17 @@ namespace Assets.Scripts.DOTS.Characters
         public CharactersEnum Value;
     }
 
+    [GhostComponent]
     public struct SpaceLandedOn : IComponentData
     {
+        [GhostField]
         public Entity entity;
     }
 
+    [GhostComponent]
     public struct PlayerBoardIndex : IComponentData
     {
+        [GhostField]
         public int Value;
     }
 
@@ -117,5 +142,66 @@ namespace Assets.Scripts.DOTS.Characters
     public struct CurrentPivotRotation : IComponentData
     {
         public quaternion Value;
+    }
+
+    // TODO: Might need to combine some of this.
+    public struct TouchRayCastDataInput : IInputComponentData
+    {
+        public float3 RayOrigin;
+        public float3 RayDirection;
+        public float3 RayEnd;
+    }
+
+    public struct TouchPositionInput : IInputComponentData
+    {
+        public InputEvent IsHeld;
+        public float2 Position;
+    }
+
+    public struct TouchStartedInput : IInputComponentData
+    {
+        public InputEvent IsTapped;
+    }
+
+    public struct TouchCanceledInput : IInputComponentData
+    {
+        public InputEvent IsTapped;
+    }
+
+    public struct HitData
+    {
+        public Entity Entity;
+        public float3 Position;
+    }
+
+    // Should this be a ghost component?
+    [GhostComponent]
+    public struct HitCastResult : IComponentData
+    {
+        [GhostField]
+        public HitData FloorHit;
+
+        [GhostField]
+        public HitData ObjectHit;
+    }
+
+    [GhostComponent]
+    public struct ClickedPropertyComponent : IComponentData
+    {
+        [GhostField]
+        public Entity entity;
+    }
+
+    public struct BackDropEventBus : IBufferElementData
+    { }
+
+    [GhostComponent]
+    public struct UITappedPropertyEvent : IComponentData
+    {
+        [GhostField]
+        public Entity entity;
+
+        [GhostField]
+        public uint EventTick;
     }
 }

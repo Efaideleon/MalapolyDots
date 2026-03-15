@@ -116,6 +116,8 @@ GameObject:
   - component: {fileID: 3730274546404393918}
   - component: {fileID: 1660197936769502174}
   - component: {fileID: 2517352137254902270}
+  - component: {fileID: 2573307878205346855}
+  - component: {fileID: -4297339657871144707}
   m_Layer: 7
   m_Name: Malacateco
   m_TagString: Untagged
@@ -232,6 +234,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3937464, y: 2.7598016, z: 0.26233473}
   m_Center: {x: -0.03951806, y: -0.016442657, z: 0.00003235042}
+--- !u!114 &2573307878205346855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8032727645369714606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Entities.Hybrid::Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring
+--- !u!114 &-4297339657871144707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8032727645369714606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.NetCode.Authoring.Hybrid::Unity.NetCode.GhostAuthoringComponent
+  HasOwner: 0
+  SupportAutoCommandTarget: 1
+  TrackInterpolationDelay: 0
+  GhostGroup: 0
+  UsePreSerialization: 0
+  UseSingleBaseline: 0
+  RollbackPredictedSpawnedGhostState: 0
+  RollbackPredictionOnStructuralChanges: 1
+  DefaultGhostMode: 0
+  SupportedGhostModes: 3
+  OptimizationMode: 0
+  Importance: 1
+  MaxSendRate: 0
+  prefabId: 568bab989be484df6a29d3a803c7f60a
 --- !u!1001 &886315991830220633
 PrefabInstance:
   m_ObjectHideFlags: 0

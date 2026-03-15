@@ -1,12 +1,13 @@
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.EventBuses;
-using DOTS.GamePlay.CameraSystems;
 using Unity.Entities;
 
 namespace DOTS.GamePlay.CleanupSystems
 {
     [UpdateInGroup(typeof(PresentationSystemGroup))]
-    [UpdateAfter(typeof(PropertyClickSystem))]
-    [UpdateAfter(typeof(CameraPanningSystem))]
+    [UpdateAfter(typeof(TriggerBackdropSystem))]
+    //[UpdateAfter(typeof(CameraPanningSystem))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct UIButtonDirtyFlagCleanupSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

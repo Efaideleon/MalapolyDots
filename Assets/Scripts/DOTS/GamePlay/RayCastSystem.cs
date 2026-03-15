@@ -1,26 +1,15 @@
-using Input;
-using Unity.Burst; 
+using Assets.Scripts.DOTS.Characters;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.NetCode;
 using Unity.Physics;
-using UnityEngine.InputSystem;
 
 namespace DOTS.GamePlay
 {
-    public struct HitData
-    {
-        public Entity Entity;
-        public float3 Position;
-    }
-
-    public struct RayCastResult : IComponentData
-    {
-        public HitData FloorHit;
-        public HitData PropertyHit;
-        public InputActionPhase ClickPhase;
-    }
-
-    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    // TODO: This has to go in the server simulation.
+    //[WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
     [BurstCompile]
     public partial struct RayCastSystem : ISystem
     {
@@ -28,32 +17,39 @@ namespace DOTS.GamePlay
         const uint ignoreFloorLayerBitMask = ~(1u << 8);
 
         public void OnCreate(ref SystemState state)
-        { 
-            state.RequireForUpdate<ClickData>();
-            state.EntityManager.CreateSingleton(new RayCastResult { FloorHit = default, PropertyHit = default, ClickPhase = default });
+        {
+            state.RequireForUpdate<NetworkId>();
+            state.RequireForUpdate<HitCastResult>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            // When a click is detected we fire the ray cast.
-            foreach (var clickData in SystemAPI.Query<RefRO<ClickData>>().WithChangeFilter<ClickData>())
+            // Run every time the touch position is pressed.
+            NetworkTime networkTime = SystemAPI.GetSingleton<NetworkTime>();
+            foreach (var (touchPosition, rayCastData, hitCastResult)  in 
+                    SystemAPI.Query<RefRO<TouchPositionInput>, RefRO<TouchRayCastDataInput>, RefRW<HitCastResult>>().WithAll<Simulate>())
             {
-                PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
-                var collisionWorld = world.CollisionWorld;
+                if (networkTime.IsFirstTimeFullyPredictingTick)
+                {
+                    if (touchPosition.ValueRO.IsHeld.IsSet)
+                    {
+                        var ray = rayCastData.ValueRO;
+                        UnityEngine.Debug.Log($"[RayCastSystem] | position: {touchPosition.ValueRO.Position} , rayCastData : {ray.RayOrigin} {state.World}");
+                        PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
+                        var collisionWorld = world.CollisionWorld;
 
-                var ray = SystemAPI.GetSingleton<ClickRayCastData>();
+                        RaycastInput floorRayInput = CreateRaycastInput(ray.RayOrigin, ray.RayEnd, floorLayerBitMask);
+                        collisionWorld.CastRay(floorRayInput, out RaycastHit floorHit);
 
-                RaycastInput floorRayInput = CreateRaycastInput(ray.RayOrigin, ray.RayEnd, floorLayerBitMask);
-                collisionWorld.CastRay(floorRayInput, out RaycastHit floorHit);
+                        RaycastInput objectRayInput = CreateRaycastInput(ray.RayOrigin, ray.RayEnd, ignoreFloorLayerBitMask);
+                        collisionWorld.CastRay(objectRayInput, out RaycastHit objectHit);
 
-                RaycastInput propertyRayInput = CreateRaycastInput(ray.RayOrigin, ray.RayEnd, ignoreFloorLayerBitMask);
-                collisionWorld.CastRay(propertyRayInput, out RaycastHit propertyHit);
-
-                ref var result = ref SystemAPI.GetSingletonRW<RayCastResult>().ValueRW;
-                result.FloorHit = new HitData { Entity = floorHit.Entity, Position = floorHit.Position };
-                result.PropertyHit = new HitData { Entity = propertyHit.Entity, Position = propertyHit.Position };
-                result.ClickPhase = clickData.ValueRO.Phase;
+                        // How do we that the info in this raycast is only set for the local client?
+                        hitCastResult.ValueRW.FloorHit = new HitData { Entity = floorHit.Entity, Position = floorHit.Position };
+                        hitCastResult.ValueRW.ObjectHit = new HitData { Entity = objectHit.Entity, Position = objectHit.Position };
+                    }
+                }
             }
         }
 

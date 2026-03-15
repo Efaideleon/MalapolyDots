@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.Characters;
 using DOTS.DataComponents;
 using Unity.Burst;
 using Unity.Entities;
@@ -12,7 +13,7 @@ namespace DOTS.GamePlay.ChanceActionSystems
         {
             state.RequireForUpdate<ChanceCardPicked>();
             state.RequireForUpdate<CurrentPlayerComponent>();
-            state.RequireForUpdate<MoneyComponent>();
+            state.RequireForUpdate<GhostMoneyComponet>();
         }
 
         [BurstCompile]
@@ -30,7 +31,7 @@ namespace DOTS.GamePlay.ChanceActionSystems
                     {
                         // TODO: what if the entity is null;
                         var player = SystemAPI.GetSingleton<CurrentPlayerComponent>();
-                        ref var money = ref SystemAPI.GetComponentRW<MoneyComponent>(player.entity).ValueRW;
+                        ref var money = ref SystemAPI.GetComponentRW<GhostMoneyComponet>(player.entity).ValueRW;
                         money.Value += 1;
                     }
                 }

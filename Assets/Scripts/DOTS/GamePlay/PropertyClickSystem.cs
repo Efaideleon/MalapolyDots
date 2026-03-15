@@ -1,76 +1,67 @@
-using DOTS.EventBuses;
+using Assets.Scripts.DOTS.Characters;
 using DOTS.GameSpaces;
-using Input;
 using Unity.Burst;
 using Unity.Entities;
-using UnityEngine.InputSystem;
+using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
-    public struct ClickedPropertyComponent : IComponentData
-    {
-        public Entity entity;
-        public InputActionPhase ClickPhase;
-    }
-
-    public struct IsSamePropertyClicked : IComponentData
-    {
-        public bool Value;
-    }
-
-    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    /// <summary>
+    /// This systems identifies the property that was tapped.
+    /// </summary>
+    [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
     [UpdateAfter(typeof(RayCastSystem))]
     [BurstCompile]
     public partial struct PropertyClickSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton<ClickedPropertyComponent>();
-            state.EntityManager.CreateSingleton(new IsSamePropertyClicked { Value = false });
-
-            state.RequireForUpdate<UIButtonDirtyFlag>();
-            state.RequireForUpdate<ClickData>();
-            state.RequireForUpdate<ClickedPropertyComponent>();
-            state.RequireForUpdate<RayCastResult>();
+            state.RequireForUpdate<NetworkId>();
+            state.RequireForUpdate<TouchStartedInput>();
+            state.RequireForUpdate<HitCastResult>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            // Doesn't handle double tapping the same spot.
-            foreach (var hit in SystemAPI.Query<RefRO<RayCastResult>>().WithChangeFilter<RayCastResult>())
+            NetworkTime networkTime = SystemAPI.GetSingleton<NetworkTime>();
+            foreach (var (touchStarted, clickedProperty, hitCastResult, tappedProperty) in
+                    SystemAPI.Query<RefRO<TouchStartedInput>, RefRW<ClickedPropertyComponent>, RefRO<HitCastResult>, RefRW<UITappedPropertyEvent>>().WithAll<Simulate, GhostOwnerIsLocal>())
             {
-                // Don't process raycast data if the user clicked an ui element.
-                var isUIButtonClicked = SystemAPI.GetSingleton<UIButtonDirtyFlag>();
-                if (isUIButtonClicked.Value)
-                    break;
-
-                var clickedProperty = SystemAPI.GetSingletonRW<ClickedPropertyComponent>();
-                var clickPhase = hit.ValueRO.ClickPhase;
-                var propertyEntity = hit.ValueRO.PropertyHit.Entity;
-
-                if (propertyEntity != Entity.Null && !SystemAPI.HasComponent<PropertySpaceTag>(propertyEntity))
+                if (networkTime.IsFirstTimeFullyPredictingTick)
                 {
-                    UnityEngine.Debug.LogWarning($"[PropertyClickSystem] | Entity Hit is not a Property");
-                }
+                    if (touchStarted.ValueRO.IsTapped.IsSet)
+                    {
+                        UnityEngine.Debug.Log($"[PropertyClickSystem] | touchStarted {state.World}");
 
-                clickedProperty.ValueRW.ClickPhase = clickPhase;
+                        var hitResult = hitCastResult.ValueRO;
+                        var objectClickedEntity = hitResult.ObjectHit.Entity;
 
-                switch (clickPhase)
-                {
-                    case InputActionPhase.Started: 
-                        if (propertyEntity == Entity.Null)
-                            clickedProperty.ValueRW.entity = propertyEntity;
-                        else
+                        UnityEngine.Debug.Log($"[PropertyClickSystem] | rayCast: objecthit Entity: {hitResult.ObjectHit.Entity}, Position: {hitResult.ObjectHit.Position} {state.World}");
+
+                        // Check if we tapped on a property.
+                        bool isObjectClickedAProperty = objectClickedEntity != Entity.Null && !SystemAPI.HasComponent<PropertySpaceTag>(objectClickedEntity);
+                        if (isObjectClickedAProperty)
                         {
-                            var isSameEntity = propertyEntity == clickedProperty.ValueRO.entity;
-                            clickedProperty.ValueRW.entity = isSameEntity ? Entity.Null : propertyEntity;
-                            SystemAPI.GetSingletonRW<IsSamePropertyClicked>().ValueRW.Value = isSameEntity;
+                            UnityEngine.Debug.LogWarning($"[PropertyClickSystem] | Entity Hit is not a Property");
                         }
-                        break;
-                    case InputActionPhase.Canceled:
-                        break;
+
+                        // If clicked on nothing, record null and bail out.
+                        if (objectClickedEntity == Entity.Null)
+                        {
+                            clickedProperty.ValueRW.entity = objectClickedEntity;
+                            UnityEngine.Debug.Log($"[PropertyClickSystem] | Entity Hit is null");
+                            return;
+                        }
+
+                        var isSameEntity = objectClickedEntity == clickedProperty.ValueRO.entity;
+                        clickedProperty.ValueRW.entity = isSameEntity ? Entity.Null : objectClickedEntity;
+                        UnityEngine.Debug.Log($"[PropertyClickSystem] | assigning clickedProperty: {clickedProperty.ValueRO.entity}");
+
+                        UnityEngine.Debug.Log($"[PropertyClickSystem] | setting evetn tick, property was clicked");
+                        tappedProperty.ValueRW.entity = clickedProperty.ValueRO.entity;
+                        tappedProperty.ValueRW.EventTick = networkTime.ServerTick.SerializedData;
+                    }
                 }
             }
         }

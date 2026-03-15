@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace DOTS.Mediator.Systems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct SpaceActionsPanelUpdaterManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -13,11 +14,7 @@ namespace DOTS.Mediator.Systems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var spaceActionsContext in
-                     SystemAPI.Query<
-                             RefRO<SpaceActionsPanelContextComponent>
-                         >()
-                         .WithChangeFilter<SpaceActionsPanelContextComponent>())
+            foreach (var spaceActionsContext in SystemAPI.Query<RefRO<SpaceActionsPanelContextComponent>>().WithChangeFilter<SpaceActionsPanelContextComponent>())
             {
                 PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
                 if (panelControllers != null)

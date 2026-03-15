@@ -1,8 +1,10 @@
+using Assets.Scripts.DOTS.DataComponents;
 using DOTS.DataComponents;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using Unity.NetCode;
 
 namespace DOTS.GameSpaces
 {
@@ -24,6 +26,8 @@ namespace DOTS.GameSpaces
         }
     }
 
+    // TODO: we need to spawn this building before the client connects?
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [BurstCompile]
     public partial struct PlacesSpawner : ISystem
     {
@@ -31,23 +35,32 @@ namespace DOTS.GameSpaces
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PlacesPrefabBuffer>();
+            state.RequireForUpdate<NetworkId>();
+            state.RequireForUpdate<NetworkStreamInGame>();
+            state.RequireForUpdate<CurrentScene>();
+            state.RequireForUpdate<SceneLoader>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var placesPrefabs = SystemAPI.GetSingletonBuffer<PlacesPrefabBuffer>();
-            state.EntityManager.CreateSingleton(new IndexToBoardHashMap { Map = new(placesPrefabs.Length, Allocator.Persistent) });
-
-            var job = new PlacesSpawnJob
+            // Run when the gamescene is loaded.
+            if (SystemAPI.GetSingleton<CurrentScene>().sceneGUID == SystemAPI.GetSingleton<SceneLoader>().GameSceneGuid)
             {
-                prefabs = placesPrefabs,
-                ecbParallel = GetECB(ref state).AsParallelWriter(),
-            };
-            var jobHandle = job.Schedule(placesPrefabs.Length, 2);
-            state.Dependency = jobHandle;
+                var placesPrefabs = SystemAPI.GetSingletonBuffer<PlacesPrefabBuffer>();
+                state.EntityManager.CreateSingleton(new IndexToBoardHashMap { Map = new(placesPrefabs.Length, Allocator.Persistent) });
 
-            state.Enabled = false;
+                UnityEngine.Debug.Log($"[PlacesSpawner] | spawning places..");
+                var job = new PlacesSpawnJob
+                {
+                    prefabs = placesPrefabs,
+                    ecbParallel = GetECB(ref state).AsParallelWriter(),
+                };
+                var jobHandle = job.Schedule(placesPrefabs.Length, 2);
+                state.Dependency = jobHandle;
+
+                state.Enabled = false;
+            }
         }
 
         public void OnDestroy(ref SystemState state)
@@ -68,6 +81,8 @@ namespace DOTS.GameSpaces
             return ecb.CreateCommandBuffer(state.WorldUnmanaged);
         }
     }
+
+    public struct PlacesSpawnedTag : IComponentData { }
 
     public struct IndexToBoardHashMap : IComponentData
     {

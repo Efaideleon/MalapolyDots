@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.DataComponents;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
@@ -22,10 +23,5 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Authorings
                 });
             }
         }
-    }
-
-    public struct SceneLoader : IComponentData
-    {
-        public Unity.Entities.Hash128 GameSceneGuid;
     }
 }

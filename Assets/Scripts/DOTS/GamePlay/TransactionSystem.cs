@@ -79,8 +79,8 @@ namespace DOTS.GamePlay
                             if (ownerEntity != Entity.Null)
                             {
                                 var rent = SystemAPI.GetComponent<RentComponent>(spaceLandedOnEntity).Value;
-                                var playerMoney = SystemAPI.GetComponentRW<MoneyComponent>(activePlayerEntity);
-                                var ownerMoney = SystemAPI.GetComponentRW<MoneyComponent>(ownerEntity);
+                                var playerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(activePlayerEntity);
+                                var ownerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(ownerEntity);
 
                                 // Rent transaction.
                                 playerMoney.ValueRW.Value -= rent;
@@ -215,88 +215,16 @@ namespace DOTS.GamePlay
                         chanceBufferEvent.Add(new ChanceBufferEvent { });
                     }
 
-                    if (transaction.EventType == TransactionEventType.Treasure)
-                    {
-                        UnityEngine.Debug.Log($"[TransactionSystem] | treasure transaction.");
-                        var chanceBufferEvent = SystemAPI.GetSingletonBuffer<TreasureAnimationBuffer>();
-                        chanceBufferEvent.Add(new TreasureAnimationBuffer { AnimationType = TreasureAnimationType.Close });
-                    }
+                    // if (transaction.EventType == TransactionEventType.Treasure)
+                    // {
+                    //     UnityEngine.Debug.Log($"[TransactionSystem] | treasure transaction.");
+                    //     var treasureBufferEvent = SystemAPI.GetSingletonBuffer<TreasureAnimationBuffer>();
+                    //     treasureBufferEvent.Add(new TreasureAnimationBuffer { AnimationType = TreasureAnimationType.Close });
+                    // }
                 }
 
                 transactionBuffer.Clear();
             }
-        }
-    }
-
-    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-    public partial struct ChangeTurnSystem : ISystem
-    {
-        private int _currentTurn;
-        public void OnCreate(ref SystemState state)
-        {
-            state.EntityManager.CreateSingleton(new CharacterNameIndex { Index = 0 });
-            state.EntityManager.CreateSingletonBuffer<ChangeTurnEvent>();
-            state.EntityManager.CreateSingleton(new CurrentRound { Value = 0 });
-
-            state.RequireForUpdate<NetworkStreamInGame>();
-            state.RequireForUpdate<GeneralGhostStates>();
-            state.RequireForUpdate<PlayersSortedByNetId>();
-            _currentTurn = 0;
-        }
-
-        public void OnUpdate(ref SystemState state)
-        {
-            var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-
-            foreach (var (rpc, _, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>, RefRO<ChangeTurnRpc>>().WithEntityAccess())
-            {
-                // How many times is this running? and why does it take two clicks on the button to change turn.
-                // How to prevent panels from going out of sync
-                // Handle each change turn request
-                var totalRounds = SystemAPI.GetSingleton<LoginData>().NumberOfRounds;
-                //var totalNumOfPlayer = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
-                var totalNumOfCharacters = SystemAPI.GetSingleton<GeneralGhostStates>().TotalNumberOfCharSpawned;
-                _currentTurn += 1;
-                UnityEngine.Debug.Log($"Turn: {_currentTurn}");
-                if (_currentTurn == totalNumOfCharacters)
-                {
-                    SystemAPI.GetSingletonRW<CurrentRound>().ValueRW.Value += 1;
-                    _currentTurn = 0;
-                    UnityEngine.Debug.Log($"[TransactionSystem] | Changing Round {SystemAPI.GetSingleton<CurrentRound>().Value}");
-                }
-
-                var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
-                var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % totalNumOfCharacters;
-                UnityEngine.Debug.Log($"[TransactionSystem] | nextPlayerIndex: {nextPlayerIndex}");
-                UnityEngine.Debug.Log($"[TransactionSystem] | totalNumOfCharacters: {totalNumOfCharacters}");
-
-                currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
-
-                foreach (var (nameComponent, playerID, entity) in
-                        SystemAPI.Query<
-                        RefRO<NameComponent>,
-                        RefRO<PlayerID>
-                        >()
-                        .WithEntityAccess())
-                {
-                    var characterSelectedNames = SystemAPI.GetSingletonBuffer<PlayersSortedByNetId>();
-                    if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
-                    {
-                        SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
-                        SystemAPI.GetSingletonBuffer<ChangeTurnEvent>().Add(new ChangeTurnEvent { });
-                        SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
-                        SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
-                    }
-                }
-
-                // TODO: Move this to another system
-                var eventBuffer = SystemAPI.GetSingletonBuffer<BackDropEventBus>();
-                eventBuffer.Add(new BackDropEventBus { });
-                ecb.DestroyEntity(rpcEntity);
-            }
-
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
         }
     }
 }

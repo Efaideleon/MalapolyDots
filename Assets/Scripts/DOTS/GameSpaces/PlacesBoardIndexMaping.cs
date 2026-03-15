@@ -4,6 +4,7 @@ using Unity.Entities;
 
 namespace DOTS.GameSpaces
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct PlacesBoardIndexMapping : ISystem
     {
         public void OnCreate(ref SystemState state)

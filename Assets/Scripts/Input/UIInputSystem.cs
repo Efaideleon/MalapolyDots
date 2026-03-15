@@ -42,6 +42,7 @@ namespace Input
         public float3 direction;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [UpdateInGroup(typeof(InitializationSystemGroup), OrderLast = true)]
     public partial struct UIInputSystem : ISystem, ISystemStartStop
     {

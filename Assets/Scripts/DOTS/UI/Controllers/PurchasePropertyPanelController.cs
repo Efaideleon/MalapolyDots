@@ -76,8 +76,8 @@ namespace DOTS.UI.Controllers
 
         private void DispatchEvents()
         {
-            var eventBuffer = transactionEventQuery.GetSingletonBuffer<TransactionEventBuffer>();
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.Purchase });
+            var eventBuffer = transactionEventQuery.GetSingletonBuffer<PurchasePropertyEventBuffer>();
+            eventBuffer.Add(new PurchasePropertyEventBuffer { });
         }
 
         public void SetEventBufferQuery(EntityQuery query)
@@ -101,7 +101,7 @@ namespace DOTS.UI.Controllers
         {
             // TODO: This line should use data.
             // TODO: A key should be passed on data. The sprite registry should be a depenency.
-            PurchasePropertyPanel.Image.style.backgroundImage = new StyleBackground(ManagedContext.sprite); 
+            PurchasePropertyPanel.Image.style.backgroundImage = new StyleBackground(ManagedContext.sprite);
 
             PurchasePropertyPanel.NameLabel.text = data.Name.ToString();
             PurchasePropertyPanel.PriceLabel.text = data.Price.ToString();

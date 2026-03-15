@@ -1,3 +1,5 @@
+using Assets.Scripts.DOTS.Characters;
+using DOTS.GameSpaces;
 using Unity.Entities;
 using Unity.Entities.Graphics;
 
@@ -8,6 +10,7 @@ namespace DOTS.GamePlay
         public Entity Entity;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct OutlineSelectionSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -37,7 +40,10 @@ namespace DOTS.GamePlay
                 }
 
                 // Enable the 'outline' around the property.
-                bool isAPropertyClicked = clickedEntity != Entity.Null;
+                if (clickedEntity == Entity.Null)
+                    return;
+
+                bool isAPropertyClicked = SystemAPI.HasComponent<PropertySpaceTag>(clickedEntity);
                 if (isAPropertyClicked)
                 {
                     ToggleOutline(ref state, ref clickedEntity, 6);

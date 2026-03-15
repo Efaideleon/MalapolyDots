@@ -1,5 +1,5 @@
+using Assets.Scripts.DOTS.DataComponents;
 using Unity.Entities;
-using Unity.Scenes;
 
 namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
 {

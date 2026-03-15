@@ -6,6 +6,7 @@ namespace DOTS.Utilities
     {
         void Awake()
         {
+            UnityEngine.Debug.Log($"[DestroyGameObjectOnAwake] | running.");
             Destroy(gameObject);
         }
     }

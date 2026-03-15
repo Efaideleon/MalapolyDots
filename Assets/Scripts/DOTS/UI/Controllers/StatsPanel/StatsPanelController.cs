@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets.Scripts.DOTS.Mediator;
 using Assets.Scripts.DOTS.UI.Controllers.StatsPanel;
 using DOTS.UI.Panels;
 using Unity.Collections;
@@ -13,7 +14,7 @@ namespace DOTS.UI.Controllers
         public FixedString64Bytes Money;
     }
 
-    public class StatsPanelController
+    public sealed class StatsPanelController
     {
         public IReadOnlyDictionary<FixedString64Bytes, PlayerNameMoneyPanel> StatsPanelRegistry => _panelRegister.StatsPanelsLookup;
         private readonly PanelDisplayManager _panelDisplayManager;
@@ -22,12 +23,12 @@ namespace DOTS.UI.Controllers
         private readonly StatsPanelContainerManager<PlayerNameMoneyPanel> _containerManager;
         private readonly StatsPanelDataManager _dataManager;
 
-        public StatsPanelController(VisualElement smallPanelsContainer, Dictionary<FixedString64Bytes, Sprite> characterSpritesRegistry, VisualTreeAsset panelTree)
+        public StatsPanelController(VisualElement smallPanelsContainer, ISpriteRegistry spritesRegistry, VisualTreeAsset panelTree)
         {
             _panelFactory = new(panelTree);
             _containerManager = new(smallPanelsContainer);
             _panelRegister = new(_panelFactory);
-            _dataManager = new(_panelRegister, characterSpritesRegistry);
+            _dataManager = new(_panelRegister, spritesRegistry);
             _panelDisplayManager = new(_containerManager);
             _containerManager.Hide();
         }
@@ -39,13 +40,11 @@ namespace DOTS.UI.Controllers
         public void SetupPanels(IReadOnlyList<string> orderedNames)
         {
             _panelRegister.Initialize(orderedNames);
-            UnityEngine.Debug.Log($"[StatsPanelController] | _panelRegister.PanelsList.Count {_panelRegister.PanelsList.Count}");
             _containerManager.AddPanels(_panelRegister.PanelsList);
         }
 
         public void LoadPanelData(StatsPanelContext context)
         {
-            UnityEngine.Debug.Log($"[StatsPanelController] | loading panel data : {context.Name}");
             _dataManager.LoadPanelData(context);
         }
 
@@ -65,7 +64,7 @@ namespace DOTS.UI.Controllers
 
         private bool IsPanelHighlighted(FixedString64Bytes name)
         {
-            _panelRegister.TryGetPanel(name, out var panel);
+            _panelRegister.TryGet(name, out var panel);
             return _panelDisplayManager.IsPanelHighlighted(panel);
         }
 

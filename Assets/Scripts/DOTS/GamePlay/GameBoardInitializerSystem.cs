@@ -36,7 +36,7 @@ namespace DOTS.GamePlay
             {
                 UnityEngine.Debug.Log($"[GameBoardInitializerSystem] | Creating current active player ghost and id ghost ..");
 
-                foreach (var (ghostOwner, _, e) in SystemAPI.Query<RefRO<GhostOwner>, RefRO<CharacterFlag>>().WithEntityAccess())
+                foreach (var (ghostOwner, _, activePlayer, e) in SystemAPI.Query<RefRO<GhostOwner>, RefRO<CharacterFlag>, EnabledRefRW<ActivePlayer>>().WithEntityAccess())
                 {
                     if (ghostOwner.ValueRO.NetworkId == 1)
                     {
@@ -48,6 +48,11 @@ namespace DOTS.GamePlay
 
                         var currentActivePlayerEntity = SystemAPI.GetSingletonEntity<CurrentActivePlayer>();
                         state.EntityManager.SetComponentData(currentActivePlayerEntity, new CurrentActivePlayer { Entity = e });
+                        activePlayer.ValueRW = true;
+                    }
+                    else
+                    {
+                        activePlayer.ValueRW = false;
                     }
                 }
 

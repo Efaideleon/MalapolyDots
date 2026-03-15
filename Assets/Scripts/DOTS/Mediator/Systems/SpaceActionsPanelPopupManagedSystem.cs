@@ -1,78 +1,84 @@
+using Assets.Scripts.DOTS.Characters;
+using Assets.Scripts.DOTS.UI.Controllers;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.UI.Controllers;
-using Input;
 using Unity.Entities;
-using UnityEngine.InputSystem;
+using Unity.NetCode;
 
 namespace DOTS.Mediator.Systems
 {
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct SpaceActionsPanelPopupManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<ShowActionsPanelBuffer>();
-            state.RequireForUpdate<PanelControllers>();
+            state.RequireForUpdate<PanelControllerService>();
             state.RequireForUpdate<ClickedPropertyComponent>();
-            state.RequireForUpdate<ClickData>();
             state.RequireForUpdate<LastPropertyClicked>();
+            state.RequireForUpdate<UITappedPropertyEvent>();
+
+            state.EntityManager.CreateSingleton<LastProcessedTick>();
         }
+
         public void OnUpdate(ref SystemState state)
         {
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<ShowActionsPanelBuffer>>().WithChangeFilter<ShowActionsPanelBuffer>())
             {
-                foreach (var e in buffer)
+                if (buffer.Length > 0)
                 {
-                    var panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                    if (panelControllers == null)
-                        break;
-                    if (panelControllers.spaceActionsPanelController == null)
-                        break;
-                    if (panelControllers.backdropController == null)
-                        break;
-
-                    UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Show space actions panels");
-                    panelControllers.spaceActionsPanelController.ShowPanel();
-                    panelControllers.backdropController.ShowBackdrop();
+                    UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | showing space actions.");
+                    var panelService = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
+                    if (panelService.TryGet<SpaceActionsPanelController>(out var spaceActionsPanelController))
+                    {
+                        if (panelService.TryGet<BackdropController>(out var backdropController))
+                        {
+                            UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Show space actions panels");
+                            spaceActionsPanelController.ShowPanel();
+                            backdropController.ShowBackdrop();
+                        }
+                    }
                 }
                 buffer.Clear();
             }
 
-            foreach (var clickedProperty in
-                     SystemAPI.Query<
-                             RefRW<ClickedPropertyComponent>
-                         >()
-                         .WithChangeFilter<ClickedPropertyComponent>())
+            foreach (var tappedPropertyEvent in SystemAPI.Query<RefRW<UITappedPropertyEvent>>().WithAll<GhostOwnerIsLocal, ActivePlayer>())
             {
-                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-                if (panelControllers != null)
+                var lastProcessedTick = SystemAPI.GetSingletonRW<LastProcessedTick>();
+                if (tappedPropertyEvent.ValueRO.EventTick > lastProcessedTick.ValueRO.Tick)
                 {
-                    if (panelControllers.spaceActionsPanelController != null)
+                    var panelService = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
+                    if (panelService.TryGet<SpaceActionsPanelController>(out var spaceActionsPanelController))
                     {
-                        if (clickedProperty.ValueRO.entity != Entity.Null)
+                        if (panelService.TryGet<BackdropController>(out var backdropController))
                         {
-                            var clickPhase = clickedProperty.ValueRO.ClickPhase;
-                            UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | clickData.Phase {clickPhase}");
-                            var lastPropertyClicked = SystemAPI.GetSingletonRW<LastPropertyClicked>();
-
-                            if (SystemAPI.HasComponent<NameComponent>(clickedProperty.ValueRO.entity))
+                            Entity tappedProperty = tappedPropertyEvent.ValueRO.entity;
+                            if (tappedProperty != Entity.Null)
                             {
-                                var name = SystemAPI.GetComponent<NameComponent>(clickedProperty.ValueRO.entity);
-                                UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Entity Hit: {name.Value}");
-                            }
-                            lastPropertyClicked.ValueRW.entity = clickedProperty.ValueRO.entity;
+                                if (SystemAPI.HasComponent<NameComponent>(tappedProperty))
+                                {
+                                    var name = SystemAPI.GetComponent<NameComponent>(tappedProperty);
 
-                            switch (clickPhase)
-                            {
-                                case InputActionPhase.Canceled:
-                                    panelControllers.spaceActionsPanelController.ShowPanel();
-                                    panelControllers.backdropController.ShowBackdrop();
-                                    break;
+                                    UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Entity Hit: {name.Value}");
+                                }
+                                SystemAPI.GetSingletonRW<LastPropertyClicked>().ValueRW.entity = tappedProperty;
+
+                                spaceActionsPanelController.ShowPanel();
+                                backdropController.ShowBackdrop();
+                                UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Processing the new event new tick: {tappedPropertyEvent.ValueRO.EventTick}, old tick: {lastProcessedTick.ValueRO.Tick}");
                             }
                         }
                     }
+                    lastProcessedTick.ValueRW.Tick = tappedPropertyEvent.ValueRO.EventTick;
                 }
             }
         }
+    }
+
+    public struct LastProcessedTick : IComponentData
+    {
+        public uint Tick;
     }
 }

@@ -17,6 +17,8 @@ using DOTS.DataComponents;
 using DOTS.Characters;
 using Unity.NetCode;
 using Assets.Scripts.DOTS.UI.Controllers;
+using Assets.Scripts.DOTS.Mediator;
+using Assets.Scripts.DOTS.Characters;
 
 namespace DOTS.Mediator
 {
@@ -27,7 +29,7 @@ namespace DOTS.Mediator
 
     public class CharacterSpriteDictionary : IComponentData
     {
-        public Dictionary<FixedString64Bytes, Sprite> Value;
+        public ISpriteRegistry Value;
     }
 
     public class BotPanelRoot : IComponentData
@@ -112,7 +114,7 @@ namespace DOTS.Mediator
             state.EntityManager.CreateSingleton(new PanelControllers { purchaseHousePanelController = null, spaceActionsPanelController = null });
             state.EntityManager.CreateSingleton(new PopupManagers { propertyPopupManager = null });
             state.EntityManager.CreateSingleton(new SpriteRegistryComponent { Value = null });
-            state.EntityManager.CreateSingleton(new CharacterSpriteDictionary { Value = new() });
+            state.EntityManager.CreateSingleton(new CharacterSpriteDictionary { });
             state.EntityManager.CreateSingleton(new BotPanelRoot { Value = null });
             state.EntityManager.CreateSingleton(new PointerEnterEventCallback { Callback = null });
             state.EntityManager.CreateSingleton(new PointerMoveEventCallback { Callback = null });
@@ -146,17 +148,13 @@ namespace DOTS.Mediator
             }
 
             // Registering the properties sprites to their respective name
-            // TODO: This should happen in the server.
             Dictionary<FixedString64Bytes, Sprite> spaceSpriteRegistry = new();
-            Dictionary<FixedString64Bytes, Sprite> characterSpriteRegistry = new();
             var sprites = canvasRef.spaceSprites;
             var characterSprites = canvasRef.characterSprites;
+            ISpriteRegistry characterSpriteRegistry = new CharacterSpriteRegistry(characterSprites);
 
             for (int i = 0; i < sprites.Length; i++)
                 spaceSpriteRegistry.TryAdd(sprites[i].name, sprites[i]);
-
-            for (int i = 0; i < characterSprites.Length; i++)
-                characterSpriteRegistry.TryAdd(characterSprites[i].name, characterSprites[i]);
 
             SystemAPI.ManagedAPI.GetSingleton<CharacterSpriteDictionary>().Value = characterSpriteRegistry;
             SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value = spaceSpriteRegistry;
@@ -307,7 +305,7 @@ namespace DOTS.Mediator
             var panelTree = Resources.Load<VisualTreeAsset>("PlayerNameMoneyPanel");
             panelControllers.statsPanelController = new(playerNameMoneyContainer, characterSpriteRegistry, panelTree);
 
-            var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<PurchasePropertyEventBuffer>().Build();
             var hideBackDropEvent = new HideBackDropEvent(panelControllers.backdropController);
 
             var payRentTransactionEvent = new TransactionEvent(transactionEventBufferQuery, TransactionEventType.PayRent);
@@ -370,19 +368,27 @@ namespace DOTS.Mediator
             var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
             panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
-            panelControllers.treasurePanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.chancePanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.jailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.parkingPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.goToJailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
-            panelControllers.changeTurnPanelController.SetEventBufferQuery(transactionEventBufferQuery, backdropEntityQuery);
 
+            var treasureEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.treasurePanelController.SetEventBufferQuery(treasureEventBufferQuery);
+
+            var changeTurnEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.changeTurnPanelController.SetEventBufferQuery(changeTurnEventBufferQuery, backdropEntityQuery);
+
+            // Panel service for the all the controllers.
             state.EntityManager.CreateSingleton(new PanelControllerService { });
             var panelControllerService = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
             panelControllerService.Register(panelControllers.rollPanelController);
             panelControllerService.Register(panelControllers.changeTurnPanelController);
+            panelControllerService.Register(panelControllers.statsPanelController);
+            panelControllerService.Register(panelControllers.spaceActionsPanelController);
+            panelControllerService.Register(panelControllers.backdropController);
 
             state.EntityManager.CreateSingleton(new GameScreenInitializedFlag { Value = true });
         }

@@ -12,6 +12,7 @@ namespace DOTS.GamePlay
         public Entity entity;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct PropertyEventSystem : ISystem
     {

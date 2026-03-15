@@ -3,10 +3,12 @@ using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using Unity.Entities;
+using Unity.NetCode;
 
 #nullable enable
 namespace DOTS.Mediator.Systems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct ShowPanelsManagedSystem : ISystem
     {
         public ComponentLookup<GameStateComponent> gameStateLookup;
@@ -37,25 +39,30 @@ namespace DOTS.Mediator.Systems
             Entity gameStateEntity = SystemAPI.GetSingletonEntity<GameStateComponent>();
             Entity activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
 
+            if (activePlayerEntity == Entity.Null) return;
+
             if (!gameStateLookup.DidChange(gameStateEntity, state.LastSystemVersion)) return;
-            if (!spaceLandedOnLookup.HasComponent(activePlayerEntity)) return;
 
-            GameState gameState = gameStateLookup[gameStateEntity].State;
-            if (gameState != GameState.Landing) return;
+            foreach (var spaceLandedOn in SystemAPI.Query<RefRO<SpaceLandedOn>>().WithAll<GhostOwnerIsLocal, ActivePlayer>())
+            {
+                GameState gameState = gameStateLookup[gameStateEntity].State;
+                if (gameState != GameState.Landing) return;
 
-            // The place where the player lands on.
-            Entity placeEntity = spaceLandedOnLookup[activePlayerEntity].entity;
+                // The place where the player lands on.
+                Entity placeEntity = spaceLandedOn.ValueRO.entity;
+                UnityEngine.Debug.Log($"[ShowPanelsManagedSystem] | placeEntity : {placeEntity}");
 
-            // The place type where the player is at.
-            SpaceType spaceType = spaceTypeLookup[placeEntity].Value;
-            if (!spaceTypeLookup.HasComponent(placeEntity)) return;
+                // The place type where the player is at.
+                SpaceType spaceType = spaceTypeLookup[placeEntity].Value;
+                if (!spaceTypeLookup.HasComponent(placeEntity)) return;
 
-            // Get the panels controllers registry.
-            var controllersManager = SystemAPI.ManagedAPI.GetSingleton<PanelControllersManagerComponent>().Manager;
-            if (controllersManager == null) return;
+                // Get the panels controllers registry.
+                var controllersManager = SystemAPI.ManagedAPI.GetSingleton<PanelControllersManagerComponent>().Manager;
+                if (controllersManager == null) return;
 
-            // Show the respective panel based on type.
-            controllersManager.Show(spaceType);
+                // Show the respective panel based on type.
+                controllersManager.Show(spaceType);
+            }
         }
     }
 }

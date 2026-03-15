@@ -6,6 +6,7 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [BurstCompile]
     public partial struct SpaceDetectorSystem : ISystem
     {
@@ -16,7 +17,6 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<IndexToBoardHashMap>();
             state.RequireForUpdate<FinalArrived>();
             state.RequireForUpdate<CurrentActivePlayer>();
-            state.RequireForUpdate<GhostDataLoadedTag>();
             state.RequireForUpdate<PlayerBoardIndex>();
             state.RequireForUpdate<SpaceLandedOn>();
 
@@ -36,9 +36,9 @@ namespace DOTS.GamePlay
             finalArrivedLookup.Update(ref state);
 
             var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (activePlayerEntity == Entity.Null) return;
 
-            if (!finalArrivedLookup.HasComponent(activePlayerEntity))
-                return;
+            if (!finalArrivedLookup.HasComponent(activePlayerEntity)) return;
 
             if (finalArrivedLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
             {
@@ -46,11 +46,11 @@ namespace DOTS.GamePlay
                 var spaceLandedOnRW = SystemAPI.GetComponentRW<SpaceLandedOn>(activePlayerEntity);
                 var playerBoardIndex = SystemAPI.GetComponent<PlayerBoardIndex>(activePlayerEntity);
 
-                if (!arrived.Value)
-                    return;
+                if (!arrived.Value) return;
 
                 if (SystemAPI.GetSingleton<IndexToBoardHashMap>().Map.TryGetValue(playerBoardIndex.Value, out Entity spaceEntity))
                 {
+                    UnityEngine.Debug.Log($"[SpaceDetectorSystem] | spaceEntity: {spaceEntity}");
                     spaceLandedOnRW.ValueRW.entity = spaceEntity;
                 }
             }

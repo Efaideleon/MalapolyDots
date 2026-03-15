@@ -29,6 +29,16 @@ namespace Input
             clickData.Phase = phase;
         }
 
+        public static void SetClickPhase(ref ClickData clickData, InputActionPhase phase)
+        {
+            clickData.Phase = phase;
+        }
+
+        public static void SetClickPosition(ref ClickData clickData, Vector2 clickPosition)
+        {
+            clickData.Position = new float2(clickPosition.x, clickPosition.y);
+        }
+
         public static void SetRayCastData(ref ClickRayCastData clickRayCastData, RayData rayData, float rayLength)
         {
             clickRayCastData.RayOrigin = rayData.origin;

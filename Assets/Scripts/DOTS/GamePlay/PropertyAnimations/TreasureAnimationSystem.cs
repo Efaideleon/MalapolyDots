@@ -1,39 +1,44 @@
+using Assets.Scripts.DOTS.Characters;
+using Assets.Scripts.DOTS.Mediator;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.GameSpaces;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.GamePlay.PropertyAnimations
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct TreasureAnimationSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<LandedOnSpace>();
+            state.RequireForUpdate<NetworkId>();
+            state.RequireForUpdate<ActivePlayer>();
+            state.RequireForUpdate<TreasureSpaceTag>();
             state.EntityManager.CreateSingletonBuffer<TreasureAnimationBuffer>();
         }
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var buffer in SystemAPI.Query<DynamicBuffer<TreasureAnimationBuffer>>().WithChangeFilter<TreasureAnimationBuffer>())
+            var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+            foreach (var (_, entity) in SystemAPI.Query<RefRO<TreasureRpc>>().WithAll<ReceiveRpcCommandRequest>().WithEntityAccess())
             {
-                var currentSpace = SystemAPI.GetSingleton<LandedOnSpace>();
-                if (SystemAPI.HasComponent<TreasureSpaceTag>(currentSpace.entity))
+                foreach (var spaceLandedOn in SystemAPI.Query<RefRO<SpaceLandedOn>>().WithAll<GhostOwnerIsLocal, ActivePlayer>())
                 {
-                    foreach (var e in buffer)
+                    Entity landedOnEntity = spaceLandedOn.ValueRO.entity;
+                    if (SystemAPI.HasComponent<TreasureSpaceTag>(landedOnEntity))
                     {
-                        switch(e.AnimationType)
-                        {
-                            case TreasureAnimationType.Open:
-                                break;
-                            case TreasureAnimationType.Close:
-                                UnityEngine.Debug.Log($"[TreasureAnimationSystem] | Treasure event to close.");
-                                SystemAPI.GetComponentRW<AnimationPlayState>(currentSpace.entity).ValueRW.Value = PlayState.Playing;
-                                SystemAPI.GetComponentRW<CurrentTreasureAnimation>(currentSpace.entity).ValueRW.Value = TreasureAnimation.Close;
-                                break;
-                        }
+                        // TODO: Now this system only plays the close animaiton, another system sets the open animation.
+                        UnityEngine.Debug.Log($"[TreasureAnimationSystem] | Treasure event to close.");
+                        SystemAPI.GetComponentRW<AnimationPlayState>(landedOnEntity).ValueRW.Value = PlayState.Playing;
+                        SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimation.Close;
+                        break;
                     }
-                    buffer.Clear();
                 }
+                ecb.DestroyEntity(entity);
             }
+
+            ecb.Playback(state.EntityManager);
+            ecb.Dispose();
         }
     }
 
@@ -41,7 +46,7 @@ namespace DOTS.GamePlay.PropertyAnimations
     {
         public TreasureAnimationType AnimationType;
     }
-    
+
     public enum TreasureAnimationType
     {
         Open,
