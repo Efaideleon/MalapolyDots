@@ -57,7 +57,7 @@ namespace DOTS.GameSpaces
                     ecbParallel = GetECB(ref state).AsParallelWriter(),
                 };
                 var jobHandle = job.Schedule(placesPrefabs.Length, 2);
-                state.Dependency = jobHandle;
+                jobHandle.Complete();
 
                 state.Enabled = false;
             }

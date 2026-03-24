@@ -312,7 +312,8 @@ namespace DOTS.Mediator
             var payRentButtonEvents = new List<IButtonEvent> { payRentTransactionEvent, hideBackDropEvent };
             panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext, payRentButtonEvents);
 
-            var payTaxTransactionEvent = new TransactionEvent(transactionEventBufferQuery, TransactionEventType.PayTaxes);
+            var payTaxEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            var payTaxTransactionEvent = new TransactionEvent(payTaxEventBufferQuery, TransactionEventType.PayTaxes);
             var payTaxButtonEvents = new List<IButtonEvent> { payTaxTransactionEvent, hideBackDropEvent };
             panelControllers.payTaxPanelController = new(payTaxPanel, payTaxPanelContext, payTaxButtonEvents);
 
@@ -368,10 +369,15 @@ namespace DOTS.Mediator
             var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
             panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
-            panelControllers.chancePanelController.SetEventBufferQuery(transactionEventBufferQuery);
+
+            var chanceEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.chancePanelController.SetEventBufferQuery(chanceEventBufferQuery);
+
             panelControllers.jailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.parkingPanelController.SetEventBufferQuery(transactionEventBufferQuery);
-            panelControllers.goToJailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+
+            var goToJailEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.goToJailPanelController.SetEventBufferQuery(goToJailEventBufferQuery);
             panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
 
@@ -389,6 +395,7 @@ namespace DOTS.Mediator
             panelControllerService.Register(panelControllers.statsPanelController);
             panelControllerService.Register(panelControllers.spaceActionsPanelController);
             panelControllerService.Register(panelControllers.backdropController);
+            panelControllerService.Register(panelControllers.chancePanelController);
 
             state.EntityManager.CreateSingleton(new GameScreenInitializedFlag { Value = true });
         }

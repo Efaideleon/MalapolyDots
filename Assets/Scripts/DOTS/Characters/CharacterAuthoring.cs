@@ -2,6 +2,7 @@ using Assets.Scripts.DOTS.DataComponents;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.DataComponents;
 using DOTS.GameData;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
@@ -49,6 +50,7 @@ namespace Assets.Scripts.DOTS.Characters
                 AddBuffer<BackDropEventBus>(authoringEntity);
                 AddComponent<UITappedPropertyEvent>(authoringEntity);
                 AddComponent<ActivePlayer>(authoringEntity);
+                AddComponent<GhostChanceCardPicked>(authoringEntity);
             }
         }
     }
@@ -56,6 +58,16 @@ namespace Assets.Scripts.DOTS.Characters
     [GhostComponent]
     [GhostEnabledBit]
     public struct ActivePlayer : IComponentData, IEnableableComponent { }
+
+    [GhostComponent]
+    public struct GhostChanceCardPicked : IComponentData
+    {
+        [GhostField]
+        public int id;
+
+        [GhostField]
+        public FixedString64Bytes msg;
+    }
 
     [GhostComponent]
     public struct GhostMoneyComponet : IComponentData

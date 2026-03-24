@@ -19,8 +19,12 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new SpaceIDComponent { Value = authoring.Data.id });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
                 AddComponent(entity, new ChanceSpaceTag { });
-                AddComponent(entity, new SpaceTypeComponent{ Value = authoring.Data.SpaceType });
-                AddBuffer<ChanceActionDataBuffer>(entity);
+                AddComponent(entity, new SpaceTypeComponent { Value = authoring.Data.SpaceType });
+                var buffer = AddBuffer<ChanceActionDataBuffer>(entity);
+                foreach (var data in authoring.Data.chancesActionData)
+                {
+                    buffer.Add(new ChanceActionDataBuffer { id = data.id, msg = data.msg });
+                }
             }
         }
     }

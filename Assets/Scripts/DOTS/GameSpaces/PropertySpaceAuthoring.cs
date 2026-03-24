@@ -2,6 +2,7 @@ using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameData.PlacesData;
 using Unity.Entities;
+using Unity.NetCode;
 using Unity.Rendering;
 using UnityEngine;
 
@@ -21,7 +22,10 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new NameComponent { Value = authoring.Data.Name });
                 AddComponent(entity, new SpaceIDComponent { Value = authoring.Data.id });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
+
                 AddComponent(entity, new PriceComponent { Value = authoring.Data.price });
+                AddComponent(entity, new GhostPriceComponent { Value = authoring.Data.price });
+
                 AddComponent(entity, new SpaceTypeComponent { Value = authoring.Data.SpaceType });
                 AddComponent(entity, new OwnerComponent { ID = PropertyConstants.Vacant });
                 AddComponent(entity, new OwnerByEntityComponent { Entity = Entity.Null });

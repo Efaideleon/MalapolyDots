@@ -37,12 +37,24 @@ namespace Assets.Scripts.DOTS.Mediator
                             }
                             break;
                         case TransactionEventType.Treasure:
-                            // TODO: DO we send an rpc here to close the treasure?
+                            // TODO: Do we send an rpc here to close the treasure?
                             // We'll have the server assume that if they receive this rpc what they need to play the close animation.
                             UnityEngine.Debug.Log($"[RouteTransactionToServer] | TreasureRpc Create Entity {state.World}");
                             Entity treasureRpcEntity = ecb.CreateEntity();
                             ecb.AddComponent<TreasureRpc>(treasureRpcEntity);
                             ecb.AddComponent<SendRpcCommandRequest>(treasureRpcEntity);
+                            break;
+                        case TransactionEventType.PayTaxes:
+                            UnityEngine.Debug.Log($"[RouteTransactionToServer] | paying taxes..");
+                            Entity payTaxesRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<PayTaxesRpc>(payTaxesRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(payTaxesRpcEntity);
+                            break;
+                        case TransactionEventType.Chance:
+                            UnityEngine.Debug.Log($"[RouteTransactionToServer] | chance event...");
+                            Entity chanceRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<ChanceRpc>(chanceRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(chanceRpcEntity);
                             break;
                     }
                 }
@@ -53,6 +65,12 @@ namespace Assets.Scripts.DOTS.Mediator
             ecb.Dispose();
         }
     }
+
+    public struct ChanceRpc : IRpcCommand
+    { }
+
+    public struct PayTaxesRpc : IRpcCommand
+    { }
 
     public struct ChangeTurnRpc : IRpcCommand
     { }

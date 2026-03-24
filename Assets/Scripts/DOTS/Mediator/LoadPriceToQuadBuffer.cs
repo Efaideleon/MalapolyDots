@@ -1,9 +1,11 @@
 using DOTS.DataComponents;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.Mediator
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct LoadPriceToQuadBuffer : ISystem
     {
         private const int QuetzalSign = 10;
@@ -11,14 +13,16 @@ namespace DOTS.Mediator
 
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<NetworkId>();
             state.RequireForUpdate<QuadDataBuffer>();
             state.RequireForUpdate<NumberToUVOffset>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
+            // TODO: this is part of the property space tag.
             foreach (var (price, quadBuffer) in
-                SystemAPI.Query<RefRO<PriceComponent>, DynamicBuffer<QuadDataBuffer>>().WithChangeFilter<PriceComponent>())
+                SystemAPI.Query<RefRO<GhostPriceComponent>, DynamicBuffer<QuadDataBuffer>>().WithChangeFilter<GhostPriceComponent>())
             {
                 var numToUVOffsetMap = SystemAPI.GetSingleton<NumberToUVOffset>().Map;
 
@@ -35,6 +39,10 @@ namespace DOTS.Mediator
                 {
                     var quadUVOffset = numToUVOffsetMap[quadNums[i]];
                     quadBuffer.Add(new QuadDataBuffer { UVOffset = quadUVOffset });
+                    UnityEngine.Debug.Log($"[LoadPriceToQuadBuffer] | adding to quadUVOffset {quadUVOffset}");
+                    // TODO: this data is set in the server;
+                    // But then it should be read in the client.
+                    // There should be a way to send an rpc to the client to update the quad entities now
                 }
             }
         }

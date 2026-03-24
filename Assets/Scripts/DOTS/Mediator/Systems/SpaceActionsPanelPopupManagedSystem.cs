@@ -2,6 +2,7 @@ using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.UI.Controllers;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
+using DOTS.GameSpaces;
 using DOTS.UI.Controllers;
 using Unity.Entities;
 using Unity.NetCode;
@@ -65,9 +66,12 @@ namespace DOTS.Mediator.Systems
                                 }
                                 SystemAPI.GetSingletonRW<LastPropertyClicked>().ValueRW.entity = tappedProperty;
 
-                                spaceActionsPanelController.ShowPanel();
-                                backdropController.ShowBackdrop();
-                                UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Processing the new event new tick: {tappedPropertyEvent.ValueRO.EventTick}, old tick: {lastProcessedTick.ValueRO.Tick}");
+                                if (SystemAPI.HasComponent<PropertySpaceTag>(tappedProperty))
+                                {
+                                    spaceActionsPanelController.ShowPanel();
+                                    backdropController.ShowBackdrop();
+                                    UnityEngine.Debug.Log($"[SpaceActionsPanelPopupManagedSystem] | Processing the new event new tick: {tappedPropertyEvent.ValueRO.EventTick}, old tick: {lastProcessedTick.ValueRO.Tick}");
+                                }
                             }
                         }
                     }

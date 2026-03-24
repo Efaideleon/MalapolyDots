@@ -46,7 +46,6 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<CharacterSelectedNameBuffer>();
             state.RequireForUpdate<BackDropEventBus>();
             state.RequireForUpdate<LandedOnSpace>();
-            state.RequireForUpdate<ChanceBufferEvent>();
             state.RequireForUpdate<TreasureAnimationBuffer>();
             state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<GhostDataLoadedTag>();
@@ -89,131 +88,124 @@ namespace DOTS.GamePlay
                         }
                     }
 
-                    // Purchase the property if possible
-                    if (transaction.EventType == TransactionEventType.Purchase)
-                    {
-                        foreach (var (playerID, playerMoney, playerEntity) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>().WithEntityAccess())
-                        {
-                            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                            if (playerID.ValueRO.Value == currentPlayerID.Value)
-                            {
-                                var property = SystemAPI.GetSingleton<LastPropertyInteracted>();
-                                var landOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
+                    // // Purchase the property if possible
+                    // if (transaction.EventType == TransactionEventType.Purchase)
+                    // {
+                    //     foreach (var (playerID, playerMoney, playerEntity) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>().WithEntityAccess())
+                    //     {
+                    //         var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                    //         if (playerID.ValueRO.Value == currentPlayerID.Value)
+                    //         {
+                    //             var property = SystemAPI.GetSingleton<LastPropertyInteracted>();
+                    //             var landOnEntity = SystemAPI.GetSingleton<LandedOnSpace>();
+                    //
+                    //             // TODO: Check if the current player is on property entity to be able to buy it
+                    //             // BUG: Right now the landing points are not matching the property.
+                    //             // Visually the player may look like they are in front of a property (e.i Campero)
+                    //             // but it's the 3rd landing point which used to be 'La Terminal'.
+                    //             // if (property.entity == landOnEntity.entity)
+                    //             // {
+                    //             if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
+                    //                    SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
+                    //             {
+                    //                 var name = SystemAPI.GetComponent<NameComponent>(property.entity);
+                    //                 UnityEngine.Debug.Log($"[TransactionSystem] | property: {name.Value}");
+                    //                 var name2 = SystemAPI.GetComponent<NameComponent>(landOnEntity.entity);
+                    //                 UnityEngine.Debug.Log($"[TransactionSystem] | landOnEntity: {name2.Value}");
+                    //             }
+                    //             // UnityEngine.Debug.Log("[TransactionSystem] | same entity landed and clicked.");
+                    //             //}
+                    //
+                    //             // Make sure that the property doesn't already have an owner.
+                    //             if (property.entity != Entity.Null &&
+                    //                 SystemAPI.HasComponent<PropertySpaceTag>(property.entity)
+                    //                 )
+                    //             {
+                    //                 var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
+                    //                 var ownerEntity = SystemAPI.GetComponentRW<OwnerByEntityComponent>(property.entity);
+                    //                 if (owner.ValueRO.ID == PropertyConstants.Vacant)
+                    //                 {
+                    //                     var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
+                    //                     playerMoney.ValueRW.Value -= price.Value;
+                    //                     owner.ValueRW.ID = playerID.ValueRO.Value;
+                    //                     ownerEntity.ValueRW.Entity = playerEntity;
+                    //
+                    //                     if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
+                    //                            SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
+                    //                     {
+                    //                         var name = SystemAPI.GetComponent<NameComponent>(property.entity);
+                    //                         UnityEngine.Debug.Log($"[TransactionSystem] | Property Bought! {name.Value}");
+                    //                     }
+                    //                 }
+                    //                 else
+                    //                 {
+                    //                     UnityEngine.Debug.Log($"[TransactionSystem] | Property Not For Sale.");
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    // }
 
-                                // TODO: Check if the current player is on property entity to be able to buy it
-                                // BUG: Right now the landing points are not matching the property.
-                                // Visually the player may look like they are in front of a property (e.i Campero)
-                                // but it's the 3rd landing point which used to be 'La Terminal'.
-                                // if (property.entity == landOnEntity.entity)
-                                // {
-                                if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
-                                       SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
-                                {
-                                    var name = SystemAPI.GetComponent<NameComponent>(property.entity);
-                                    UnityEngine.Debug.Log($"[TransactionSystem] | property: {name.Value}");
-                                    var name2 = SystemAPI.GetComponent<NameComponent>(landOnEntity.entity);
-                                    UnityEngine.Debug.Log($"[TransactionSystem] | landOnEntity: {name2.Value}");
-                                }
-                                // UnityEngine.Debug.Log("[TransactionSystem] | same entity landed and clicked.");
-                                //}
+                    // if (transaction.EventType == TransactionEventType.ChangeTurn)
+                    // {
+                    //     // Handle each change turn request
+                    //     var totalRounds = SystemAPI.GetSingleton<LoginData>().NumberOfRounds;
+                    //     var totalNumOfPlayer = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
+                    //     currentTurn += 1;
+                    //     UnityEngine.Debug.Log($"Turn: {currentTurn}");
+                    //     if (currentTurn == totalNumOfPlayer)
+                    //     {
+                    //         SystemAPI.GetSingletonRW<CurrentRound>().ValueRW.Value += 1;
+                    //         currentTurn = 0;
+                    //         UnityEngine.Debug.Log($"[TransactionSystem] | Changing Round {SystemAPI.GetSingleton<CurrentRound>().Value}");
+                    //     }
+                    //
+                    //     var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
+                    //     var prevPlayerIndex = currentPlayerIndex.ValueRW.Index;
+                    //     var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
+                    //
+                    //     currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
+                    //
+                    //     foreach (var (nameComponent, playerID, entity) in
+                    //             SystemAPI.Query<
+                    //             RefRO<NameComponent>,
+                    //             RefRO<PlayerID>
+                    //             >()
+                    //             .WithEntityAccess())
+                    //     {
+                    //         if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
+                    //         {
+                    //             SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
+                    //             SystemAPI.GetSingletonBuffer<ChangeTurnEvent>().Add(new ChangeTurnEvent { });
+                    //             SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
+                    //
+                    //             SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
+                    //         }
+                    //     }
+                    //
+                    //     // TODO: Move this to another system
+                    //     var eventBuffer = SystemAPI.GetSingletonBuffer<BackDropEventBus>();
+                    //     eventBuffer.Add(new BackDropEventBus { });
+                    // }
 
-                                // Make sure that the property doesn't already have an owner.
-                                if (property.entity != Entity.Null &&
-                                    SystemAPI.HasComponent<PropertySpaceTag>(property.entity)
-                                    )
-                                {
-                                    var owner = SystemAPI.GetComponentRW<OwnerComponent>(property.entity);
-                                    var ownerEntity = SystemAPI.GetComponentRW<OwnerByEntityComponent>(property.entity);
-                                    if (owner.ValueRO.ID == PropertyConstants.Vacant)
-                                    {
-                                        var price = SystemAPI.GetComponent<PriceComponent>(property.entity);
-                                        playerMoney.ValueRW.Value -= price.Value;
-                                        owner.ValueRW.ID = playerID.ValueRO.Value;
-                                        ownerEntity.ValueRW.Entity = playerEntity;
-
-                                        if (SystemAPI.HasComponent<NameComponent>(property.entity) &&
-                                               SystemAPI.HasComponent<NameComponent>(landOnEntity.entity))
-                                        {
-                                            var name = SystemAPI.GetComponent<NameComponent>(property.entity);
-                                            UnityEngine.Debug.Log($"[TransactionSystem] | Property Bought! {name.Value}");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        UnityEngine.Debug.Log($"[TransactionSystem] | Property Not For Sale.");
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (transaction.EventType == TransactionEventType.ChangeTurn)
-                    {
-                        // Handle each change turn request
-                        var totalRounds = SystemAPI.GetSingleton<LoginData>().NumberOfRounds;
-                        var totalNumOfPlayer = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
-                        currentTurn += 1;
-                        UnityEngine.Debug.Log($"Turn: {currentTurn}");
-                        if (currentTurn == totalNumOfPlayer)
-                        {
-                            SystemAPI.GetSingletonRW<CurrentRound>().ValueRW.Value += 1;
-                            currentTurn = 0;
-                            UnityEngine.Debug.Log($"[TransactionSystem] | Changing Round {SystemAPI.GetSingleton<CurrentRound>().Value}");
-                        }
-
-                        var currentPlayerIndex = SystemAPI.GetSingletonRW<CharacterNameIndex>();
-                        var prevPlayerIndex = currentPlayerIndex.ValueRW.Index;
-                        var nextPlayerIndex = (currentPlayerIndex.ValueRW.Index + 1) % characterSelectedNames.Length;
-
-                        currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
-
-                        foreach (var (nameComponent, playerID, entity) in
-                                SystemAPI.Query<
-                                RefRO<NameComponent>,
-                                RefRO<PlayerID>
-                                >()
-                                .WithEntityAccess())
-                        {
-                            if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
-                            {
-                                SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
-                                SystemAPI.GetSingletonBuffer<ChangeTurnEvent>().Add(new ChangeTurnEvent { });
-                                SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
-
-                                SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
-                            }
-                        }
-
-                        // TODO: Move this to another system
-                        var eventBuffer = SystemAPI.GetSingletonBuffer<BackDropEventBus>();
-                        eventBuffer.Add(new BackDropEventBus { });
-                    }
-
-                    if (transaction.EventType == TransactionEventType.PayTaxes)
-                    {
-                        foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
-                        {
-                            var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
-                            if (playerID.ValueRO.Value == currentPlayerID.Value)
-                            {
-                                var space = SystemAPI.GetSingleton<LandedOnSpace>();
-                                if (space.entity != Entity.Null &&
-                                        SystemAPI.HasComponent<TaxSpaceTag>(space.entity))
-                                {
-                                    // TODO: this value should come from a component in the tax
-                                    var tax = 100_000;
-                                    playerMoney.ValueRW.Value -= tax;
-                                }
-                            }
-                        }
-                    }
-
-                    if (transaction.EventType == TransactionEventType.Chance)
-                    {
-                        UnityEngine.Debug.Log($"[TransactionSystem] | chance transaction.");
-                        var chanceBufferEvent = SystemAPI.GetSingletonBuffer<ChanceBufferEvent>();
-                        chanceBufferEvent.Add(new ChanceBufferEvent { });
-                    }
+                    // if (transaction.EventType == TransactionEventType.PayTaxes)
+                    // {
+                    //     foreach (var (playerID, playerMoney) in SystemAPI.Query<RefRO<PlayerID>, RefRW<MoneyComponent>>())
+                    //     {
+                    //         var currentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>();
+                    //         if (playerID.ValueRO.Value == currentPlayerID.Value)
+                    //         {
+                    //             var space = SystemAPI.GetSingleton<LandedOnSpace>();
+                    //             if (space.entity != Entity.Null &&
+                    //                     SystemAPI.HasComponent<TaxSpaceTag>(space.entity))
+                    //             {
+                    //                 // TODO: this value should come from a component in the tax
+                    //                 var tax = 100_000;
+                    //                 playerMoney.ValueRW.Value -= tax;
+                    //             }
+                    //         }
+                    //     }
+                    // }
 
                     // if (transaction.EventType == TransactionEventType.Treasure)
                     // {

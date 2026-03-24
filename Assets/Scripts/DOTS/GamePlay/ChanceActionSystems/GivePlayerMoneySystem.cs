@@ -6,12 +6,13 @@ using Unity.Entities;
 namespace DOTS.GamePlay.ChanceActionSystems
 {
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct GivePlayerMoneySystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<ChanceCardPicked>();
+            state.RequireForUpdate<GhostChanceCardPicked>();
             state.RequireForUpdate<CurrentPlayerComponent>();
             state.RequireForUpdate<GhostMoneyComponet>();
         }
@@ -26,13 +27,13 @@ namespace DOTS.GamePlay.ChanceActionSystems
 
                 foreach (var _ in buffer)
                 {
-                    var card = SystemAPI.GetSingleton<ChanceCardPicked>();
-                    if (card.id == 0)
+                    foreach (var (money, card) in SystemAPI.Query<RefRW<GhostMoneyComponet>, RefRO<GhostChanceCardPicked>>().WithAll<ActivePlayer>())
                     {
-                        // TODO: what if the entity is null;
-                        var player = SystemAPI.GetSingleton<CurrentPlayerComponent>();
-                        ref var money = ref SystemAPI.GetComponentRW<GhostMoneyComponet>(player.entity).ValueRW;
-                        money.Value += 1;
+                        if (card.ValueRO.id == 0)
+                        {
+                            // TODO: what if the entity is null;
+                            money.ValueRW.Value += 1;
+                        }
                     }
                 }
 

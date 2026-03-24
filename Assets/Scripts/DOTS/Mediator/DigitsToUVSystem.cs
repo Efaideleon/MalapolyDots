@@ -4,6 +4,7 @@ using Unity.Mathematics;
 
 namespace DOTS.Mediator
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct DigitsToUVSystem : ISystem
     {
         private NativeHashMap<int, float2> map;
