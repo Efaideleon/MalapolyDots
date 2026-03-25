@@ -25,6 +25,9 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
             // This system should only run when all the panel geometry has been calculated.
             // But the first the panel needs to placed on screen.
             // Currently No panels are screen when this system runs.
+            // This system should only run when all the panel geometry has been calculated.
+            // But the first the panel needs to placed on screen.
+            // Currently No panels are screen when this system runs.
             PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
 
             foreach (var (name, money) in SystemAPI.Query<RefRO<NameComponent>, RefRO<GhostMoneyComponet>>())

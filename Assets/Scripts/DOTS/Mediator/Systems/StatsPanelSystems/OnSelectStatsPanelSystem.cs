@@ -10,6 +10,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial struct OnSelectStatsPanelSystem : ISystem
     {
+        public BufferLookup<ChangeTurnEvent> changeTurnEventBufferLookup;
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<NameComponent>();
@@ -30,6 +31,23 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
 
                 PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
                 panelControllers.statsPanelController.SetCurrentPanel(activePlayerName.Value);
+            }
+
+            if (shiftPanels)
+            {
+                var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                var activePlayerName = SystemAPI.GetComponent<NameComponent>(activePlayerEntity);
+
+                UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 1?");
+
+                PanelControllers panelControllers = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
+                if (panelControllers?.statsPanelController != null)
+                {
+                    UnityEngine.Debug.Log($"[OnSelectStatsPanelSystem] | Is This runnnig 2 name: {activePlayerName.Value}");
+                    panelControllers.statsPanelController.SelectPanel(activePlayerName.Value);
+                    panelControllers.statsPanelController.ShiftPanelsRegistry();
+                    panelControllers.statsPanelController.TranslateAllPanels();
+                }
             }
         }
     }

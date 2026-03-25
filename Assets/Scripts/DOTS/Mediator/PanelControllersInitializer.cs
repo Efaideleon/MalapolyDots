@@ -356,6 +356,7 @@ namespace DOTS.Mediator
             panelControllersManager.Register(DataComponents.SpaceType.Parking, panelControllers.parkingPanelController);
             panelControllersManager.Register(DataComponents.SpaceType.GoToJail, panelControllers.goToJailPanelController);
             // panelControllersManager.Register(DataComponents.SpaceType.Property, panelControllers.purchasePropertyPanelController);
+            // panelControllersManager.Register(DataComponents.SpaceType.Property, panelControllers.purchasePropertyPanelController);
             panelControllersManager.Register(DataComponents.SpaceType.Treasure, panelControllers.treasurePanelController);
 
             PropertyPopupManager propertyPopupManager = new(payRentPanel, propertyPopupManagerContext);

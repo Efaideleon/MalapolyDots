@@ -75,6 +75,7 @@ namespace DOTS.GamePlay
                         {
                             // Does the property have an owner.
                             var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
+                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
                             if (ownerEntity != Entity.Null)
                             {
                                 var rent = SystemAPI.GetComponent<RentComponent>(spaceLandedOnEntity).Value;

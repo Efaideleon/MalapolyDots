@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2412
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -43,6 +43,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_6978e63508a149dd8eba3c799ed960ff_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 80aae7c1faff9ba4ea69ac20805dd4fe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b7d9b6c499ba4a5ebad427555d4a7b30_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: c0343c2ac65797b4da772e86300dc0d8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_ebeaac49b047488d984031a6f8263d62_Texture_1_Texture2D:
@@ -66,9 +70,10 @@ Material:
     - _DitherSize: 1
     - _Dither_Size: 1
     - _Float: 3
-    - _Float_1: 0.59
+    - _Float_1: 0.184211
+    - _Float_2: 0.52
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: -38
     - _gradeint_top: 0.6
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 0}

@@ -3,6 +3,7 @@ using DOTS.Characters.CharactersMaterialAuthoring.ScriptableObjects;
 using Unity.Entities;
 using Unity.Rendering;
 using UnityEngine;
+using UnityEngine;
 
 namespace DOTS.Characters.CharactersMaterialAuthoring
 {
@@ -13,6 +14,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     }
 
     public enum CharacterAnimation
+    public enum CharacterAnimation
     {
         Default,
         Idle,
@@ -21,6 +23,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         Unmounting
     }
 
+    public enum TreasureAnimation
     public enum TreasureAnimation
     {
         Default,
@@ -79,11 +82,47 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
         public AnimationData End;
     }
 
+
+    [Serializable]
+    public class CharacterAnimations
+    {
+        [Header("Idle")]
+        public AnimationPhaseGroup Idle;
+        [Header("Walking")]
+        public AnimationPhaseGroup Walking;
+    }
+
+    [Serializable]
+    public class AnimationPhaseGroup
+    {
+        public AnimationDataSO Start;
+        public AnimationDataSO Middle;
+        public AnimationDataSO End;
+
+        public AnimationPhaseGroupData ToAnimationPhaseGroupData()
+        {
+            return new AnimationPhaseGroupData
+            {
+                Start = Start == null ? new() : Start.ToAnimationData(),
+                Middle = Middle == null ? new() : Middle.ToAnimationData(),
+                End = End == null ? new() : End.ToAnimationData()
+            };
+        }
+    }
+
+    public struct AnimationPhaseGroupData
+    {
+        public AnimationData Start;
+        public AnimationData Middle;
+        public AnimationData End;
+    }
+
     public struct AnimationData
     {
         public float FrameRate;
         public FrameRange FrameRange;
         public bool Loops;
+        public bool HasClip;
         public bool HasClip;
     }
 
@@ -93,6 +132,7 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     /// </summary>
     public struct AnimationDataBlob
     {
+        public BlobArray<AnimationPhaseGroupData> Clips;
         public BlobArray<AnimationPhaseGroupData> Clips;
     }
 
@@ -120,6 +160,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
     public struct WalkingAnimationData : IComponentData { public AnimationData Value; }
     public struct MountingAnimationData : IComponentData { public AnimationData Value; }
     public struct UnmountingAnimationData : IComponentData { public AnimationData Value; }
+    public struct CurrentCharacterAnimation : IComponentData { public CharacterAnimation Value; }
+    public struct CurrentTreasureAnimation : IComponentData { public TreasureAnimation Value; }
     public struct CurrentCharacterAnimation : IComponentData { public CharacterAnimation Value; }
     public struct CurrentTreasureAnimation : IComponentData { public TreasureAnimation Value; }
 }
