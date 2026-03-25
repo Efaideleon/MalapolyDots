@@ -81,8 +81,11 @@ public class OptionsController
     private void DispatchScreenChangeEvent()
     {
         if (_changeScreenQuery != null)
+        {
             _changeScreenQuery.GetSingletonBuffer<ChangeScreenEventBuffer>()
                 .Add(new ChangeScreenEventBuffer { ScreenType = _screenType });
+            UnityEngine.Debug.Log($"[OptionsController] | ScreenType: {_screenType}");
+        }
     }
 
     public void OnDispose()

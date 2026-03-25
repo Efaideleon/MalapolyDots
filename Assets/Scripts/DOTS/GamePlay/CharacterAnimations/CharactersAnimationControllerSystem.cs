@@ -27,9 +27,8 @@ namespace DOTS.GamePlay.CharacterAnimations
         {
             playerMovementState.Update(ref state);
 
-            var animationStateMachineJob = new CoffeeAnimationStateMachineJob { playerMovementState = playerMovementState };
-
-            animationStateMachineJob.ScheduleParallel();
+            //var animationStateMachineJob = new CoffeeAnimationStateMachineJob { playerMovementState = playerMovementState };
+            //animationStateMachineJob.ScheduleParallel();
         }
 
         [BurstCompile]
@@ -54,25 +53,25 @@ namespace DOTS.GamePlay.CharacterAnimations
 
     public static class AnimationsStateMachine
     {
-        public static Characters.CharactersMaterialAuthoring.CharacterAnimations GetCoffeeNextState(Characters.CharactersMaterialAuthoring.CharacterAnimations curr, MoveState moveState, bool finished)
+        public static CharacterAnimation GetCoffeeNextState(CharacterAnimation curr, MoveState moveState, bool finished)
         {
             switch (moveState)
             {
                 case MoveState.Idle:
-                    if (curr == Characters.CharactersMaterialAuthoring.CharacterAnimations.Walking) { return Characters.CharactersMaterialAuthoring.CharacterAnimations.Unmounting; }
-                    else if (curr == Characters.CharactersMaterialAuthoring.CharacterAnimations.Unmounting && finished) { return Characters.CharactersMaterialAuthoring.CharacterAnimations.Idle; }
-                    else if (curr != Characters.CharactersMaterialAuthoring.CharacterAnimations.Idle && curr != Characters.CharactersMaterialAuthoring.CharacterAnimations.Unmounting) { return Characters.CharactersMaterialAuthoring.CharacterAnimations.Idle; }
+                    if (curr == CharacterAnimation.Walking) { return CharacterAnimation.Unmounting; }
+                    else if (curr == CharacterAnimation.Unmounting && finished) { return CharacterAnimation.Idle; }
+                    else if (curr != CharacterAnimation.Idle && curr != CharacterAnimation.Unmounting) { return CharacterAnimation.Idle; }
                     break;
                 case MoveState.Walking:
-                    if (curr == Characters.CharactersMaterialAuthoring.CharacterAnimations.Idle) { return Characters.CharactersMaterialAuthoring.CharacterAnimations.Mounting; }
-                    else if (curr == Characters.CharactersMaterialAuthoring.CharacterAnimations.Mounting && finished) { return Characters.CharactersMaterialAuthoring.CharacterAnimations.Walking; }
-                    else if (curr != Characters.CharactersMaterialAuthoring.CharacterAnimations.Mounting && curr != Characters.CharactersMaterialAuthoring.CharacterAnimations.Walking) { return Characters.CharactersMaterialAuthoring.CharacterAnimations.Walking; }
+                    if (curr == CharacterAnimation.Idle) { return CharacterAnimation.Mounting; }
+                    else if (curr == CharacterAnimation.Mounting && finished) { return CharacterAnimation.Walking; }
+                    else if (curr != CharacterAnimation.Mounting && curr != CharacterAnimation.Walking) { return CharacterAnimation.Walking; }
                     break;
             }
             return curr;
         }
 
-        public static void SetAnimation(ref CurrentCharacterAnimation currAnimation, in Characters.CharactersMaterialAuthoring.CharacterAnimations newAnimation, ref AnimationPlayState playState)
+        public static void SetAnimation(ref CurrentCharacterAnimation currAnimation, in CharacterAnimation newAnimation, ref AnimationPlayState playState)
         {
             currAnimation.Value = newAnimation;
             playState.Value = PlayState.Playing;

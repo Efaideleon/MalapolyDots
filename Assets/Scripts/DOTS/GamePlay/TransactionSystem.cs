@@ -16,7 +16,7 @@ namespace DOTS.GamePlay
         public int Index;
     }
 
-    public struct ChangeTurnBufferEvent : IBufferElementData
+    public struct ChangeTurnEvent : IBufferElementData
     {}
 
     public struct CurrentRound : IComponentData
@@ -33,7 +33,7 @@ namespace DOTS.GamePlay
         {
             currentTurn = 0;
             state.EntityManager.CreateSingleton(new CharacterNameIndex { Index = 0 });
-            state.EntityManager.CreateSingletonBuffer<ChangeTurnBufferEvent>();
+            state.EntityManager.CreateSingletonBuffer<ChangeTurnEvent>();
             state.EntityManager.CreateSingleton(new CurrentRound { Value = 0 });
 
             state.RequireForUpdate<GameDataComponent>();
@@ -174,7 +174,7 @@ namespace DOTS.GamePlay
                             if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == nameComponent.ValueRO.Value)
                             {
                                 SystemAPI.GetSingletonRW<CurrentPlayerID>().ValueRW.Value = playerID.ValueRO.Value;
-                                SystemAPI.GetSingletonBuffer<ChangeTurnBufferEvent>().Add(new ChangeTurnBufferEvent{});
+                                SystemAPI.GetSingletonBuffer<ChangeTurnEvent>().Add(new ChangeTurnEvent{});
                                 SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
 
                                 SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;

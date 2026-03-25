@@ -47,7 +47,7 @@ namespace DOTS.GamePlay
 //                        UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCard.ValueRO.data.ToString()}");
 
                         // Reset that treasure's open animation.
-                        SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimations.Open;
+                        SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimation.Open;
                         SystemAPI.GetComponentRW<AnimationPlayState>(landedOnEntity).ValueRW.Value = PlayState.Playing;
                         UnityEngine.Debug.Log($"[TreasureSystem] | Set Animation to open");
                     }

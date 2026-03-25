@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 4416394440302315380}
   - component: {fileID: 8508646094124110001}
   - component: {fileID: 6037201814207516591}
-  - component: {fileID: 5215968906383293758}
+  - component: {fileID: 5995147665059944172}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb5730f3149d5447b83626b163028aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.Characters::DOTS.Characters.CharactersMaterialAuthoring.CharacterTags.TuctucCharacterTagAuthoring
---- !u!114 &5215968906383293758
+--- !u!114 &5995147665059944172
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,8 +214,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acaaf3db8bb5d4617be2f667e4cae16b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Malapoly.DOTS.Characters::Assets.Scripts.DOTS.Characters.CharactersMaterialAuthoring.CharactersAnimationAuthoring
-  AnimationClips:
-  - {fileID: 11400000, guid: bcc2a3f697d8915469132053011f6f21, type: 2}
-  - {fileID: 11400000, guid: 7321aab4d40829a418709df8f16dbe56, type: 2}
+  animations:
+    Idle:
+      Start: {fileID: 0}
+      Middle: {fileID: 11400000, guid: 7321aab4d40829a418709df8f16dbe56, type: 2}
+      End: {fileID: 0}
+    Walking:
+      Start: {fileID: 0}
+      Middle: {fileID: 11400000, guid: bcc2a3f697d8915469132053011f6f21, type: 2}
+      End: {fileID: 0}
   UseTime: 0
   Speed: 1

@@ -1,3 +1,4 @@
+using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.DataComponents;
 using DOTS.GameData;
 using Unity.Entities;
@@ -35,6 +36,7 @@ namespace DOTS.Characters
                 AddComponent(authoringEntity, new PlayerBoardIndex { Value = 0 });
                 AddComponent(authoringEntity, new SpaceLandedOn { entity = Entity.Null });
                 AddComponent(authoringEntity, new CharactersEnumComponent { Value = authoring.charactersEnum });
+
             }
         }
     }
@@ -65,7 +67,7 @@ namespace DOTS.Characters
         public int Value;
     }
 
-    public struct MoveSpeed: IComponentData
+    public struct MoveSpeed : IComponentData
     {
         public float Value;
     }
@@ -85,7 +87,7 @@ namespace DOTS.Characters
         public bool Value;
     }
 
-    public struct ReachedTargetPosition: IComponentData
+    public struct ReachedTargetPosition : IComponentData
     {
         public bool Value;
     }
