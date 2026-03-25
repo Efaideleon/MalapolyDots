@@ -15,7 +15,6 @@ namespace Assets.Scripts.DOTS.Characters
         [SerializeField] public string charName;
         [SerializeField] public float moveSpeed;
         [SerializeField] public CharactersEnum charactersEnum;
-        [SerializeField] public CharactersEnum charactersEnum;
 
         class CharactersBaker : Baker<CharacterAuthoring>
         {
@@ -35,7 +34,6 @@ namespace Assets.Scripts.DOTS.Characters
                 AddComponent(authoringEntity, new PlayerID { Value = 0 });
                 AddComponent(authoringEntity, new CurrentPivotRotation { Value = quaternion.identity });
                 AddComponent(authoringEntity, new FinalArrived { Value = false });
-                AddComponent(authoringEntity, new RemainingMoves { Value = 0 });
                 AddComponent(authoringEntity, new RemainingMoves { Value = 0 });
                 AddComponent(authoringEntity, new ReachedTargetPosition { Value = false });
                 AddComponent(authoringEntity, new TargetPosition { Value = default });
@@ -98,7 +96,6 @@ namespace Assets.Scripts.DOTS.Characters
     }
 
     public struct MoveSpeed : IComponentData
-    public struct MoveSpeed : IComponentData
     {
         public float Value;
     }
@@ -120,7 +117,6 @@ namespace Assets.Scripts.DOTS.Characters
         public bool Value;
     }
 
-    public struct ReachedTargetPosition : IComponentData
     public struct ReachedTargetPosition : IComponentData
     {
         public bool Value;
