@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: 372eb2ee59993ca4bbdffbaa8cc67bfd, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: ba34c19635c78f241b6120ff4017afb9, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -7258,7 +7258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 713985271708359067, guid: baf6770af10f64be4bca2625a8bbf521, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 1
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2304891634539821690, guid: baf6770af10f64be4bca2625a8bbf521, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7862,6 +7862,10 @@ PrefabInstance:
     - target: {fileID: 1595584785443433092, guid: 171e40f7b822d463b87a5306f5b9ec2c, type: 3}
       propertyPath: m_Name
       value: Tax
+      objectReference: {fileID: 0}
+    - target: {fileID: 1595584785443433092, guid: 171e40f7b822d463b87a5306f5b9ec2c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 4769958191594354160, guid: 171e40f7b822d463b87a5306f5b9ec2c, type: 3}
       propertyPath: m_LocalPosition.x
