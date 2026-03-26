@@ -50,15 +50,20 @@ namespace DOTS.GameSpaces
                 var placesPrefabs = SystemAPI.GetSingletonBuffer<PlacesPrefabBuffer>();
                 state.EntityManager.CreateSingleton(new IndexToBoardHashMap { Map = new(placesPrefabs.Length, Allocator.Persistent) });
 
-                UnityEngine.Debug.Log($"[PlacesSpawner] | spawning places..");
-                var job = new PlacesSpawnJob
+                var ecb = new EntityCommandBuffer(Allocator.Temp);
+                foreach (var buffer in SystemAPI.Query<DynamicBuffer<PlacesPrefabBuffer>>())
                 {
-                    prefabs = placesPrefabs,
-                    ecbParallel = GetECB(ref state).AsParallelWriter(),
-                };
-                var jobHandle = job.Schedule(placesPrefabs.Length, 2);
-                jobHandle.Complete();
+                    foreach (var place in buffer)
+                    {
 
+                        var entity = ecb.Instantiate(place.entity);
+                        ecb.SetComponent(entity, new BoardIndexComponent { Value = place.BoardIndex });
+                        ecb.AddComponent<PlaceInstantiatedTag>(entity);
+                    }
+                }
+
+                ecb.Playback(state.EntityManager);
+                ecb.Dispose();
                 state.Enabled = false;
             }
         }
@@ -88,4 +93,8 @@ namespace DOTS.GameSpaces
     {
         public NativeParallelHashMap<int, Entity> Map;
     }
+
+    public struct PlaceInstantiatedTag : IComponentData
+    { }
 }
+

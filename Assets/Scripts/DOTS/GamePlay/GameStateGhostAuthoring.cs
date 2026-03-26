@@ -12,7 +12,7 @@ namespace Assets.Scripts.DOTS.GamePlay
             public override void Bake(GameStateGhostAuthoring authoring)
             {
                 var entity = GetEntity(authoring, TransformUsageFlags.None);
-                AddComponent(entity, new GameStateComponent { State = GameState.Rolling });
+                AddComponent(entity, new GameStateComponent { State = GameState.Rolling, AllPlacesInstantiated = false });
             }
         }
     }
@@ -22,5 +22,8 @@ namespace Assets.Scripts.DOTS.GamePlay
     {
         [GhostField]
         public GameState State;
+
+        [GhostField]
+        public bool AllPlacesInstantiated;
     }
 }

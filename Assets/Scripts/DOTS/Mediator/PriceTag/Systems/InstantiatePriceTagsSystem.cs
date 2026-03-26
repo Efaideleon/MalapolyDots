@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.GamePlay;
 using Assets.Scripts.DOTS.Mediator.PriceTag.Authoring;
 using DOTS.Mediator;
 using Unity.Entities;
@@ -13,10 +14,19 @@ namespace a
         {
             state.RequireForUpdate<NetworkId>();
             state.RequireForUpdate<PriceTagPivotTag>();
+            state.RequireForUpdate<GameStateComponent>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
+            var gameState = SystemAPI.GetSingleton<GameStateComponent>();
+
+            if (!gameState.AllPlacesInstantiated)
+            {
+                UnityEngine.Debug.Log($"[InstantiatePriceTagsSystem] | not all places instantiated.");
+                return;
+            }
+
             var priceTagPrefab = SystemAPI.GetSingleton<PriceTagReference>();
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             foreach (var localToWorld in SystemAPI.Query<RefRO<LocalToWorld>>().WithAll<PriceTagPivotTag>())
