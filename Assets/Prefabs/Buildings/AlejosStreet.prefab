@@ -19,7 +19,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 64
   m_IsActive: 1
 --- !u!4 &4576093605997795118
 Transform:
@@ -322,17 +322,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4576093605997795118}
     m_Modifications:
+    - target: {fileID: 2004650527255204412, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.17
+      value: -9.76
       objectReference: {fileID: 0}
     - target: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.83
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.73
+      value: -0.33
       objectReference: {fileID: 0}
     - target: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
       propertyPath: m_LocalRotation.w
