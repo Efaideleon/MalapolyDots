@@ -69,7 +69,6 @@ namespace DOTS.GameSpaces
 
                 // Components for quads
                 AddBuffer<QuadDataBuffer>(entity);
-                AddBuffer<QuadsEntitiesBuffer>(entity);
             }
         }
     }

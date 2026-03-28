@@ -1,9 +1,11 @@
+using Assets.Scripts.DOTS.Mediator.PriceTag.Authoring;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Rendering;
+using Unity.Transforms;
 
 namespace DOTS.Mediator
 {
@@ -24,7 +26,7 @@ namespace DOTS.Mediator
             state.RequireForUpdate<QuadDataBuffer>();
             state.RequireForUpdate<QuadEntityPrefab>();
             state.RequireForUpdate<QuadsEntitiesBuffer>();
-            state.RequireForUpdate<LocalQuadBufferTag>();
+            //state.RequireForUpdate<LocalQuadBufferTag>();
             state.RequireForUpdate<QuadTag>();
             state.RequireForUpdate<PropertySpaceTag>();
         }
@@ -36,7 +38,7 @@ namespace DOTS.Mediator
             // quadEntitiesBuffer is loaded in the client.
             // We have to wait until all the QuadsEntitiesBuffer have been loaded.
             bool reDrawQuads = false;
-            foreach (var _ in SystemAPI.Query<LocalQuadBufferTag>().WithChangeFilter<QuadsEntitiesBuffer>())
+            foreach (var _ in SystemAPI.Query<PriceTagTag>().WithChangeFilter<QuadsEntitiesBuffer>())
             {
                 reDrawQuads = true;
             }
@@ -53,7 +55,7 @@ namespace DOTS.Mediator
                 {
                     // find a way to keep trying until the quad data buffer has entities.
                     // if after while there are no entities in the buffer print a log statement and stop trying.
-                    foreach (var (quadID, quadEntitiesBuffer) in SystemAPI.Query<RefRO<SpaceIDComponent>, DynamicBuffer<QuadsEntitiesBuffer>>().WithAll<LocalQuadBufferTag>())
+                    foreach (var (quadID, quadEntitiesBuffer) in SystemAPI.Query<RefRO<SpaceIDComponent>, DynamicBuffer<QuadsEntitiesBuffer>>().WithAll<PriceTagTag>())
                     {
                         if (spaceID.ValueRO.Value == quadID.ValueRO.Value)
                         {
