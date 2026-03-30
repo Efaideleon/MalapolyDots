@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.Mediator.PriceTag.Authoring;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Burst;
@@ -36,10 +37,9 @@ namespace DOTS.Mediator
             //state.RequireForUpdate<NumberToUVOffset>();
             state.RequireForUpdate<QuadEntityPrefab>();
             state.RequireForUpdate<PriceTagPivotTag>();
-            state.RequireForUpdate<PricePivotTransformTag>();
             state.RequireForUpdate<PropertySpaceTag>();
-            state.RequireForUpdate<QuadsEntitiesBuffer>();
-            state.RequireForUpdate<LocalQuadBufferTag>();
+            //state.RequireForUpdate<QuadsEntitiesBuffer>();
+            //state.RequireForUpdate<LocalQuadBufferTag>();
 
             parentLookup = SystemAPI.GetComponentLookup<Parent>(true);
         }
@@ -77,15 +77,17 @@ namespace DOTS.Mediator
             public float SignOffset;
             public int MaxQuads;
 
-            public void Execute(Entity localQuadBufferEntity, LocalQuadBufferTag _, in LocalTransform localTransform, in SpaceIDComponent spaceId)
+            // this is the buffer with the quad data
+            public void Execute(Entity priceTagEntity, in PriceTagTag _, in LocalTransform localTransform, in SpaceIDComponent spaceId)
             {
                 UnityEngine.Debug.Log($"[DigitQuadInstantiationSystem] | instantiating quad entities for spaceID: {spaceId.Value}");
-                var quadBuffer = ecb.SetBuffer<QuadsEntitiesBuffer>(localQuadBufferEntity);
-                ecb.AddComponent<QuadEntitiesBufferProcessed>(localQuadBufferEntity);
+                var buffer = ecb.AddBuffer<QuadsEntitiesBuffer>(priceTagEntity);
+                ecb.AddComponent<QuadEntitiesBufferProcessed>(priceTagEntity);
                 for (int i = 0; i < MaxQuads; i++)
                 {
+                    var pricePosition = new float3(-0.8f, 0.2f, -0.09f);
                     var offset = i == 0 ? new float3(-SignOffset, 0, 0) : 0;
-                    var quadPos = i * new float3(QuadWidth, 0, 0) + offset;
+                    var quadPos = i * new float3(QuadWidth, 0, 0) + offset + pricePosition;
                     //var quadPos = i * new float3(QuadWidth, 0, 0) + offset + new float3(-83.373f, 2f, -14f);
                     UnityEngine.Debug.Log($"[DigitQuadInstantiationSystem] | spaceid: {spaceId.Value}  spawning quad at: {quadPos}");
                     var quadScale = 0.5f;
@@ -94,12 +96,11 @@ namespace DOTS.Mediator
 
                     Entity quadEntity = ecb.Instantiate(QuadPrefab);
                     ecb.SetComponent(quadEntity, quadTransform);
-                    ecb.AddComponent(quadEntity, new Parent { Value = localQuadBufferEntity });
+                    ecb.AddComponent(quadEntity, new Parent { Value = priceTagEntity });
                     ecb.AddComponent<QuadTag>(quadEntity);
+                    ecb.AppendToBuffer(priceTagEntity, new QuadsEntitiesBuffer { Entity = quadEntity });
 
                     // UnityEngine.Debug.Log($"[DigitQuadInstantiationSystem] | adding quadEntity {quadEntity}");
-
-                    quadBuffer.Add(new QuadsEntitiesBuffer { Entity = quadEntity });
                 }
             }
         }
@@ -115,49 +116,47 @@ namespace DOTS.Mediator
             //state.RequireForUpdate<NumberToUVOffset>();
             state.RequireForUpdate<QuadEntityPrefab>();
             //state.RequireForUpdate<PriceTagPivotTag>();
-            state.RequireForUpdate<PricePivotTransformTag>();
             state.RequireForUpdate<PropertySpaceTag>();
+            state.RequireForUpdate<PriceTagPivotTag>();
 
             parentLookup = SystemAPI.GetComponentLookup<Parent>(true);
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            parentLookup.Update(ref state);
-
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
-
-            foreach (var (_, worldTransform, priceTranformEntity)
-                    in SystemAPI.Query<RefRO<PricePivotTransformTag>, RefRO<LocalToWorld>>().WithEntityAccess().WithNone<PivotTransformProcessed>())
-            {
-                if (!parentLookup.HasComponent(priceTranformEntity)) continue;
-                var parentEntity = parentLookup[priceTranformEntity];
-
-                if (!parentLookup.HasComponent(parentEntity.Value)) continue;
-
-                //UnityEngine.Debug.Log($"[SetupLocalQuadBufferEntity] | worldTransform position: {worldTransform.ValueRO.Position}");
-                var placeEntity = parentLookup[parentEntity.Value];
-                if (SystemAPI.HasComponent<SpaceIDComponent>(placeEntity.Value))
-                {
-                    var spaceID = SystemAPI.GetComponent<SpaceIDComponent>(placeEntity.Value);
-                    //UnityEngine.Debug.Log($"[SetupLocalQuadBufferEntity] | setting up quadBufferEntity for spaceId: {spaceID.Value}");
-                    var pricePivotEntity = ecb.CreateEntity();
-                    ecb.AddComponent<LocalQuadBufferTag>(pricePivotEntity);
-                    ecb.AddBuffer<QuadsEntitiesBuffer>(pricePivotEntity);
-                    ecb.AddComponent(pricePivotEntity, new SpaceIDComponent { Value = spaceID.Value });
-                    ecb.SetName(pricePivotEntity, "SpaceID: " + spaceID.Value.ToString());
-                    ecb.AddComponent(pricePivotEntity, new LocalTransform
-                    {
-                        Position = worldTransform.ValueRO.Position,
-                        Rotation = worldTransform.ValueRO.Rotation,
-                        Scale = 1
-                    });
-                    ecb.AddComponent<PivotTransformProcessed>(priceTranformEntity);
-                }
-            }
-
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
+            // parentLookup.Update(ref state);
+            //
+            // var ecb = new EntityCommandBuffer(Allocator.Temp);
+            //
+            // foreach (var (_, worldTransformPivot, priceTagPivotEntity)
+            //         in SystemAPI.Query<RefRO<PriceTagPivotTag>, RefRO<LocalToWorld>>().WithEntityAccess().WithNone<PivotTransformProcessed>())
+            // {
+            //     if (!parentLookup.HasComponent(priceTagPivotEntity)) continue;
+            //     var placeEntity = parentLookup[priceTagPivotEntity];
+            //
+            //     //UnityEngine.Debug.Log($"[SetupLocalQuadBufferEntity] | worldTransform position: {worldTransform.ValueRO.Position}");
+            //     if (SystemAPI.HasComponent<SpaceIDComponent>(placeEntity.Value))
+            //     {
+            //         UnityEngine.Debug.Log($"[SetupLocalQuadBufferEntity] | loading the quad information");
+            //         var spaceID = SystemAPI.GetComponent<SpaceIDComponent>(placeEntity.Value);
+            //         //UnityEngine.Debug.Log($"[SetupLocalQuadBufferEntity] | setting up quadBufferEntity for spaceId: {spaceID.Value}");
+            //         var pricePivotEntity = ecb.CreateEntity();
+            //         ecb.AddComponent<LocalQuadBufferTag>(pricePivotEntity);
+            //         ecb.AddBuffer<QuadsEntitiesBuffer>(pricePivotEntity);
+            //         ecb.AddComponent(pricePivotEntity, new SpaceIDComponent { Value = spaceID.Value });
+            //         ecb.SetName(pricePivotEntity, "SpaceID: " + spaceID.Value.ToString());
+            //         ecb.AddComponent(pricePivotEntity, new LocalTransform
+            //         {
+            //             Position = worldTransformPivot.ValueRO.Position,
+            //             Rotation = worldTransformPivot.ValueRO.Rotation,
+            //             Scale = 1
+            //         });
+            //         ecb.AddComponent<PivotTransformProcessed>(priceTagPivotEntity);
+            //     }
+            // }
+            //
+            // ecb.Playback(state.EntityManager);
+            // ecb.Dispose();
         }
     }
 
