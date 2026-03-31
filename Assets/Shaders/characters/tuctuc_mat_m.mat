@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4171397390242358584
+--- !u!114 &-8359220358928200412
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,16 +20,16 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: barrier_for_sale_material
-  m_Shader: {fileID: -6465566751694194690, guid: d2ad0a3991f40cd4281359835bff37ee, type: 3}
+  m_Name: tuctuc_mat_m
+  m_Shader: {fileID: -6465566751694194690, guid: 0d9f85f7a1fc1f449a6686e35eb97982, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 1962
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -37,20 +37,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_3933651f4fb34f798009f76d1610b7c3_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 24d39366162d25a4d92bce741ba9f96b, type: 3}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 768dbd1703bc41c4aa0a190f7b93d32c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_6978e63508a149dd8eba3c799ed960ff_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 80aae7c1faff9ba4ea69ac20805dd4fe, type: 3}
+    - _Normal:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_b7d9b6c499ba4a5ebad427555d4a7b30_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: c0343c2ac65797b4da772e86300dc0d8, type: 3}
+    - _OpenVATstandard_f90ce56359ae404f8a7ebc0ed5b56536_openVATnrml_3347946277_Texture2D:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_ebeaac49b047488d984031a6f8263d62_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: e4ac31aae28535f4197a792a4622de7a, type: 3}
+    - _OpenVatTex:
+        m_Texture: {fileID: 2800000, guid: 9e48517de3899a74bbdef51ef3462f93, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -67,15 +67,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DitherSize: 3.25
-    - _Dither_Size: 1
-    - _Float: 3
-    - _Float_1: 0.184211
-    - _Float_2: 0.52
+    - _ColorSlider: 0
     - _QueueControl: 0
-    - _QueueOffset: -38
-    - _gradeint_top: 0.08
+    - _QueueOffset: 0
+    - _blink: 0
+    - _blink345: 0
+    - _building_1_slider: 0
+    - _building_2_slider: 0
+    - _building_3_slider: 0
+    - _building_4_slider: 0
+    - _dither_size: 0
+    - _frame: 0
+    - _initial_opacity: 1
+    - _use_time: 0
+    - _y_resolution: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 0}
+    - _max_values: {r: 0, g: 0, b: 0, a: 0}
+    - _min_values: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
