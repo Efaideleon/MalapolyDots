@@ -5,7 +5,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Rendering;
-using Unity.Transforms;
 
 namespace DOTS.Mediator
 {
@@ -26,18 +25,18 @@ namespace DOTS.Mediator
             state.RequireForUpdate<QuadDataBuffer>();
             state.RequireForUpdate<QuadEntityPrefab>();
             state.RequireForUpdate<QuadsEntitiesBuffer>();
-            //state.RequireForUpdate<LocalQuadBufferTag>();
             state.RequireForUpdate<QuadTag>();
             state.RequireForUpdate<PropertySpaceTag>();
         }
         public void OnUpdate(ref SystemState state)
         {
             // Run this in a IJobEntity
-            // TODO: the get the quadOffsetBuffer and the property id, then match that id, to the new entity with the quadEntitiesBuffer.
-            // quadOffsetBuffer data comes from the server.
+            // TODO: the get the UVOffsetData and the property id, then match that id, to the new entity with the quadEntitiesBuffer.
+            // UVOffsetData data comes from the server.
             // quadEntitiesBuffer is loaded in the client.
             // We have to wait until all the QuadsEntitiesBuffer have been loaded.
             bool reDrawQuads = false;
+
             foreach (var _ in SystemAPI.Query<PriceTagTag>().WithChangeFilter<QuadsEntitiesBuffer>())
             {
                 reDrawQuads = true;
@@ -48,24 +47,26 @@ namespace DOTS.Mediator
                 reDrawQuads = true;
             }
 
+            // Either when the quad data changes or when the new entities are create we have to re draw the data on them.
             if (reDrawQuads)
             {
-                // Either when the quad data changes or when the new entities are create we have to re draw the data on them.
-                foreach (var (spaceID, quadOffsetBuffer) in SystemAPI.Query<RefRO<SpaceIDComponent>, DynamicBuffer<QuadDataBuffer>>().WithAll<PropertySpaceTag>())
+                foreach (var (spaceID, UVOffsetData) 
+                    in SystemAPI.Query<RefRO<SpaceIDComponent>, DynamicBuffer<QuadDataBuffer>>().WithAll<PropertySpaceTag>())
                 {
                     // find a way to keep trying until the quad data buffer has entities.
                     // if after while there are no entities in the buffer print a log statement and stop trying.
-                    foreach (var (quadID, quadEntitiesBuffer) in SystemAPI.Query<RefRO<SpaceIDComponent>, DynamicBuffer<QuadsEntitiesBuffer>>().WithAll<PriceTagTag>())
+                    foreach (var (quadID, quadEntitiesBuffer) 
+                        in SystemAPI.Query<RefRO<SpaceIDComponent>, DynamicBuffer<QuadsEntitiesBuffer>>().WithAll<PriceTagTag>())
                     {
                         if (spaceID.ValueRO.Value == quadID.ValueRO.Value)
                         {
-                            UnityEngine.Debug.Log($"[DisplayPriceOnQuadsSystem] | spaceId: {spaceID.ValueRO.Value}display price on quads {state.World}");
-                            int usedCount = math.min(quadOffsetBuffer.Length, quadEntitiesBuffer.Length);
 
-                            UnityEngine.Debug.Log($"[DisplayPriceOnQuadsSystem] | quadOffsetBuffer.Lenght{quadOffsetBuffer.Length} quadEntitiesBuffer.Lenght: {quadEntitiesBuffer.Length}");
-                            for (int i = 0; i < usedCount; i++)
+                            int numberOfQuads = quadEntitiesBuffer.Length;
+                            int numberOfDigits = math.min(UVOffsetData.Length, numberOfQuads);
+
+                            for (int i = 0; i < numberOfDigits; i++)
                             {
-                                if (i < quadEntitiesBuffer.Length)
+                                if (i < numberOfQuads)
                                 {
                                     // Enable used quads.
                                     var quadEntity = quadEntitiesBuffer[i].Entity;
@@ -74,13 +75,12 @@ namespace DOTS.Mediator
                                         SystemAPI.SetComponentEnabled<MaterialMeshInfo>(quadEntity, true);
                                     }
                                     // Set number on quad.
-                                    var offset = SystemAPI.GetComponentRW<UVOffsetOverride>(quadEntity);
-                                    offset.ValueRW.Value = quadOffsetBuffer[i].UVOffset;
-                                    UnityEngine.Debug.Log($"[DisplayPriceOnQuadsSystem] | offset: {offset.ValueRO.Value} {state.World}");
+                                    var quadUVOffset = SystemAPI.GetComponentRW<UVOffsetOverride>(quadEntity);
+                                    quadUVOffset.ValueRW.Value = UVOffsetData[i].UVOffset;
                                 }
                             }
                             // Disable the renderer for remaining quad entities.
-                            for (int i = usedCount; i < quadEntitiesBuffer.Length; i++)
+                            for (int i = numberOfDigits; i < numberOfQuads; i++)
                             {
                                 var quadEntity = quadEntitiesBuffer[i].Entity;
                                 if (SystemAPI.HasComponent<MaterialMeshInfo>(quadEntity))
