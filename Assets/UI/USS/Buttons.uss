@@ -964,3 +964,71 @@
     opacity: 1;
     translate: 0 0;
 }
+
+.DropFieldMenu {
+    flex-direction: column;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.DropdownFieldOne > .unity-base-field__label {
+    color: rgb(255, 255, 255);
+    font-size: 26px;
+    min-width: 120px;
+    -unity-font-style: bold;
+    -unity-font-definition: resource("Fonts/Acme-Regular");
+}
+
+.DropdownFieldOne .unity-base-popup-field__input {
+    width: 96px;
+    background-color: rgb(35, 112, 241);
+    border-color: rgb(85, 85, 99);
+    border-width: 1px;
+    border-radius: 6px;
+    padding: 4px 8px;
+    transition: border-color 0.15s;
+    flex-grow: 0;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-self: auto;
+    height: auto;
+    align-content: flex-start;
+    flex-shrink: 1;
+    flex-basis: auto;
+    color: rgb(26, 26, 26);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-left-color: rgb(0, 74, 185);
+    border-right-color: rgb(0, 74, 185);
+    border-top-color: rgb(0, 74, 185);
+    border-bottom-color: rgb(0, 74, 185);
+}
+
+.DropdownFieldOne .unity-base-popup-field__input:hover {
+    border-color: rgb(155, 139, 255);
+    background-color: rgb(49, 49, 56);
+}
+
+.DropdownFieldOne .unity-base-popup-field__input > .unity-text-element {
+    color: rgb(234, 234, 234);
+    font-size: 13px;
+    width: 30px;
+    -unity-text-align: middle-left;
+    flex-shrink: 1;
+    flex-grow: 0;
+}
+
+.DropdownFieldOne .unity-base-popup-field__arrow {
+    width: 12px;
+    height: 12px;
+    -unity-background-image-tint-color: rgb(0, 193, 255);
+}
+
+.title_label {
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    -unity-font-style: bold;
+    -unity-font-definition: resource("Fonts/Acme-Regular");
+}
