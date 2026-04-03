@@ -4,9 +4,11 @@
     <ui:Template name="NetworkJoinSetup" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkJoinSetup.uxml?fileID=9197481963319205126&amp;guid=9a3f532352fe54c47a15950e76d47fe8&amp;type=3#NetworkJoinSetup"/>
     <ui:Template name="NetworkLobby" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkLobby.uxml?fileID=9197481963319205126&amp;guid=0a5d5536aad084415acd087d6fa4b020&amp;type=3#NetworkLobby"/>
     <ui:Template name="NetworkMainMenu" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkMainMenu.uxml?fileID=9197481963319205126&amp;guid=66ee27f66e62148f59bf958eb2a3ed17&amp;type=3#NetworkMainMenu"/>
-    <ui:Instance template="NetworkHostSetup" name="HostSetup" style="display: none; position: relative;"/>
-    <ui:Instance template="NetworkJoinSetup" name="JoinSetup" style="display: none; position: relative;"/>
-    <ui:Instance template="NetworkLobby" name="Lobby" style="display: none; position: relative;"/>
-    <ui:Instance template="NetworkCharacterSelect" name="CharacterSelect" style="display: none; position: absolute;"/>
-    <ui:Instance template="NetworkMainMenu" name="MainMenu" style="position: relative;"/>
+    <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: center;">
+        <ui:Instance template="NetworkHostSetup" name="HostSetup" style="display: none; position: relative;"/>
+        <ui:Instance template="NetworkJoinSetup" name="JoinSetup" style="display: none; position: relative;"/>
+        <ui:Instance template="NetworkLobby" name="Lobby" style="display: none; position: relative;"/>
+        <ui:Instance template="NetworkCharacterSelect" name="CharacterSelect" style="display: none; position: absolute;"/>
+        <ui:Instance template="NetworkMainMenu" name="MainMenu" style="position: relative;"/>
+    </ui:VisualElement>
 </ui:UXML>
