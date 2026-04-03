@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: lira_mat
-  m_Shader: {fileID: -6465566751694194690, guid: d101253eb134e454cb2e95ad8c051403, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 0d9f85f7a1fc1f449a6686e35eb97982, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -51,6 +51,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _4_vat_image:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 8862c68a64eaa194ba30a5326712606f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OpenVATstandard_f90ce56359ae404f8a7ebc0ed5b56536_openVATnrml_3347946277_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OpenVatTex:
+        m_Texture: {fileID: 2800000, guid: e214edd6c86577a4c9bcbc4f3686b3a7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
@@ -99,7 +115,12 @@ Material:
     - _Animation_number: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _blink: 0
+    - _blink345: 0
     - _current_frame: 0
+    - _dither_size: 0
+    - _frame: 0
+    - _frames: 81
     - _speed: 1
     - _total_frames: 81
     - _use_time: 0
