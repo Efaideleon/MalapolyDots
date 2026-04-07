@@ -39,6 +39,10 @@ namespace TitleScreen.NetworkUI.Systems
                     case UIRequestType.LobbyStartButton:
                         ecb.AddComponent<LobbyStartClickEvent>(entity);
                         break;
+                    case UIRequestType.Back:
+                        ecb.AddComponent<BackButtonClickEvent>(entity);
+                        break;
+                    
 
                     case UIRequestType.AvocadoButton:
                         ecb.AddComponent<AvocadoClickEvent>(entity);
