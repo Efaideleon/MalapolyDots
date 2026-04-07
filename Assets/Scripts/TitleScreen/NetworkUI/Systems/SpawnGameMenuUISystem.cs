@@ -44,6 +44,7 @@ namespace TitleScreen.NetworkUI.Systems
 
             // Panels creation.
             var entity = state.EntityManager.CreateEntity();
+
             var panelsComponent = new GameMenuPanelsComponent
             {
                 AllPanels = new(),

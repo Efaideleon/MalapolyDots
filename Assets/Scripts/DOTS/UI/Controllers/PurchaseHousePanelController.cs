@@ -54,7 +54,7 @@ namespace DOTS.UI.Controllers
                     }
                     break;
                 case ToggleState.Sell:
-                    UnityEngine.Debug.Log("[PurchaseHousePanelController] | Selling abel houses lol");
+                    UnityEngine.Debug.Log("[PurchaseHousePanelController] | Selling a houses ");
                     break;
             }
         }
