@@ -20,6 +20,8 @@ namespace TitleScreen.NetworkUI.Components
     public struct LobbyStartClickEvent : IComponentData
     { }
 
+    public struct BackButtonClickEvent : IComponentData
+    { }
     // Character Selection Buttons
     public struct AvocadoClickEvent : IComponentData
     { }

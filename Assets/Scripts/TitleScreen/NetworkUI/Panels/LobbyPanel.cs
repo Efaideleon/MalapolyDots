@@ -7,10 +7,12 @@ namespace TitleScreen.NetworkUI.Panels
     public class LobbyPanel : NetworkPanelBase
     {
         private readonly Button StartButton;
+        private readonly Button BackButton; // 👈 
 
         public LobbyPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
             StartButton = root.Q<Button>("StartButton");
+            BackButton = root.Q<Button>("BackButton"); // 👈 
         }
 
         public override void Dispose()
@@ -32,6 +34,7 @@ namespace TitleScreen.NetworkUI.Panels
         private void SubscribeEvents()
         {
             StartButton.clickable.clicked += HandleStartButton;
+            BackButton.clickable.clicked += HandleBackButton; // 👈
         }
 
         private void HandleStartButton()
@@ -39,9 +42,20 @@ namespace TitleScreen.NetworkUI.Panels
             UIRequests.Enqueue(new UIRequest { Value = UIRequestType.LobbyStartButton });
         }
 
+        private void HandleBackButton()
+        {
+            UIRequests.Enqueue(new UIRequest 
+            { 
+                Value = UIRequestType.Back // 👈 define this
+            });
+        }
+        
         private void UnsubscribeEvents()
         {
             StartButton.clickable.clicked -= HandleStartButton;
+            BackButton.clickable.clicked -= HandleBackButton; // 👈
         }
+        
+        
     }
 }

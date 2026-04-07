@@ -1,22 +1,33 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels"/>
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: space-evenly;">
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; height: auto;">
         <ui:Label text="Rules " name="TitleLabel" class="title_label" style="-unity-text-align: upper-center; font-size: 72px; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
-        <ui:VisualElement class="DropFieldMenu" style="flex-grow: 0; align-items: flex-end;">
-            <ui:DropdownField label="Number of Players:" name="NumOfPlayersDropdownField" choices="1,2,3,4,5,6" class="dropdown DropdownFieldOne" style="font-size: 18px; -unity-font-style: bold;"/>
-            <ui:DropdownField label="Number of Rounds:" name="NumOfRoundsDropdownField" choices="8,10,12" class="DropdownFieldOne" style="font-size: 18px; -unity-font-style: bold;"/>
+        <ui:VisualElement class="DropFieldMenu" style="flex-grow: 0; align-items: flex-end; height: 400px;">
+            <ui:DropdownField label="Number of Players:" name="NumOfPlayersDropdownField" choices="1,2,3,4,5,6" enabled="true" focusable="true" usage-hints="None" index="0" class="dropdown DropdownFieldOne" style="font-size: 32px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=9c7d22438300b4fb2aaab3a8b8d10f90&amp;type=3#NotInter-Regular&quot;); -unity-text-align: upper-center;"/>
+            <ui:DropdownField label="Number of Rounds:" name="NumOfRoundsDropdownField" choices="8,10,12" index="0" class="DropdownFieldOne" style="font-size: 32px; -unity-font-style: bold;"/>
         </ui:VisualElement>
         <ui:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
-            <ui:Button text="8" name="StartHostingButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+            <ui:Button text="8" name="StartHostingButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 400px; height: 100px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                 <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
                 <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
                     <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
                     <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                        <ui:Label text="Start Hosting" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+                        <ui:Label text="Start Hosting" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 52px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:Button>
         </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="back-btn-container" class="dbr-btn dbr-btn-yellow" style="flex-grow: 0; top: 5%; position: absolute; left: 5%;">
+        <ui:Button text="" name="BackButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 140px; height: 100px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: relative; top: auto; left: auto;">
+            <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
+            <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1; border-top-width: 7px; border-right-width: 7px; border-bottom-width: 7px; border-left-width: 7px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px;">
+                <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
+                <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
+                    <ui:Label text="&lt;-" name="Label" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 86px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

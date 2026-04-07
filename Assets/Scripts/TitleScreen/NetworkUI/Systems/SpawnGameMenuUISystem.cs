@@ -124,7 +124,8 @@ namespace TitleScreen.NetworkUI.Systems
         LiraButton,
         CoffeButton,
         TuctucButton,
-        CharacterSelectConfirmButton
+        CharacterSelectConfirmButton,
+        Back
     }
 
     public struct UIRequest
