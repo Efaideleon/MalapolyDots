@@ -969,18 +969,25 @@
     flex-direction: column;
     align-items: center;
     margin: 4px 0;
+    justify-content: center;
 }
 
 .DropdownFieldOne > .unity-base-field__label {
     color: rgb(255, 255, 255);
-    font-size: 26px;
+    font-size: 64px;
     min-width: 120px;
     -unity-font-style: bold;
-    -unity-font-definition: resource("Fonts/Acme-Regular");
+    -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
+    justify-content: center;
+    align-items: center;
+}
+
+.DropdownFieldOne:enabled .unity-text-element.unity-label.unity-base-field__label.unity-base-popup-field__label.unity-popup-field__label {
+    color: white;
 }
 
 .DropdownFieldOne .unity-base-popup-field__input {
-    width: 96px;
+    width: 180px;
     background-color: rgb(35, 112, 241);
     border-color: rgb(85, 85, 99);
     border-width: 1px;
@@ -988,47 +995,188 @@
     padding: 4px 8px;
     transition: border-color 0.15s;
     flex-grow: 0;
-    justify-content: flex-start;
-    align-items: stretch;
+    justify-content: center;
+    align-items: center;
     align-self: auto;
     height: auto;
-    align-content: flex-start;
+    align-content: auto;
     flex-shrink: 1;
     flex-basis: auto;
     color: rgb(26, 26, 26);
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
     border-left-color: rgb(0, 74, 185);
     border-right-color: rgb(0, 74, 185);
     border-top-color: rgb(0, 74, 185);
     border-bottom-color: rgb(0, 74, 185);
-}
-
-.DropdownFieldOne .unity-base-popup-field__input:hover {
-    border-color: rgb(155, 139, 255);
-    background-color: rgb(49, 49, 56);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+    font-size: 32px;
+    -unity-font-style: bold;
+    padding-left: 8px;
+    -unity-text-align: middle-center;
+    flex-direction: row;
 }
 
 .DropdownFieldOne .unity-base-popup-field__input > .unity-text-element {
-    color: rgb(234, 234, 234);
-    font-size: 13px;
-    width: 30px;
-    -unity-text-align: middle-left;
+    color: rgb(255, 255, 255);
+    font-size: 52px;
+    width: auto;
+    -unity-text-align: middle-center;
     flex-shrink: 1;
-    flex-grow: 0;
+    flex-grow: 1;
+    align-items: center;
+    -unity-font-style: bold;
+    background-color: rgba(255, 255, 255, 0);
+    align-self: auto;
+    justify-content: center;
+    align-content: flex-start;
+    height: 100%;
+    flex-direction: row;
 }
 
 .DropdownFieldOne .unity-base-popup-field__arrow {
-    width: 12px;
-    height: 12px;
+    width: 32px;
+    height: 32px;
     -unity-background-image-tint-color: rgb(0, 193, 255);
+    position: relative;
+    align-self: auto;
+    left: 0;
+    top: 0;
+    background-color: rgba(155, 0, 0, 0);
 }
 
 .title_label {
     color: rgb(255, 255, 255);
-    font-size: 32px;
+    font-size: 70px;
     -unity-font-style: bold;
-    -unity-font-definition: resource("Fonts/Acme-Regular");
+    -unity-font-definition: resource("Fonts/Acme-Regular SDF");
+}
+
+.unity-base-popup-field__text {
+    margin: 0;
+}
+
+.unity-base-dropdown .unity-scroll-view {
+    background-color: rgb(47, 114, 237);
+    color: rgb(255, 255, 255);
+    border-radius: 25px;
+    border-color: rgb(75, 153, 243);
+    border-width: 8px;
+}
+
+.unity-base-dropdown__container-outer {
+    background-color: yellow;
+    border-color: rgb(0, 74, 185);
+    border-width: 12px;
+    border-radius: 40px;
+    padding: 0;
+    margin: 0;
+}
+
+.unity-base-dropdown__container-inner {
+}
+
+.unity-base-dropdown__item {
+    color: white;
+    font-size: 32px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.unity-base-dropdown__item:hover {
+    background-color: yellow;
+}
+
+.unity-base-dropdown__item:hover:enabled {
+    background-color: rgb(20, 75, 175);
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.unity-base-dropdown__checkmark {
+    display: none;
+}
+
+.unity-base-dropdown__item:checked {
+    background-color: rgb(32, 80, 172);
+    border-radius: 15px;
+}
+
+.unity-base-dropdown__item:checked:hover {
+    background-color: rgb(60, 130, 255);
+}
+
+.InputTextField {
+    flex-direction: row;
+    align-items: center;
+    width: 515px;
+    justify-content: center;
+    -unity-text-align: upper-left;
+    flex-shrink: 1;
+}
+
+.InputTextField > Label {
+    color: white;
+    font-size: 56px;
+    -unity-font-style: bold;
+    margin-right: 6px;
+    -unity-text-align: upper-center;
+    flex-shrink: 1;
+    width: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    white-space: normal;
+}
+
+.InputTextField #unity-text-input {
+    background-color: rgb(30, 100, 220);
+    border-radius: 18px;
+    border-width: 2px;
+    border-color: rgb(80, 160, 255);
+    padding: 6px 20px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.08);
+    font-size: 52px;
+}
+
+.InputTextField #unity-text-input:hover {
+    background-color: rgb(50, 120, 240);
+    border-color: rgb(100, 180, 255);
+}
+
+.InputTextField #unity-text-input:focus {
+    background-color: rgb(20, 80, 200);
+    border-color: rgb(120, 200, 255);
+}
+
+.InputTextField #unity-text-input > TextElement {
+    color: white;
+    font-size: 48px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.InputTextField:enabled .unity-text-element.unity-label.unity-base-field__label {
+    color: white;
+}
+
+.BackButton {
+    width: 40px;
+    height: 40px;
+    color: white;
+    background-color: rgb(255, 0, 0);
+    border-radius: 5px;
+    -unity-font-style: bold;
+    border-width: 0;
 }
