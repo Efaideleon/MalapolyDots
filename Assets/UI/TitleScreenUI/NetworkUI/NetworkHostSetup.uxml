@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels"/>
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; height: auto;">
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; height: auto; background-color: rgb(0, 101, 213);">
         <ui:Label text="Rules " name="TitleLabel" class="title_label" style="-unity-text-align: upper-center; font-size: 72px; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
         <ui:VisualElement class="DropFieldMenu" style="flex-grow: 0; align-items: flex-end; height: 400px;">
             <ui:DropdownField label="Number of Players:" name="NumOfPlayersDropdownField" choices="1,2,3,4,5,6" enabled="true" focusable="true" usage-hints="None" index="0" class="dropdown DropdownFieldOne" style="font-size: 32px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=9c7d22438300b4fb2aaab3a8b8d10f90&amp;type=3#NotInter-Regular&quot;); -unity-text-align: upper-center;"/>
