@@ -126,7 +126,8 @@ namespace TitleScreen.NetworkUI.Systems
         CoffeButton,
         TuctucButton,
         CharacterSelectConfirmButton,
-        Back
+        ExitConnection,
+        BackToMainMenu
     }
 
     public struct UIRequest

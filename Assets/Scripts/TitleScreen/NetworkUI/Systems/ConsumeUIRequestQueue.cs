@@ -39,9 +39,13 @@ namespace TitleScreen.NetworkUI.Systems
                     case UIRequestType.LobbyStartButton:
                         ecb.AddComponent<LobbyStartClickEvent>(entity);
                         break;
-                    case UIRequestType.Back:
-                        UnityEngine.Debug.Log($"[ConsumeUIRequestQueue] | BackButton clicked");
-                        ecb.AddComponent<BackButtonClickEvent>(entity);
+                    case UIRequestType.ExitConnection:
+                        UnityEngine.Debug.Log($"[ConsumeUIRequestQueue] | ExitConnection clicked");
+                        ecb.AddComponent<ExitConnectionClickEvent>(entity);
+                        break;
+                    case UIRequestType.BackToMainMenu:
+                        UnityEngine.Debug.Log($"[ConsumeUIRequestQueue] | ExitConnection clicked");
+                        ecb.AddComponent<BackToMainMenuClickEvent>(entity);
                         break;
                     
 

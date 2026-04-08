@@ -6,22 +6,14 @@ namespace TitleScreen.NetworkUI.Panels
 {
     public class LobbyPanel : NetworkPanelBase
     {
-        private readonly VisualElement _startContainer;
-        private readonly VisualElement _backButtonContainer;
         private readonly Button StartButton;
         private readonly Button BackButton;
 
         public LobbyPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
             UnityEngine.Debug.Log("[LobbyPanel] | Initializing Lobby panel.");
-            _startContainer = root.Q<VisualElement>("purchase-btn-container");
-            _backButtonContainer = root.Q<VisualElement>("back-btn-container");
-            StartButton = _startContainer.Q<Button>("StartButton");
-            BackButton = _backButtonContainer.Q<Button>("ExitButton");
-            if (BackButton == null)
-            {
-                UnityEngine.Debug.Log("BackButton is undefined");
-            }
+            StartButton = root.Q<Button>("StartButton");
+            BackButton = root.Q<Button>("ExitButton");
         }
 
         public override void Dispose()
@@ -57,7 +49,7 @@ namespace TitleScreen.NetworkUI.Panels
             UnityEngine.Debug.Log("[LobbyPanel] | Clicking back button.");
             UIRequests.Enqueue(new UIRequest 
             { 
-                Value = UIRequestType.Back
+                Value = UIRequestType.ExitConnection
             });
         }
         

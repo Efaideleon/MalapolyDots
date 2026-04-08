@@ -29,6 +29,7 @@ namespace TitleScreen.NetworkUI.Panels
         private readonly Button CoffeeButton;
         private readonly Button TuctucButton;
         private readonly Button ConfirmButton;
+        private readonly Button BackButton;
 
         public CharacterSelectPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
@@ -39,6 +40,8 @@ namespace TitleScreen.NetworkUI.Panels
             CoffeeButton = root.Query<Button>("character-five-button");
             TuctucButton = root.Query<Button>("character-six-button");
             ConfirmButton = root.Query<Button>("character-confirm-button");
+
+            BackButton = root.Query<Button>("BackButton");
         }
 
         public override void Initialize()
@@ -66,6 +69,8 @@ namespace TitleScreen.NetworkUI.Panels
             CoffeeButton.clickable.clicked += HandleCoffeeButton;
             TuctucButton.clickable.clicked += HandleTuctucButton;
             ConfirmButton.clickable.clicked += HandleConfirmButton;
+
+            BackButton.clickable.clicked += HandleBackButton;
         }
 
         private void SetAvocadoChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, AvocadoButton);
@@ -91,6 +96,8 @@ namespace TitleScreen.NetworkUI.Panels
             CoffeeButton.clickable.clicked -= HandleCoffeeButton;
             TuctucButton.clickable.clicked -= HandleTuctucButton;
             ConfirmButton.clickable.clicked -= HandleConfirmButton;
+            
+            BackButton.clickable.clicked -= HandleBackButton;
         }
 
         private void SetButtonColor(ButtonState state, Button button)
@@ -172,6 +179,11 @@ namespace TitleScreen.NetworkUI.Panels
         private void HandleConfirmButton()
         {
             UIRequests.Enqueue(new UIRequest { Value = UIRequestType.CharacterSelectConfirmButton });
+        }
+
+        private void HandleBackButton()
+        {
+            UnityEngine.Debug.Log("[CharacterSelectPanel] | BackButton pressed.");
         }
     }
 }

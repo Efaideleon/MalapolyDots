@@ -25,6 +25,12 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
                 UnityEngine.Debug.Log($"[GameMenuUISystem] | Clicked on MainMenu Join Button");
             }
 
+            foreach (var evt in SystemAPI.Query<RefRO<BackToMainMenuClickEvent>>())
+            {
+                SystemAPI.GetSingletonRW<GameMenuPhaseComponent>().ValueRW.Value = GameMenuPhase.MainMenu;
+                UnityEngine.Debug.Log($"[GameMenuUISystem] | Clicked on MainMenu Join Button");
+            }
+
             foreach (var evt in SystemAPI.Query<RefRO<HostSetupHostClickEvent>>())
             {
                 //gameMenuPhaseLookup.GetRefRW(gameMenuPhaseEntity).ValueRW.Value = GameMenuPhase.JoinSetup;

@@ -4,7 +4,7 @@ using Unity.Entities;
 namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
-    public partial struct GameMenuBackButtonSystem : ISystem
+    public partial struct GameMenuExitConnectionSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
@@ -13,9 +13,9 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            foreach (var evt in SystemAPI.Query<RefRO<BackButtonClickEvent>>())
+            foreach (var evt in SystemAPI.Query<RefRO<ExitConnectionClickEvent>>())
             {
-                UnityEngine.Debug.Log($"[GameMenuBackButtonSystem] | BackButton pressed.");
+                UnityEngine.Debug.Log($"[GameMenuBackButtonSystem] | ExitConnection pressed.");
                 var rpcEntity = ecb.CreateEntity();
                 // ecb.AddComponent(rpcEntity, new GoToCharacterSelectRpc { });
                 // ecb.AddComponent(rpcEntity, new SendRpcCommandRequest { });
