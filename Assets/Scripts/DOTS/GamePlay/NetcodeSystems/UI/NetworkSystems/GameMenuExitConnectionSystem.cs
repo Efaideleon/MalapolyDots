@@ -1,5 +1,6 @@
 using TitleScreen.NetworkUI.Components;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
 {
@@ -8,17 +9,21 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
     {
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<NetworkId>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+            var connection = SystemAPI.GetSingletonEntity<NetworkStreamConnection>();
             foreach (var evt in SystemAPI.Query<RefRO<ExitConnectionClickEvent>>())
             {
-                UnityEngine.Debug.Log($"[GameMenuBackButtonSystem] | ExitConnection pressed.");
+                UnityEngine.Debug.Log($"[GameMenuExitConnectionSystem] | ExitConnection pressed.");
                 var rpcEntity = ecb.CreateEntity();
-                // ecb.AddComponent(rpcEntity, new GoToCharacterSelectRpc { });
-                // ecb.AddComponent(rpcEntity, new SendRpcCommandRequest { });
+                ecb.AddComponent(connection, new NetworkStreamRequestDisconnect { Reason = NetworkStreamDisconnectReason.ConnectionClose });
+
+                var gameMenuUIPhase = SystemAPI.GetSingletonRW<GameMenuPhaseComponent>();
+                gameMenuUIPhase.ValueRW.Value = GameMenuPhase.MainMenu;
             }
 
             ecb.Playback(state.EntityManager);
