@@ -40,6 +40,7 @@ namespace TitleScreen.NetworkUI.Systems
                         ecb.AddComponent<LobbyStartClickEvent>(entity);
                         break;
                     case UIRequestType.Back:
+                        UnityEngine.Debug.Log($"[ConsumeUIRequestQueue] | BackButton clicked");
                         ecb.AddComponent<BackButtonClickEvent>(entity);
                         break;
                     

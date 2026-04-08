@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Assets.Scripts.DOTS.DataComponents;
+using Assets.Scripts.TitleScreen.NetworkUI.Panels;
 using DOTS.DataComponents;
 using TitleScreen.NetworkUI.Authoring;
 using TitleScreen.NetworkUI.Components;
@@ -143,6 +144,7 @@ namespace TitleScreen.NetworkUI.Systems
     {
         public List<NetworkPanelBase> AllPanels;
         public Dictionary<GameMenuPhase, NetworkPanelBase> PanelLookup;
+        public MainMenuBackButton BackButton;
     }
 
     public struct GameMenuTag : IComponentData
