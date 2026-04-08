@@ -10,24 +10,23 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<NetworkId>();
+            state.RequireForUpdate<ExitConnectionClickEvent>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
+            // TODO: This should only run when the host exits the connection.
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            var connection = SystemAPI.GetSingletonEntity<NetworkStreamConnection>();
-            foreach (var evt in SystemAPI.Query<RefRO<ExitConnectionClickEvent>>())
-            {
-                UnityEngine.Debug.Log($"[GameMenuExitConnectionSystem] | ExitConnection pressed.");
-                var rpcEntity = ecb.CreateEntity();
-                ecb.AddComponent(connection, new NetworkStreamRequestDisconnect { Reason = NetworkStreamDisconnectReason.ConnectionClose });
 
-                var gameMenuUIPhase = SystemAPI.GetSingletonRW<GameMenuPhaseComponent>();
-                gameMenuUIPhase.ValueRW.Value = GameMenuPhase.MainMenu;
-            }
+            var rpcEntity = ecb.CreateEntity();
+            ecb.AddComponent<SendRpcCommandRequest>(rpcEntity);
+            ecb.AddComponent<TerminateAllClientsConnectionRpc>(rpcEntity);
 
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
     }
+
+    public struct TerminateAllClientsConnectionRpc : IRpcCommand
+    {}
 }
