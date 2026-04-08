@@ -30,9 +30,25 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
                 foreach (var (n, connection) in SystemAPI.Query<NetworkId>().WithEntityAccess())
                 {
                     ecb.AddComponent(connection, new NetworkStreamRequestDisconnect { Reason = NetworkStreamDisconnectReason.ConnectionClose });
-                    UnityEngine.Debug.Log($"[TerminateAllClientConnectionSystem] | ExitConnection pressed.");
+                    UnityEngine.Debug.Log($"[TerminateAllClientConnectionSystem] | Host ExitConnection pressed.");
                     UnityEngine.Debug.Log($"[TerminateAllClientConnectionSystem] | connection to terminate: {n.Value}");
                 }
+                ecb.DestroyEntity(rpcEntity);
+            }
+
+            foreach (var (rpc, _, rpcEntity) in SystemAPI.Query
+                <
+                    RefRO<ReceiveRpcCommandRequest>,
+                    RefRO<TerminateConnectionRpc>
+                >() .WithEntityAccess())
+            {
+                var disconnectEntity = ecb.CreateEntity();
+                ecb.AddComponent(disconnectEntity, new SendRpcCommandRequest { TargetConnection = rpc.ValueRO.SourceConnection });
+                ecb.AddComponent<GoToMainMenuRpc>(disconnectEntity);
+
+                ecb.AddComponent(rpc.ValueRO.SourceConnection, new NetworkStreamRequestDisconnect { Reason = NetworkStreamDisconnectReason.ConnectionClose });
+                UnityEngine.Debug.Log($"[TerminateAllClientConnectionSystem] | Client ExitConnection pressed.");
+                ecb.DestroyEntity(rpcEntity);
             }
 
             ecb.Playback(state.EntityManager);
