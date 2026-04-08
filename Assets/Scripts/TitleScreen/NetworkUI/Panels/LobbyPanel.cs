@@ -17,7 +17,7 @@ namespace TitleScreen.NetworkUI.Panels
             _startContainer = root.Q<VisualElement>("purchase-btn-container");
             _backButtonContainer = root.Q<VisualElement>("back-btn-container");
             StartButton = _startContainer.Q<Button>("StartButton");
-            BackButton = _backButtonContainer.Q<Button>("BackButton");
+            BackButton = _backButtonContainer.Q<Button>("ExitButton");
             if (BackButton == null)
             {
                 UnityEngine.Debug.Log("BackButton is undefined");
