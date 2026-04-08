@@ -21,7 +21,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
                 <
                     RefRO<ReceiveRpcCommandRequest>,
                     RefRO<TerminateAllClientsConnectionRpc>
-                >() .WithEntityAccess())
+                >().WithEntityAccess())
             {
                 var disconnectEntity = ecb.CreateEntity();
                 ecb.AddComponent<SendRpcCommandRequest>(disconnectEntity);
@@ -33,6 +33,9 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
                     UnityEngine.Debug.Log($"[TerminateAllClientConnectionSystem] | Host ExitConnection pressed.");
                     UnityEngine.Debug.Log($"[TerminateAllClientConnectionSystem] | connection to terminate: {n.Value}");
                 }
+
+                ServerLifecycleBridge.RequestShutdown = true;
+
                 ecb.DestroyEntity(rpcEntity);
             }
 
@@ -40,7 +43,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
                 <
                     RefRO<ReceiveRpcCommandRequest>,
                     RefRO<TerminateConnectionRpc>
-                >() .WithEntityAccess())
+                >().WithEntityAccess())
             {
                 var disconnectEntity = ecb.CreateEntity();
                 ecb.AddComponent(disconnectEntity, new SendRpcCommandRequest { TargetConnection = rpc.ValueRO.SourceConnection });
@@ -54,5 +57,10 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
+    }
+
+    public static class ServerLifecycleBridge
+    {
+        public static bool RequestShutdown;
     }
 }
