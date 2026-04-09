@@ -35,7 +35,7 @@ namespace DOTS.GamePlay
                     if (touchPosition.ValueRO.IsHeld.IsSet)
                     {
                         var ray = rayCastData.ValueRO;
-                        UnityEngine.Debug.Log($"[RayCastSystem] | position: {touchPosition.ValueRO.Position} , rayCastData : {ray.RayOrigin} {state.World}");
+                        //UnityEngine.Debug.Log($"[RayCastSystem] | position: {touchPosition.ValueRO.Position} , rayCastData : {ray.RayOrigin} {state.World}");
                         PhysicsWorld world = SystemAPI.GetSingletonRW<PhysicsWorldSingleton>().ValueRW.PhysicsWorld;
                         var collisionWorld = world.CollisionWorld;
 
