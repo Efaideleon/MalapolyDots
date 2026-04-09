@@ -16,6 +16,8 @@ namespace TitleScreen.NetworkUI.Systems
 
         public void OnUpdate(ref SystemState state)
         {
+            Debug.Log($"ServerWorld exists? {ClientServerBootstrap.ServerWorld != null}");
+
             if (ClientServerBootstrap.ServerWorld == null)
                 return;
 
@@ -33,6 +35,8 @@ namespace TitleScreen.NetworkUI.Systems
             var connectEntity = state.EntityManager.CreateEntity();
             state.EntityManager.AddComponentData(connectEntity, new NetworkStreamRequestConnect { Endpoint = NetworkEndpoint.LoopbackIpv4.WithPort(port) });
 
+            var clickEntity = SystemAPI.GetSingletonEntity<HostSetupHostClickEvent>();
+            state.EntityManager.DestroyEntity(clickEntity);
             Debug.Log("Starting Host Server");
         }
     }

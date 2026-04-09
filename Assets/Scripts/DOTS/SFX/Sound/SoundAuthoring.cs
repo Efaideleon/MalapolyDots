@@ -6,6 +6,7 @@ namespace DOTS.SFX.Sound
     public class ClickSoundClipComponent : IComponentData
     {
         public AudioClip Value;
+
     }
 
     public class AudioSourceComponent : IComponentData

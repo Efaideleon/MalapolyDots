@@ -45,7 +45,8 @@ namespace DOTS.GameSpaces
         public void OnUpdate(ref SystemState state)
         {
             // Run when the gamescene is loaded.
-            if (SystemAPI.GetSingleton<CurrentScene>().sceneGUID == SystemAPI.GetSingleton<SceneLoader>().GameSceneGuid)
+            var tempSceneReference = new SceneReference(SystemAPI.GetSingleton<SceneLoader>().SceneEntityReference);
+            if (SystemAPI.GetSingleton<CurrentScene>().sceneEntityReference.Equals(tempSceneReference))
             {
                 var placesPrefabs = SystemAPI.GetSingletonBuffer<PlacesPrefabBuffer>();
                 state.EntityManager.CreateSingleton(new IndexToBoardHashMap { Map = new(placesPrefabs.Length, Allocator.Persistent) });

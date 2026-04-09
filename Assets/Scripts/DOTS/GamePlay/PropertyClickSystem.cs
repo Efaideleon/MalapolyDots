@@ -32,12 +32,12 @@ namespace DOTS.GamePlay
                 {
                     if (touchStarted.ValueRO.IsTapped.IsSet)
                     {
-                        UnityEngine.Debug.Log($"[PropertyClickSystem] | touchStarted {state.World}");
+                        //UnityEngine.Debug.Log($"[PropertyClickSystem] | touchStarted {state.World}");
 
                         var hitResult = hitCastResult.ValueRO;
                         var objectClickedEntity = hitResult.ObjectHit.Entity;
 
-                        UnityEngine.Debug.Log($"[PropertyClickSystem] | rayCast: objecthit Entity: {hitResult.ObjectHit.Entity}, Position: {hitResult.ObjectHit.Position} {state.World}");
+                        //UnityEngine.Debug.Log($"[PropertyClickSystem] | rayCast: objecthit Entity: {hitResult.ObjectHit.Entity}, Position: {hitResult.ObjectHit.Position} {state.World}");
 
                         // Check if we tapped on a property.
                         bool isObjectClickedAProperty = objectClickedEntity != Entity.Null && !SystemAPI.HasComponent<PropertySpaceTag>(objectClickedEntity);

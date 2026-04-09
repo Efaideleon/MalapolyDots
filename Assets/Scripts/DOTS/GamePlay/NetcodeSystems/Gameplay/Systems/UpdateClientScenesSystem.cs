@@ -26,7 +26,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay
             ref var loadState = ref SystemAPI.GetSingletonRW<ClientSceneLoadState>().ValueRW;
 
             // Guard against default/invalid GUIDs that can occur before ghost data is fully replicated.
-            if (scenes.GameSceneGuid == default)
+            if (!scenes.SceneEntityReference.IsReferenceValid)
             {
                 return;
             }
@@ -36,7 +36,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay
                 case GamePhase.Game:
                     if (!loadState.GameSceneRequested)
                     {
-                        var sceneEntity = SceneSystem.LoadSceneAsync(state.WorldUnmanaged, scenes.GameSceneGuid);
+                        var sceneEntity = SceneSystem.LoadSceneAsync(state.WorldUnmanaged, scenes.SceneEntityReference);
                         // Only mark as requested if the load call returned a valid scene entity.
                         if (sceneEntity != Entity.Null)
                         {
