@@ -12,7 +12,7 @@ namespace DOTS.GameSpaces
     // 1. Change this to run in the server.
     // 2. The buildings should spawn as ghosts.
     //
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct PlacesSpawnJob : IJobParallelFor
     {
         [ReadOnly]
@@ -28,7 +28,7 @@ namespace DOTS.GameSpaces
 
     // TODO: we need to spawn this building before the client connects?
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct PlacesSpawner : ISystem
     {
         [BurstCompile]
@@ -41,7 +41,7 @@ namespace DOTS.GameSpaces
             state.RequireForUpdate<SceneLoader>();
         }
 
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             // Run when the gamescene is loaded.
@@ -51,6 +51,7 @@ namespace DOTS.GameSpaces
                 var placesPrefabs = SystemAPI.GetSingletonBuffer<PlacesPrefabBuffer>();
                 state.EntityManager.CreateSingleton(new IndexToBoardHashMap { Map = new(placesPrefabs.Length, Allocator.Persistent) });
 
+                UnityEngine.Debug.Log($"[PlacesSpawner] | spawning places");
                 var ecb = new EntityCommandBuffer(Allocator.Temp);
                 foreach (var buffer in SystemAPI.Query<DynamicBuffer<PlacesPrefabBuffer>>())
                 {
