@@ -1,3 +1,5 @@
+using Assets.Common;
+using Assets.Common.Assets.Common;
 using Blocks.Common;
 using UnityEngine.UIElements;
 
@@ -36,7 +38,7 @@ namespace Blocks.Sessions.Common
         private void StartGame()
         {
             UnityEngine.Debug.Log($"[StartGameCodeElement] | Starting game...");
-            // TODO: make sure that we are in a session.
+            NetworkRequests.StartGame = true;
         }
     }
 }

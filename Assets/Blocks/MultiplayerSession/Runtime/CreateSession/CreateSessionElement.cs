@@ -97,6 +97,7 @@ namespace Blocks.Sessions
             }
 
             _ = m_ViewModel.CreateSessionAsync(SessionSettings.ToSessionOptions());
+            // TODO: send the entity request ot start hosting (ecs) here
         }
 
         void UpdateBindings()

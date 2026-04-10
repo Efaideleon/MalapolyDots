@@ -1,3 +1,4 @@
+using Assets.Common;
 using TitleScreen.NetworkUI.Components;
 using Unity.Entities;
 using Unity.NetCode;
@@ -12,7 +13,7 @@ namespace TitleScreen.NetworkUI.Systems
         private EntityQuery networkStreamQuery;
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<JoinSetupJoinClickEvent>();
+            //state.RequireForUpdate<JoinSetupJoinClickEvent>();
             networkStreamQuery = state.EntityManager.CreateEntityQuery(typeof(NetworkStreamConnection));
         }
 
@@ -20,6 +21,11 @@ namespace TitleScreen.NetworkUI.Systems
         {
             if (!networkStreamQuery.IsEmpty)
                 return;
+
+            if (!NetworkRequests.StartClient)
+                return;
+
+            NetworkRequests.StartClient = false;
 
             // ushort port = 7979;
             // string ip = "127.0.0.1";

@@ -1,3 +1,4 @@
+using Assets.Common;
 using TitleScreen.NetworkUI.Components;
 using Unity.Entities;
 using Unity.NetCode;
@@ -14,12 +15,14 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            foreach (var evt in SystemAPI.Query<RefRO<LobbyStartClickEvent>>())
-            {
-                var rpcEntity = ecb.CreateEntity();
-                ecb.AddComponent(rpcEntity, new GoToCharacterSelectRpc { });
-                ecb.AddComponent(rpcEntity, new SendRpcCommandRequest { });
-            }
+            if (!NetworkRequests.StartGame)
+                return;
+
+            UnityEngine.Debug.Log($"[GoToCharacterSelectNetworkSystem] | Exiting Lobby.");
+            NetworkRequests.StartGame = false;
+            var rpcEntity = ecb.CreateEntity();
+            ecb.AddComponent(rpcEntity, new GoToCharacterSelectRpc { });
+            ecb.AddComponent(rpcEntity, new SendRpcCommandRequest { });
 
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
@@ -38,13 +41,14 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
             foreach (var (receivedRequest, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<GoToCharacterSelectRpc>().WithEntityAccess())
             {
                 // TODO: Make sure that the client is able to move to the character select
-                if(SystemAPI.TryGetSingletonRW<GameMenuPhaseComponent>(out var gamePhase))
+                if (SystemAPI.TryGetSingletonRW<GameMenuPhaseComponent>(out var gamePhase))
                 {
-                    if (gamePhase.ValueRO.Value == GameMenuPhase.Lobby)
-                    {
+                    // TODO: probably need a way to make sure that every can go to the character select from the lobby
+                    // if (gamePhase.ValueRO.Value == GameMenuPhase.Lobby)
+                    // {
                         UnityEngine.Debug.Log($"[AllGoToCharacterSelectClientSystem] | we are in the lobby, change ui to character select");
                         gamePhase.ValueRW.Value = GameMenuPhase.CharacterSelect;
-                    }
+                    //}
                 }
                 ecb.DestroyEntity(rpcEntity);
             }

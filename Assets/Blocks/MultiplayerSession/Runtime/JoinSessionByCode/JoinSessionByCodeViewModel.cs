@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Assets.Common;
 using Unity.Properties;
 using Unity.Services.Multiplayer;
 using UnityEngine.UIElements;
@@ -22,7 +23,7 @@ namespace Blocks.Sessions
             private set
             {
                 var canJoin = value;
-                if(canJoin && m_Session != null)
+                if (canJoin && m_Session != null)
                     canJoin = false;
 
                 if (m_CanJoinSession == canJoin)
@@ -84,6 +85,12 @@ namespace Blocks.Sessions
             m_Session.RemovedFromSession += OnSessionRemoved;
             m_Session.Deleted += OnSessionRemoved;
             CanJoinSession = false;
+
+            if (!session.IsHost)
+            {
+                NetworkRequests.StartClient = true;
+            }
+            UnityEngine.Debug.Log("[JoinSessionByCodeViewModel] | Session Added");
         }
 
         void OnSessionRemoved()

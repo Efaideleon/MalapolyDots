@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Unity.Properties;
 using Unity.Services.Multiplayer;
 using UnityEngine.UIElements;
+using Assets.Common;
 
 namespace Blocks.Sessions
 {
@@ -85,6 +86,12 @@ namespace Blocks.Sessions
             m_Session.RemovedFromSession += OnSessionRemoved;
             m_Session.Deleted += OnSessionRemoved;
             CanRegisterSession = false;
+
+            if (session.IsHost)
+            {
+                NetworkRequests.StartHost = true;
+            }
+            UnityEngine.Debug.Log("[CreateSessionViewModel] | Session Added");
         }
 
         void OnSessionRemoved()
