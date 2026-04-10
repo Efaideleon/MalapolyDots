@@ -4,7 +4,18 @@
     <ui:VisualElement name="VisualElement" style="flex-grow: 1; justify-content: center; align-self: center; width: 100%; height: 100%; align-items: center; background-color: rgba(92, 96, 178, 0); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; background-image: url(&quot;project://database/Assets/Textures/NPR_TEXTURES_MALAPOLY/gamethumbnail.png?fileID=2800000&amp;guid=d764a0a130869b84b8369ed9c70da8c6&amp;type=3#gamethumbnail&quot;); -unity-background-scale-mode: scale-and-crop;">
         <ui:VisualElement style="flex-grow: 0; width: 400px; height: 200px; justify-content: center; background-color: rgb(63, 79, 217); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px;">
             <ui:VisualElement name="LogoImage" style="flex-grow: 0; width: 512px; height: 512px; position: absolute; align-self: center; top: -446px; background-image: url(&quot;project://database/Assets/Textures/malalogo.png?fileID=21300000&amp;guid=1b1e92cfa30e65d44b0f7434984cfd7a&amp;type=3#malalogo&quot;); background-color: rgba(255, 157, 0, 0); background-size: 512px 512px; background-position-x: center;"/>
-            <ui:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
+            <ui:VisualElement name="play-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
+                <ui:Button text="8" name="PlayButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                    <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
+                    <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
+                        <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
+                        <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
+                            <ui:Label text="Play&#10;" name="Label" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="purchase-btn-container" enabled="false" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
                 <ui:Button text="8" name="HostButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                     <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
                     <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
@@ -15,7 +26,7 @@
                     </ui:VisualElement>
                 </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
+            <ui:VisualElement name="purchase-btn-container" enabled="false" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
                 <ui:Button text="8" name="JoinButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                     <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
                     <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
