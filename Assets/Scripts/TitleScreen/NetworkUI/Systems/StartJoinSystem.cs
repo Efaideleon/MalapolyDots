@@ -21,12 +21,13 @@ namespace TitleScreen.NetworkUI.Systems
             if (!networkStreamQuery.IsEmpty)
                 return;
 
-            ushort port = 7979;
-            string ip = "127.0.0.1";
+            // ushort port = 7979;
+            // string ip = "127.0.0.1";
 
             // Client Setup
             var connectEntity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddComponentData(connectEntity, new NetworkStreamRequestConnect { Endpoint = NetworkEndpoint.Parse(ip, port) });
+            //state.EntityManager.AddComponentData(connectEntity, new NetworkStreamRequestConnect { Endpoint = NetworkEndpoint.Parse(ip, port) });
+            state.EntityManager.AddComponentData(connectEntity, new NetworkStreamRequestConnect { });
 
             // TODO: Handle if there is no host, or connection can't be established.
             Debug.Log("Joining Server");
