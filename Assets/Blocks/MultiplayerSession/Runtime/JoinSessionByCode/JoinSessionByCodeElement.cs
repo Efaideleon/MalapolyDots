@@ -4,6 +4,7 @@ using Blocks.Sessions.Common;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions
 {
@@ -12,7 +13,7 @@ namespace Blocks.Sessions
     {
         const string k_SessionCodeTextFieldPlaceholder = "Enter Session Code";
         const string k_JoinButtonText = "JOIN";
-
+        
         [UxmlAttribute, CreateProperty]
         SessionSettings SessionSettings
         {

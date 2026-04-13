@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="JoinByCode" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/JoinByCode.uxml?fileID=9197481963319205126&amp;guid=2e0a055beb0826648a41e78509ea8fb2&amp;type=3#JoinByCode"/>
     <ui:Template name="NetworkCharacterSelect" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkCharacterSelect.uxml?fileID=9197481963319205126&amp;guid=1cd6039ad3634444cbd75e07baa36118&amp;type=3#NetworkCharacterSelect"/>
     <ui:Template name="NetworkHostSetup" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkHostSetup.uxml?fileID=9197481963319205126&amp;guid=e154f76ba318d46e3856c936e8023678&amp;type=3#NetworkHostSetup"/>
     <ui:Template name="NetworkJoinSetup" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkJoinSetup.uxml?fileID=9197481963319205126&amp;guid=9a3f532352fe54c47a15950e76d47fe8&amp;type=3#NetworkJoinSetup"/>
@@ -6,9 +7,10 @@
     <ui:Template name="NetworkMainMenu" src="project://database/Assets/UI/TitleScreenUI/NetworkUI/NetworkMainMenu.uxml?fileID=9197481963319205126&amp;guid=66ee27f66e62148f59bf958eb2a3ed17&amp;type=3#NetworkMainMenu"/>
     <ui:VisualElement name="VisualElement" style="flex-grow: 1; justify-content: center; align-items: center; background-color: rgba(49, 73, 180, 0);">
         <ui:Instance template="NetworkHostSetup" name="HostSetup" style="display: none; position: relative; width: 100%; height: 100%; flex-grow: 1;"/>
+        <ui:Instance template="JoinByCode" style="flex-grow: 1; width: 100%; height: 100%; display: none;"/>
         <ui:Instance template="NetworkJoinSetup" name="JoinSetup" style="display: none; position: relative; width: 100%; height: 100%;"/>
         <ui:Instance template="NetworkLobby" name="Lobby" style="display: none; position: relative; flex-grow: 1; align-items: center; justify-content: center; width: 100%; height: 100%;"/>
         <ui:Instance template="NetworkCharacterSelect" name="CharacterSelect" style="display: none; position: absolute; width: 100%; height: 100%; flex-grow: 1; align-items: center; justify-content: center;"/>
-        <ui:Instance template="NetworkMainMenu" name="MainMenu" style="position: relative; flex-grow: 1; width: 100%; height: 100%;"/>
+        <ui:Instance template="NetworkMainMenu" name="MainMenu" style="position: relative; flex-grow: 1; width: 100%; height: 100%; display: flex;"/>
     </ui:VisualElement>
 </ui:UXML>
