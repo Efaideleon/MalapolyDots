@@ -40,7 +40,7 @@ namespace Blocks.Sessions
 
         public JoinSessionByCode()
         {
-            AddToClassList(BlocksTheme.ContainerHorizontal);
+            AddToClassList(NetworkMenuTheme.ContainerHorizontal);
 
             var sessionCodeTextField = new TextField
             {
@@ -50,8 +50,8 @@ namespace Blocks.Sessions
                     hidePlaceholderOnFocus = true
                 }
             };
-            sessionCodeTextField.AddToClassList(BlocksTheme.TextField);
-            sessionCodeTextField.AddToClassList(BlocksTheme.SpaceRight);
+            sessionCodeTextField.AddToClassList(NetworkMenuTheme.TextField);
+            sessionCodeTextField.AddToClassList(NetworkMenuTheme.SpaceRight);
             var sessionCodeBinding = new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(m_ViewModel.SessionCode)),
@@ -65,7 +65,7 @@ namespace Blocks.Sessions
             {
                 text = k_JoinButtonText
             };
-            createSessionButton.AddToClassList(BlocksTheme.Button);
+            createSessionButton.AddToClassList(NetworkMenuTheme.BlueButton);
             var createSessionBinding = new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(m_ViewModel.CanJoinSession)),
