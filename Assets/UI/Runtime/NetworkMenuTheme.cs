@@ -2,7 +2,11 @@ namespace Assets.UI.Runtime
 {
     public static class NetworkMenuTheme
     {
+<<<<<<< Updated upstream
         public const string BlueButton = "malacity-button--buy-houses-button";
+=======
+        public const string BlueButton = "malacity-blue-button";
+>>>>>>> Stashed changes
         
         /* inputs */
         public const string TextField = "malacity-textfield";

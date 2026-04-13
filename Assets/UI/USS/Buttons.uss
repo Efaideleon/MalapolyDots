@@ -1181,3 +1181,35 @@
     -unity-font-style: bold;
     border-width: 0;
 }
+
+.malacity-button-blue{
+    background-color: var(--color-blue-button-default);
+    color: white;
+    -unity-font-style: bold;
+    font-size: 54px;
+    width: 200px;
+    height: 100px;
+    flex-grow: 0;
+    border-radius: 25%;
+    border-width: 8;
+    border-color: var(--color-blue-button-border);
+}
+
+.malacity-button-blue:hover:enabled,
+.malacity-button-blue:focus:enabled {
+    background-color: var(--color-blue-button-default);
+    border-color: var(--color-blue-button-default);
+    color: var(--color-blue-button-dark-content);
+}
+
+.malacity-button-blue:active:enabled {
+    background-color: var(--color-blue-button-active);
+    border-color: var(--color-blue-button-active);
+    color: var(--color-blue-button-dark-content);
+}
+
+.malacity-button-blue:disabled {
+    color: var(--color-blue-button-inactive);
+    border-color: var(--color-blue-button-inactive);
+    background-color: rgba(0, 0, 255, 0.5);
+}
