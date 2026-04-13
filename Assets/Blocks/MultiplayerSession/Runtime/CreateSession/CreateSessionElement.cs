@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets.UI.Runtime;
 using Blocks.Common;
 using Blocks.Sessions.Common;
 using Unity.Properties;
@@ -68,7 +69,7 @@ namespace Blocks.Sessions
             {
                 text = k_CreateButtonText
             };
-            createSessionButton.AddToClassList(BlocksTheme.Button);
+            createSessionButton.AddToClassList(NetworkMenuTheme.BlueButton);
             var createSessionBinding = new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(m_ViewModel.HasSessionName)),
