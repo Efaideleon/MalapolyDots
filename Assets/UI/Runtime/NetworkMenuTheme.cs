@@ -2,6 +2,13 @@ namespace Assets.UI.Runtime
 {
     public static class NetworkMenuTheme
     {
-        public const string BlueButton = "dbg-blue-button";
+        public const string BlueButton = "buy-houses-button";
+        
+        /* inputs */
+        public const string TextField = "malacity-textfield";
+        
+        /* utilities */
+        public const string ContainerHorizontal = "malacity-container--horizontal";
+        public const string SpaceRight = "malacity-element--space-right";
     }
 }
