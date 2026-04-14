@@ -5,6 +5,9 @@ namespace TitleScreen.NetworkUI.Components
     public struct UIEvent : IComponentData
     { }
 
+    public struct PlayButtonClickEvent : IComponentData
+    { }
+
     public struct MainMenuHostClickEvent : IComponentData
     { }
 
@@ -57,6 +60,7 @@ namespace TitleScreen.NetworkUI.Components
     public enum GameMenuPhase
     {
         MainMenu,
+        JoinSession,
         HostSetup,
         JoinSetup,
         Lobby,

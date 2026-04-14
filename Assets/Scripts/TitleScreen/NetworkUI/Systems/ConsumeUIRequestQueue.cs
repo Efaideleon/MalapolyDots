@@ -24,6 +24,9 @@ namespace TitleScreen.NetworkUI.Systems
                 ecb.AddComponent<UIEvent>(entity);
                 switch (request.Value)
                 {
+                    case UIRequestType.PlayButton:
+                        ecb.AddComponent<PlayButtonClickEvent>(entity);
+                        break;
                     case UIRequestType.MainMenuHost:
                         ecb.AddComponent<MainMenuHostClickEvent>(entity);
                         break;

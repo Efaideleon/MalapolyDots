@@ -56,10 +56,17 @@ namespace TitleScreen.NetworkUI.Systems
         {
             var menuPhase = SystemAPI.GetSingleton<GameMenuPhaseComponent>();
             //UnityEngine.Debug.Log($"[HideJoinSessionByCodePanelSystem] | GameMenuPhase {menuPhase.Value.ToString()}");
+            var panel = SystemAPI.ManagedAPI.GetSingleton<UIPanelComponent>().JoinSessionByCodePanel;
             switch(menuPhase.Value)
             {
+                case GameMenuPhase.JoinSession:
+                    if(!panel.IsVisible)
+                    {
+                        //UnityEngine.Debug.Log($"[HideJoinSessionByCodePanelSystem] | panel visibility : {panel.IsVisible}");
+                        panel.Show();
+                    }
+                    break;
                 case GameMenuPhase.CharacterSelect:
-                    var panel = SystemAPI.ManagedAPI.GetSingleton<UIPanelComponent>().JoinSessionByCodePanel;
                     if(panel.IsVisible)
                     {
                         //UnityEngine.Debug.Log($"[HideJoinSessionByCodePanelSystem] | panel visibility : {panel.IsVisible}");
@@ -82,9 +89,11 @@ namespace TitleScreen.NetworkUI.Systems
 
         public JoinSessionByCodePanel(VisualElement root)
         {
+            Hide();
             _root = root;
         }
 
         public void Hide() => _root.style.display = DisplayStyle.None;
+        public void Show() => _root.style.display = DisplayStyle.Flex;
     }
 }

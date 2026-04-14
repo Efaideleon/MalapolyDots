@@ -13,6 +13,12 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
 
         public void OnUpdate(ref SystemState state)
         {
+            foreach (var evt in SystemAPI.Query<RefRO<PlayButtonClickEvent>>())
+            {
+                SystemAPI.GetSingletonRW<GameMenuPhaseComponent>().ValueRW.Value = GameMenuPhase.JoinSession;
+                UnityEngine.Debug.Log($"[GameMenuUISystem] | Clicked on MainMenu Play Button");
+            }
+
             foreach (var evt in SystemAPI.Query<RefRO<MainMenuHostClickEvent>>())
             {
                 SystemAPI.GetSingletonRW<GameMenuPhaseComponent>().ValueRW.Value = GameMenuPhase.HostSetup;

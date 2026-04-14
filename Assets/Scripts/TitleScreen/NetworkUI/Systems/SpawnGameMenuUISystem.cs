@@ -114,6 +114,7 @@ namespace TitleScreen.NetworkUI.Systems
 
     public enum UIRequestType
     {
+        PlayButton,
         MainMenuHost,
         MainMenuJoin,
         HostSetupHost,
