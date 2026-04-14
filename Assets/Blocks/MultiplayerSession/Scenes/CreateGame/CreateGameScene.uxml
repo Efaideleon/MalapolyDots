@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="CreateGameSession" src="project://database/Assets/Blocks/MultiplayerSession/UI/CreateGameSession.uxml?fileID=9197481963319205126&amp;guid=403c5e1d74d8f19489f56ecae678dc08&amp;type=3#CreateGameSession"/>
+    <ui:Template name="CurrentSession" src="project://database/Assets/Blocks/CommonSession/UI/CurrentSession.uxml?fileID=9197481963319205126&amp;guid=6a55f10912d74d3449f68f82c91df9d2&amp;type=3#CurrentSession"/>
+    <ui:VisualElement data-source="../../Settings/SessionSettings.asset?fileID=11400000&amp;guid=0bf4e1684added44da254017c7fc41b2&amp;type=2#SessionSettings" class="malacity-background" style="flex-grow: 0; flex-direction: column;">
+        <ui:VisualElement style="flex-grow: 0; align-items: center; flex-direction: row; background-color: rgb(75, 147, 202); border-top-left-radius: 42px; border-top-right-radius: 42px; border-bottom-right-radius: 42px; border-bottom-left-radius: 42px; border-top-width: 24px; border-right-width: 24px; border-bottom-width: 24px; border-left-width: 24px; border-left-color: rgb(0, 95, 197); border-right-color: rgb(0, 95, 197); border-top-color: rgb(0, 95, 197); border-bottom-color: rgb(0, 95, 197); margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
+            <ui:Instance template="CreateGameSession"/>
+            <ui:Instance template="CurrentSession"/>
+        </ui:VisualElement>
+        <Blocks.Sessions.Common.StartGameCodeElement/>
+    </ui:VisualElement>
+</ui:UXML>
