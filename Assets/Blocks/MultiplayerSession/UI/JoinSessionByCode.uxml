@@ -1,17 +1,17 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:VisualElement class="malacity-modal">
         <engine:Label text="JOIN SESSION BY CODE" name="Label" class="malacity-header malacity-header--space-bottom"/>
-        <Blocks.Sessions.CreateSessionElement class="blocks-element--space-bottom">
+        <Blocks.Sessions.CreateSessionElement class="malacity-element--space-bottom">
             <Bindings>
                 <engine:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/>
             </Bindings>
         </Blocks.Sessions.CreateSessionElement>
-        <Blocks.Sessions.Common.CopySessionCodeElement class="blocks-element--space-bottom">
+        <Blocks.Sessions.Common.CopySessionCodeElement class="malacity-element--space-bottom">
             <Bindings>
                 <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
             </Bindings>
         </Blocks.Sessions.Common.CopySessionCodeElement>
-        <Blocks.Sessions.JoinSessionByCode class="blocks-element--space-bottom">
+        <Blocks.Sessions.JoinSessionByCode class="malacity-element--space-bottom">
             <Bindings>
                 <engine:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/>
             </Bindings>

@@ -12,7 +12,7 @@
                 </Bindings>
             </Blocks.Sessions.Common.PlayerCountLabel>
         </engine:VisualElement>
-        <engine:VisualElement class="blocks-container--space-between blocks-element--space-bottom">
+        <engine:VisualElement class="malacity-container--space-between malacity-element--space-bottom">
             <Blocks.Sessions.Common.PlayerNameLabel class="blocks-element--space-right blocks-header blocks-header--sm">
                 <Bindings>
                     <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>

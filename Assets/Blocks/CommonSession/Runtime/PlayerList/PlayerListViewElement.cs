@@ -43,7 +43,7 @@ namespace Blocks.Sessions.Common
 
             AddToClassList(NetworkMenuTheme.ListViewNoHover);
             AddToClassList(NetworkMenuTheme.ScrollView);
-
+            AddToClassList(NetworkMenuTheme.HeaderLarge);
             makeNoneElement = MakeNoneElement;
 
             makeItem = MakeDefaultItem;
@@ -84,7 +84,7 @@ namespace Blocks.Sessions.Common
         {
             var label = new Label(k_PlayerListIsEmptyLabel);
             label.AddToClassList(NetworkMenuTheme.Label);
-            label.AddToClassList(NetworkMenuTheme.HeaderLarge);
+
             return label;
         }
 
