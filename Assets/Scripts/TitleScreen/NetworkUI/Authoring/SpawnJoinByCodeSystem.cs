@@ -89,8 +89,8 @@ namespace TitleScreen.NetworkUI.Systems
 
         public JoinSessionByCodePanel(VisualElement root)
         {
-            Hide();
             _root = root;
+            Hide();
         }
 
         public void Hide() => _root.style.display = DisplayStyle.None;
