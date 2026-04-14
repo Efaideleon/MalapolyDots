@@ -1,8 +1,8 @@
-.blocks-label{
+.malacity-label{
     color: var(--color-default);
 }
 
-.blocks-header {
+.malacity-header {
     font-size: var(--text-lg);
     -unity-font-style: bold;
     color: var(--color-neutral);
@@ -12,15 +12,23 @@
     width: 100%;
 }
 
-.blocks-header--sm {
+.malacity-header--sm {
     font-size: var(--text-md);
 }
 
-.blocks-header--xs {
+.malacity-header--lg{
+    font-size: var(--text-lg);
+}
+
+.malacity-header--xs {
     font-size: var(--text-sm);
 }
 
-.blocks-header--space-bottom {
+.malacity-header--xl {
+    font-size: var(--text-xl);
+}
+
+.malacity-header--space-bottom {
     margin-bottom: var(--margin-xl);
 }
 

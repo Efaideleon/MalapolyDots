@@ -2,11 +2,16 @@ namespace Assets.UI.Runtime
 {
     public static class NetworkMenuTheme
     {
-<<<<<<< Updated upstream
-        public const string BlueButton = "malacity-button--buy-houses-button";
-=======
-        public const string BlueButton = "malacity-blue-button";
->>>>>>> Stashed changes
+        /* labels */
+        public const string Label = "malacity-label";
+        public const string Header = "malacity-header";
+        public const string HeaderSmall = "malacity-header--sm";
+        public const string HeaderXLarge = "malacity-header--xl";
+        public const string HeaderLarge = "malacity-header--lg";
+        
+        /* buttons */
+        public const string BlueButton = "malacity-button--blue";
+
         
         /* inputs */
         public const string TextField = "malacity-textfield";
@@ -14,5 +19,12 @@ namespace Assets.UI.Runtime
         /* utilities */
         public const string ContainerHorizontal = "malacity-container--horizontal";
         public const string SpaceRight = "malacity-element--space-right";
+        
+        /* modals */
+         public const string Modal = "malacity-modal";
+         
+         /* scroll view */
+         public const string ScrollView = "malacity-scroll-view";
+         public const string ListViewNoHover = "malacity-list-view--no-hover";
     }
 }

@@ -1,5 +1,5 @@
-.blocks-modal {
-    background-color: var(--color-modal-background);
+.malacity-modal {
+    
     border-radius: var(--radius-md);
     justify-content: flex-start;
     align-items: center;
@@ -8,13 +8,13 @@
     padding: var(--padding-lg) var(--padding-xl);
 }
 
-.blocks-modal__close-button {
+.malacity-modal__close-button {
     position: absolute;
     top: var(--padding-lg);
     right: var(--padding-xl);
 }
 
-.blocks-menu
+.malacity-menu
 {
     align-content: center;
     justify-content: center;
@@ -23,7 +23,7 @@
     flex-grow: 1;
 }
 
-.blocks-debug-menu
+.malacity-debug-menu
 {
     flex-grow: 1;
     flex-shrink: 1;
@@ -34,19 +34,19 @@
     width: 100%;
 }
 
-.blocks-menu--left-panel {
+.malacity-menu--left-panel {
     height: 100%;
 }
 
-.blocks-menu--left-panel > .blocks-modal
+.malacity-menu--left-panel > .blocks-modal
 {
     flex-grow: 1;
 }
 
-.blocks-modal--left-aligned-text {}
+.malacity-modal--left-aligned-text {}
 
-.blocks-modal--left-aligned-text .blocks-label,
-.blocks-modal--left-aligned-text .blocks-header {
+.malacity-modal--left-aligned-text .blocks-label,
+.malacity-modal--left-aligned-text .blocks-header {
     -unity-text-align: middle-left;
     padding: 0;
     width: auto;

@@ -8,6 +8,16 @@
     width: 100%;
 }
 
+.malacity-container--vertical{
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+}
+
 .malacity-container--horizontal--grow {
     flex-grow: 1;
 }

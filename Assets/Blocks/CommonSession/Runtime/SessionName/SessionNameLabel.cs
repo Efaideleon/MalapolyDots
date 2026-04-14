@@ -2,6 +2,7 @@ using Unity.Properties;
 using System;
 using Blocks.Common;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -32,7 +33,7 @@ namespace Blocks.Sessions.Common
 
         public SessionNameLabel()
         {
-            AddToClassList(BlocksTheme.Header);
+            AddToClassList(NetworkMenuTheme.Header);
             m_DataBinding = new DataBinding()
             {
                 dataSourcePath = new PropertyPath(nameof(SessionNameViewModel.SessionName)),

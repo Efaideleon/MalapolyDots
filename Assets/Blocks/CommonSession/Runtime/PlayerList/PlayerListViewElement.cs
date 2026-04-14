@@ -1,6 +1,7 @@
 using Blocks.Common;
 using Unity.Properties;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -40,8 +41,8 @@ namespace Blocks.Sessions.Common
             // if not set, you need to specify the datasource path manually in the bindItem callback for each item
             bindingSourceSelectionMode = BindingSourceSelectionMode.AutoAssign;
 
-            AddToClassList(BlocksTheme.ListViewNoHover);
-            AddToClassList(BlocksTheme.ScrollView);
+            AddToClassList(NetworkMenuTheme.ListViewNoHover);
+            AddToClassList(NetworkMenuTheme.ScrollView);
 
             makeNoneElement = MakeNoneElement;
 
@@ -82,7 +83,8 @@ namespace Blocks.Sessions.Common
         private static VisualElement MakeNoneElement()
         {
             var label = new Label(k_PlayerListIsEmptyLabel);
-            label.AddToClassList(BlocksTheme.Label);
+            label.AddToClassList(NetworkMenuTheme.Label);
+            label.AddToClassList(NetworkMenuTheme.HeaderLarge);
             return label;
         }
 
@@ -99,7 +101,8 @@ namespace Blocks.Sessions.Common
         private static VisualElement MakeDefaultItem()
         {
             var playerNameLabel = new Label { name = nameof(PlayerNameLabel) };
-            playerNameLabel.AddToClassList(BlocksTheme.Label);
+            playerNameLabel.AddToClassList(NetworkMenuTheme.Label);
+
 
             var dataBinding = new DataBinding
             {

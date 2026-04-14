@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -33,7 +34,7 @@ namespace Blocks.Sessions.Common
 
         public CopySessionCodeElement()
         {
-            AddToClassList(BlocksTheme.ContainerHorizontal);
+            AddToClassList(NetworkMenuTheme.ContainerHorizontal);
 
             var hasSessionCode = new DataBinding
             {
@@ -51,8 +52,8 @@ namespace Blocks.Sessions.Common
                 selectAllOnMouseUp = false,
                 selectAllOnFocus = false
             };
-            sessionCode.AddToClassList(BlocksTheme.TextField);
-            sessionCode.AddToClassList(BlocksTheme.SpaceRight);
+            sessionCode.AddToClassList(NetworkMenuTheme.TextField);
+            sessionCode.AddToClassList(NetworkMenuTheme.SpaceRight);
             var sessionCodeBinding = new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(CopySessionCodeViewModel.SessionCode)),
@@ -66,7 +67,7 @@ namespace Blocks.Sessions.Common
             {
                 text = k_CopySessionCodeButtonText
             };
-            copySessionCodeButton.AddToClassList(BlocksTheme.Button);
+            copySessionCodeButton.AddToClassList(NetworkMenuTheme.BlueButton);
             copySessionCodeButton.clicked += CopySessionCode;
             Add(copySessionCodeButton);
             m_Bindings.Add(hasSessionCode);

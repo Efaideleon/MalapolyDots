@@ -97,4 +97,20 @@
     border-bottom-left-radius: 35px;
 }
 
+.malacity-panel {
+    background-color: red;
+    border-radius: var(--radius-md);
+    border-width: var(--width-border-md);
+    border-color: var(--color-neutral);
+    padding: var(--padding-lg);
+}
 
+.malacity-background {
+    background-color: rgb(13, 60, 130);
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}

@@ -2,6 +2,7 @@ using System;
 using Blocks.Common;
 using Unity.Properties;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -29,7 +30,8 @@ namespace Blocks.Sessions.Common
 
         public SessionStatusLabel()
         {
-            AddToClassList(BlocksTheme.Label);
+            AddToClassList(NetworkMenuTheme.Label);
+            AddToClassList(NetworkMenuTheme.HeaderLarge);
 
             m_Binding = new DataBinding()
             {

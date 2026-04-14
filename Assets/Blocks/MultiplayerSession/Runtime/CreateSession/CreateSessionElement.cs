@@ -5,6 +5,7 @@ using Blocks.Sessions.Common;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions
 {
@@ -36,7 +37,7 @@ namespace Blocks.Sessions
 
         public CreateSessionElement()
         {
-            AddToClassList(BlocksTheme.ContainerHorizontal);
+            AddToClassList(NetworkMenuTheme.ContainerHorizontal);
 
             var enabledBinding = new DataBinding
             {
@@ -54,8 +55,8 @@ namespace Blocks.Sessions
                     hidePlaceholderOnFocus = true
                 }
             };
-            sessionNameTextField.AddToClassList(BlocksTheme.TextField);
-            sessionNameTextField.AddToClassList(BlocksTheme.SpaceRight);
+            sessionNameTextField.AddToClassList(NetworkMenuTheme.TextField);
+            sessionNameTextField.AddToClassList(NetworkMenuTheme.SpaceRight);
             var sessionNameBinding = new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(m_ViewModel.SessionName)),

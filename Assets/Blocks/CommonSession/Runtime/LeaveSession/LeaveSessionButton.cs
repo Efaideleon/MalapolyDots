@@ -2,6 +2,7 @@ using System;
 using Blocks.Common;
 using Unity.Properties;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -38,7 +39,7 @@ namespace Blocks.Sessions.Common
         {
             text = k_LeaveSessionButtonText;
 
-            AddToClassList(BlocksTheme.Button);
+            AddToClassList(NetworkMenuTheme.BlueButton);
             m_DataBinding = new DataBinding() { dataSourcePath = new PropertyPath(nameof(LeaveSessionViewModel.CanLeaveSession)), bindingMode = BindingMode.ToTarget };
             SetBinding(new BindingId(nameof(enabledSelf)), m_DataBinding);
             clicked += LeaveSession;

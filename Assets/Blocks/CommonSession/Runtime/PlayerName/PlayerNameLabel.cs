@@ -2,6 +2,7 @@ using System;
 using Blocks.Common;
 using Unity.Properties;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -32,8 +33,8 @@ namespace Blocks.Sessions.Common
 
         public PlayerNameLabel()
         {
-            AddToClassList(BlocksTheme.Header);
-            AddToClassList(BlocksTheme.HeaderSmall);
+            AddToClassList(NetworkMenuTheme.Header);
+            AddToClassList(NetworkMenuTheme.HeaderLarge);
             m_DataBinding = new DataBinding()
             {
                 dataSourcePath = new PropertyPath(nameof(PlayerNameViewModel.PlayerName)),

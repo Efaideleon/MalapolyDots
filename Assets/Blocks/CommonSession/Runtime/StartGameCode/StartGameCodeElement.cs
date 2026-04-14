@@ -2,6 +2,7 @@ using Assets.Common;
 using Assets.Common.Assets.Common;
 using Blocks.Common;
 using UnityEngine.UIElements;
+using Assets.UI.Runtime;
 
 namespace Blocks.Sessions.Common
 {
@@ -17,7 +18,7 @@ namespace Blocks.Sessions.Common
                 text = StartGameButtonText
             };
 
-            startGameButton.AddToClassList(BlocksTheme.Button);
+            startGameButton.AddToClassList(NetworkMenuTheme.BlueButton);
             startGameButton.clicked += StartGame;
 
             Add(startGameButton);
