@@ -258,7 +258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 250727149}
-  - component: {fileID: 250727148}
+  - component: {fileID: 250727150}
   m_Layer: 0
   m_Name: CreateGameUIAuthoring
   m_TagString: Untagged
@@ -266,19 +266,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &250727148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 250727147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306ea9d9e74b441fc83ba4f2fe803f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: TitleScreen.Runtime::TitleScreen.NetworkUI.Authoring.JoinByCodeUIAuthoring
-  documentGO: {fileID: 6833347891000790750, guid: 32a80248b5e281644a47321af86e35c4, type: 3}
 --- !u!4 &250727149
 Transform:
   m_ObjectHideFlags: 0
@@ -294,6 +281,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &250727150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250727147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa6fcbc2ed6f41fc9be152bbfced8a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TitleScreen.Runtime::TitleScreen.NetworkUI.Authoring.CreateGameUIAuthoring
+  documentGO: {fileID: 6833347891000790750, guid: 32a80248b5e281644a47321af86e35c4, type: 3}
 --- !u!1 &374978547
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &990819859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,7 +780,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1472573351}
-  - component: {fileID: 1472573350}
+  - component: {fileID: 1472573352}
   m_Layer: 0
   m_Name: EnterCodeUIAuthoring
   m_TagString: Untagged
@@ -788,19 +788,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1472573350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472573349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306ea9d9e74b441fc83ba4f2fe803f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: TitleScreen.Runtime::TitleScreen.NetworkUI.Authoring.JoinByCodeUIAuthoring
-  documentGO: {fileID: 6833347891000790750, guid: 9565c2a5020deed44b8777e95863c6a5, type: 3}
 --- !u!4 &1472573351
 Transform:
   m_ObjectHideFlags: 0
@@ -816,6 +803,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1472573352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472573349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea6ddce12a1b4bdfbca39ecfbb85b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TitleScreen.Runtime::TitleScreen.NetworkUI.Authoring.EnterCodeUIAuthoring
+  documentGO: {fileID: 6833347891000790750, guid: 9565c2a5020deed44b8777e95863c6a5, type: 3}
 --- !u!1 &1887801151
 GameObject:
   m_ObjectHideFlags: 0
