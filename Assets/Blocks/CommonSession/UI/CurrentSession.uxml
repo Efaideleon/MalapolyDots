@@ -18,11 +18,6 @@
                     <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
                 </Bindings>
             </Blocks.Sessions.Common.PlayerNameLabel>
-            <Blocks.Sessions.Common.CopySessionCodeElement class="blocks-copy-session--header">
-                <Bindings>
-                    <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
-                </Bindings>
-            </Blocks.Sessions.Common.CopySessionCodeElement>
         </engine:VisualElement>
         <Blocks.Sessions.Common.PlayerListViewElement class="malacity-element--space-bottom">
             <Bindings>
