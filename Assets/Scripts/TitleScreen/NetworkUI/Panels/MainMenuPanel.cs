@@ -15,8 +15,8 @@ namespace TitleScreen.NetworkUI.Panels
         public MainMenuPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
             PlayButton = root.Q<Button>("PlayButton") ?? throw new InvalidOperationException("PlayButton not found");
-            HostButton = root.Q<Button>("HostButton") ?? throw new InvalidOperationException("HostButton not found");
-            JoinButton = root.Q<Button>("JoinButton") ?? throw new InvalidOperationException("JoinButton not found");
+            HostButton = root.Q<Button>("CreateGameButton") ?? throw new InvalidOperationException("CreateGameButton not found");
+            JoinButton = root.Q<Button>("EnterCodeButton") ?? throw new InvalidOperationException("EnterCodeButton not found");
         }
 
         public override void Initialize()

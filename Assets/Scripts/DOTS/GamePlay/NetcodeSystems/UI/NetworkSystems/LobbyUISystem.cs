@@ -51,7 +51,8 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
                 // If our network role is client, then disable the start button.  
                 if (networkRole != NetworkRole.Client)
                     return;
-
+                
+                // Else,
                 LobbyPanel lobbyPanel = panelsComponent.PanelLookup[GameMenuPhase.Lobby] as LobbyPanel;
                 switch (networkRole)
                 {
