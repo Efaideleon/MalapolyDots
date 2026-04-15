@@ -88,6 +88,11 @@ namespace Blocks.Sessions
                 text = StartGameButtonText
             };
 
+            var startSessionBinding = new DataBinding
+            {
+                dataSourcePath = new PropertyPath(nameof(m_ViewModel.CanRegisterSession)),
+                bindingMode = BindingMode.ToTarget
+            };
             startGameButton.AddToClassList(NetworkMenuTheme.BlueButton);
             startGameButton.SetEnabled(false);
             startGameButton.clicked += StartGame;
