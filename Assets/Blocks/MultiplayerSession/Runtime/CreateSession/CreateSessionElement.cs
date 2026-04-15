@@ -15,7 +15,6 @@ namespace Blocks.Sessions
     {
         const string k_EnterSessionNamePlaceholder = "Enter Session Name";
         const string k_CreateButtonText = "CREATE";
-        const string StartGameButtonText = "Start";
 
         [CreateProperty, UxmlAttribute]
         public SessionSettings SessionSettings
@@ -83,23 +82,6 @@ namespace Blocks.Sessions
             Add(createSessionButton);
             m_Bindings.Add(createSessionBinding);
 
-            var startGameButton = new Button
-            {
-                text = StartGameButtonText
-            };
-
-            var startSessionBinding = new DataBinding
-            {
-                dataSourcePath = new PropertyPath(nameof(m_ViewModel.CanRegisterSession)),
-                bindingMode = BindingMode.ToTarget
-            };
-            startGameButton.AddToClassList(NetworkMenuTheme.BlueButton);
-            startGameButton.SetEnabled(false);
-            startGameButton.clicked += StartGame;
-            startGameButton.SetBinding(new BindingId(nameof(enabledSelf)), createSessionBinding);
-
-            Add(startGameButton);
-
             RegisterCallback<AttachToPanelEvent>(_ => UpdateBindings());
             RegisterCallback<DetachFromPanelEvent>(_ => CleanupBindings());
         }
@@ -119,12 +101,6 @@ namespace Blocks.Sessions
 
             _ = m_ViewModel.CreateSessionAsync(SessionSettings.ToSessionOptions());
             // TODO: send the entity request ot start hosting (ecs) here
-        }
-
-        private void StartGame()
-        {
-            UnityEngine.Debug.Log($"[StartGameCodeElement] | Starting game...");
-            NetworkRequests.StartGame = true;
         }
 
         void UpdateBindings()
