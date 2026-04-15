@@ -19,6 +19,7 @@ namespace Blocks.Sessions.Common
             };
 
             startGameButton.AddToClassList(NetworkMenuTheme.BlueButton);
+            startGameButton.SetEnabled(false);
             startGameButton.clicked += StartGame;
 
             Add(startGameButton);
