@@ -27,6 +27,7 @@ namespace Blocks.Sessions.Common
                 if (m_SessionType == value)
                     return;
 
+                UnityEngine.Debug.Log($"[StartGameCodeElement] | setting session type: {value} panel: {panel}");
                 m_SessionType = value;
                 UnityEngine.Debug.Log($"[StartGameCodeElement] | SessionType: {value}");
                 if (panel != null)

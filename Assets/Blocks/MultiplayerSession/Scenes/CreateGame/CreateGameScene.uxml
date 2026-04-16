@@ -7,4 +7,15 @@
             <ui:Instance template="CurrentSession"/>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement name="back-btn-container" class="dbr-btn dbr-btn-yellow" style="flex-grow: 0; top: 5%; position: absolute; left: 5%;">
+        <ui:Button text="" name="BackButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 140px; height: 100px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: relative; top: auto; left: auto;">
+            <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
+            <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1; border-top-width: 7px; border-right-width: 7px; border-bottom-width: 7px; border-left-width: 7px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px;">
+                <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
+                <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
+                    <ui:Label text="&lt;-" name="Label" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 86px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:Button>
+    </ui:VisualElement>
 </ui:UXML>

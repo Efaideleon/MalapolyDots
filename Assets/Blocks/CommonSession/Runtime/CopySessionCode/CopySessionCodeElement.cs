@@ -22,6 +22,7 @@ namespace Blocks.Sessions.Common
                     return;
 
                 m_SessionType = value;
+                UnityEngine.Debug.Log($"[CopySessionCodeElement] | setting session type: {value} panel: {panel}");
                 if (panel != null)
                     UpdateBindings();
             }
