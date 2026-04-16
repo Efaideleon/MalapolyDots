@@ -1,6 +1,7 @@
 // C#
 using Assets.Common;
 using Assets.Common.Assets.Common;
+using Assets.Scripts.TitleScreen.NetworkUI.Panels;
 using TitleScreen.NetworkUI.Authoring;
 using TitleScreen.NetworkUI.Components;
 using Unity.Entities;
@@ -21,6 +22,7 @@ namespace TitleScreen.NetworkUI.Systems
         {
             var uiRef = SystemAPI.ManagedAPI.GetSingleton<CreateGameUIReference>();
             var prefab = uiRef.uiDocumentGO;
+            
             if (prefab == null)
                 return;
 
@@ -34,7 +36,9 @@ namespace TitleScreen.NetworkUI.Systems
 
             var root = uiDocument.rootVisualElement;
             var createGamePanel = new CreateGamePanel(root);
+            
 
+            
             // Create managed singleton component holding the panel instance.
             state.EntityManager.CreateSingleton(new CreateGameUIPanelComponent { Panel = createGamePanel });
         }
@@ -87,18 +91,27 @@ namespace TitleScreen.NetworkUI.Systems
     }
 
     // Simple wrapper around the UI Document root for the Create Game UI.
-    public class CreateGamePanel
+    public class CreateGamePanel : System.IDisposable
     {
         private readonly VisualElement _root;
+        
         public bool IsVisible => _root.style.display != DisplayStyle.None;
-
+        private Button backButton;
         public CreateGamePanel(VisualElement root)
         {
             _root = root;
+            backButton = _root.Q<Button>("BackButton");
             Hide();
+        }
+
+        public void Dispose()
+        {
+            backButton -= OnBackButtonClicked;
         }
 
         public void Show() => _root.style.display = DisplayStyle.Flex;
         public void Hide() => _root.style.display = DisplayStyle.None;
     }
+    
+    
 }
