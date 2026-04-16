@@ -63,6 +63,7 @@ namespace Blocks.Sessions.Common.Assets.Blocks.CommonSession.Runtime.StartGameCo
         {
             m_Session = session;
             SessionCode = session?.Code;
+            UnityEngine.Debug.Log("[StartGameCodeViewModel] | OnSessionAdded");
             m_Session.RemovedFromSession += OnSessionRemoved;
             m_Session.Deleted += OnSessionRemoved;
         }

@@ -22,6 +22,7 @@ namespace Blocks.Sessions.Common
                     return;
 
                 m_SessionType = value;
+                UnityEngine.Debug.Log($"[CopySessionCodeElement] | setting session type: {value} panel: {panel}");
                 if (panel != null)
                     UpdateBindings();
             }
@@ -88,6 +89,7 @@ namespace Blocks.Sessions.Common
         {
             CleanupBindings();
 
+            UnityEngine.Debug.Log($"[CopySessionCodeViewModel] | SessionType: {SessionType}");
             m_ViewModel = new CopySessionCodeViewModel(SessionType);
             foreach (var binding in m_Bindings)
             {

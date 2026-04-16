@@ -15,6 +15,10 @@
                 <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
             </Bindings>
         </Blocks.Sessions.Common.CopySessionCodeElement>
-        <Blocks.Sessions.Common.StartGameCodeElement/>
+        <Blocks.Sessions.Common.StartGameCodeElement>
+            <Bindings>
+                <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
+            </Bindings>
+        </Blocks.Sessions.Common.StartGameCodeElement>
     </engine:VisualElement>
 </engine:UXML>

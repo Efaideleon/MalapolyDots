@@ -27,6 +27,7 @@ namespace Blocks.Sessions.Common
                 if (m_SessionType == value)
                     return;
 
+                UnityEngine.Debug.Log($"[StartGameCodeElement] | setting session type: {value} panel: {panel}");
                 m_SessionType = value;
                 if (panel != null)
                     UpdateBindings();
@@ -36,23 +37,21 @@ namespace Blocks.Sessions.Common
 
         public StartGameCodeElement()
         {
+            var hasSessionCode = new DataBinding
+            {
+                dataSourcePath = new PropertyPath(nameof(StartGameCodeViewModel.HasSessionCode)),
+                bindingMode = BindingMode.ToTarget
+            };
+            SetBinding(new BindingId(nameof(enabledSelf)), hasSessionCode);
+
             var startGameButton = new Button
             {
                 text = StartGameButtonText
             };
-
             startGameButton.AddToClassList(NetworkMenuTheme.BlueButton);
-            startGameButton.SetEnabled(false);
             startGameButton.clicked += StartGame;
-
             Add(startGameButton);
-
-            var sessionCodeBinding = new DataBinding
-            {
-                dataSourcePath = new PropertyPath(nameof(CopySessionCodeViewModel.SessionCode)),
-                bindingMode = BindingMode.ToTarget
-            };
-            m_Bindings.Add(sessionCodeBinding);
+            m_Bindings.Add(hasSessionCode);
 
             RegisterCallback<AttachToPanelEvent>(_ => UpdateBindings());
             RegisterCallback<DetachFromPanelEvent>(_ => CleanupBindings());
@@ -62,6 +61,7 @@ namespace Blocks.Sessions.Common
         {
             CleanupBindings();
 
+            UnityEngine.Debug.Log($"[StartGameCodeElement] | SessionType: {SessionType}");
             m_ViewModel = new StartGameCodeViewModel(SessionType);
             foreach (var binding in m_Bindings)
             {
