@@ -1214,6 +1214,38 @@
     background-color: rgba(0, 0, 255, 0.5);
 }
 
+.malacity-button--yellow {
+    background-color: rgb(241, 177, 24);
+    color: rgb(71, 45, 0);
+    -unity-font-style: bold;
+    font-size: 36px;
+    min-width: 200px;
+    max-width: 400px;
+    height: 80px;
+    border-radius: 15px;
+    border-width: 4;
+    border-color: rgb(168, 83, 2);
+}
+
+.malacity-button--yellow:hover:enabled,
+.malacity-button--yellow:focus:enabled {
+    background-color: rgb(253, 201, 49);
+    border-color: rgb(168, 83, 2);
+    color: rgb(71, 45, 0);
+}
+
+.malacity-button--yellow:active:enabled {
+    background-color: rgb(220, 162, 18);
+    border-color: rgb(140, 67, 0);
+    color: rgb(71, 45, 0);
+}
+
+.malacity-button--yellow:disabled {
+    color: rgba(71, 45, 0, 0.5);
+    border-color: rgba(168, 83, 2, 0.5);
+    background-color: rgba(241, 177, 24, 0.5);
+}
+
 .dropdown {
     width: 100%;
     align-items: stretch;

@@ -11,6 +11,7 @@ namespace Assets.UI.Runtime
         
         /* buttons */
         public const string BlueButton = "malacity-button--blue";
+        public const string YellowButton = "malacity-button--yellow";
 
         
         /* inputs */

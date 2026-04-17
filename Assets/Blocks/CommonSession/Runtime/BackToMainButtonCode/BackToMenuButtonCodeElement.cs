@@ -37,7 +37,7 @@ namespace Blocks.Sessions.Common
             {
                 text = "<-"
             };
-            AddToClassList(NetworkMenuTheme.BlueButton);
+            AddToClassList(NetworkMenuTheme.YellowButton);
             backToMenuButton.clicked += HandleBackButton;
 
             var hasSessionCode = new DataBinding
