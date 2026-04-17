@@ -24,7 +24,7 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
 
             if (menuPhaseLookup[menuPhaseEntity].Value == GameMenuPhase.MainMenu)
             {
-                UnityEngine.Debug.Log($"[MainMenuUISystem] | Showing the main menu");
+                //UnityEngine.Debug.Log($"[MainMenuUISystem] | Showing the main menu");
                 var panelsComponent = SystemAPI.ManagedAPI.GetSingleton<GameMenuPanelsComponent>();
                 if (panelsComponent.PanelLookup != null && panelsComponent.AllPanels != null)
                 {
