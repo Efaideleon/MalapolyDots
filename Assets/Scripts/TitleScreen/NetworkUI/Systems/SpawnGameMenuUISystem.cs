@@ -57,15 +57,15 @@ namespace TitleScreen.NetworkUI.Systems
             var uiRequestEntity = state.EntityManager.CreateEntity();
             var uiRequestsComponet = new GameMenuUIRequests
             {
-                UIRequests = new()
+                Queue = new()
             };
             state.EntityManager.AddComponentObject(uiRequestEntity, uiRequestsComponet);
 
-            MainMenuPanel mainMenuPanel = new(gameMenuRoot.Q<VisualElement>("MainMenu"), uiRequestsComponet.UIRequests);
-            HostSetupPanel hostSetupPanel = new(gameMenuRoot.Q<VisualElement>("HostSetup"), uiRequestsComponet.UIRequests);
-            JoinSetupPanel joinSetupPanel = new(gameMenuRoot.Q<VisualElement>("JoinSetup"), uiRequestsComponet.UIRequests);
-            LobbyPanel lobbyPanel = new(gameMenuRoot.Q<VisualElement>("Lobby"), uiRequestsComponet.UIRequests);
-            CharacterSelectPanel characterSelectPanel = new(gameMenuRoot.Q<VisualElement>("CharacterSelect"), uiRequestsComponet.UIRequests);
+            MainMenuPanel mainMenuPanel = new(gameMenuRoot.Q<VisualElement>("MainMenu"), uiRequestsComponet.Queue);
+            HostSetupPanel hostSetupPanel = new(gameMenuRoot.Q<VisualElement>("HostSetup"), uiRequestsComponet.Queue);
+            JoinSetupPanel joinSetupPanel = new(gameMenuRoot.Q<VisualElement>("JoinSetup"), uiRequestsComponet.Queue);
+            LobbyPanel lobbyPanel = new(gameMenuRoot.Q<VisualElement>("Lobby"), uiRequestsComponet.Queue);
+            CharacterSelectPanel characterSelectPanel = new(gameMenuRoot.Q<VisualElement>("CharacterSelect"), uiRequestsComponet.Queue);
 
             panelsComponent.AllPanels.Add(mainMenuPanel);
             panelsComponent.AllPanels.Add(hostSetupPanel);
@@ -138,7 +138,7 @@ namespace TitleScreen.NetworkUI.Systems
 
     public class GameMenuUIRequests : IComponentData
     {
-        public Queue<UIRequest> UIRequests;
+        public Queue<UIRequest> Queue;
     }
 
     // Does this component live on the default world?

@@ -18,7 +18,7 @@ namespace TitleScreen.NetworkUI.Systems
 
             var ecb = GetECB(ref state);
 
-            while (GameMenuUIRequests.UIRequests.TryDequeue(out var request))
+            while (GameMenuUIRequests.Queue.TryDequeue(out var request))
             {
                 var entity = ecb.CreateEntity();
                 ecb.AddComponent<UIEvent>(entity);
