@@ -20,7 +20,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
 
             foreach (var (position, rotation) in SystemAPI.Query<RefRO<PivotPosition>, RefRO<PivotRotation>>())
             {
-                perspectivePivot.Instance.transform.SetPositionAndRotation(position.ValueRO.Value, rotation.ValueRO.Value);
+                perspectivePivot.Instance.transform.position = position.ValueRO.Value;
             }
         }
     }

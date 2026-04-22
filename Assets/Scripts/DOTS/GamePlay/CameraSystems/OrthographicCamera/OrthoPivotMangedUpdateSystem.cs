@@ -32,7 +32,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
                 //orthoPivot.Instance.transform.position = position.ValueRO.Value;
                 //UnityEngine.Debug.Log($"[OrthoPivotManagedUpdateSystem] | pivot position = {orthoPivot.Instance.transform.position}");
                 //UnityEngine.Debug.DrawLine(position.ValueRO.Value, position.ValueRO.Value + new float3(0, 10, 0), UnityEngine.Color.red);
-                orthoPivot.Instance.transform.SetPositionAndRotation(position.ValueRO.Value, rotation.ValueRO.Value);
+                // orthoPivot.Instance.transform.SetPositionAndRotation(position.ValueRO.Value, rotation.ValueRO.Value);
             }
         }
     }
