@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using Unity.Collections;
 using System.Collections;
 
 namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
 {
-    public enum RotationAnimation
+    internal enum RotationAnimation
     {
         Playing,
         Stopped
@@ -26,15 +25,12 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
         {
             RotationAnimation = RotationAnimation.Stopped;
             _transform = GetComponent<Transform>();
-            Debug.Log($"[CameraController] | LIVES ON: '{gameObject.name}'");
-            Debug.Log($"[CameraController] | POSITION: {_transform.position}");
         }
 
         private void Update()
         {
             if (_rotateCameraButton == null)
             {
-                // UnityEngine.Debug.Log($"[CameraController] | trying to find button");
                 if (TryGetRotateButton(out _rotateCameraButton))
                 {
                     UnityEngine.Debug.Log($"[CameraController] | _rotateCameraButton found!");
@@ -54,8 +50,7 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
             while (_newRotation < MAXROTATION)
             {
                 float step = ROTATIONSPEED * Time.deltaTime; // smooth, frame-rate independent
-                var transform = GetComponent<Transform>();
-                transform.Rotate(0f, step, 0f);
+                _transform.Rotate(0f, step, 0f);
                 _newRotation += step;
 
                 Debug.Log($"[CameraController] | rotation camera : {_newRotation}");
@@ -81,7 +76,6 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
 
             if (uiDocument == null)
             {
-                //Debug.LogWarning("[CameraController] | No UIDocument found in scene!");
                 return false;
             }
 
@@ -89,7 +83,6 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
 
             if (root == null)
             {
-                //Debug.LogWarning("[CameraController] | rootVisualElement is null — UIDocument not ready yet");
                 return false;
             }
 
