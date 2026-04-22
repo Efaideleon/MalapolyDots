@@ -5,9 +5,16 @@ using System.Collections;
 
 namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
 {
+    public enum RotationAnimation
+    {
+        Playing,
+        Stopped
+    }
+
     [RequireComponent(typeof(Transform))]
     public class CameraController : MonoBehaviour
     {
+        private RotationAnimation RotationAnimation;
         private const float ROTATIONSPEED = 40f;
         private const float MAXROTATION = 90f;
 
@@ -17,6 +24,7 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
 
         private void Start()
         {
+            RotationAnimation = RotationAnimation.Stopped;
             _transform = GetComponent<Transform>();
             Debug.Log($"[CameraController] | LIVES ON: '{gameObject.name}'");
             Debug.Log($"[CameraController] | POSITION: {_transform.position}");
@@ -26,7 +34,7 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
         {
             if (_rotateCameraButton == null)
             {
-                UnityEngine.Debug.Log($"[CameraController] | trying to find button");
+                // UnityEngine.Debug.Log($"[CameraController] | trying to find button");
                 if (TryGetRotateButton(out _rotateCameraButton))
                 {
                     UnityEngine.Debug.Log($"[CameraController] | _rotateCameraButton found!");
@@ -52,12 +60,17 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.FreeCamButtomSystem.MonoBehavior
 
                 Debug.Log($"[CameraController] | rotation camera : {_newRotation}");
                 yield return null;
+                RotationAnimation = RotationAnimation.Playing;
             }
+            RotationAnimation = RotationAnimation.Stopped;
         }
 
         private void RotateCamera()
         {
-            StartCoroutine(AnimationCoroutine());
+            if (RotationAnimation == RotationAnimation.Stopped)
+            {
+                StartCoroutine(AnimationCoroutine());
+            }
         }
 
         private bool TryGetRotateButton(out Button button)
