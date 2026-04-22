@@ -23,3 +23,80 @@
     width: 40%;
     height: 20%;
 }
+
+.camera-control-button {
+    min-width: 220px;
+    height: 64px;
+    padding-top: 0;
+    padding-right: 18px;
+    padding-bottom: 0;
+    padding-left: 18px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
+    font-size: 24px;
+    letter-spacing: 1px;
+    -unity-font-style: bold;
+    color: rgb(255, 252, 244);
+    unity-text-align: middle-center;
+    background-color: rgb(35, 42, 63);
+    background-image: none;
+    border-left-color: rgb(15, 19, 30);
+    border-right-color: rgb(15, 19, 30);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(15, 19, 30);
+    opacity: 0.97;
+    transition-property: background-color, scale, border-top-color;
+    transition-duration: 0.14s;
+    transition-timing-function: ease-out;
+}
+
+.camera-control-button:hover:enabled {
+    scale: 1.04;
+}
+
+.camera-control-button:active:enabled {
+    scale: 0.96;
+}
+
+.camera-control-button--rotate {
+    background-color: rgb(24, 132, 166);
+    border-left-color: rgb(14, 72, 91);
+    border-right-color: rgb(14, 72, 91);
+    border-top-color: rgb(139, 241, 255);
+    border-bottom-color: rgb(9, 54, 69);
+    color: rgb(239, 255, 255);
+}
+
+.camera-control-button--rotate:hover:enabled {
+    background-color: rgb(34, 157, 194);
+    border-top-color: rgb(188, 249, 255);
+}
+
+.camera-control-button--rotate:active:enabled {
+    background-color: rgb(16, 107, 136);
+}
+
+.camera-control-button--pan {
+    background-color: rgb(232, 171, 49);
+    border-left-color: rgb(128, 79, 4);
+    border-right-color: rgb(128, 79, 4);
+    border-top-color: rgb(255, 233, 156);
+    border-bottom-color: rgb(101, 61, 3);
+    color: rgb(78, 46, 0);
+}
+
+.camera-control-button--pan:hover:enabled {
+    background-color: rgb(245, 188, 72);
+    border-top-color: rgb(255, 244, 194);
+}
+
+.camera-control-button--pan:active:enabled {
+    background-color: rgb(212, 151, 31);
+}

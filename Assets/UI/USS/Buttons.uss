@@ -1,21 +1,99 @@
 :root {
-    --blue-button-color: rgb(0, 118, 238);
-    --blue-button-hover-color: rgb(0, 96, 191);
-    --blue-button-active-color: rgb(13, 97, 211);
-    --blue-button-shadow-color: rgb(0, 74, 185);
-    --blue-button-highlight-color: rgb(76, 155, 246);
+    /* Primary Colors */
+    --color-primary: rgb(33, 150, 243);
+    --color-primary-dark: rgb(21, 101, 192);
+    --color-primary-light: rgb(66, 165, 245);
+
+    /* Blue Button Palette */
+    --color-blue-button-default: rgb(33, 150, 243);
+    --color-blue-button-hover: rgb(66, 165, 245);
+    --color-blue-button-active: rgb(13, 71, 161);
+    --color-blue-button-border: rgb(21, 101, 192);
+    --color-blue-button-dark-content: rgb(255, 255, 255);
+    --color-blue-button-inactive: rgb(189, 189, 189);
+
+    /* Blue Button Legacy */
+    --blue-button-color: rgb(33, 150, 243);
+    --blue-button-hover-color: rgb(66, 165, 245);
+    --blue-button-active-color: rgb(13, 71, 161);
+    --blue-button-shadow-color: rgb(21, 101, 192);
+    --blue-button-highlight-color: rgb(100, 181, 246);
+
+    /* Success/Green Palette */
+    --color-success: rgb(76, 175, 80);
+    --color-success-dark: rgb(56, 142, 60);
+    --color-success-light: rgb(129, 199, 132);
+    --color-success-border: rgb(27, 94, 32);
+
+    /* Danger/Red Palette */
+    --color-danger: rgb(244, 67, 54);
+    --color-danger-dark: rgb(211, 47, 47);
+    --color-danger-light: rgb(239, 154, 154);
+    --color-danger-border: rgb(183, 28, 28);
+
+    /* Warning/Yellow Palette */
+    --color-warning: rgb(255, 193, 7);
+    --color-warning-dark: rgb(230, 124, 115);
+    --color-warning-light: rgb(255, 224, 74);
+    --color-warning-border: rgb(198, 40, 40);
+    --color-warning-text: rgb(84, 53, 0);
+
+    /* Info/Orange Palette */
+    --color-info: rgb(255, 152, 0);
+    --color-info-dark: rgb(245, 127, 23);
+    --color-info-light: rgb(255, 167, 38);
+    --color-info-border: rgb(230, 124, 115);
+
+    /* Purple/Accent Palette */
+    --color-accent: rgb(156, 39, 176);
+    --color-accent-dark: rgb(106, 27, 154);
+    --color-accent-light: rgb(186, 104, 200);
+
+    /* Cyan/Teal Palette */
+    --color-cyan: rgb(0, 188, 212);
+    --color-cyan-dark: rgb(0, 150, 136);
+    --color-cyan-light: rgb(38, 198, 218);
+    --color-cyan-border: rgb(0, 131, 143);
+
+    /* Neutral Palette */
+    --color-text-dark: rgb(33, 33, 33);
+    --color-text-light: rgb(255, 255, 255);
+    --color-border-light: rgb(189, 189, 189);
+    --color-border-medium: rgb(158, 158, 158);
+    --color-bg-light: rgb(248, 248, 248);
+    --color-bg-dark: rgb(66, 66, 66);
+
+    /* Shadow Palette */
+    --color-shadow: rgba(0, 0, 0, 0.3);
+    --color-shadow-dark: rgba(0, 0, 0, 0.63);
+
+    /* Legacy Colors for Compatibility */
+    --color-buy-button: rgb(76, 175, 80);
+    --color-sell-button: rgb(244, 67, 54);
+    --color-ok-button: rgb(33, 150, 243);
 }
 
 .malacity-button--buy-houses-button {
     width: 80px;
     height: 30px;
-    color: blue;
-    background-color: rgb(218, 180, 10);
+    color: var(--color-text-light);
+    background-color: var(--color-warning);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 2px;
-    border-color: rgb(255, 245, 168);
+    border-color: var(--color-warning-light);
     padding: 0;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.malacity-button--buy-houses-button:hover:enabled {
+    background-color: var(--color-warning-light);
+}
+
+.malacity-button--buy-houses-button:active:enabled {
+    background-color: var(--color-warning-dark);
 }
 
 .shrinkable-button {
@@ -68,7 +146,7 @@
 .add-sub-container {
     border-radius: 6px;
     border-width: 2px;
-    border-color: rgb(177, 181, 179);
+    border-color: var(--color-border-light);
     flex-direction: row;
     justify-content: center;
     width: 122px;
@@ -81,18 +159,25 @@
 .buy-houses-panel_button {
     width: 40px;
     height: 40px;
-    color: blanchedalmond;
+    color: var(--color-warning-text);
     border-width: 2px;
-    border-color: black;
-    background-color: saddlebrown;
+    border-color: var(--color-text-dark);
+    background-color: var(--color-info-dark);
     border-radius: 5px;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.buy-houses-panel_button:hover:enabled {
+    background-color: var(--color-info);
 }
 
 .buy-houses-panel {
-    background-color: blanchedalmond;
+    background-color: var(--color-warning-light);
     border-radius: 10px;
     border-width: 5px;
-    border-color: saddlebrown;
+    border-color: var(--color-info-dark);
 }
 
 .dollar-sign-buy-houses_panel {
@@ -105,22 +190,54 @@
     width: 100px;
     height: 40px;
     font-size: 18px;
-    color: white;
-    background-color: rgb(68, 141, 97);
+    color: var(--color-text-light);
+    background-color: var(--color-success);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.buy-button:hover:enabled {
+    background-color: var(--color-success-light);
+}
+
+.buy-button:active:enabled {
+    background-color: var(--color-success-dark);
+}
+
+.buy-button:disabled {
+    background-color: rgba(76, 175, 80, 0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .sell-button {
     width: 100px;
     height: 40px;
     font-size: 18px;
-    color: white;
-    background-color: rgb(208, 70, 58);
+    color: var(--color-text-light);
+    background-color: var(--color-danger);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.sell-button:hover:enabled {
+    background-color: var(--color-danger-light);
+}
+
+.sell-button:active:enabled {
+    background-color: var(--color-danger-dark);
+}
+
+.sell-button:disabled {
+    background-color: rgba(244, 67, 54, 0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .on-toggle-button {
@@ -162,22 +279,38 @@
     width: 100px;
     height: 40px;
     font-size: 18px;
-    color: white;
-    background-color: rgb(58, 146, 208);
+    color: var(--color-text-light);
+    background-color: var(--color-primary);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.ok-button:hover:enabled {
+    background-color: var(--color-primary-light);
+}
+
+.ok-button:active:enabled {
+    background-color: var(--color-primary-dark);
+}
+
+.ok-button:disabled {
+    background-color: var(--color-blue-button-inactive);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .property-element {
 }
 
 .panel-button-1-border {
-    background-color: rgb(13, 60, 130);
+    background-color: var(--color-primary-dark);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 2px;
-    border-color: rgb(13, 60, 130);
+    border-color: var(--color-primary-dark);
     padding: 0;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
@@ -197,7 +330,7 @@
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 2px;
-    border-color: rgb(38, 204, 52);
+    border-color: var(--color-success);
     padding: 0;
     border-left-color: rgb(252, 246, 235);
     border-right-color: rgb(213, 203, 183);
@@ -207,7 +340,7 @@
     border-top-right-radius: 22px;
     border-bottom-right-radius: 22px;
     border-bottom-left-radius: 22px;
-    color: rgb(239, 70, 14);
+    color: var(--color-info);
     -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
     margin-top: 5px;
     margin-right: 5px;
@@ -230,7 +363,7 @@
 }
 
 .panel-button-blue-border-1-shadow {
-    background-color: rgba(38, 38, 38, 0.3);
+    background-color: var(--color-shadow);
     padding: 0;
     width: 100%;
     height: 100%;
@@ -246,11 +379,22 @@
 .close-button {
     width: 30px;
     height: 30px;
-    color: white;
-    background-color: rgb(255, 0, 0);
+    color: var(--color-text-light);
+    background-color: var(--color-danger);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.close-button:hover:enabled {
+    background-color: var(--color-danger-light);
+}
+
+.close-button:active:enabled {
+    background-color: var(--color-danger-dark);
 }
 
 .button-with-border-shell {
@@ -260,12 +404,16 @@
 }
 
 .end-turn-button {
-    transition: background-color 0.3s ease, scale 0.2s ease;
+    transition-property: background-color, scale;
+    transition-duration: 0.3s, 0.2s;
+    transition-timing-function: ease-out;
 }
 
 .end-turn-button Label {
-    transition: background-color 0.3s ease;
-    background-color: rgb(0, 109, 181);
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+    background-color: var(--color-primary-dark);
 }
 
 .end-turn-button:hover {
@@ -277,11 +425,11 @@
 }
 
 .end-turn-button:hover Label {
-    background-color: rgb(40, 164, 244);
+    background-color: var(--color-primary-light);
 }
 
 .end-turn-button:active Label {
-    background-color: rgb(18, 118, 237);
+    background-color: var(--color-primary);
 }
 
 .button-shadow {
@@ -295,12 +443,12 @@
 }
 
 .button-border {
-    background-color: rgb(1, 215, 244);
+    background-color: var(--color-cyan);
     -unity-font-style: bold;
     padding: 0;
     border-radius: 24px;
     border-width: 3px;
-    border-color: black;
+    border-color: var(--color-text-dark);
     position: relative;
     width: auto;
     height: auto;
@@ -317,7 +465,7 @@
 }
 
 .button-border-shadow-element {
-    background-color: rgba(38, 38, 38, 0.63);
+    background-color: var(--color-shadow-dark);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -348,15 +496,28 @@
 }
 
 .simple-button {
-    color: white;
-    background-color: rgb(244, 60, 60);
+    color: var(--color-text-light);
+    background-color: var(--color-danger);
     border-radius: 5px;
     -unity-font-style: bold;
     border-width: 0;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.simple-button:hover:enabled {
+    background-color: var(--color-danger-light);
+}
+
+.simple-button:active:enabled {
+    background-color: var(--color-danger-dark);
 }
 
 .confirm-button {
-    transition: background-color 0.3s ease, scale 0.2s ease;
+    transition-property: background-color, scale;
+    transition-duration: 0.3s, 0.2s;
+    transition-timing-function: ease-out;
     border-width: 5px;
     border-left-color: rgb(0, 0, 0);
     border-right-color: rgb(0, 0, 0);
@@ -438,14 +599,14 @@
 }
 
 .button-label {
-    color: white;
+    color: var(--color-text-light);
     -unity-font-style: bold;
     font-size: 20px;
     margin-top: 0;
     margin-right: 5px;
     margin-bottom: 5px;
     margin-left: 5px;
-    background-color: rgb(22, 119, 229);
+    background-color: var(--color-primary);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -458,7 +619,7 @@
 }
 
 .button-shadow {
-    background-color: rgba(38, 38, 38, 0.3);
+    background-color: var(--color-shadow);
     padding: 0;
     width: 100%;
     height: 100%;
@@ -468,7 +629,9 @@
 }
 
 .animated-button {
-    transition: background-color 0.3s ease, scale 0.2s ease;
+    transition-property: background-color, scale;
+    transition-duration: 0.3s, 0.2s;
+    transition-timing-function: ease-out;
 }
 
 .animated-button:hover {
@@ -479,13 +642,13 @@
 }
 
 .choose-button > Label {
-    background-color: rgb(18, 96, 176);
+    background-color: var(--color-primary-dark);
     -unity-font-definition: url("project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=0dfd64f2e492cfc4193cd44aea9cbebb&type=2#Acme-Regular SDF");
     -unity-font-style: normal;
 }
 
 .choose-button:hover Label {
-    background-color: rgb(69, 140, 214);
+    background-color: var(--color-primary-light);
 }
 
 .choose-button:active {
@@ -493,11 +656,11 @@
 }
 
 .choose-button:active Label {
-    background-color: rgb(177, 39, 177);
+    background-color: var(--color-accent);
 }
 
 .choose-button:checked Label {
-    background-color: rgb(177, 39, 177);
+    background-color: var(--color-accent);
 }
 
 .dbr-btn {
@@ -506,18 +669,16 @@
 }
 
 .dbr-btn Button {
-    transition: background-color 2s ease, scale 0.2s ease;
-    border-width: 5px;
+    transition-property: background-color, scale;
+    transition-duration: 0.1s, 0.1s;
+    transition-timing-function: ease-out;
+    border-width: 8px;
     border-top-left-radius: 22px;
     border-top-right-radius: 22px;
     border-bottom-right-radius: 22px;
     border-bottom-left-radius: 22px;
     align-items: center;
     justify-content: center;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
     overflow: visible;
     background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
@@ -537,7 +698,9 @@
 }
 
 .dbr-btn Label {
-    transition: background-color 0.3s ease;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
     width: 100%;
     height: 100%;
     flex-grow: 1;
@@ -613,121 +776,121 @@
 }
 
 .dbr-btn-cyan Label {
-    -unity-background-image-tint-color: rgb(26, 255, 181);
+    -unity-background-image-tint-color: var(--color-cyan-light);
     -unity-text-outline-width: 4px;
-    -unity-text-outline-color: rgb(0, 164, 128);
+    -unity-text-outline-color: var(--color-cyan-dark);
 }
 
 .dbr-btn-cyan #gradient-border {
-    -unity-background-image-tint-color: rgb(95, 255, 217);
+    -unity-background-image-tint-color: var(--color-cyan);
 }
 
 .dbr-btn-cyan #gradient-border-label-container {
-    border-color: rgb(25, 133, 96);
+    border-color: var(--color-cyan-border);
 }
 
 .dbr-btn-cyan Button:active Label {
-    -unity-background-image-tint-color: rgb(150, 255, 208);
+    -unity-background-image-tint-color: var(--color-cyan-light);
 }
 
 .dbr-btn-green {
 }
 
 .dbr-btn-green Label {
-    -unity-background-image-tint-color: rgb(56, 193, 17);
+    -unity-background-image-tint-color: var(--color-success);
     -unity-text-outline-width: 4px;
-    -unity-text-outline-color: rgb(13, 130, 0);
+    -unity-text-outline-color: var(--color-success-dark);
 }
 
 .dbr-btn-green #gradient-border {
-    -unity-background-image-tint-color: rgb(96, 236, 33);
+    -unity-background-image-tint-color: var(--color-success-light);
 }
 
 .dbr-btn-green #gradient-border-label-container {
-    border-color: rgb(109, 205, 102);
-    border-left-color: rgb(22, 116, 29);
-    border-right-color: rgb(22, 116, 29);
-    border-top-color: rgb(22, 116, 29);
-    border-bottom-color: rgb(22, 116, 29);
+    border-color: var(--color-success-light);
+    border-left-color: var(--color-success-dark);
+    border-right-color: var(--color-success-dark);
+    border-top-color: var(--color-success-dark);
+    border-bottom-color: var(--color-success-dark);
 }
 
 .dbr-btn-green Button:active Label {
-    -unity-background-image-tint-color: rgb(132, 255, 132);
+    -unity-background-image-tint-color: var(--color-success-light);
 }
 
 .dbr-btn-red {
 }
 
 .dbr-btn-red Label {
-    -unity-background-image-tint-color: rgb(255, 55, 34);
+    -unity-background-image-tint-color: var(--color-danger);
     -unity-text-outline-width: 4px;
-    -unity-text-outline-color: rgb(175, 0, 0);
+    -unity-text-outline-color: var(--color-danger-dark);
 }
 
 .dbr-btn-red #gradient-border {
-    -unity-background-image-tint-color: rgb(255, 95, 95);
+    -unity-background-image-tint-color: var(--color-danger-light);
 }
 
 .dbr-btn-red #gradient-border-label-container {
-    border-color: rgb(205, 102, 102);
-    border-left-color: rgb(170, 19, 21);
-    border-right-color: rgb(170, 19, 21);
-    border-top-color: rgb(170, 19, 21);
-    border-bottom-color: rgb(170, 19, 21);
+    border-color: var(--color-danger-light);
+    border-left-color: var(--color-danger-dark);
+    border-right-color: var(--color-danger-dark);
+    border-top-color: var(--color-danger-dark);
+    border-bottom-color: var(--color-danger-dark);
 }
 
 .dbr-btn-red Button:hover Label {
-    -unity-background-image-tint-color: rgb(221, 72, 72);
+    -unity-background-image-tint-color: var(--color-danger);
 }
 
 .dbr-btn-red Button:active Label {
-    -unity-background-image-tint-color: rgb(186, 30, 30);
+    -unity-background-image-tint-color: var(--color-danger-dark);
 }
 
 .dbr-btn-orange {
 }
 
 .dbr-btn-orange Label {
-    -unity-background-image-tint-color: rgb(254, 137, 0);
-    -unity-text-outline-color: rgb(170, 72, 0);
+    -unity-background-image-tint-color: var(--color-info);
+    -unity-text-outline-color: var(--color-info-dark);
     -unity-text-outline-width: 4px;
 }
 
 .dbr-btn-orange #gradient-border {
-    -unity-background-image-tint-color: rgb(254, 168, 10);
+    -unity-background-image-tint-color: var(--color-info-light);
 }
 
 .dbr-btn-orange #gradient-border-label-container {
-    border-color: rgb(205, 154, 102);
-    border-left-color: rgb(208, 57, 0);
-    border-right-color: rgb(208, 57, 0);
-    border-top-color: rgb(208, 57, 0);
-    border-bottom-color: rgb(208, 57, 0);
+    border-color: var(--color-info-light);
+    border-left-color: var(--color-info-dark);
+    border-right-color: var(--color-info-dark);
+    border-top-color: var(--color-info-dark);
+    border-bottom-color: var(--color-info-dark);
 }
 
 .dbr-btn-orange Button:active Label {
-    -unity-background-image-tint-color: rgb(255, 182, 107);
+    -unity-background-image-tint-color: var(--color-info-light);
 }
 
 .dbr-btn-purple {
 }
 
 .dbr-btn-purple Label {
-    -unity-background-image-tint-color: rgb(129, 26, 255);
+    -unity-background-image-tint-color: var(--color-accent);
     -unity-text-outline-width: 4px;
-    -unity-text-outline-color: rgb(12, 0, 141);
+    -unity-text-outline-color: var(--color-accent-dark);
 }
 
 .dbr-btn-purple #gradient-border {
-    -unity-background-image-tint-color: rgb(116, 95, 255);
+    -unity-background-image-tint-color: var(--color-accent-light);
 }
 
 .dbr-btn-purple #gradient-border-label-container {
-    border-color: rgb(56, 9, 176);
+    border-color: var(--color-accent-dark);
 }
 
 .dbr-btn-purple Button:active Label {
-    -unity-background-image-tint-color: rgb(195, 130, 255);
+    -unity-background-image-tint-color: var(--color-accent-light);
 }
 
 .dbr-btn-blue {
@@ -735,7 +898,7 @@
 }
 
 .dbr-btn-blue Label {
-    -unity-text-outline-color: rgb(0, 56, 141);
+    -unity-text-outline-color: var(--color-primary-dark);
     background-color: rgba(0, 83, 255, 0.5);
     -unity-background-image-tint-color: rgba(255, 255, 255, 0);
 }
@@ -757,7 +920,9 @@
 }
 
 .dbr-btn-picked {
-    transition: background-color 0.3s ease, scale 0.2s ease;
+    transition-property: background-color, scale;
+    transition-duration: 0.3s, 0.2s;
+    transition-timing-function: ease-out;
     border-color: red;
 }
 
@@ -772,21 +937,21 @@
 }
 
 .dbr-btn-yellow Label {
-    -unity-text-outline-color: rgb(141, 101, 0);
+    -unity-text-outline-color: var(--color-warning-text);
     background-color: rgba(241, 177, 24, 0.5);
     -unity-background-image-tint-color: rgba(255, 255, 255, 0);
 }
 
 .dbr-btn-yellow #gradient-border {
-    -unity-background-image-tint-color: rgb(253, 201, 49);
+    -unity-background-image-tint-color: var(--color-warning-light);
 }
 
 .dbr-btn-yellow #gradient-border-label-container {
-    border-color: yellow;
-    border-left-color: rgb(168, 83, 2);
-    border-right-color: rgb(168, 83, 2);
-    border-top-color: rgb(168, 83, 2);
-    border-bottom-color: rgb(168, 83, 2);
+    border-color: var(--color-warning);
+    border-left-color: var(--color-warning-text);
+    border-right-color: var(--color-warning-text);
+    border-top-color: var(--color-warning-text);
+    border-bottom-color: var(--color-warning-text);
 }
 
 .dbr-btn-yellow Button:hover Label {
@@ -802,8 +967,11 @@
     justify-content: center;
 }
 
-.dbr-btn-with-icons Button {
-    transition: background-color 2s ease, scale 0.2s ease;
+/*Buttons*/
+.dbr-btn-with-icons {
+    transition-property: background-color, scale;
+    transition-duration: 2s, 0.2s;
+    transition-timing-function: ease-out;
     border-width: 5px;
     border-top-left-radius: 22px;
     border-top-right-radius: 22px;
@@ -867,7 +1035,9 @@
 }
 
 .dbr-btn-with-icons #button-content {
-    transition: background-color 0.3s ease;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
     width: 100%;
     height: 100%;
     flex-grow: 1;
@@ -930,34 +1100,38 @@
 }
 
 .animation-from-bottom-initial-1 {
-    transition: transform 0.1s ease;
     transition-property: translate, opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
     opacity: 0;
     translate: 0 250px;
 }
 
 .animation-from-bottom-initial-2 {
-    transition: transform 0.1s ease;
     transition-property: translate, opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    transition-delay: 0.025s;
     opacity: 0;
     translate: 0 250px;
-    transition-delay: 0.025s;
 }
 
 .animation-from-bottom-initial-3 {
-    transition: transform 0.1s ease;
     transition-property: translate, opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    transition-delay: 0.05s;
     opacity: 0;
     translate: 0 250px;
-    transition-delay: 0.05s;
 }
 
 .animation-from-bottom-initial-4 {
-    transition: transform 0.1s ease;
     transition-property: translate, opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    transition-delay: 0.075s;
     opacity: 0;
     translate: 0 250px;
-    transition-delay: 0.075s;
 }
 
 .animation-translation-from-bottom {
@@ -989,12 +1163,11 @@
 
 .DropdownFieldOne .unity-base-popup-field__input {
     width: 120px;
-    background-color: rgb(35, 112, 241);
-    border-color: rgb(85, 85, 99);
+    background-color: var(--color-primary);
+    border-color: var(--color-border-medium);
     border-width: 1px;
     border-radius: 6px;
     padding: 4px 8px;
-    transition: border-color 0.15s;
     flex-grow: 0;
     justify-content: center;
     align-items: center;
@@ -1003,15 +1176,15 @@
     align-content: auto;
     flex-shrink: 1;
     flex-basis: auto;
-    color: rgb(26, 26, 26);
+    color: var(--color-text-dark);
     border-top-width: 8px;
     border-right-width: 8px;
     border-bottom-width: 8px;
     border-left-width: 8px;
-    border-left-color: rgb(0, 74, 185);
-    border-right-color: rgb(0, 74, 185);
-    border-top-color: rgb(0, 74, 185);
-    border-bottom-color: rgb(0, 74, 185);
+    border-left-color: var(--color-primary-dark);
+    border-right-color: var(--color-primary-dark);
+    border-top-color: var(--color-primary-dark);
+    border-bottom-color: var(--color-primary-dark);
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
@@ -1024,7 +1197,7 @@
 }
 
 .DropdownFieldOne .unity-base-popup-field__input > .unity-text-element {
-    color: rgb(255, 255, 255);
+    color: var(--color-text-light);
     font-size: 26px;
     width: auto;
     -unity-text-align: middle-center;
@@ -1043,7 +1216,7 @@
 .DropdownFieldOne .unity-base-popup-field__arrow {
     width: 32px;
     height: 32px;
-    -unity-background-image-tint-color: rgb(0, 193, 255);
+    -unity-background-image-tint-color: var(--color-cyan);
     position: relative;
     align-self: auto;
     left: 0;
@@ -1052,7 +1225,7 @@
 }
 
 .title_label {
-    color: rgb(255, 255, 255);
+    color: var(--color-text-light);
     font-size: 70px;
     -unity-font-style: bold;
     -unity-font-definition: resource("Fonts/Acme-Regular SDF");
@@ -1063,23 +1236,20 @@
 }
 
 .unity-base-dropdown .unity-scroll-view {
-    background-color: rgb(47, 114, 237);
-    color: rgb(255, 255, 255);
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
     border-radius: 25px;
-    border-color: rgb(75, 153, 243);
+    border-color: var(--color-primary-light);
     border-width: 8px;
 }
 
 .unity-base-dropdown__container-outer {
-    background-color: yellow;
-    border-color: rgb(0, 74, 185);
+    background-color: var(--color-warning);
+    border-color: var(--color-primary-dark);
     border-width: 12px;
     border-radius: 40px;
     padding: 0;
     margin: 0;
-}
-
-.unity-base-dropdown__container-inner {
 }
 
 .unity-base-dropdown__item {
@@ -1093,11 +1263,11 @@
 }
 
 .unity-base-dropdown__item:hover {
-    background-color: yellow;
+    background-color: var(--color-warning);
 }
 
 .unity-base-dropdown__item:hover:enabled {
-    background-color: rgb(20, 75, 175);
+    background-color: var(--color-primary);
     margin: 0;
     padding: 0;
     border-width: 0;
@@ -1111,12 +1281,12 @@
 }
 
 .unity-base-dropdown__item:checked {
-    background-color: rgb(32, 80, 172);
+    background-color: var(--color-primary-light);
     border-radius: 15px;
 }
 
 .unity-base-dropdown__item:checked:hover {
-    background-color: rgb(60, 130, 255);
+    background-color: var(--color-primary-light);
 }
 
 .InputTextField {
@@ -1142,23 +1312,23 @@
 }
 
 .InputTextField #unity-text-input {
-    background-color: rgb(30, 100, 220);
+    background-color: var(--color-primary-dark);
     border-radius: 18px;
     border-width: 2px;
-    border-color: rgb(80, 160, 255);
+    border-color: var(--color-primary-light);
     padding: 6px 20px;
     -unity-background-image-tint-color: rgba(255, 255, 255, 0.08);
     font-size: 52px;
 }
 
 .InputTextField #unity-text-input:hover {
-    background-color: rgb(50, 120, 240);
-    border-color: rgb(100, 180, 255);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary-light);
 }
 
 .InputTextField #unity-text-input:focus {
-    background-color: rgb(20, 80, 200);
-    border-color: rgb(120, 200, 255);
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-light);
 }
 
 .InputTextField #unity-text-input > TextElement {
@@ -1175,11 +1345,22 @@
 .BackButton {
     width: 40px;
     height: 40px;
-    color: white;
-    background-color: rgb(255, 0, 0);
+    color: var(--color-text-light);
+    background-color: var(--color-danger);
     border-radius: 5px;
     -unity-font-style: bold;
-    border-width: 0;
+    border-width: 4px;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.BackButton:hover:enabled {
+    background-color: var(--color-danger-light);
+}
+
+.BackButton:active:enabled {
+    background-color: var(--color-danger-dark);
 }
 
 .malacity-button--blue {
@@ -1191,7 +1372,7 @@
     max-width: 400px;
     height: 80px;
     border-radius: 15px;
-    border-width: 4;
+    border-width: 4px;
     border-color: var(--color-blue-button-border);
 }
 
@@ -1215,35 +1396,62 @@
 }
 
 .malacity-button--yellow {
-    background-color: rgb(241, 177, 24);
-    color: rgb(71, 45, 0);
+    background-color: var(--color-warning);
+    color: var(--color-warning-text);
     -unity-font-style: bold;
     font-size: 36px;
     min-width: 200px;
     max-width: 400px;
     height: 80px;
     border-radius: 15px;
-    border-width: 4;
-    border-color: rgb(168, 83, 2);
+    border-width: 20px;
+    border-color: var(--color-warning-text);
+    transition-property: background-color;
+    transition-duration: 0.05s;
+    transition-timing-function: ease-out;
 }
 
 .malacity-button--yellow:hover:enabled,
 .malacity-button--yellow:focus:enabled {
-    background-color: rgb(253, 201, 49);
-    border-color: rgb(168, 83, 2);
-    color: rgb(71, 45, 0);
+    background-color: var(--color-warning-light);
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-text);
 }
 
 .malacity-button--yellow:active:enabled {
-    background-color: rgb(220, 162, 18);
-    border-color: rgb(140, 67, 0);
-    color: rgb(71, 45, 0);
+    background-color: var(--color-warning-dark);
+    border-color: var(--color-warning-text);
+    color: var(--color-warning-text);
 }
 
 .malacity-button--yellow:disabled {
-    color: rgba(71, 45, 0, 0.5);
-    border-color: rgba(168, 83, 2, 0.5);
-    background-color: rgba(241, 177, 24, 0.5);
+    color: rgba(84, 53, 0, 0.5);
+    border-color: rgba(84, 53, 0, 0.5);
+    background-color: rgba(255, 193, 7, 0.5);
+}
+
+.dbr-btn Button.malacity-button--yellow {
+    background-color: var(--color-warning);
+    border-color: var(--color-warning-text);
+}
+
+.dbr-btn Button.malacity-button--yellow Label {
+    background-color: var(--color-warning);
+    color: var(--color-warning-text);
+}
+
+.dbr-btn Button.malacity-button--yellow:hover:enabled Label,
+.dbr-btn Button.malacity-button--yellow:focus:enabled Label {
+    background-color: var(--color-warning-light);
+}
+
+.dbr-btn Button.malacity-button--yellow:active:enabled Label {
+    background-color: var(--color-warning-dark);
+}
+
+.dbr-btn Button.malacity-button--yellow:disabled Label {
+    background-color: rgba(255, 193, 7, 0.5);
+    color: rgba(84, 53, 0, 0.5);
 }
 
 .dropdown {
