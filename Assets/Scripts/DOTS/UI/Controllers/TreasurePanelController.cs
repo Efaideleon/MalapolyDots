@@ -62,10 +62,13 @@ namespace DOTS.UI.Controllers
         public void Update(TreasurePanelContext data)
         {
             Panel.TitleLabel.text = data.Title;
+            UnityEngine.Debug.Log($"[TreasurePanelController] data.Title {data.Title}");
+            UnityEngine.Debug.Log($"[TreasurePanelController] panel.text: {Panel.TitleLabel.text}");
         }
 
         public void Show()
         {
+            UnityEngine.Debug.Log($"[TreasurePanelController] show() panel.text: {Panel.TitleLabel.text}");
             Panel.Show();
         }
 

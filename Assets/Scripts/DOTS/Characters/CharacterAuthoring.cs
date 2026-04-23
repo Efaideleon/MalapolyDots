@@ -51,6 +51,7 @@ namespace Assets.Scripts.DOTS.Characters
                 AddComponent<UITappedPropertyEvent>(authoringEntity);
                 AddComponent<ActivePlayer>(authoringEntity);
                 AddComponent<GhostChanceCardPicked>(authoringEntity);
+                AddComponent<GhostTreasureCardPicked>(authoringEntity);
             }
         }
     }
@@ -61,6 +62,16 @@ namespace Assets.Scripts.DOTS.Characters
 
     [GhostComponent]
     public struct GhostChanceCardPicked : IComponentData
+    {
+        [GhostField]
+        public int id;
+
+        [GhostField]
+        public FixedString64Bytes msg;
+    }
+
+    [GhostComponent]
+    public struct GhostTreasureCardPicked : IComponentData
     {
         [GhostField]
         public int id;

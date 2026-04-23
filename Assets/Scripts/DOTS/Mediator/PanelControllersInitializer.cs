@@ -397,6 +397,7 @@ namespace DOTS.Mediator
             panelControllerService.Register(panelControllers.spaceActionsPanelController);
             panelControllerService.Register(panelControllers.backdropController);
             panelControllerService.Register(panelControllers.chancePanelController);
+            panelControllerService.Register(panelControllers.treasurePanelController);
 
             state.EntityManager.CreateSingleton(new GameScreenInitializedFlag { Value = true });
         }
