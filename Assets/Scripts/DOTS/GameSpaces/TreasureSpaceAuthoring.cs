@@ -51,7 +51,7 @@ namespace DOTS.GameSpaces
                 var cards = AddBuffer<TreasureCardsBuffer>(entity);
                 foreach (var card in authoring.Data.Cards)
                 {
-                    cards.Add(new TreasureCardsBuffer { id = card.id, msg = card.msg });
+                    cards.Add(new TreasureCardsBuffer { id = card.id, msg = card.msg, amount = card.amount });
                 }
             }
         }
@@ -64,5 +64,6 @@ namespace DOTS.GameSpaces
     {
         public int id;
         public FixedString64Bytes msg;
+        public int amount;
     }
 }

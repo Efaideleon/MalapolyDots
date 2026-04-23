@@ -42,7 +42,8 @@ namespace DOTS.GamePlay
                             var cardChosen = cards[randomIdx];
                             treasureCardPicked.ValueRW.id = cardChosen.id;
                             treasureCardPicked.ValueRW.msg = cardChosen.msg;
-
+                            treasureCardPicked.ValueRW.amount = cardChosen.amount;
+                            
                             UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCardPicked.ValueRO.msg.ToString()}");
 
                             // Reset that treasure's open animation.
