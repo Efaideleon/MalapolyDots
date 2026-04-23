@@ -8,11 +8,14 @@ namespace DOTS.UI.Panels
         public VisualElement Root { get; private set; }
         public Button OkButton { get; private set; }
         public Label TitleLabel { get; private set; }
+        public Label AmountLabel { get; private set; }
+
         public TreasurePanel(VisualElement parent) 
         {
             Root = parent.Q<VisualElement>("TreasurePanel") ?? throw new ArgumentNullException($"[TreasurePanel] {nameof(parent)}");
             OkButton = Root.Q<Button>("treasure-panel-button") ?? throw new NullReferenceException($"[TreasurePanel] \"treasure-panel-button\" is missing");
             TitleLabel = Root.Q<Label>("treasure-panel-label") ?? throw new NullReferenceException($"[TreasurePanel] \"treasure-panel-label\" is missing");
+            AmountLabel = Root.Q<Label>("treasure-panel-amount") ?? throw new NullReferenceException($"[TreasurePanel] \"treasure-panel-label\" is missing");
             Hide();
         }
 

@@ -9,6 +9,7 @@ namespace DOTS.UI.Controllers
     public struct TreasurePanelContext
     {
         public string Title;
+        public string Amount;
     }
 
     public class TreasurePanelController : IPanelControllerNew<TreasurePanelContext>
@@ -62,6 +63,7 @@ namespace DOTS.UI.Controllers
         public void Update(TreasurePanelContext data)
         {
             Panel.TitleLabel.text = data.Title;
+            Panel.AmountLabel.text = data.Amount;
             UnityEngine.Debug.Log($"[TreasurePanelController] data.Title {data.Title}");
             UnityEngine.Debug.Log($"[TreasurePanelController] panel.text: {Panel.TitleLabel.text}");
         }

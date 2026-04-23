@@ -23,7 +23,7 @@ namespace DOTS.Mediator.Systems.TreasurePanelSystems
                 if (service.TryGet<TreasurePanelController>(out var treasurePanel))
                 {
                     UnityEngine.Debug.Log($"treasureCard msg: {treasureCard.ValueRO.msg}");
-                    var context = new TreasurePanelContext { Title = treasureCard.ValueRO.msg.ToString() };
+                    var context = new TreasurePanelContext { Title = treasureCard.ValueRO.msg.ToString(), Amount = treasureCard.ValueRO.amount.ToString() };
                     treasurePanel.Update(context);
                 }
             }
