@@ -1,5 +1,7 @@
-using DOTS.GamePlay.DebugAuthoring;
+using System.Diagnostics;
+using Assets.Scripts.DOTS.Mediator.Systems.DebugScreenSystem;
 using Unity.Entities;
+using Unity.NetCode;
 using UnityEngine.UIElements;
 
 #nullable enable
@@ -27,6 +29,7 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
         public EventCallback<ChangeEvent<int>>? Callback;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct DebugScreenSystem : ISystem, ISystemStartStop
     {
         public void OnCreate(ref SystemState state)
@@ -43,11 +46,13 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             state.EntityManager.AddComponentData(entity, new MonopolyToggleManagedData { Toggle = null, Callback = null });
             state.EntityManager.AddComponentData(entity, new IntegerFieldManagedData { IntegerField = null, Callback = null });
 
+            state.RequireForUpdate<NetworkId>();
             state.RequireForUpdate<ForegroundContainterComponent>();
-            state.RequireForUpdate<DebugScreenFlag>();
             state.RequireForUpdate<GameScreenInitializedFlag>();
             state.RequireForUpdate<RollConfig>();
             state.RequireForUpdate<GlobalMonopolyEnabled>();
+            state.RequireForUpdate<ToggleCustomRollEventBuffer>();
+            state.RequireForUpdate<CustomRollValueEventBuffer>();
         }
 
         public void OnStartRunning(ref SystemState state)
@@ -60,7 +65,7 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
                 return;
             }
 
-            var debugScreen = foregroundContainer.Q<VisualElement>("DebugScreen"); 
+            var debugScreen = foregroundContainer.Q<VisualElement>("DebugScreen");
             if (debugScreen == null)
             {
                 UnityEngine.Debug.LogWarning($"[DebugScreenSystem] | DebugScreen in GameScreen.uxml is missing.");
@@ -71,8 +76,11 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             var globalMonopolyQuery = SystemAPI.QueryBuilder().WithAllRW<GlobalMonopolyEnabled>().Build();
             var debugScreenEntity = SystemAPI.GetSingletonEntity<DebugScreenFlag>();
 
-            SetupRollToggle(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity);
-            SetupRollIntegerField(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity);
+            var toggleCustomRollQuery = SystemAPI.QueryBuilder().WithAllRW<ToggleCustomRollEventBuffer>().Build();
+            var customRollValueQuery = SystemAPI.QueryBuilder().WithAllRW<CustomRollValueEventBuffer>().Build();
+
+            SetupRollToggle(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity, toggleCustomRollQuery);
+            SetupRollIntegerField(ref state, debugScreen, rollConfigQuery, ref debugScreenEntity, customRollValueQuery);
             SetupGlobalMonopolyToggle(ref state, debugScreen, globalMonopolyQuery, ref debugScreenEntity);
         }
 
@@ -97,7 +105,8 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
                 ref SystemState state,
                 VisualElement debugScreen,
                 EntityQuery rollConfigQuery,
-                ref Entity debugScreenEntity
+                ref Entity debugScreenEntity,
+                EntityQuery toggleCustomRollQuery
         )
         {
             var customRollToggle = debugScreen.Q<Toggle>("CustomRollToggle");
@@ -113,9 +122,9 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
 
             toggleData.Callback = (evt) =>
             {
-                ref var rollConfigRW = ref rollConfigQuery.GetSingletonRW<RollConfig>().ValueRW;
-                rollConfigRW.isCustomEnabled = evt.newValue;
-                UnityEngine.Debug.Log($"[DebugScreenSystem] | isCustomEnabled: {rollConfigRW.isCustomEnabled}");
+                var toggleCustomRoll = toggleCustomRollQuery.GetSingletonBuffer<ToggleCustomRollEventBuffer>();
+                toggleCustomRoll.Add(new ToggleCustomRollEventBuffer { Value = evt.newValue });
+                UnityEngine.Debug.Log($"[DebugScreenSystem] | isCustomEnabled: {evt.newValue}");
             };
 
             toggleData.Toggle.RegisterCallback(toggleData.Callback);
@@ -125,7 +134,8 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
                 ref SystemState state,
                 VisualElement debugScreen,
                 EntityQuery rollConfigQuery,
-                ref Entity debugScreenEntity
+                ref Entity debugScreenEntity,
+                EntityQuery customRollValueQuery
         )
         {
             var customRollIntegerField = debugScreen.Q<IntegerField>("CustomRollIntegerField");
@@ -141,9 +151,9 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
 
             integerFieldData.Callback = (evt) =>
             {
-                ref var rollConfigRW = ref rollConfigQuery.GetSingletonRW<RollConfig>().ValueRW;
-                rollConfigRW.customRollValue = evt.newValue;
-                UnityEngine.Debug.Log($"[DebugScreenSystem] | customRollValue: {rollConfigRW.customRollValue}");
+                var customRollValue = customRollValueQuery.GetSingletonBuffer<CustomRollValueEventBuffer>();
+                customRollValue.Add(new CustomRollValueEventBuffer { Value = evt.newValue});
+                UnityEngine.Debug.Log($"[DebugScreenSystem] | customRollValue: {evt.newValue}");
             };
 
             integerFieldData.IntegerField.RegisterCallback(integerFieldData.Callback);
@@ -176,5 +186,67 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
 
             toggleData.Toggle.RegisterCallback(toggleData.Callback);
         }
+    }
+
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    public partial struct DebugScreenProxyToServer : ISystem
+    {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<NetworkId>();
+            state.EntityManager.CreateSingletonBuffer<ToggleCustomRollEventBuffer>();
+            state.EntityManager.CreateSingletonBuffer<CustomRollValueEventBuffer>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<ToggleCustomRollEventBuffer>>())
+            {
+                foreach (var value in buffer)
+                {
+                    var entity = ecb.CreateEntity();
+                    ecb.AddComponent(entity, new ToggleCustomRollRpc { Value = value.Value });
+                    ecb.AddComponent<SendRpcCommandRequest>(entity);
+                    UnityEngine.Debug.Log($"[DebugScreenProxyToServer] | sending toggle rpc {value.Value}");
+                }
+                buffer.Clear();
+            }
+
+            foreach (var buffer in SystemAPI.Query<DynamicBuffer<CustomRollValueEventBuffer>>())
+            {
+                foreach (var value in buffer)
+                {
+                    var entity = ecb.CreateEntity();
+                    ecb.AddComponent(entity, new CustomRollValueRpc { Value = value.Value });
+                    ecb.AddComponent<SendRpcCommandRequest>(entity);
+                    UnityEngine.Debug.Log($"[DebugScreenProxyToServer] | sending custom value rpc {value.Value}");
+                }
+                buffer.Clear();
+            }
+
+            ecb.Playback(state.EntityManager);
+            ecb.Dispose();
+        }
+    }
+
+    public struct ToggleCustomRollEventBuffer : IBufferElementData
+    {
+        public bool Value;
+    }
+
+    public struct CustomRollValueEventBuffer : IBufferElementData
+    {
+        public int Value;
+    }
+
+    public struct ToggleCustomRollRpc : IRpcCommand
+    { 
+        public bool Value;
+    }
+
+    public struct CustomRollValueRpc : IRpcCommand
+    { 
+        public int Value;
     }
 }

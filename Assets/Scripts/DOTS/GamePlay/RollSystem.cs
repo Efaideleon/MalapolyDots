@@ -2,10 +2,10 @@ using DOTS.EventBuses;
 using Unity.Burst;
 using Unity.Entities;
 using Random = Unity.Mathematics.Random;
-using DOTS.GamePlay.DebugAuthoring;
 using Assets.Scripts.DOTS.GamePlay;
 using Unity.NetCode;
 using Assets.Scripts.DOTS.Characters;
+using Assets.Scripts.DOTS.Mediator.Systems.DebugScreenSystem;
 
 namespace DOTS.GamePlay
 {

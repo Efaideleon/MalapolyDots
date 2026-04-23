@@ -13,12 +13,12 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
         public bool Value;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct EnableGlobalMonopolyDebugSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
             state.EntityManager.CreateSingleton(new GlobalMonopolyEnabled { Value = false });
-            state.RequireForUpdate<GlobalMonopolyEnabled>();
             state.RequireForUpdate<CurrentPlayerID>();
         }
 
