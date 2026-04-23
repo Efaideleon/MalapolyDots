@@ -78,6 +78,9 @@ namespace Assets.Scripts.DOTS.Characters
 
         [GhostField]
         public FixedString64Bytes msg;
+
+        [GhostField] 
+        public int amount;
     }
 
     [GhostComponent]
