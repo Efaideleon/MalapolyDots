@@ -4,9 +4,7 @@ using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
@@ -31,7 +29,7 @@ namespace DOTS.GamePlay
             {
                 if (gameState.ValueRO.State == GameState.Landing)
                 {
-                    foreach (var (spaceLandedOn, treasureCardPicked) in SystemAPI.Query<RefRO<SpaceLandedOn>, RefRW<GhostTreasureCardPicked>>().WithAll<ActivePlayer>())
+                    foreach (var (spaceLandedOn, treasureCardPicked, playerEntity) in SystemAPI.Query<RefRO<SpaceLandedOn>, RefRW<GhostTreasureCardPicked>, RefRW<GhostMoneyComponet>>().WithAll<ActivePlayer>())
                     {
                         var landedOnEntity = spaceLandedOn.ValueRO.entity;
                         if (SystemAPI.HasComponent<TreasureSpaceTag>(landedOnEntity))
@@ -44,7 +42,11 @@ namespace DOTS.GamePlay
                             treasureCardPicked.ValueRW.msg = cardChosen.msg;
                             treasureCardPicked.ValueRW.amount = cardChosen.amount;
                             
-                            UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCardPicked.ValueRO.msg.ToString()}");
+                            // Add treasure card amount to player's money
+                            playerEntity.ValueRW.Value += cardChosen.amount;
+                            
+                            UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCardPicked.ValueRO.msg}");
+                            UnityEngine.Debug.Log($"[TreasureSystem] | Added {cardChosen.amount} to player money. New balance: {playerEntity.ValueRO.Value}");
 
                             // Reset that treasure's open animation.
                             SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimation.Open;
