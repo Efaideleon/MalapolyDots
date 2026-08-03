@@ -1,9 +1,8 @@
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Transforms;
+using Unity.NetCode;
 using UnityEngine;
 
-namespace DOTS.GameSpaces
+namespace Malapoly.DOTS.GameSpaces
 {
     public class ForSaleSignAuthoring : MonoBehaviour
     {
@@ -27,8 +26,10 @@ namespace DOTS.GameSpaces
         Hidden,
     }
 
+    [GhostComponent(SendDataForChildEntity = true)]
     public struct VisibleStateComponent : IComponentData
     {
+        [GhostField]
         public VisibleState Value;
     }
 }

@@ -3,6 +3,7 @@ using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
 using Unity.Entities;
 using Unity.NetCode;
+using Unity.Transforms;
 
 namespace DOTS.GamePlay.CameraSystems
 {
@@ -28,7 +29,11 @@ namespace DOTS.GamePlay.CameraSystems
                 var currentPlayer = SystemAPI.GetSingleton<CurrentActivePlayer>();
                 var currentPivotRotation = SystemAPI.GetComponent<CurrentPivotRotation>(currentPlayer.Entity);
                 pivotRotation.ValueRW.Value = currentPivotRotation.Value;
-                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | running? pivotRotation {pivotRotation.ValueRO.Value}");
+                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | pivotRotation {pivotRotation.ValueRO.Value}");
+                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | currentPivotRotation {currentPivotRotation.Value}");
+
+                var playerPosition = SystemAPI.GetComponent<LocalTransform>(currentPlayer.Entity);
+                UnityEngine.Debug.Log($"[CameraPlayerSwitch] | player position: {playerPosition.Position}");
             }
         }
     }

@@ -1,4 +1,4 @@
-using DOTS.GameSpaces;
+using Malapoly.DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -8,6 +8,7 @@ using Unity.Transforms;
 namespace DOTS.GamePlay
 {
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct ForSaleSignVisibilitySystem : ISystem
     {
         private const float HeighThreshold = 10f;
@@ -45,6 +46,7 @@ namespace DOTS.GamePlay
             {
                 if (visibleState.Value == VisibleState.Hiding)
                 {
+                    UnityEngine.Debug.Log($"[ForSaleSignVisibilitySystem] | hiding forsale sign.");
                     float speed = 0.7f;
                     var newY = math.max(0f, postTransformMatrix.Value.c1.y - dt * speed);
                     var newScale = new float3(1, newY, 1);

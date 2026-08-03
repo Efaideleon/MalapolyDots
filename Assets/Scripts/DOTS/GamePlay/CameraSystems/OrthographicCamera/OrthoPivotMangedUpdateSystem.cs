@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters;
 using Unity.Entities;
@@ -27,12 +28,7 @@ namespace DOTS.GamePlay.CameraSystems.OrthographicCamera
 
             foreach (var (position, rotation) in SystemAPI.Query<RefRO<PivotPosition>, RefRO<PivotRotation>>().WithAll<PivotTransformTag>())
             {
-                // TODO tests just position.
-                // Uncheck persistent subscene before running game.
-                //orthoPivot.Instance.transform.position = position.ValueRO.Value;
-                //UnityEngine.Debug.Log($"[OrthoPivotManagedUpdateSystem] | pivot position = {orthoPivot.Instance.transform.position}");
-                //UnityEngine.Debug.DrawLine(position.ValueRO.Value, position.ValueRO.Value + new float3(0, 10, 0), UnityEngine.Color.red);
-                // orthoPivot.Instance.transform.SetPositionAndRotation(position.ValueRO.Value, rotation.ValueRO.Value);
+                orthoPivot.Instance.transform.SetPositionAndRotation(position.ValueRO.Value, rotation.ValueRO.Value);
             }
         }
     }

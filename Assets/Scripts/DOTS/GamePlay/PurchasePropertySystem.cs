@@ -59,6 +59,8 @@ namespace Assets.Scripts.DOTS.GamePlay
                                     UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property Bought! {name.Value}");
                                     var updatedMoney = SystemAPI.GetComponent<GhostMoneyComponet>(currentPlayerEntity);
                                     UnityEngine.Debug.Log($"[PurchasePropertySystem] | player new money {updatedMoney.Value}");
+                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | owned by Entity {ownedByEntity.ValueRO.Entity}");
+                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | owned by id: {owner.ValueRO.ID}");
                                 }
                                 else
                                 {

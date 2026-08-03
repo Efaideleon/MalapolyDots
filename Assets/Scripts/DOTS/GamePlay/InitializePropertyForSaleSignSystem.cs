@@ -1,4 +1,5 @@
 using DOTS.DataComponents;
+using Malapoly.DOTS.GameSpaces;
 using DOTS.GameSpaces;
 using Unity.Burst;
 using Unity.Entities;
@@ -6,6 +7,7 @@ using Unity.Entities;
 namespace DOTS.GamePlay
 {
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct InitializePropertyForSaleSignSystem : ISystem
     {
         [BurstCompile]
