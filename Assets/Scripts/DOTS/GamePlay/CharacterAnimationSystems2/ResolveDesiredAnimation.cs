@@ -7,6 +7,7 @@ using Unity.Transforms;
 
 namespace DOTS.GamePlay.CharacterAnimationSystems2
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct ResolveDesiredAnimation : ISystem
     {
@@ -38,11 +39,14 @@ namespace DOTS.GamePlay.CharacterAnimationSystems2
 
             var moveState = moveStateLookup[parent.Value];
 
+            //UnityEngine.Debug.Log($"[ResolveDesiredAnimation] | {moveState.Value.ToString()}");
+
             CharacterAnimationEnum desiredState =
                 moveState.Value == MoveState.Idle ? CharacterAnimationEnum.Idle :
                 moveState.Value == MoveState.Walking ? CharacterAnimationEnum.Walking :
                 CharacterAnimationEnum.None;
 
+            //UnityEngine.Debug.Log($"[ResolveDesiredAnimation] | {desiredState.ToString()}");
             if (desiredState != desiredAnimation.Value)
             {
                 desiredAnimation.Value = desiredState;

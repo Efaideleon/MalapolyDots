@@ -5,6 +5,7 @@ using Unity.Mathematics;
 
 namespace DOTS.GamePlay.CharacterAnimationSystems2
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     [UpdateAfter(typeof(AnimationFrameAdvancement))]

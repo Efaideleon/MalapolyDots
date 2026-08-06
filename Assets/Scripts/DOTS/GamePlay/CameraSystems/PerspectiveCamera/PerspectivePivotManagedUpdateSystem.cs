@@ -5,6 +5,7 @@ namespace DOTS.GamePlay.CameraSystems.PerspectiveCamera
     /// <summary>
     /// This system using the `PivotTransform` struct (unmanged) to update the pivot instances tranform values (manged).
     /// </summary>
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PerspectivePivotManagedUpdateSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

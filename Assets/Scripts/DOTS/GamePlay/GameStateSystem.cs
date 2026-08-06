@@ -68,7 +68,7 @@ namespace DOTS.GamePlay
                 }
             }
 
-            if (!finalArrivedLookup.HasComponent(activePlayerEntity)) 
+            if (!finalArrivedLookup.HasComponent(activePlayerEntity))
                 return;
 
             if (finalArrivedLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
@@ -76,8 +76,9 @@ namespace DOTS.GamePlay
                 var arrived = finalArrivedLookup.GetRefRW(activePlayerEntity);
                 if (arrived.ValueRO.Value == true)
                 {
-                        SystemAPI.GetSingletonRW<GameStateComponent>().ValueRW.State = GameState.Landing;
-                        arrived.ValueRW.Value = false;
+                    UnityEngine.Debug.Log($"[GameState] | Changing gamestate to Landing");
+                    SystemAPI.GetSingletonRW<GameStateComponent>().ValueRW.State = GameState.Landing;
+                    arrived.ValueRW.Value = false;
                 }
             }
         }

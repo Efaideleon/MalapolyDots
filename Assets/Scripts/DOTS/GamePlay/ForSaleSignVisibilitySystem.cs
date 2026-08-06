@@ -42,9 +42,10 @@ namespace DOTS.GamePlay
                     [EntityIndexInQuery] int entityIndexInQuery,
                     ref PostTransformMatrix postTransformMatrix,
                     ref VisibleStateComponent visibleState,
+                    ref ClientVisibleState clientVisibility,
                     in ForSaleSignTag _)
             {
-                if (visibleState.Value == VisibleState.Hiding)
+                if (visibleState.Value == VisibleState.Hiding && clientVisibility.State != VisibleState.Hidden)
                 {
                     UnityEngine.Debug.Log($"[ForSaleSignVisibilitySystem] | hiding forsale sign.");
                     float speed = 0.7f;
@@ -55,7 +56,7 @@ namespace DOTS.GamePlay
 
                 if (math.length(postTransformMatrix.Value.c1.y) <= 0.01f)
                 {
-                    visibleState.Value = VisibleState.Hidden;
+                    clientVisibility.State = VisibleState.Hidden;
                     ecb.AddComponent<DisableRendering>(entityIndexInQuery, entity);
                 }
             }

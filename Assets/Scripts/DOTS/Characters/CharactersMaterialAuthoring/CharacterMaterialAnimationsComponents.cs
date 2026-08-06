@@ -105,7 +105,8 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
 
     public struct AnimationPlayState : IComponentData { public PlayState Value; }
 
-    [MaterialProperty("_current_frame")]
+    //[MaterialProperty("_current_frame")]
+    [MaterialProperty("_frame")]
     public struct CurrentFrameVAT : IComponentData { public float Value; }
 
     [MaterialProperty("_frame")]

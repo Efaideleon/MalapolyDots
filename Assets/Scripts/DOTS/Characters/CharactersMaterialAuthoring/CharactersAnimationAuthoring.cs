@@ -39,13 +39,6 @@ namespace DOTS.Characters.CharactersMaterialAuthoring
                 AddComponent(entity, new CurrentFrameVAT { Value = 0 });
                 AddComponent(entity, new UseTimeVAT { Value = authoring.UseTime });
                 AddComponent(entity, new SpeedVAT { Value = authoring.Speed });
-                AddComponent(entity, new AnimationPlayState { Value = PlayState.NotPlaying });
-                AddComponent(entity, new CurrentCharacterAnimation { Value = CharacterAnimation.Default });
-                AddComponent(entity, new AnimationPhaseComponent { Value = AnimationPhase.None });
-                AddComponent(entity, new CharacterAnimationState { Value = CharacterAnimationEnum.None });
-                AddComponent(entity, new ActiveAnimation { Value = default });
-                AddComponent(entity, new PreviousAnimationPlayState { Value = PlayState.NotPlaying });
-                AddComponent(entity, new AnimationPhaseRequestComponent { PhaseRequested = AnimationPhase.None, Signals = AnimationSignals.None });
 
                 AddComponent(entity, new DesiredAnimation { Value = CharacterAnimationEnum.None });
                 AddComponent(entity, new AnimationStateComponent

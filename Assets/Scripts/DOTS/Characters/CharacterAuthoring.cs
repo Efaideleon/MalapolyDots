@@ -151,8 +151,10 @@ namespace Assets.Scripts.DOTS.Characters
         public int Value;
     }
 
+    [GhostComponent]
     public struct PlayerMovementState : IComponentData
     {
+        [GhostField]
         public MoveState Value;
     }
 

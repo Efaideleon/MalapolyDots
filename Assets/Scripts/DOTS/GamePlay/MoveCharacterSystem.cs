@@ -15,34 +15,30 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<PlayerMovementState>();
             state.RequireForUpdate<CurrentActivePlayer>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var currGameState = SystemAPI.GetSingleton<GameStateComponent>();
             var activePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             if (activePlayer == default)
             {
                 return;
             }
+            var moveState = SystemAPI.GetComponent<PlayerMovementState>(activePlayer);
 
-            if (currGameState.State == GameState.Walking)
-            {
-                var moveStateRW = SystemAPI.GetComponentRW<PlayerMovementState>(activePlayer);
-                var localTransformRW = SystemAPI.GetComponentRW<LocalTransform>(activePlayer);
-                var targetPosition = SystemAPI.GetComponent<TargetPosition>(activePlayer);
-                var moveSpeed = SystemAPI.GetComponent<MoveSpeed>(activePlayer);
+            if (moveState.Value != MoveState.Walking)
+                return;
 
-                if (moveStateRW.ValueRO.Value != MoveState.Walking)
-                {
-                    moveStateRW.ValueRW.Value = MoveState.Walking;
-                }
+            UnityEngine.Debug.Log($"[MoveCharacterSystem] | gamestate is walking");
+            var localTransformRW = SystemAPI.GetComponentRW<LocalTransform>(activePlayer);
+            var targetPosition = SystemAPI.GetComponent<TargetPosition>(activePlayer);
+            var moveSpeed = SystemAPI.GetComponent<MoveSpeed>(activePlayer);
 
-                MoveToTarget(ref localTransformRW.ValueRW, in targetPosition.Value, moveSpeed.Value * SystemAPI.Time.DeltaTime);
-            }
+
+            MoveToTarget(ref localTransformRW.ValueRW, in targetPosition.Value, moveSpeed.Value * SystemAPI.Time.DeltaTime);
         }
 
         [BurstCompile]

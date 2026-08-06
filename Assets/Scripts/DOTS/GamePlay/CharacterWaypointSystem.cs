@@ -21,6 +21,7 @@ namespace DOTS.GamePlay
             state.RequireForUpdate<PlayerWaypointIndex>();
             state.RequireForUpdate<PlayerBoardIndex>();
             state.RequireForUpdate<PlayerArrivedAtDestinationEvent>();
+            state.RequireForUpdate<GameStateComponent>();
         }
 
         [BurstCompile]
@@ -32,7 +33,13 @@ namespace DOTS.GamePlay
                 return;
             }
 
+            var gameState = SystemAPI.GetSingleton<GameStateComponent>();
+
             var moveState = SystemAPI.GetComponentRW<PlayerMovementState>(activePlayerEntity);
+            if (gameState.State == GameState.Walking && moveState.ValueRO.Value != MoveState.Walking)
+            {
+                moveState.ValueRW.Value = MoveState.Walking;
+            }
 
             if (moveState.ValueRO.Value != MoveState.Walking) return;
 
@@ -66,6 +73,7 @@ namespace DOTS.GamePlay
                         SystemAPI.GetSingletonBuffer<PlayerArrivedAtDestinationEvent>().Add(new PlayerArrivedAtDestinationEvent { });
 
                         moveState.ValueRW.Value = MoveState.Idle;
+                        UnityEngine.Debug.Log($"[CharacterWaypointSystem] | setting moveState back to idle moveState: {moveState.ValueRO.Value}");
                     }
                 }
 

@@ -5,6 +5,7 @@ using Unity.Entities;
 namespace DOTS.GamePlay.CharacterAnimationSystems2
 {
     [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct AnimationFrameAdvancement : ISystem
     {
         [BurstCompile]

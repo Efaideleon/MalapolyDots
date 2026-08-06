@@ -4,6 +4,7 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay.CharacterAnimationSystems2
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct AnimationStateResolver : ISystem
     {
@@ -26,6 +27,7 @@ namespace DOTS.GamePlay.CharacterAnimationSystems2
     {
         public void Execute(in DesiredAnimation desiredAnimation, ref AnimationStateComponent animationState, in AnimationDataLibrary library)
         {
+            //UnityEngine.Debug.Log($"[AnimationStateResolver] | desiredAnimation: {desiredAnimation.Value.ToString()}");
             var desiredAnim = desiredAnimation.Value;
             if (desiredAnim != animationState.CurrentAnimation && desiredAnim != animationState.PendingAnimation)
             {

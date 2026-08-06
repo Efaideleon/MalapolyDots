@@ -13,6 +13,7 @@ namespace Malapoly.DOTS.GameSpaces
                 var entity = GetEntity(authoring, TransformUsageFlags.NonUniformScale);
                 AddComponent(entity, new ForSaleSignTag { });
                 AddComponent(entity, new VisibleStateComponent { Value = VisibleState.Visible });
+                AddComponent(entity, new ClientVisibleState { State = VisibleState.Visible });
             }
         }
     }
@@ -24,6 +25,11 @@ namespace Malapoly.DOTS.GameSpaces
         Visible,
         Hiding,
         Hidden,
+    }
+
+    public struct ClientVisibleState : IComponentData
+    {
+        public VisibleState State;
     }
 
     [GhostComponent(SendDataForChildEntity = true)]
