@@ -14,13 +14,14 @@ namespace DOTS.Mediator.Systems
         public PayRentPanelContext Value;
     }
 
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct PayRentPanelUpdaterSystem : ISystem
     {
         public ComponentLookup<SpaceLandedOn> spaceLandedOnLookup;
         public ComponentLookup<LastPropertyClicked> lastPropertyClickedLookup;
         public ComponentLookup<PropertySpaceTag> propertySpaceLookup;
-        public ComponentLookup<RentComponent> rentLookup;
+        public ComponentLookup<GhostRentComponent> rentLookup;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -34,7 +35,7 @@ namespace DOTS.Mediator.Systems
             spaceLandedOnLookup = SystemAPI.GetComponentLookup<SpaceLandedOn>(true);
             lastPropertyClickedLookup = SystemAPI.GetComponentLookup<LastPropertyClicked>(true);
             propertySpaceLookup = SystemAPI.GetComponentLookup<PropertySpaceTag>(true);
-            rentLookup = SystemAPI.GetComponentLookup<RentComponent>(true);
+            rentLookup = SystemAPI.GetComponentLookup<GhostRentComponent>(true);
         }
 
         [BurstCompile]
@@ -63,12 +64,15 @@ namespace DOTS.Mediator.Systems
 
             if (spaceLandedOnLookup.HasComponent(activePlayerEntity) && spaceLandedOnLookup.DidChange(activePlayerEntity, state.LastSystemVersion))
             {
+                UnityEngine.Debug.Log($"[PayRentPanelUpdaterSystem] | running..");
                 var spaceLandedOnEntity = spaceLandedOnLookup[activePlayerEntity].entity;
                 if (spaceLandedOnEntity != Entity.Null && propertySpaceLookup.HasComponent(spaceLandedOnEntity))
                 {
                     if (rentLookup.HasComponent(spaceLandedOnEntity))
                     {
-                        UpdatePayRentPanel(ref state, rentLookup[spaceLandedOnEntity].Value);
+                        var rent = rentLookup[spaceLandedOnEntity].Value;
+                        UnityEngine.Debug.Log($"[PayRentPanelUpdaterSystem] | rent: {rent}");
+                        UpdatePayRentPanel(ref state, rent);
                     }
                 }
             }

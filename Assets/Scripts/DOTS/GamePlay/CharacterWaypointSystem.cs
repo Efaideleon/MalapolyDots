@@ -73,7 +73,6 @@ namespace DOTS.GamePlay
                         SystemAPI.GetSingletonBuffer<PlayerArrivedAtDestinationEvent>().Add(new PlayerArrivedAtDestinationEvent { });
 
                         moveState.ValueRW.Value = MoveState.Idle;
-                        UnityEngine.Debug.Log($"[CharacterWaypointSystem] | setting moveState back to idle moveState: {moveState.ValueRO.Value}");
                     }
                 }
 

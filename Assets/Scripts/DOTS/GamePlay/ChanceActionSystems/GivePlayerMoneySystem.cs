@@ -5,6 +5,7 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay.ChanceActionSystems
 {
+    // TODO: Might to make this system into one system that applies the cards effects?
     [BurstCompile]
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct GivePlayerMoneySystem : ISystem
@@ -29,11 +30,7 @@ namespace DOTS.GamePlay.ChanceActionSystems
                 {
                     foreach (var (money, card) in SystemAPI.Query<RefRW<GhostMoneyComponet>, RefRO<GhostChanceCardPicked>>().WithAll<ActivePlayer>())
                     {
-                        if (card.ValueRO.id == 0)
-                        {
-                            // TODO: what if the entity is null;
-                            money.ValueRW.Value += 1;
-                        }
+                        money.ValueRW.Value += card.ValueRO.amount;
                     }
                 }
 

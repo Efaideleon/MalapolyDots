@@ -308,7 +308,8 @@ namespace DOTS.Mediator
             var transactionEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<PurchasePropertyEventBuffer>().Build();
             var hideBackDropEvent = new HideBackDropEvent(panelControllers.backdropController);
 
-            var payRentTransactionEvent = new TransactionEvent(transactionEventBufferQuery, TransactionEventType.PayRent);
+            var payRentEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            var payRentTransactionEvent = new TransactionEvent(payRentEventBufferQuery, TransactionEventType.PayRent);
             var payRentButtonEvents = new List<IButtonEvent> { payRentTransactionEvent, hideBackDropEvent };
             panelControllers.payRentPanelController = new(payRentPanel, payRentPanelContext, payRentButtonEvents);
 
@@ -369,14 +370,17 @@ namespace DOTS.Mediator
 
             var buyHouseEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<BuyHouseEventBuffer>().Build();
             panelControllers.purchaseHousePanelController.SetEventBufferQuery(buyHouseEventBufferQuery);
+
             panelControllers.purchasePropertyPanelController.SetEventBufferQuery(transactionEventBufferQuery);
 
             var chanceEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             panelControllers.chancePanelController.SetEventBufferQuery(chanceEventBufferQuery);
 
-            panelControllers.jailPanelController.SetEventBufferQuery(transactionEventBufferQuery);
-            panelControllers.parkingPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+            var parkingEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.parkingPanelController.SetEventBufferQuery(parkingEventBufferQuery);
 
+            var jailEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.jailPanelController.SetEventBufferQuery(jailEventBufferQuery);
             var goToJailEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             panelControllers.goToJailPanelController.SetEventBufferQuery(goToJailEventBufferQuery);
             panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);

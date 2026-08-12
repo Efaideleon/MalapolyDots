@@ -52,8 +52,18 @@ namespace Assets.Scripts.DOTS.Characters
                 AddComponent<ActivePlayer>(authoringEntity);
                 AddComponent<GhostChanceCardPicked>(authoringEntity);
                 AddComponent<GhostTreasureCardPicked>(authoringEntity);
+                AddComponent<JailState>(authoringEntity);
             }
         }
+    }
+
+    [GhostComponent]
+    public struct JailState : IComponentData
+    {
+        [GhostField] public bool InJail;
+        [GhostField] public byte TurnsInJail;      // increments each turn stuck in jail
+        [GhostField] public bool HasGetOutOfJailFreeCard;
+        [GhostField] public byte DoublesRollAttempts; // optional, if you track per-turn attempts
     }
 
     [GhostComponent]
@@ -68,6 +78,9 @@ namespace Assets.Scripts.DOTS.Characters
 
         [GhostField]
         public FixedString64Bytes msg;
+
+        [GhostField]
+        public int amount;
     }
 
     [GhostComponent]
@@ -79,7 +92,7 @@ namespace Assets.Scripts.DOTS.Characters
         [GhostField]
         public FixedString64Bytes msg;
 
-        [GhostField] 
+        [GhostField]
         public int amount;
     }
 

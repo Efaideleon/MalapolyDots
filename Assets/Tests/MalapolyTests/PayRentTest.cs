@@ -39,7 +39,7 @@ public class RentCalculatorSystemTests : ECSTestsFixture
     {
         // Create an entity with the required components.
         Entity entity = entityManager.CreateEntity(
-            typeof(RentComponent),
+            typeof(GhostRentComponent),
             typeof(OwnerComponent)
         );
 
@@ -50,7 +50,7 @@ public class RentCalculatorSystemTests : ECSTestsFixture
         // Set OwnerComponent to a non-vacant ID (e.g., 1).
         entityManager.SetComponentData(entity, new OwnerComponent { ID = 1 });
         // Initialize the rent to 0.
-        entityManager.SetComponentData(entity, new RentComponent { Value = 0 });
+        entityManager.SetComponentData(entity, new GhostRentComponent { Value = 0 });
         // Add a base rent value to the buffer.
         baseRents.Add(new BaseRentBuffer { Value = 1000 });
 
@@ -58,7 +58,7 @@ public class RentCalculatorSystemTests : ECSTestsFixture
         testWorld.Update();
 
         // Verify the RentComponent was updated to match the first base rent.
-        RentComponent rentAfterUpdate = entityManager.GetComponentData<RentComponent>(entity);
+        GhostRentComponent rentAfterUpdate = entityManager.GetComponentData<GhostRentComponent>(entity);
         Assert.AreEqual(1000, rentAfterUpdate.Value);
     }
 
@@ -67,7 +67,7 @@ public class RentCalculatorSystemTests : ECSTestsFixture
     {
         // Create an entity with the required components.
         Entity entity = entityManager.CreateEntity(
-            typeof(RentComponent),
+            typeof(GhostRentComponent),
             typeof(OwnerComponent)
         );
 
@@ -78,7 +78,7 @@ public class RentCalculatorSystemTests : ECSTestsFixture
         // Set OwnerComponent to vacant using PropertyConstants.
         entityManager.SetComponentData(entity, new OwnerComponent { ID = PropertyConstants.Vacant });
         // Initialize the rent to 0.
-        entityManager.SetComponentData(entity, new RentComponent { Value = 0 });
+        entityManager.SetComponentData(entity, new GhostRentComponent { Value = 0 });
         // Add a base rent value.
         baseRents.Add(new BaseRentBuffer { Value = 1000 });
 
@@ -86,7 +86,7 @@ public class RentCalculatorSystemTests : ECSTestsFixture
         testWorld.Update();
 
         // Verify the RentComponent remains unchanged because the owner is vacant.
-        RentComponent rentAfterUpdate = entityManager.GetComponentData<RentComponent>(entity);
+        GhostRentComponent rentAfterUpdate = entityManager.GetComponentData<GhostRentComponent>(entity);
         Assert.AreEqual(0, rentAfterUpdate.Value);
     }
 }

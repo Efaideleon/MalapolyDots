@@ -8,6 +8,7 @@ namespace DOTS.UI.Controllers
     {
         public int OwnerID;         
         public int CurrentPlayerID; 
+        public bool isLocal;
     }
 
     public class PropertyPopupManager
@@ -27,8 +28,14 @@ namespace DOTS.UI.Controllers
         {
             var ownerID = Context.OwnerID;
             var currentPlayerID = Context.CurrentPlayerID;
-            if (!IsSpaceFree(ownerID) && !IsPlayerOwner(ownerID, currentPlayerID)) 
+
+            UnityEngine.Debug.Log($"[PropertyPopupManager] | currentPlayerID: {currentPlayerID}");
+            UnityEngine.Debug.Log($"[PropertyPopupManager] | ownerID: {ownerID}");
+            if (!IsSpaceFree(ownerID) && !IsPlayerOwner(ownerID, currentPlayerID) && Context.isLocal)
+            {
+                UnityEngine.Debug.Log($"[PropertyPopupManager] | showing pay rent panel");
                 PayRentPanel.Show(); 
+            }
         }
 
         private bool IsPlayerOwner(int ownerID, int playerID) => ownerID == playerID;

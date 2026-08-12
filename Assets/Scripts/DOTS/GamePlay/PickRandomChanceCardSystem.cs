@@ -42,11 +42,12 @@ namespace DOTS.GamePlay
 
                             UnityEngine.Debug.Log($"[PickRandomChanceCardSystem] | length of the buffer: {chanceActionData.Length}");
 
-                            //var randomNumber = randomData.ValueRW.Value.NextInt(0, numOfActions);
-                            var randomNumber = 0; 
+                            var randomNumber = randomData.ValueRW.Value.NextInt(0, numOfActions);
+                            //var randomNumber = 0; 
 
                             chanceCardPicked.ValueRW.id = chanceActionData[randomNumber].id;
                             chanceCardPicked.ValueRW.msg = chanceActionData[randomNumber].msg;
+                            chanceCardPicked.ValueRW.amount = chanceActionData[randomNumber].amount;
                         }
                     }
                 }

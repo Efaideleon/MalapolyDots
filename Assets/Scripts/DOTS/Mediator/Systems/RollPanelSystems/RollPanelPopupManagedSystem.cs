@@ -30,17 +30,24 @@ namespace DOTS.Mediator.Systems.RollPanelSystems
                 return;
 
             var clientId = SystemAPI.GetSingleton<NetworkId>();
-            var playerId = SystemAPI.GetComponent<GhostOwner>(currentActivePlayer.Entity);
+            var currentPlayerId = SystemAPI.GetComponent<GhostOwner>(currentActivePlayer.Entity);
             var gameState = SystemAPI.GetSingleton<GameStateComponent>();
-            bool isLocalPlayer = clientId.Value == playerId.NetworkId;
-            var newPanelState = GetPanelState(gameState.State, isLocalPlayer);
+            bool isLocalPlayer = clientId.Value == currentPlayerId.NetworkId;
+            var isInJail = SystemAPI.GetComponent<JailState>(currentActivePlayer.Entity).InJail;
+            var newPanelState = GetPanelState(gameState.State, isLocalPlayer, isInJail);
 
             rollPanel.SetState(newPanelState);
         }
 
         // TODO: the current state depends if its the current active or not.
-        private readonly RollPanelState GetPanelState(GameState gameState, bool isLocalPlayer)
+        private readonly RollPanelState GetPanelState(GameState gameState, bool isLocalPlayer, bool isInJail)
         {
+            //  if in jail hide the roll panel.
+            if (isInJail)
+            {
+                return RollPanelState.Hidden;
+            }
+
             if (!isLocalPlayer)
             {
                 return RollPanelState.CountingDown;

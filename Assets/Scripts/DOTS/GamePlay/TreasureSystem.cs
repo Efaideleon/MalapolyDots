@@ -1,12 +1,11 @@
+using System;
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters.CharactersMaterialAuthoring;
 using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
@@ -34,6 +33,8 @@ namespace DOTS.GamePlay
                     foreach (var (spaceLandedOn, treasureCardPicked) in SystemAPI.Query<RefRO<SpaceLandedOn>, RefRW<GhostTreasureCardPicked>>().WithAll<ActivePlayer>())
                     {
                         var landedOnEntity = spaceLandedOn.ValueRO.entity;
+
+                        // If landed on a treasure spot.
                         if (SystemAPI.HasComponent<TreasureSpaceTag>(landedOnEntity))
                         {
                             var cards = SystemAPI.GetBuffer<TreasureCardsBuffer>(landedOnEntity);
@@ -43,13 +44,16 @@ namespace DOTS.GamePlay
                             treasureCardPicked.ValueRW.id = cardChosen.id;
                             treasureCardPicked.ValueRW.msg = cardChosen.msg;
                             treasureCardPicked.ValueRW.amount = cardChosen.amount;
-                            
-                            UnityEngine.Debug.Log($"[TreasureSystem] | cardChosen msg: {treasureCardPicked.ValueRO.msg.ToString()}");
+
+                            // Give treasure money
+                            foreach (var money in SystemAPI.Query<RefRW<GhostMoneyComponet>>().WithAll<ActivePlayer>())
+                            {
+                                money.ValueRW.Value += treasureCardPicked.ValueRO.amount;
+                            }
 
                             // Reset that treasure's open animation.
                             SystemAPI.GetComponentRW<CurrentTreasureAnimation>(landedOnEntity).ValueRW.Value = TreasureAnimation.Open;
                             SystemAPI.GetComponentRW<AnimationPlayState>(landedOnEntity).ValueRW.Value = PlayState.Playing;
-                            UnityEngine.Debug.Log($"[TreasureSystem] | Set Animation to open");
                         }
                     }
                 }

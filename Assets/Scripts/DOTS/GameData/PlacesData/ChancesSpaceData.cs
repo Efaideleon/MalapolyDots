@@ -13,5 +13,6 @@ namespace DOTS.GameData.PlacesData
     {
         public int id;
         public string msg;
+        public int amount;
     }
 }

@@ -32,7 +32,6 @@ namespace DOTS.GamePlay
             if (moveState.Value != MoveState.Walking)
                 return;
 
-            UnityEngine.Debug.Log($"[MoveCharacterSystem] | gamestate is walking");
             var localTransformRW = SystemAPI.GetComponentRW<LocalTransform>(activePlayer);
             var targetPosition = SystemAPI.GetComponent<TargetPosition>(activePlayer);
             var moveSpeed = SystemAPI.GetComponent<MoveSpeed>(activePlayer);

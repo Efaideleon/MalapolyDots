@@ -33,8 +33,21 @@ namespace Assets.Scripts.DOTS.GamePlay
             {
                 // Why is this running every frame after clicking Change Turn? isn't the entity being destroyed after the event is processed???
                 // Handle each change turn request
-                //var totalRounds = SystemAPI.GetSingleton<LoginData>().NumberOfRounds;
-                //var totalNumOfPlayer = SystemAPI.GetSingleton<LoginData>().NumberOfPlayers;
+
+                // Redude the jail count when the player changes turn.
+                foreach (var jailState in SystemAPI.Query<RefRW<JailState>>().WithAll<ActivePlayer>())
+                {
+                    if (jailState.ValueRO.InJail && jailState.ValueRO.TurnsInJail > 0)
+                    {
+                        UnityEngine.Debug.Log($"[ChangeTurnSystem] | TurnsInJail: {jailState.ValueRO.TurnsInJail}");
+                        jailState.ValueRW.TurnsInJail -= 1;
+                        if (jailState.ValueRO.TurnsInJail == 0)
+                        {
+                            jailState.ValueRW.InJail = false;
+                            UnityEngine.Debug.Log($"[ChangeTurnSystem] | exiting jail.");
+                        }
+                    }
+                }
 
                 var totalNumOfCharacters = SystemAPI.GetSingleton<GeneralGhostStates>().TotalNumberOfCharSpawned;
                 _currentTurn += 1;
@@ -62,6 +75,7 @@ namespace Assets.Scripts.DOTS.GamePlay
                         .WithOptions(EntityQueryOptions.IgnoreComponentEnabledState)
                         .WithEntityAccess())
                 {
+
                     var characterSelectedNames = SystemAPI.GetSingletonBuffer<PlayersSortedByNetId>();
                     if (characterSelectedNames[currentPlayerIndex.ValueRO.Index].Name == name.ValueRO.Value)
                     {

@@ -22,6 +22,8 @@ namespace DOTS.GamePlay.ChanceActionSystems
             foreach (var (_, _, entity) in SystemAPI.Query<RefRO<ChanceRpc>, RefRO<ReceiveRpcCommandRequest>>().WithEntityAccess())
             {
                 var buffer = SystemAPI.GetSingletonBuffer<ChanceBufferEvent>();
+
+                // TODO: Pick a random card and send the event
                 buffer.Add(new ChanceBufferEvent { });
                 ecb.DestroyEntity(entity);
             }

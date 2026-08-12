@@ -5,22 +5,23 @@ using Unity.Entities;
 
 namespace DOTS.GamePlay
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [BurstCompile]
     public partial struct RentCalculatorSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<OwnerComponent>();
-            state.RequireForUpdate<RentComponent>();
+            state.RequireForUpdate<GhostRentComponent>();
             state.RequireForUpdate<BaseRentBuffer>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (rent, owner, entity) in 
+            foreach (var (rent, owner, entity) in
                     SystemAPI.Query<
-                    RefRW<RentComponent>, 
+                    RefRW<GhostRentComponent>,
                     RefRO<OwnerComponent>
                     >()
                     .WithEntityAccess()
@@ -30,6 +31,7 @@ namespace DOTS.GamePlay
                 if (owner.ValueRO.ID != PropertyConstants.Vacant)
                 {
                     rent.ValueRW.Value = baseRentsBuffer[0].Value;
+                    UnityEngine.Debug.Log($"[RentCalculatorSystem] | rent to charge: {rent.ValueRO.Value}");
                 }
             }
         }

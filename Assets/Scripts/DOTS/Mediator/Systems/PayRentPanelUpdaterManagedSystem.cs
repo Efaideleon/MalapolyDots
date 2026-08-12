@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace DOTS.Mediator.Systems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PayRentPanelUpdaterManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

@@ -23,7 +23,7 @@ namespace DOTS.Mediator.Systems.ChancePanelSystems
                 var service = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
                 if (service.TryGet<ChancePanelController>(out var chancePanel))
                 {
-                    var context = new ChancePanelContext { Title = cardPicked.ValueRO.msg.ToString() };
+                    var context = new ChancePanelContext { Title = cardPicked.ValueRO.msg.ToString() + " " + cardPicked.ValueRO.amount.ToString()};
                     chancePanel.Update(context);
                 }
             }

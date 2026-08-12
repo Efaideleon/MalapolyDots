@@ -76,7 +76,6 @@ namespace DOTS.GamePlay
                 var arrived = finalArrivedLookup.GetRefRW(activePlayerEntity);
                 if (arrived.ValueRO.Value == true)
                 {
-                    UnityEngine.Debug.Log($"[GameState] | Changing gamestate to Landing");
                     SystemAPI.GetSingletonRW<GameStateComponent>().ValueRW.State = GameState.Landing;
                     arrived.ValueRW.Value = false;
                 }

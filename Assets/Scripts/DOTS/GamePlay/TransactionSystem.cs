@@ -77,7 +77,7 @@ namespace DOTS.GamePlay
                             var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
                             if (ownerEntity != Entity.Null)
                             {
-                                var rent = SystemAPI.GetComponent<RentComponent>(spaceLandedOnEntity).Value;
+                                var rent = SystemAPI.GetComponent<GhostRentComponent>(spaceLandedOnEntity).Value;
                                 var playerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(activePlayerEntity);
                                 var ownerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(ownerEntity);
 

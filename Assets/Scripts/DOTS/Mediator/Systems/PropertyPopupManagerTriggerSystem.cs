@@ -4,11 +4,12 @@ using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
 using DOTS.UI.Controllers;
-using DOTS.UI.Panels;
 using Unity.Entities;
+using Unity.NetCode;
 
 namespace DOTS.Mediator.Systems
 {
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PropertyPopupManagerTriggerSystem : ISystem
     {
         public ComponentLookup<GameStateComponent> gameStateLookup;
@@ -19,7 +20,6 @@ namespace DOTS.Mediator.Systems
         {
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<PropertySpaceTag>();
-            state.RequireForUpdate<LandedOnSpace>();
             state.RequireForUpdate<PopupManagers>();
             state.RequireForUpdate<CurrentActivePlayer>();
             state.RequireForUpdate<GhostDataLoadedTag>();
@@ -37,6 +37,7 @@ namespace DOTS.Mediator.Systems
 
             Entity gameStateEntity = SystemAPI.GetSingletonEntity<GameStateComponent>();
             Entity activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            
 
             if (!gameStateLookup.HasComponent(gameStateEntity)) return;
             if (!gameStateLookup.DidChange(gameStateEntity, state.LastSystemVersion)) return;
@@ -46,6 +47,7 @@ namespace DOTS.Mediator.Systems
             if (!propertySpaceLookup.HasComponent(spaceLanded)) return;
 
             GameState gameState = gameStateLookup[gameStateEntity].State;
+            UnityEngine.Debug.Log($"[PropertyPopupManagerTriggerSystem] | running..");
 
             var popupManagers = SystemAPI.ManagedAPI.GetSingleton<PopupManagers>();
             if (popupManagers != null)
@@ -55,12 +57,23 @@ namespace DOTS.Mediator.Systems
                     switch (gameState)
                     {
                         case GameState.Landing:
+                            // if is not the active player, don't show this popup.
+                            var currentActivePlayer = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+
+                            var clientId = SystemAPI.GetSingleton<NetworkId>();
+                            var playerId = SystemAPI.GetComponent<GhostOwner>(currentActivePlayer);
+                            bool isLocalPlayer = clientId.Value == playerId.NetworkId;
+
                             PropertyPopupManagerContext propertyPopupManagerContext = new()
                             {
                                 OwnerID = SystemAPI.GetComponent<OwnerComponent>(spaceLanded).ID,
-                                CurrentPlayerID = SystemAPI.GetSingleton<CurrentPlayerID>().Value
+                                CurrentPlayerID = playerId.NetworkId,
+                                isLocal = isLocalPlayer
                             };
+
                             popupManagers.propertyPopupManager.Context = propertyPopupManagerContext;
+                            UnityEngine.Debug.Log($"[PropertyPopupManagerTriggerSystem] | showing property popup");
+
                             popupManagers.propertyPopupManager.TriggerPopup();
                             break;
                     }

@@ -35,19 +35,14 @@ namespace DOTS.GamePlay
             {
                 bool purchased = owner.ValueRO.ID != PropertyConstants.Vacant;
 
-                UnityEngine.Debug.Log($"[ForSaleSignControllerSystem] | owner id: {owner.ValueRO.ID}");
-
                 if (purchased)
                 {
                     // The ForSaleComponent points to the child forsale sign entity.
                     // Should i make it a ghost component?
                     // or there a method to reference child entity better now?
                     var forSaleSignEntity = forSaleComponent.ValueRW.entity;
-                    UnityEngine.Debug.Log($"[ForSalejsignControllerSystem] | forSaleSignEntity: {forSaleSignEntity}");
                     ref var visibleStateCompRW = ref SystemAPI.GetComponentRW<VisibleStateComponent>(forSaleSignEntity).ValueRW;
                     visibleStateCompRW.Value = VisibleState.Hiding;
-
-                    UnityEngine.Debug.Log($"[ForSaleSignControllerSystem] | hiding forsale sign : {visibleStateCompRW.Value.ToString()}");
                 }
             }
         }

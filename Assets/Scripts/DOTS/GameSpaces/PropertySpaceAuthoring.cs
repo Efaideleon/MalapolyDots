@@ -30,7 +30,7 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new OwnerComponent { ID = PropertyConstants.Vacant });
                 AddComponent(entity, new OwnerByEntityComponent { Entity = Entity.Null });
                 AddComponent(entity, new PropertySpaceTag { });
-                AddComponent(entity, new RentComponent { Value = 0 });
+                AddComponent(entity, new GhostRentComponent { Value = 0 });
                 AddComponent(entity, new ColorCodeComponent { Value = authoring.Data.Color });
                 AddComponent(entity, new MonopolyFlagComponent { Value = false });
                 AddComponent(entity, new HouseCount { Value = 0 });

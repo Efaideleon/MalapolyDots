@@ -56,6 +56,24 @@ namespace Assets.Scripts.DOTS.Mediator
                             ecb.AddComponent<ChanceRpc>(chanceRpcEntity);
                             ecb.AddComponent<SendRpcCommandRequest>(chanceRpcEntity);
                             break;
+                        case TransactionEventType.PayRent:
+                            UnityEngine.Debug.Log($"[RouteTransactionToServer] | pay rent event...");
+                            Entity payRentRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<PayRentRpc>(payRentRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(payRentRpcEntity);
+                            break;
+                        case TransactionEventType.Parking:
+                            UnityEngine.Debug.Log($"[RouteTransactionToServer] | parking event...");
+                            Entity parkingRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<PayRentRpc>(parkingRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(parkingRpcEntity);
+                            break;
+                        case TransactionEventType.Jail:
+                            UnityEngine.Debug.Log($"[RouteTransactionToServer] | jail event...");
+                            Entity jailRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<JailRpc>(jailRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(jailRpcEntity);
+                            break;
                     }
                 }
                 transactionBuffer.Clear();
@@ -67,6 +85,12 @@ namespace Assets.Scripts.DOTS.Mediator
     }
 
     public struct ChanceRpc : IRpcCommand
+    { }
+
+    public struct PayRentRpc : IRpcCommand
+    { }
+
+    public struct JailRpc : IRpcCommand
     { }
 
     public struct PayTaxesRpc : IRpcCommand

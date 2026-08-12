@@ -23,7 +23,7 @@ namespace DOTS.GameSpaces
                 var buffer = AddBuffer<ChanceActionDataBuffer>(entity);
                 foreach (var data in authoring.Data.chancesActionData)
                 {
-                    buffer.Add(new ChanceActionDataBuffer { id = data.id, msg = data.msg });
+                    buffer.Add(new ChanceActionDataBuffer { id = data.id, msg = data.msg, amount = data.amount });
                 }
             }
         }
@@ -36,5 +36,6 @@ namespace DOTS.GameSpaces
     {
         public int id;
         public FixedString64Bytes msg;
+        public int amount;
     }
 }

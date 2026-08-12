@@ -24,7 +24,7 @@ namespace DOTS.GamePlay
                 ref SpaceIDComponent id,
                 ref BoardIndexComponent boardIdx,
                 ref PriceComponent price,
-                ref RentComponent rent,
+                ref GhostRentComponent rent,
                 ref ColorCodeComponent color,
                 ref DynamicBuffer<BaseRentBuffer> rentBuffer
                 )

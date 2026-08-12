@@ -12,7 +12,7 @@ namespace DOTS.UI.Controllers
     }
 
     public class JailPanelController : IDisposable, IPanelControllerNew<JailPanelContext>
-    {        
+    {
         public JailPanel Panel { get; private set; }
         public EntityQuery TransactionEventBusQuery { get; private set; }
         public JailPanelContext Context { get; set; }
