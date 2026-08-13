@@ -1,18 +1,13 @@
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay.Systems;
-using Assets.Scripts.DOTS.Mediator;
-using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.EventBuses;
 using DOTS.GameData;
-using DOTS.GamePlay.ChanceActionSystems;
 using DOTS.GamePlay.PropertyAnimations;
 using DOTS.GameSpaces;
 using TitleScreen.GamePlay;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
@@ -64,29 +59,29 @@ namespace DOTS.GamePlay
                 var characterSelectedNames = SystemAPI.GetSingletonBuffer<CharacterSelectedNameBuffer>();
                 foreach (var transaction in transactionBuffer)
                 {
-                    // Sent by the ui.
-                    if (transaction.EventType == TransactionEventType.PayRent)
-                    {
-                        var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
-                        var spaceLandedOnEntity = SystemAPI.GetComponent<SpaceLandedOn>(activePlayerEntity).entity;
-
-                        // Did we land on a property.
-                        if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLandedOnEntity))
-                        {
-                            // Does the property have an owner.
-                            var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
-                            if (ownerEntity != Entity.Null)
-                            {
-                                var rent = SystemAPI.GetComponent<GhostRentComponent>(spaceLandedOnEntity).Value;
-                                var playerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(activePlayerEntity);
-                                var ownerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(ownerEntity);
-
-                                // Rent transaction.
-                                playerMoney.ValueRW.Value -= rent;
-                                ownerMoney.ValueRW.Value += rent;
-                            }
-                        }
-                    }
+                    // // Sent by the ui.
+                    // if (transaction.EventType == TransactionEventType.PayRent)
+                    // {
+                    //     var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                    //     var spaceLandedOnEntity = SystemAPI.GetComponent<SpaceLandedOn>(activePlayerEntity).entity;
+                    //
+                    //     // Did we land on a property.
+                    //     if (SystemAPI.HasComponent<PropertySpaceTag>(spaceLandedOnEntity))
+                    //     {
+                    //         // Does the property have an owner.
+                    //         var ownerEntity = SystemAPI.GetComponent<OwnerByEntityComponent>(spaceLandedOnEntity).Entity;
+                    //         if (ownerEntity != Entity.Null)
+                    //         {
+                    //             var rent = SystemAPI.GetComponent<GhostRentComponent>(spaceLandedOnEntity).Value;
+                    //             var playerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(activePlayerEntity);
+                    //             var ownerMoney = SystemAPI.GetComponentRW<GhostMoneyComponet>(ownerEntity);
+                    //
+                    //             // Rent transaction.
+                    //             playerMoney.ValueRW.Value -= rent;
+                    //             ownerMoney.ValueRW.Value += rent;
+                    //         }
+                    //     }
+                    // }
 
                     // // Purchase the property if possible
                     // if (transaction.EventType == TransactionEventType.Purchase)

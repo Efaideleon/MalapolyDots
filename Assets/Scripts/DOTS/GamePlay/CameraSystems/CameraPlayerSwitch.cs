@@ -1,6 +1,5 @@
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
-using DOTS.DataComponents;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;

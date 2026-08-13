@@ -50,17 +50,26 @@ namespace Assets.Scripts.DOTS.GamePlay
                                 {
                                     var propertyPrice = SystemAPI.GetComponent<PriceComponent>(landOnProperty.entity);
                                     ref var playerMoney = ref SystemAPI.GetComponentRW<GhostMoneyComponet>(currentPlayerEntity).ValueRW;
-                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property to buy price: {propertyPrice.Value}");
-                                    playerMoney.Value -= propertyPrice.Value;
-                                    owner.ValueRW.ID = playerId;
-                                    ownedByEntity.ValueRW.Entity = currentPlayerEntity;
 
-                                    var name = SystemAPI.GetComponent<NameComponent>(landOnProperty.entity);
-                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property Bought! {name.Value}");
-                                    var updatedMoney = SystemAPI.GetComponent<GhostMoneyComponet>(currentPlayerEntity);
-                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | player new money {updatedMoney.Value}");
-                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | owned by Entity {ownedByEntity.ValueRO.Entity}");
-                                    UnityEngine.Debug.Log($"[PurchasePropertySystem] | owned by id: {owner.ValueRO.ID}");
+                                    bool canAfford = (playerMoney.Value - propertyPrice.Value) > 0;
+                                    if (canAfford)
+                                    {
+                                        UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property to buy price: {propertyPrice.Value}");
+                                        playerMoney.Value -= propertyPrice.Value;
+                                        owner.ValueRW.ID = playerId;
+                                        ownedByEntity.ValueRW.Entity = currentPlayerEntity;
+
+                                        var name = SystemAPI.GetComponent<NameComponent>(landOnProperty.entity);
+                                        UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property Bought! {name.Value}");
+                                        var updatedMoney = SystemAPI.GetComponent<GhostMoneyComponet>(currentPlayerEntity);
+                                        UnityEngine.Debug.Log($"[PurchasePropertySystem] | player new money {updatedMoney.Value}");
+                                        UnityEngine.Debug.Log($"[PurchasePropertySystem] | owned by Entity {ownedByEntity.ValueRO.Entity}");
+                                        UnityEngine.Debug.Log($"[PurchasePropertySystem] | owned by id: {owner.ValueRO.ID}");
+                                    }
+                                    else
+                                    {
+                                        UnityEngine.Debug.Log($"[PurchasePropertySystem] | can't afford the property");
+                                    }
                                 }
                                 else
                                 {
