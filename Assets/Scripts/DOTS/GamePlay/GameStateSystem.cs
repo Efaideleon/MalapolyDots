@@ -12,6 +12,7 @@ namespace DOTS.GamePlay
         Rolling,
         Walking,
         Landing,
+        GameOver,
     }
 
     public struct TurnChangedFlag : IComponentData
@@ -40,6 +41,7 @@ namespace DOTS.GamePlay
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            if (SystemAPI.GetSingleton<GameStateComponent>().State == GameState.GameOver) return;
             finalArrivedLookup.Update(ref state);
             var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             if (activePlayerEntity == null)
@@ -79,6 +81,60 @@ namespace DOTS.GamePlay
                     SystemAPI.GetSingletonRW<GameStateComponent>().ValueRW.State = GameState.Landing;
                     arrived.ValueRW.Value = false;
                 }
+            }
+        }
+    }
+}
+
+namespace DOTS.GamePlay
+{
+    // This game has no mortgages or liquidation: inability to pay cash ends a player's game.
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    [UpdateAfter(typeof(PayRentSystem))]
+    [UpdateAfter(typeof(Assets.Scripts.DOTS.GamePlay.PayTaxesSystem))]
+    [UpdateAfter(typeof(TreasureSystem))]
+    [UpdateAfter(typeof(PickRandomChanceCardSystem))]
+    [UpdateBefore(typeof(Assets.Scripts.DOTS.GamePlay.ChangeTurnSystem))]
+    public partial struct BankruptcySystem : ISystem
+    {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<BankruptPlayer>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var game = SystemAPI.GetSingleton<GameStateComponent>();
+            if (!game.AllPlacesInstantiated || game.State == GameState.GameOver) return;
+            int players = 0, survivors = 0, winner = 0;
+            foreach (var (money, bankrupt, owner, player) in SystemAPI.Query<RefRO<GhostMoneyComponet>, RefRW<BankruptPlayer>, RefRO<GhostOwner>>().WithEntityAccess())
+            {
+                players++;
+                if (money.ValueRO.Value < 0 && !bankrupt.ValueRO.Value)
+                {
+                    bankrupt.ValueRW.Value = true;
+                    // Return eliminated players' properties to the bank.
+                    foreach (var (propertyOwner, ownerEntity, property) in SystemAPI.Query<RefRW<DOTS.DataComponents.OwnerComponent>, RefRW<DOTS.DataComponents.OwnerByEntityComponent>>().WithEntityAccess())
+                    {
+                        if (ownerEntity.ValueRO.Entity != player) continue;
+                        propertyOwner.ValueRW.ID = DOTS.Constants.PropertyConstants.Vacant;
+                        ownerEntity.ValueRW.Entity = Entity.Null;
+                        if (SystemAPI.HasComponent<DOTS.DataComponents.MonopolyFlagComponent>(property))
+                            SystemAPI.SetComponent(property, new DOTS.DataComponents.MonopolyFlagComponent());
+                        if (SystemAPI.HasComponent<DOTS.DataComponents.HouseCount>(property))
+                            SystemAPI.SetComponent(property, new DOTS.DataComponents.HouseCount());
+                        if (SystemAPI.HasComponent<DOTS.DataComponents.GhostRentComponent>(property))
+                            SystemAPI.SetComponent(property, new DOTS.DataComponents.GhostRentComponent());
+                    }
+                }
+                if (!bankrupt.ValueRO.Value) { survivors++; winner = owner.ValueRO.NetworkId; }
+            }
+            if (players >= 2 && survivors <= 1)
+            {
+                game.WinnerNetworkId = survivors == 1 ? winner : 0;
+                game.State = GameState.GameOver;
+                SystemAPI.SetSingleton(game);
             }
         }
     }

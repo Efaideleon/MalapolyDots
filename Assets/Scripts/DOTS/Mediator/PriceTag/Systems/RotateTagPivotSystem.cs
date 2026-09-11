@@ -1,59 +1,46 @@
-using DOTS.DataComponents;
+using Assets.Scripts.DOTS.Mediator.PriceTag.Authoring;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 namespace DOTS.Mediator
 {
-    using PivotRotation = GamePlay.CameraSystems.PivotRotation;
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateBefore(typeof(TransformSystemGroup))]
     public partial struct RotateTagPivotSystem : ISystem
     {
-        private ComponentLookup<LocalToWorld> ltwLookup;
-
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<PivotRotation>();
-            state.RequireForUpdate<PriceTagPivotTag>();
-            state.RequireForUpdate<CurrentCameraManagedObject>();
-            ltwLookup = SystemAPI.GetComponentLookup<LocalToWorld>(true);
+            state.RequireForUpdate<PriceTagTag>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            ltwLookup.Update(ref state);
+            var camera = Camera.main;
+            if (camera == null) return;
 
-            var currCamera = SystemAPI.ManagedAPI.GetSingleton<CurrentCameraManagedObject>();
-            if (currCamera.Camera == null) return;
-
-            float3 camForward = currCamera.Camera.transform.forward;
-            camForward.y = 0;
-            camForward = math.normalize(camForward);
-
-            var sharedTargetRotation = quaternion.LookRotationSafe(-camForward, math.up());
+            // The visible tags are world-space roots, separate from the placement pivots.
+            // Their digits face local -Z, so matching the camera rotation faces them
+            // toward the viewer and keeps the text upright, including camera pitch.
             new RotateTagPivots
             {
-                targetWorldRotation = sharedTargetRotation,
-                ltwLookup = ltwLookup,
+                targetWorldRotation = camera.transform.rotation,
             }.ScheduleParallel();
         }
     }
 
     [BurstCompile]
+    [WithNone(typeof(Parent))]
     public partial struct RotateTagPivots : IJobEntity
     {
         public quaternion targetWorldRotation;
-        [ReadOnly] public ComponentLookup<LocalToWorld> ltwLookup;
 
-        public void Execute(ref LocalTransform tagTransform, in Parent parent, in PriceTagPivotTag _)
+        public void Execute(ref LocalTransform tagTransform, in PriceTagTag _)
         {
-            if (!ltwLookup.HasComponent(parent.Value)) return;
-
-            var parentWorldRotation = ltwLookup[parent.Value].Rotation;
-
-            tagTransform.Rotation = math.mul(math.inverse(parentWorldRotation), targetWorldRotation);
+            tagTransform.Rotation = targetWorldRotation;
         }
     }
 }

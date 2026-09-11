@@ -5,9 +5,8 @@ namespace DOTS.EventBuses
 {
     public struct BuyHouseEventBuffer : IBufferElementData
     {
-        // TODO: Change to a property Entity
-        // The property is the name of the property to buy a house  
-        public FixedString64Bytes property; // rename to propertyName
+        public int PropertyId;
+        public int Count;
     }
 
     public struct RollEventBuffer : IBufferElementData { }

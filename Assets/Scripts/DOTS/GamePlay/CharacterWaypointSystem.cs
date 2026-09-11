@@ -66,6 +66,9 @@ namespace DOTS.GamePlay
                     var playerBoardIndex = SystemAPI.GetComponentRW<PlayerBoardIndex>(activePlayerEntity);
                     playerBoardIndex.ValueRW.Value = (playerBoardIndex.ValueRW.Value + 1) % 40;
 
+                    if (playerBoardIndex.ValueRO.Value == 0 && SystemAPI.HasComponent<GhostMoneyComponet>(activePlayerEntity))
+                        SystemAPI.GetComponentRW<GhostMoneyComponet>(activePlayerEntity).ValueRW.Value += 200;
+
                     if (rollCount.ValueRO.Value == 0)
                     {
                         var finalArrived = SystemAPI.GetComponentRW<FinalArrived>(activePlayerEntity);

@@ -18,9 +18,15 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new SpaceIDComponent { Value = authoring.Data.id });
                 AddComponent(entity, new BoardIndexComponent { Value = default });
                 AddComponent(entity, new TaxSpaceTag { });
+                AddComponent(entity, new TaxAmountComponent { Value = (int)authoring.Data.TaxAmount });
                 AddComponent(entity, new SpaceTypeComponent{ Value = authoring.Data.SpaceType });
             }
         }
+    }
+
+    public struct TaxAmountComponent : IComponentData
+    {
+        public int Value;
     }
 
     public struct TaxSpaceTag : IComponentData

@@ -38,6 +38,7 @@ Transform:
   - {fileID: 5327370218616962452}
   - {fileID: 1110609131401603175}
   - {fileID: 5971844604740321067}
+  - {fileID: 4116407475307692650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3526256337138053958
@@ -169,6 +170,50 @@ MonoBehaviour:
   Importance: 1
   MaxSendRate: 0
   prefabId: 84d981a9f740741b5836fbb9d740fd49
+--- !u!1 &2681574787435908219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4116407475307692650}
+  - component: {fileID: 1670591697703896518}
+  m_Layer: 7
+  m_Name: CameraLookAtPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4116407475307692650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2681574787435908219}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.27689546, z: 0, w: 0.9609001}
+  m_LocalPosition: {x: -3.8, y: 1.1, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4681870058788402011}
+  m_LocalEulerAnglesHint: {x: 0, y: -32.15, z: 0}
+--- !u!114 &1670591697703896518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2681574787435908219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170b967fc4a834904aedf68f07f2b261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.CameraLookAtPointAuthoring
 --- !u!1 &9121832770387505539
 GameObject:
   m_ObjectHideFlags: 0

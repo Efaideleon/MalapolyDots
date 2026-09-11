@@ -48,6 +48,8 @@ namespace DOTS.GamePlay
                             chanceCardPicked.ValueRW.id = chanceActionData[randomNumber].id;
                             chanceCardPicked.ValueRW.msg = chanceActionData[randomNumber].msg;
                             chanceCardPicked.ValueRW.amount = chanceActionData[randomNumber].amount;
+                            foreach (var money in SystemAPI.Query<RefRW<GhostMoneyComponet>>().WithAll<ActivePlayer>())
+                                money.ValueRW.Value += chanceCardPicked.ValueRO.amount;
                         }
                     }
                 }

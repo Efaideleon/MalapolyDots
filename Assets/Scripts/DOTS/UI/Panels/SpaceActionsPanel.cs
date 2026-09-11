@@ -65,6 +65,14 @@ namespace DOTS.UI.Panels
     {
         public VisualElement Panel { get; private set; }
         public readonly Dictionary<SpaceActionButtonsEnum, ButtonElement> ButtonSet = new();
+        private bool _canBuyHouses;
+        private bool _buttonsVisible;
+
+        public void SetHousePurchaseAvailability(bool available)
+        {
+            _canBuyHouses = available;
+            ButtonSet[SpaceActionButtonsEnum.BuyHouse].Button.SetEnabled(_buttonsVisible && _canBuyHouses);
+        }
 
         public SpaceActionsPanel(VisualElement root)
         {
@@ -81,6 +89,7 @@ namespace DOTS.UI.Panels
                     Container = container
                 });
             }
+            SetHousePurchaseAvailability(false);
         }
 
         public void Show()
@@ -117,8 +126,10 @@ namespace DOTS.UI.Panels
 
         private void ToggleButtonsState(bool state)
         {
+            _buttonsVisible = state;
             foreach (var kvp in ButtonSet.Values)
                 kvp.Button?.SetEnabled(state);
+            SetHousePurchaseAvailability(_canBuyHouses);
         }
     }
 }

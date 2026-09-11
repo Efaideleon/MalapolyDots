@@ -63,6 +63,7 @@ namespace DOTS.UI.Controllers
         public void ShowPanel()
         {
             _hideAndShowStateMachine.Show();
+            Update();
         }
         public void HidePanel()
         {
@@ -88,22 +89,15 @@ namespace DOTS.UI.Controllers
 
         public void Update()
         {
-            // TODO: Here we'll change how the icon looks like
+            SpaceActionsPanel.SetHousePurchaseAvailability(Context.IsPlayerOwner && Context.HasMonopoly);
         }
 
         private void HandleBuyHouseButtonClick()
         {
-            // TODO: Create a context for this controller too, based on the context the buybutton look and behavior will change
-            switch (Context.HasMonopoly)
-            {
-                case true:
-                    PurchaseHousePanelController.ResetNumberOfHouseToBuy();
-                    PurchaseHousePanelController.ShowPanel();
-                    break;
-                case false:
-                    NoMonopolyYetPanel.Show();
-                    break;
-            }
+            if (!Context.IsPlayerOwner || !Context.HasMonopoly) return;
+            NoMonopolyYetPanel.Hide();
+            PurchaseHousePanelController.ResetNumberOfHouseToBuy();
+            PurchaseHousePanelController.ShowPanel();
         }
 
         public void Dispose()

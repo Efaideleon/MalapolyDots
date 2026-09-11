@@ -25,5 +25,8 @@ namespace Assets.Scripts.DOTS.GamePlay
 
         [GhostField]
         public bool AllPlacesInstantiated;
+
+        [GhostField]
+        public int WinnerNetworkId;
     }
 }

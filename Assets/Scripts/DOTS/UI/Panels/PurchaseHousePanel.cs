@@ -11,6 +11,8 @@ namespace DOTS.UI.Panels
         public FixedString64Bytes Name { get; set; }
         public int HousesOwned { get; set; }
         public int Price { get; set; }
+        public int PropertyId { get; set; }
+        public int MaxPurchasable { get; set; }
     }
 
     public class PurchaseHousePanel : IPanel
@@ -25,8 +27,17 @@ namespace DOTS.UI.Panels
         public Button CloseButton { get; private set; }
         public ToggleControl BuySellToggle { get; private set; }
 
+        private Label _priceLabel;
         private int _numOfHousesToBuy; 
-        public PurchaseHousePanelContext Context { get { return _context; } set { _context = value;} }
+        public PurchaseHousePanelContext Context
+        {
+            get => _context;
+            set
+            {
+                if (_context.PropertyId != value.PropertyId) _numOfHousesToBuy = 0;
+                _context = value;
+            }
+        }
         public Action<ToggleState, int> OnOkClicked;
         private PurchaseHousePanelContext _context;
 
@@ -44,14 +55,20 @@ namespace DOTS.UI.Panels
 
             PropertyName.text = _context.Name.ToString();
             BuySellToggle = new ToggleControl(Panel.Q<VisualElement>("toggle-container"));
+            _priceLabel = new Label();
+            HousesOwnedCounter.parent.Add(_priceLabel);
+            // Selling houses is not implemented by the purchase handler.
+            Panel.Q<VisualElement>("toggle-container").style.display = DisplayStyle.None;
             Hide();
             SubscribeEvents();
         }
 
         public void Update()
         {
-            UpdateNumOfHousesOwnedLabel(_context.HousesOwned.ToString());
+            UpdateNumOfHousesOwnedLabel(_context.HousesOwned == 5 ? "1 hotel" : $"{_context.HousesOwned} houses");
             UpdatePropertyNameLabel(_context.Name.ToString());
+            _numOfHousesToBuy = Math.Min(_numOfHousesToBuy, _context.MaxPurchasable);
+            UpdateNumOfHouseToBuyLabel();
         }
 
         private void UpdateNumOfHousesOwnedLabel(string text)
@@ -120,6 +137,7 @@ namespace DOTS.UI.Panels
 
         public void HandleOkButtonClicked()
         {
+            if (_numOfHousesToBuy <= 0 || _numOfHousesToBuy > _context.MaxPurchasable) return;
             switch (BuySellToggle.State)
             {
                 case ToggleState.Buy:
@@ -147,12 +165,14 @@ namespace DOTS.UI.Panels
         // To prevent increase the number of the UI events it no houses can be bought
         private void IncreaseNumOfHouseToBuy()
         {
+            if (_numOfHousesToBuy >= _context.MaxPurchasable) return;
             _numOfHousesToBuy++;
             UpdateNumOfHouseToBuyLabel();
         }
 
         private void DecreaseNumOfHouseToBuy()
         {
+            if (_numOfHousesToBuy <= 0) return;
             _numOfHousesToBuy--;
             UpdateNumOfHouseToBuyLabel();
         }
@@ -165,6 +185,11 @@ namespace DOTS.UI.Panels
 
         private void UpdateNumOfHouseToBuyLabel()
         {
+            PlusButton?.SetEnabled(_numOfHousesToBuy < _context.MaxPurchasable);
+            MinusButton?.SetEnabled(_numOfHousesToBuy > 0);
+            OkButton?.SetEnabled(_numOfHousesToBuy > 0);
+            if (_priceLabel != null)
+                _priceLabel.text = $"{_context.Price:N0} per {(_context.HousesOwned == 4 ? "hotel" : "house")} · Total: {(long)_context.Price * _numOfHousesToBuy:N0}";
             if (BuyingHouseCounter != null)
             {
                 BuyingHouseCounter.text = _numOfHousesToBuy.ToString();

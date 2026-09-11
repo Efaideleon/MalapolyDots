@@ -1,5 +1,6 @@
 using Assets.Scripts.DOTS.Characters;
 using DOTS.Constants;
+using DOTS.GamePlay;
 using DOTS.DataComponents;
 using DOTS.EventBuses;
 using Unity.Entities;
@@ -20,6 +21,7 @@ namespace Assets.Scripts.DOTS.GamePlay
 
         public void OnUpdate(ref SystemState state)
         {
+            if (SystemAPI.TryGetSingleton<GameStateComponent>(out var gameState) && gameState.State == GameState.GameOver) return;
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             foreach (var (rpc, propertyToPurchase, entity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>, RefRO<PurchasePropertyEventRpc>>().WithEntityAccess())
             {
@@ -51,7 +53,7 @@ namespace Assets.Scripts.DOTS.GamePlay
                                     var propertyPrice = SystemAPI.GetComponent<PriceComponent>(landOnProperty.entity);
                                     ref var playerMoney = ref SystemAPI.GetComponentRW<GhostMoneyComponet>(currentPlayerEntity).ValueRW;
 
-                                    bool canAfford = (playerMoney.Value - propertyPrice.Value) > 0;
+                                    bool canAfford = propertyPrice.Value > 0 && playerMoney.Value >= propertyPrice.Value;
                                     if (canAfford)
                                     {
                                         UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property to buy price: {propertyPrice.Value}");
@@ -98,6 +100,7 @@ namespace Assets.Scripts.DOTS.GamePlay
 
         public void OnUpdate(ref SystemState state)
         {
+            if (SystemAPI.TryGetSingleton<GameStateComponent>(out var gameState) && gameState.State == GameState.GameOver) return;
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             foreach (var buffer in SystemAPI.Query<DynamicBuffer<PurchasePropertyEventBuffer>>().WithChangeFilter<PurchasePropertyEventBuffer>())
             {

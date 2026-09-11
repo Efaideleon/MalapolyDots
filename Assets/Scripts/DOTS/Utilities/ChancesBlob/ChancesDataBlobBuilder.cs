@@ -29,6 +29,7 @@ namespace DOTS.Utilities.ChancesBlob
                             {
                                 chanceActionBuilder[j].id = chance.chanceActionData[j].id;
                                 chanceActionBuilder[j].msg = chance.chanceActionData[j].msg;
+                                chanceActionBuilder[j].amount = chance.chanceActionData[j].amount;
                             }
                         }
                     });

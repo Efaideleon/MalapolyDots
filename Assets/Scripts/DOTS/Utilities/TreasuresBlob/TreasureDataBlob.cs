@@ -14,6 +14,7 @@ namespace DOTS.Utilities.TreasuresBlob
     {
         public int id;
         public FixedString64Bytes data;
+        public int amount;
 
     }
 

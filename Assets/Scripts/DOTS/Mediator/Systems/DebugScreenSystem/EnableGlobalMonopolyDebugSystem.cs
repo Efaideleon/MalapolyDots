@@ -27,21 +27,7 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
             foreach (var enabled in SystemAPI.Query<RefRO<GlobalMonopolyEnabled>>().WithChangeFilter<GlobalMonopolyEnabled>())
             {
                 if (enabled.ValueRO.Value)
-                {
-                    foreach (var (monopoly, owner) in SystemAPI.Query<RefRW<MonopolyFlagComponent>, RefRW<OwnerComponent>>())
-                    {
-                        owner.ValueRW.ID = SystemAPI.GetSingleton<CurrentPlayerID>().Value;
-                        monopoly.ValueRW.Value = true;
-                    }
-                }
-                else
-                {
-                    foreach (var (monopoly, owner) in SystemAPI.Query<RefRW<MonopolyFlagComponent>, RefRW<OwnerComponent>>())
-                    {
-                        owner.ValueRW.ID = PropertyConstants.Vacant;
-                        monopoly.ValueRW.Value = false;
-                    }
-                }
+                    UnityEngine.Debug.LogWarning("Monopolies are now determined by server ownership. Buy the full color group to unlock houses.");
             }
         }
     }

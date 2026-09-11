@@ -15,6 +15,7 @@ namespace DOTS.Utilities.ChancesBlob
     {
         public int id;
         public FixedString64Bytes msg;
+        public int amount;
     }
 
     public struct ChancesDataBlob

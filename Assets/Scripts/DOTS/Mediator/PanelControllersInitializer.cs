@@ -383,7 +383,10 @@ namespace DOTS.Mediator
             panelControllers.jailPanelController.SetEventBufferQuery(jailEventBufferQuery);
             var goToJailEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
             panelControllers.goToJailPanelController.SetEventBufferQuery(goToJailEventBufferQuery);
-            panelControllers.goPanelController.SetEventBufferQuery(transactionEventBufferQuery);
+
+            var goEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
+            panelControllers.goPanelController.SetEventBufferQuery(goEventBufferQuery);
+
             panelControllers.rollPanelController.SetEventBufferQuery(rollEventBufferQuery);
 
             var treasureEventBufferQuery = SystemAPI.QueryBuilder().WithAllRW<TransactionEventBuffer>().Build();
@@ -402,6 +405,7 @@ namespace DOTS.Mediator
             panelControllerService.Register(panelControllers.backdropController);
             panelControllerService.Register(panelControllers.chancePanelController);
             panelControllerService.Register(panelControllers.treasurePanelController);
+            panelControllerService.Register(panelControllers.payTaxPanelController);
 
             state.EntityManager.CreateSingleton(new GameScreenInitializedFlag { Value = true });
         }

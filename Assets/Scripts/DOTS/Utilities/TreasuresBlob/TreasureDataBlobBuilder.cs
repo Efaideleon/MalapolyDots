@@ -28,6 +28,7 @@ namespace DOTS.Utilities.TreasuresBlob
                             TreasureCardData card = treasuresData.cards[i];
                             cardsBuilder[i].id = card.id;
                             cardsBuilder[i].data = card.data;
+                            cardsBuilder[i].amount = card.amount;
                         }
                     });
         }

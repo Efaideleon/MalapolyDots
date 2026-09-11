@@ -43,10 +43,12 @@ namespace DOTS.UI.Controllers
                     if (buyHouseEventBufferQuery != null)
                     {
                         var eventBuffer = buyHouseEventBufferQuery.GetSingletonBuffer<BuyHouseEventBuffer>();
-                        foreach (var PurchaseEvent in GeneratePurchaseEvents(numOfHousesToBuy))
-                        {
-                            eventBuffer.Add(PurchaseEvent);
-                        }
+                        if (numOfHousesToBuy > 0)
+                            eventBuffer.Add(new BuyHouseEventBuffer
+                            {
+                                PropertyId = PurchaseHousePanel.Context.PropertyId,
+                                Count = numOfHousesToBuy
+                            });
                     }
                     else 
                     {
@@ -59,14 +61,5 @@ namespace DOTS.UI.Controllers
             }
         }
 
-        private List<BuyHouseEventBuffer> GeneratePurchaseEvents(int numOfHousesToBuy)
-        {
-            List<BuyHouseEventBuffer> listOfBuyHouseEvents = new();
-            for (int i = 0; i < numOfHousesToBuy; i++)
-            {
-                listOfBuyHouseEvents.Add(new BuyHouseEventBuffer { property = PurchaseHousePanel.Context.Name });
-            }
-            return listOfBuyHouseEvents;
-        }
     }
 }

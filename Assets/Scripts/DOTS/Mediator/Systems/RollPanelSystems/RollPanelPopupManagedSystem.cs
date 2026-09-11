@@ -42,6 +42,7 @@ namespace DOTS.Mediator.Systems.RollPanelSystems
         // TODO: the current state depends if its the current active or not.
         private readonly RollPanelState GetPanelState(GameState gameState, bool isLocalPlayer, bool isInJail)
         {
+            if (gameState == GameState.GameOver) return RollPanelState.Hidden;
             //  if in jail hide the roll panel.
             if (isInJail)
             {

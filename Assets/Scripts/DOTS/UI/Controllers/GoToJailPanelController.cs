@@ -52,8 +52,7 @@ namespace DOTS.UI.Controllers
         {
             var eventBuffer = TransactionEventBusQuery.GetSingletonBuffer<TransactionEventBuffer>();
             eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.GoToJail });
-            // TODO: Remove this, we don't want to change turns after paying taxes.
-            eventBuffer.Add(new TransactionEventBuffer { EventType = TransactionEventType.ChangeTurn });
+            // The server changes turns after moving this player to jail.
         }
 
         public void Dispose()

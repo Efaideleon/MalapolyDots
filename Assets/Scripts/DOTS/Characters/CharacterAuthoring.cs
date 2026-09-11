@@ -25,8 +25,8 @@ namespace Assets.Scripts.DOTS.Characters
 
                 // There is a ghost onwer comp attached when its spawned.
                 AddComponent(authoringEntity, new NameComponent { Value = authoring.charName });
-                AddComponent(authoringEntity, new MoneyComponent { Value = 500_000 });
-                AddComponent(authoringEntity, new GhostMoneyComponet { Value = 500_000 });
+                AddComponent(authoringEntity, new MoneyComponent { Value = 1_500 });
+                AddComponent(authoringEntity, new GhostMoneyComponet { Value = 1_500 });
                 AddComponent(authoringEntity, new PrefabTag());
                 AddComponent(authoringEntity, new PlayerWaypointIndex { Value = 0 });
                 AddComponent(authoringEntity, new CharacterFlag { });
@@ -53,8 +53,21 @@ namespace Assets.Scripts.DOTS.Characters
                 AddComponent<GhostChanceCardPicked>(authoringEntity);
                 AddComponent<GhostTreasureCardPicked>(authoringEntity);
                 AddComponent<JailState>(authoringEntity);
+                AddComponent<LandingPaymentResolved>(authoringEntity);
+                AddComponent<BankruptPlayer>(authoringEntity);
             }
         }
+    }
+
+    [GhostComponent]
+    public struct BankruptPlayer : IComponentData
+    {
+        [GhostField] public bool Value;
+    }
+
+    public struct LandingPaymentResolved : IComponentData
+    {
+        public bool Value;
     }
 
     [GhostComponent]

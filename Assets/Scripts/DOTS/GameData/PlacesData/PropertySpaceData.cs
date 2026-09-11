@@ -7,6 +7,7 @@ namespace DOTS.GameData.PlacesData
     public class PropertySpaceData : SpaceData
     {
         public int price;
+        [Min(0)] public int housePrice = 50;
         public int[] rent;
         public int rentWithHotel;
         public PropertyColor Color;

@@ -1,5 +1,6 @@
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.Mediator;
+using DOTS.GamePlay;
 using DOTS.GameSpaces;
 using Unity.Entities;
 using Unity.NetCode;
@@ -11,33 +12,27 @@ namespace Assets.Scripts.DOTS.GamePlay
     {
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<TaxSpaceTag>();
-            state.RequireForUpdate<SpaceLandedOn>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GameStateComponent>();
         }
+
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            foreach (var (_, _, entity) in SystemAPI.Query<RefRO<PayTaxesRpc>, RefRO<ReceiveRpcCommandRequest>>().WithEntityAccess())
+            foreach (var (_, request, entity) in SystemAPI.Query<RefRO<PayTaxesRpc>, RefRO<ReceiveRpcCommandRequest>>().WithEntityAccess())
             {
-                UnityEngine.Debug.Log($"[PayTaxesSystem] | Receving pay taxes rpc.");
-                foreach (var (playerMoney, spaceLandedOn) in 
-                        SystemAPI.Query<
-                            RefRW<GhostMoneyComponet>,
-                            RefRO<SpaceLandedOn>
-                        >()
-                        .WithAll<GhostOwnerIsLocal, ActivePlayer>())
-                {
-                        Entity space = spaceLandedOn.ValueRO.entity;
-                        if (space != Entity.Null && SystemAPI.HasComponent<TaxSpaceTag>(space))
-                        {
-                            // TODO: this value should come from a component in the tax
-                            UnityEngine.Debug.Log($"[PayTaxesSystem] | paying taxes in server.");
-                            var tax = 100_000;
-                            // This is not a ghost component.
-                            playerMoney.ValueRW.Value -= tax;
-                        }
-                }
                 ecb.DestroyEntity(entity);
+                var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                var connection = request.ValueRO.SourceConnection;
+                if (SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Landing ||
+                    !SystemAPI.HasComponent<GhostOwner>(player) || !SystemAPI.HasComponent<NetworkId>(connection) ||
+                    SystemAPI.GetComponent<GhostOwner>(player).NetworkId != SystemAPI.GetComponent<NetworkId>(connection).Value ||
+                    !SystemAPI.HasComponent<LandingPaymentResolved>(player) ||
+                    SystemAPI.GetComponent<LandingPaymentResolved>(player).Value) continue;
+                var space = SystemAPI.GetComponent<SpaceLandedOn>(player).entity;
+                if (!SystemAPI.HasComponent<TaxAmountComponent>(space)) continue;
+                SystemAPI.GetComponentRW<GhostMoneyComponet>(player).ValueRW.Value -= SystemAPI.GetComponent<TaxAmountComponent>(space).Value;
+                SystemAPI.SetComponent(player, new LandingPaymentResolved { Value = true });
             }
             ecb.Playback(state.EntityManager);
             ecb.Dispose();

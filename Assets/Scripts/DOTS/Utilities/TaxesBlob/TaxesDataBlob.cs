@@ -5,6 +5,7 @@ namespace DOTS.Utilities.TaxesBlob
 {
     public struct FixedTaxesData
     {
+        public int amount;
         public int id;
         public FixedString32Bytes Name;
         public int boardIndex;

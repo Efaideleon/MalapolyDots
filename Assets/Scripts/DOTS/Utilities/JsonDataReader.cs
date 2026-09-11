@@ -18,6 +18,7 @@ namespace DOTS.Utilities
         public string Name;
         public int boardIndex;
         public int price;
+        public int housePrice;
         public int[] rent;
         public int rentWithHotel;
         public string color;
@@ -28,6 +29,7 @@ namespace DOTS.Utilities
     {
         public int id;
         public string msg;
+        public int amount;
     }
 
     [System.Serializable]
@@ -74,6 +76,7 @@ namespace DOTS.Utilities
     [System.Serializable]
     public struct TaxData
     {
+        public int amount;
         public int id;
         public string Name;
         public int boardIndex;
@@ -92,6 +95,7 @@ namespace DOTS.Utilities
     {
         public int id;
         public string data;
+        public int amount;
     }
 
     [System.Serializable]

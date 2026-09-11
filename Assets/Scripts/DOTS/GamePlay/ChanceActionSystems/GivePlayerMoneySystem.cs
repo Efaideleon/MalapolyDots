@@ -30,7 +30,7 @@ namespace DOTS.GamePlay.ChanceActionSystems
                 {
                     foreach (var (money, card) in SystemAPI.Query<RefRW<GhostMoneyComponet>, RefRO<GhostChanceCardPicked>>().WithAll<ActivePlayer>())
                     {
-                        money.ValueRW.Value += card.ValueRO.amount;
+                        // Card effects are applied once on landing by PickRandomChanceCardSystem.
                     }
                 }
 

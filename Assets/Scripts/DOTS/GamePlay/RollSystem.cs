@@ -53,9 +53,17 @@ namespace DOTS.GamePlay
                     return;
                 }
 
+                if (SystemAPI.TryGetSingleton<GameStateComponent>(out var gameState) && gameState.State != GameState.Rolling)
+                {
+                    ecb.DestroyEntity(entity);
+                    continue;
+                }
+                if (SystemAPI.HasComponent<LandingPaymentResolved>(activePlayer))
+                    SystemAPI.SetComponent(activePlayer, new LandingPaymentResolved());
+
                 var rollAmount = SystemAPI.GetSingletonRW<RollAmountComponent>();
                 var randomData = SystemAPI.GetSingletonRW<RandomValueComponent>();
-                rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7);
+                rollAmount.ValueRW.Value = randomData.ValueRW.Value.NextInt(1, 7) + randomData.ValueRW.Value.NextInt(1, 7);
                 //rollAmount.ValueRW.Value = 7;
 
 #if UNITY_EDITOR

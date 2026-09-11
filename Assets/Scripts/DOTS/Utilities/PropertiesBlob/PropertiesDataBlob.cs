@@ -10,6 +10,7 @@ namespace DOTS.Utilities.PropertiesBlob
         public FixedString32Bytes name;
         public int boardIndex;
         public int price;
+        public int housePrice;
         public BlobArray<int> rent;
         public int rentWithHotel;
         public PropertyColor color;

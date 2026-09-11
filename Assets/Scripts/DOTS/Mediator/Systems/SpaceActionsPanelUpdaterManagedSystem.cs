@@ -22,6 +22,7 @@ namespace DOTS.Mediator.Systems
                     if (panelControllers.spaceActionsPanelController != null)
                     {
                         panelControllers.spaceActionsPanelController.Context = spaceActionsContext.ValueRO.Value;
+                        panelControllers.spaceActionsPanelController.Update();
                     }
                 }
             }

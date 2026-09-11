@@ -43,6 +43,7 @@ namespace DOTS.Utilities.PropertiesBlob
                             propertiesBuilder[i].name = property.Name;
                             propertiesBuilder[i].boardIndex = property.boardIndex;
                             propertiesBuilder[i].price = property.price;
+                            propertiesBuilder[i].housePrice = property.housePrice;
                             propertiesBuilder[i].rentWithHotel = property.rentWithHotel;
                             propertiesBuilder[i].color = ColorMap[property.color];
                         }

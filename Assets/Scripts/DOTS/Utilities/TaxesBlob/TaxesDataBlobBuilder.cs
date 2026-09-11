@@ -15,6 +15,7 @@ namespace DOTS.Utilities.TaxesBlob
                     {
                     TaxData tax = taxesData[i];
                     taxesBuilder[i].id = tax.id;
+                    taxesBuilder[i].amount = tax.amount;
                     taxesBuilder[i].Name = tax.Name;
                     taxesBuilder[i].boardIndex = tax.boardIndex;
                     }

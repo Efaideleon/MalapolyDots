@@ -65,14 +65,29 @@ namespace Assets.Scripts.DOTS.Mediator
                         case TransactionEventType.Parking:
                             UnityEngine.Debug.Log($"[RouteTransactionToServer] | parking event...");
                             Entity parkingRpcEntity = ecb.CreateEntity();
-                            ecb.AddComponent<PayRentRpc>(parkingRpcEntity);
+                            ecb.AddComponent<ParkingRpc>(parkingRpcEntity);
                             ecb.AddComponent<SendRpcCommandRequest>(parkingRpcEntity);
+                            break;
+                        case TransactionEventType.GoToJail:
+                            Entity goToJailRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<GoToJailRpc>(goToJailRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(goToJailRpcEntity);
+                            foreach (var bus in SystemAPI.Query<DynamicBuffer<BackDropEventBus>>().WithAll<ActivePlayer>())
+                            {
+                                bus.Add(new BackDropEventBus { });
+                            }
                             break;
                         case TransactionEventType.Jail:
                             UnityEngine.Debug.Log($"[RouteTransactionToServer] | jail event...");
                             Entity jailRpcEntity = ecb.CreateEntity();
                             ecb.AddComponent<JailRpc>(jailRpcEntity);
                             ecb.AddComponent<SendRpcCommandRequest>(jailRpcEntity);
+                            break;
+                        case TransactionEventType.Go:
+                            UnityEngine.Debug.Log($"[RouteTransactionToServer] | go event...");
+                            Entity goRpcEntity = ecb.CreateEntity();
+                            ecb.AddComponent<GoRpc>(goRpcEntity);
+                            ecb.AddComponent<SendRpcCommandRequest>(goRpcEntity);
                             break;
                     }
                 }
@@ -90,7 +105,16 @@ namespace Assets.Scripts.DOTS.Mediator
     public struct PayRentRpc : IRpcCommand
     { }
 
+    public struct ParkingRpc : IRpcCommand
+    { }
+
+    public struct GoToJailRpc : IRpcCommand
+    { }
+
     public struct JailRpc : IRpcCommand
+    { }
+
+    public struct GoRpc : IRpcCommand
     { }
 
     public struct PayTaxesRpc : IRpcCommand

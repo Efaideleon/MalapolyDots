@@ -3,6 +3,7 @@ using DOTS.GameSpaces;
 using DOTS.GameSpaces.HouseAuthoring;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace DOTS.GamePlay
 {
@@ -11,7 +12,7 @@ namespace DOTS.GamePlay
     {
         private const float coloringSpeed = 20f;
         private const int ColoringThreshold = 100;
-        private const int HouseColoringThreshold = 130; // Some building are taller, pick a bigger number.
+        private const float HouseFadeDuration = 2f;
 
         private BufferLookup<LinkedEntityGroup> linkedEntitiesBufferLookup;
 
@@ -27,9 +28,6 @@ namespace DOTS.GamePlay
             linkedEntitiesBufferLookup = state.GetBufferLookup<LinkedEntityGroup>(true);
         }
 
-        // TODO:
-        // This system should only run once, each time the player buys a building.
-        // TODO: Currently it is running every frame and resetting the color slider to be equal to threshold.
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -46,44 +44,25 @@ namespace DOTS.GamePlay
                         RefRO<HouseCount>
                     >().WithEntityAccess())
             {
-                linkedEntityGroup = linkedEntitiesBufferLookup[entity];
+                bool hasLinkedEntities = linkedEntitiesBufferLookup.HasBuffer(entity);
+                linkedEntityGroup = hasLinkedEntities ? linkedEntitiesBufferLookup[entity] : default;
                 var houseCount = houseCounter.ValueRO.Value;
 
-                for (int i = 0; i < linkedEntityGroup.Length; i++)
+                int entityCount = hasLinkedEntities ? linkedEntityGroup.Length : 1;
+                for (int i = 0; i < entityCount; i++)
                 {
-                    var currEntity = linkedEntityGroup[i].Value;
+                    var currEntity = hasLinkedEntities ? linkedEntityGroup[i].Value : entity;
                     if (SystemAPI.HasComponent<HouseClusterTag>(currEntity))
                     {
-                        if (houseCount > 0)
-                        {
-                            var house1 = SystemAPI.GetComponentRW<HouseColoring1>(currEntity);
-                            var house2 = SystemAPI.GetComponentRW<HouseColoring2>(currEntity);
-                            var house3 = SystemAPI.GetComponentRW<HouseColoring3>(currEntity);
-                            var house4 = SystemAPI.GetComponentRW<HouseColoring4>(currEntity);
+                        var house1 = SystemAPI.GetComponentRW<HouseColoring1>(currEntity);
+                        var house2 = SystemAPI.GetComponentRW<HouseColoring2>(currEntity);
+                        var house3 = SystemAPI.GetComponentRW<HouseColoring3>(currEntity);
+                        var house4 = SystemAPI.GetComponentRW<HouseColoring4>(currEntity);
 
-                            if (houseCount == 1)
-                            {
-                                Color(ref house1.ValueRW.Value, ref dt, HouseColoringThreshold);
-                            }
-                            if (houseCount == 2)
-                            {
-                                Color(ref house1.ValueRW.Value, ref dt, HouseColoringThreshold);
-                                Color(ref house2.ValueRW.Value, ref dt, HouseColoringThreshold);
-                            }
-                            if (houseCount == 3)
-                            {
-                                Color(ref house1.ValueRW.Value, ref dt, HouseColoringThreshold);
-                                Color(ref house2.ValueRW.Value, ref dt, HouseColoringThreshold);
-                                Color(ref house3.ValueRW.Value, ref dt, HouseColoringThreshold);
-                            }
-                            if (houseCount == 4) // if you buy 4 houses at once.
-                            {
-                                Color(ref house1.ValueRW.Value, ref dt, HouseColoringThreshold);
-                                Color(ref house2.ValueRW.Value, ref dt, HouseColoringThreshold);
-                                Color(ref house3.ValueRW.Value, ref dt, HouseColoringThreshold);
-                                Color(ref house4.ValueRW.Value, ref dt, HouseColoringThreshold);
-                            }
-                        }
+                        FadeHouse(ref house1.ValueRW.Value, houseCount >= 1, dt);
+                        FadeHouse(ref house2.ValueRW.Value, houseCount >= 2, dt);
+                        FadeHouse(ref house3.ValueRW.Value, houseCount >= 3, dt);
+                        FadeHouse(ref house4.ValueRW.Value, houseCount >= 4, dt);
                     }
                 }
             }
@@ -100,6 +79,12 @@ namespace DOTS.GamePlay
                     Color(ref colorSliderRW.Value, ref dt, ColoringThreshold);
                 }
             }
+        }
+
+        // The shader lerps from its low initial opacity to 1 using these normalized values.
+        private static void FadeHouse(ref float value, bool purchased, float deltaTime)
+        {
+            value = purchased ? math.saturate(value + deltaTime / HouseFadeDuration) : 0f;
         }
 
         public readonly void Color(ref float value, ref float dt, int threshold)

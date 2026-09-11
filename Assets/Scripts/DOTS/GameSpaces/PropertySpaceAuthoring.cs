@@ -1,6 +1,7 @@
 using DOTS.Constants;
 using DOTS.DataComponents;
 using DOTS.GameData.PlacesData;
+using DOTS.GameSpaces.HouseAuthoring;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Rendering;
@@ -34,6 +35,21 @@ namespace DOTS.GameSpaces
                 AddComponent(entity, new ColorCodeComponent { Value = authoring.Data.Color });
                 AddComponent(entity, new MonopolyFlagComponent { Value = false });
                 AddComponent(entity, new HouseCount { Value = 0 });
+                // Houses share the property's mesh, but each has its own shader opacity slider.
+                if (!authoring.TryGetComponent<DOTS.GameSpaces.HouseAuthoring.HouseAuthoring>(out _))
+                {
+                    AddComponent(entity, new HouseColoring1 { Value = 0 });
+                    AddComponent(entity, new HouseColoring2 { Value = 0 });
+                    AddComponent(entity, new HouseColoring3 { Value = 0 });
+                    AddComponent(entity, new HouseColoring4 { Value = 0 });
+                    AddComponent<HouseClusterTag>(entity);
+                }
+                AddComponent(entity, new PropertyRentKindComponent
+                {
+                    Value = authoring.Data.Color != PropertyColor.None ? PropertyRentKind.Street :
+                        authoring.Data.Name.Contains("Company") ? PropertyRentKind.Utility : PropertyRentKind.Transport
+                });
+                AddComponent(entity, new HousePriceComponent { Value = authoring.Data.housePrice });
                 AddComponent(entity, new MaterialOverrideColorSlider { Value = 0 });
                 AddComponent(entity, new ForSaleComponent { entity = default });
                 AddComponent(entity, new BlinkingFlagMaterialOverride { Value = 0f });
@@ -66,6 +82,9 @@ namespace DOTS.GameSpaces
                 {
                     rentBuffer.Add(new BaseRentBuffer { Value = rent });
                 }
+
+                if (authoring.Data.rentWithHotel > 0)
+                    rentBuffer.Add(new BaseRentBuffer { Value = authoring.Data.rentWithHotel });
 
                 // Components for quads
                 AddBuffer<QuadDataBuffer>(entity);

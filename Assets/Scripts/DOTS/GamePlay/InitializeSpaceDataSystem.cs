@@ -24,8 +24,9 @@ namespace DOTS.GamePlay
                 ref SpaceIDComponent id,
                 ref BoardIndexComponent boardIdx,
                 ref PriceComponent price,
+                ref GhostPriceComponent ghostPrice,
+                ref HousePriceComponent housePrice,
                 ref GhostRentComponent rent,
-                ref ColorCodeComponent color,
                 ref DynamicBuffer<BaseRentBuffer> rentBuffer
                 )
         {
@@ -39,8 +40,11 @@ namespace DOTS.GamePlay
                     id.Value = property.id;
                     boardIdx.Value = property.boardIndex;
                     price.Value = property.price;
+                    ghostPrice.Value = property.price;
+                    housePrice.Value = property.housePrice;
                     rent.Value = 0;
-                    color.Value = property.color;
+                    // Color groups come from PropertySpaceAuthoring and its current board data.
+                    rentBuffer.Clear();
                     for (int j = 0; j < property.rent.Length; j++)
                     {
                         rentBuffer.Add(new BaseRentBuffer
@@ -48,6 +52,8 @@ namespace DOTS.GamePlay
                             Value = property.rent[j]
                         });
                     }
+                    if (property.rentWithHotel > 0)
+                        rentBuffer.Add(new BaseRentBuffer { Value = property.rentWithHotel });
                 }
             }
         }
@@ -60,6 +66,7 @@ namespace DOTS.GamePlay
 
         public void Execute(
                 in TreasureSpaceTag _,
+                ref DynamicBuffer<TreasureCardsBuffer> cards,
                 in NameComponent name,
                 ref SpaceIDComponent id,
                 ref BoardIndexComponent boardIdx
@@ -73,6 +80,12 @@ namespace DOTS.GamePlay
                 {
                     id.Value = treasure.id;
                     boardIdx.Value = treasure.boardIndex;
+                    cards.Clear();
+                    for (int j = 0; j < treasuresReference.Value.cards.Length; j++)
+                    {
+                        ref var card = ref treasuresReference.Value.cards[j];
+                        cards.Add(new TreasureCardsBuffer { id = card.id, msg = card.data, amount = card.amount });
+                    }
                 }
             }
         }
@@ -114,12 +127,14 @@ namespace DOTS.GamePlay
                 {
                     id.Value = chance.id;
                     boardIdx.Value = chance.boardIndex;
+                    chanceActionDataBuffer.Clear();
                     for (int j = 0; j < chance.actionData.Length; j++)
                     {
                         chanceActionDataBuffer.Add(new ChanceActionDataBuffer
                         {
                             id = chance.actionData[j].id,
                             msg = chance.actionData[j].msg,
+                            amount = chance.actionData[j].amount,
                         });
                     }
                 }
@@ -149,6 +164,7 @@ namespace DOTS.GamePlay
 
         public void Execute(
                 in TaxSpaceTag _,
+                ref TaxAmountComponent taxAmount,
                 in NameComponent name,
                 ref SpaceIDComponent id,
                 ref BoardIndexComponent boardIdx
@@ -162,6 +178,7 @@ namespace DOTS.GamePlay
                 {
                     id.Value = tax.id;
                     boardIdx.Value = tax.boardIndex;
+                    taxAmount.Value = tax.amount;
                 }
             }
         }

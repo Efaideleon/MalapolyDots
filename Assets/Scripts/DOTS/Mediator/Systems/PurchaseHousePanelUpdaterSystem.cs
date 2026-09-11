@@ -1,9 +1,13 @@
+using Assets.Scripts.DOTS.Characters;
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
 using DOTS.GamePlay;
 using DOTS.GameSpaces;
 using DOTS.UI.Panels;
-using Unity.Burst;
+using Assets.Scripts.DOTS.UI.Controllers;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.NetCode;
 
 namespace DOTS.Mediator.Systems
 {
@@ -12,59 +16,73 @@ namespace DOTS.Mediator.Systems
         public PurchaseHousePanelContext Value;
     }
 
-    [BurstCompile]
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PurchaseHousePanelUpdaterSystem : ISystem
     {
-        [BurstCompile]
-        public void OnCreate(ref SystemState state) 
+        public void OnCreate(ref SystemState state)
         {
-            state.EntityManager.CreateSingleton(new PurhcaseHousePanelContextComponent { Value = default });
-            state.RequireForUpdate<HouseCount>();
-            state.RequireForUpdate<NameComponent>();
-            state.RequireForUpdate<PropertySpaceTag>();
-            state.RequireForUpdate<PurhcaseHousePanelContextComponent>();
-            state.RequireForUpdate<LastPropertyClicked>();
+            state.EntityManager.CreateSingleton(new PurhcaseHousePanelContextComponent());
+            state.RequireForUpdate<LastPropertyInteracted>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+            state.RequireForUpdate<GameStateComponent>();
+            state.RequireForUpdate<NetworkId>();
         }
 
-        [BurstCompile]
-        public void OnUpdate(ref SystemState state) 
-        { 
-            foreach (var (houseCount, name, _) in 
-                    SystemAPI.Query<
-                    RefRO<HouseCount>,
-                    RefRO<NameComponent>,
-                    RefRO<PropertySpaceTag>
-                    >()
-                    .WithChangeFilter<HouseCount>())
+        public void OnUpdate(ref SystemState state)
+        {
+            var context = new PurchaseHousePanelContext();
+            var property = SystemAPI.GetSingleton<LastPropertyInteracted>().entity;
+            var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            int localId = SystemAPI.GetSingleton<NetworkId>().Value;
+            if (SystemAPI.HasComponent<PropertySpaceTag>(property))
             {
-                var purchaseHousePanelContext = SystemAPI.GetSingletonRW<PurhcaseHousePanelContextComponent>();
-                if (purchaseHousePanelContext.ValueRO.Value.Name == name.ValueRO.Value)
+                context.PropertyId = SystemAPI.GetComponent<SpaceIDComponent>(property).Value;
+                context.Name = SystemAPI.GetComponent<NameComponent>(property).Value;
+                context.HousesOwned = SystemAPI.GetComponent<HouseCount>(property).Value;
+                context.Price = SystemAPI.GetComponent<HousePriceComponent>(property).Value;
+                if (context.Price > 0 && SystemAPI.HasComponent<GhostMoneyComponet>(player) &&
+                    SystemAPI.HasComponent<GhostOwner>(player) && SystemAPI.GetComponent<GhostOwner>(player).NetworkId == localId &&
+                    SystemAPI.GetComponent<OwnerComponent>(property).ID == localId &&
+                    SystemAPI.GetComponent<MonopolyFlagComponent>(property).Value &&
+                    SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Walking &&
+                    SystemAPI.GetSingleton<GameStateComponent>().State != GameState.GameOver)
                 {
-                    // BUG: Is this even possible or do we have to reassigned the component using SetComponent to trigger
-                    // the WithChangeFilter?
-                    purchaseHousePanelContext.ValueRW.Value.HousesOwned = houseCount.ValueRO.Value;
-                    continue;
+                    context.MaxPurchasable = math.max(0, math.min(context.HousesOwned == 4 ? 1 : math.max(0, 4 - context.HousesOwned),
+                        SystemAPI.GetComponent<GhostMoneyComponet>(player).Value / context.Price));
                 }
             }
+            var current = SystemAPI.GetSingletonRW<PurhcaseHousePanelContextComponent>();
+            var previous = current.ValueRO.Value;
+            if (previous.PropertyId != context.PropertyId || previous.Name != context.Name || previous.HousesOwned != context.HousesOwned ||
+                previous.Price != context.Price || previous.MaxPurchasable != context.MaxPurchasable)
+                current.ValueRW.Value = context;
+        }
+    }
+}
 
-            foreach ( var clickedProperty in 
-                    SystemAPI.Query<
-                    RefRO<LastPropertyClicked>
-                    >().
-                    WithChangeFilter<LastPropertyClicked>())
+namespace DOTS.Mediator.Systems
+{
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    public partial struct TaxAmountPanelUpdaterSystem : ISystem
+    {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<PanelControllerService>();
+            state.RequireForUpdate<CurrentActivePlayer>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (!SystemAPI.HasComponent<SpaceLandedOn>(player)) return;
+            var space = SystemAPI.GetComponent<SpaceLandedOn>(player).entity;
+            if (!SystemAPI.HasComponent<TaxAmountComponent>(space)) return;
+            var service = SystemAPI.ManagedAPI.GetSingleton<PanelControllerService>();
+            if (service.TryGet<DOTS.UI.Controllers.PayTaxPanelController>(out var panel))
             {
-                var clickedPropertyEntity = clickedProperty.ValueRO.entity;
-                if (clickedPropertyEntity != Entity.Null && SystemAPI.HasComponent<PropertySpaceTag>(clickedPropertyEntity))
-                {
-                    PurchaseHousePanelContext purchaseHouseContext = new()
-                    {
-                        Name = SystemAPI.GetComponent<NameComponent>(clickedPropertyEntity).Value,
-                        HousesOwned = SystemAPI.GetComponent<HouseCount>(clickedPropertyEntity).Value,
-                        Price = 10,
-                    };
-                    var panelContext = SystemAPI.GetSingletonRW<PurhcaseHousePanelContextComponent>();
-                    panelContext.ValueRW = new PurhcaseHousePanelContextComponent { Value = purchaseHouseContext};
-                }
+                int amount = SystemAPI.GetComponent<TaxAmountComponent>(space).Value;
+                panel.Context = new DOTS.UI.Controllers.PayTaxPanelContext { Amount = amount };
+                panel.Panel.AmountLabel.text = amount.ToString("N0");
             }
         }
     }

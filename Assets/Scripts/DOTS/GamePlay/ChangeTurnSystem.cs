@@ -31,6 +31,34 @@ namespace Assets.Scripts.DOTS.GamePlay
             // TODO: ensure buffer capicty to prevent overloading the server.
             foreach (var (rpc, _, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>, RefRO<ChangeTurnRpc>>().WithEntityAccess())
             {
+                var active = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                var connection = rpc.ValueRO.SourceConnection;
+                if (SystemAPI.GetSingleton<GameStateComponent>().State == GameState.GameOver ||
+                    !SystemAPI.HasComponent<NetworkId>(connection) || !SystemAPI.HasComponent<GhostOwner>(active) ||
+                    SystemAPI.GetComponent<NetworkId>(connection).Value != SystemAPI.GetComponent<GhostOwner>(active).NetworkId)
+                {
+                    ecb.DestroyEntity(rpcEntity);
+                    continue;
+                }
+                var turnState = SystemAPI.GetSingleton<GameStateComponent>().State;
+                if (turnState == GameState.Walking || (turnState == GameState.Rolling &&
+                    (!SystemAPI.HasComponent<JailState>(active) || !SystemAPI.GetComponent<JailState>(active).InJail)))
+                {
+                    ecb.DestroyEntity(rpcEntity);
+                    continue;
+                }
+                // Mandatory property/tax payments must be settled before ending the turn.
+                if (SystemAPI.HasComponent<LandingPaymentResolved>(active) &&
+                    !SystemAPI.GetComponent<LandingPaymentResolved>(active).Value &&
+                    SystemAPI.HasComponent<SpaceLandedOn>(active))
+                {
+                    var space = SystemAPI.GetComponent<SpaceLandedOn>(active).entity;
+                    bool owesTax = SystemAPI.HasComponent<global::DOTS.GameSpaces.TaxSpaceTag>(space);
+                    bool owesRent = SystemAPI.HasComponent<OwnerByEntityComponent>(space) &&
+                        SystemAPI.GetComponent<OwnerByEntityComponent>(space).Entity != Entity.Null &&
+                        SystemAPI.GetComponent<OwnerByEntityComponent>(space).Entity != active;
+                    if (owesTax || owesRent) { ecb.DestroyEntity(rpcEntity); continue; }
+                }
                 // Why is this running every frame after clicking Change Turn? isn't the entity being destroyed after the event is processed???
                 // Handle each change turn request
 
@@ -64,6 +92,15 @@ namespace Assets.Scripts.DOTS.GamePlay
                 UnityEngine.Debug.Log($"[ChangeTurnSystem] | nextPlayerIndex: {nextPlayerIndex}");
                 UnityEngine.Debug.Log($"[ChangeTurnSystem] | totalNumOfCharacters: {totalNumOfCharacters}");
 
+                var sortedPlayers = SystemAPI.GetSingletonBuffer<PlayersSortedByNetId>();
+                for (int attempt = 0; attempt < totalNumOfCharacters; attempt++)
+                {
+                    bool eliminated = false;
+                    foreach (var (candidateName, bankrupt) in SystemAPI.Query<RefRO<NameComponent>, RefRO<BankruptPlayer>>())
+                        if (candidateName.ValueRO.Value == sortedPlayers[nextPlayerIndex].Name) eliminated = bankrupt.ValueRO.Value;
+                    if (!eliminated) break;
+                    nextPlayerIndex = (nextPlayerIndex + 1) % totalNumOfCharacters;
+                }
                 currentPlayerIndex.ValueRW.Index = nextPlayerIndex;
 
                 foreach (var (name, playerID, activePlayer, entity) in
