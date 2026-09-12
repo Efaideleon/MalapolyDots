@@ -1,22 +1,17 @@
-using Assets.Common;
-using Assets.Common.Assets.Common;
-using Blocks.Common;
-using UnityEngine.UIElements;
 using Assets.UI.Runtime;
-using System.Collections.Generic;
 using Blocks.Sessions.Common.Assets.Blocks.CommonSession.Runtime.StartGameCode;
 using Unity.Properties;
+using UnityEngine.UIElements;
 
 namespace Blocks.Sessions.Common
 {
     [UxmlElement]
     public partial class StartGameCodeElement : VisualElement
     {
-        const string StartGameButtonText = "Start";
-
-        readonly List<DataBinding> m_Bindings = new();
-
+        readonly Button m_Start;
+        readonly Label m_Status;
         StartGameCodeViewModel m_ViewModel;
+        string m_SessionType;
 
         [CreateProperty, UxmlAttribute]
         public string SessionType
@@ -24,69 +19,55 @@ namespace Blocks.Sessions.Common
             get => m_SessionType;
             set
             {
-                if (m_SessionType == value)
-                    return;
-
-                UnityEngine.Debug.Log($"[StartGameCodeElement] | setting session type: {value} panel: {panel}");
+                if (m_SessionType == value) return;
                 m_SessionType = value;
-                UnityEngine.Debug.Log($"[StartGameCodeElement] | SessionType: {value}");
-                if (panel != null)
-                    UpdateBindings();
+                if (panel != null) Bind();
             }
         }
-        string m_SessionType;
 
         public StartGameCodeElement()
         {
-            var hasSessionCode = new DataBinding
-            {
-                dataSourcePath = new PropertyPath(nameof(StartGameCodeViewModel.HasSessionCode)),
-                bindingMode = BindingMode.ToTarget
-            };
-            SetBinding(new BindingId(nameof(enabledSelf)), hasSessionCode);
-
-            var startGameButton = new Button
-            {
-                text = StartGameButtonText
-            };
-            startGameButton.AddToClassList(NetworkMenuTheme.BlueButton);
-            startGameButton.clicked += StartGame;
-            Add(startGameButton);
-            m_Bindings.Add(hasSessionCode);
-
-            RegisterCallback<AttachToPanelEvent>(_ => UpdateBindings());
-            RegisterCallback<DetachFromPanelEvent>(_ => CleanupBindings());
+            m_Status = new Label { enableRichText = false };
+            m_Status.style.whiteSpace = WhiteSpace.Normal;
+            Add(m_Status);
+            m_Start = new Button(() => { if (m_ViewModel != null) _ = m_ViewModel.StartAsync(); }) { text = "Start character selection" };
+            m_Start.AddToClassList(NetworkMenuTheme.BlueButton);
+            m_Start.style.width = Length.Percent(100);
+            m_Start.style.maxWidth = Length.Percent(100);
+            m_Start.style.height = StyleKeyword.Auto;
+            m_Start.style.minHeight = 64;
+            m_Start.style.flexShrink = 0;
+            m_Start.style.fontSize = 22;
+            m_Start.style.whiteSpace = WhiteSpace.Normal;
+            m_Start.style.paddingLeft = 12;
+            m_Start.style.paddingRight = 12;
+            m_Start.style.paddingTop = 12;
+            m_Start.style.paddingBottom = 12;
+            Add(m_Start);
+            RegisterCallback<AttachToPanelEvent>(_ => Bind());
+            RegisterCallback<DetachFromPanelEvent>(_ => Cleanup());
         }
 
-        private void UpdateBindings()
+        void Bind()
         {
-            CleanupBindings();
-
-            UnityEngine.Debug.Log($"[StartGameCodeElement] | SessionType: {SessionType}");
+            Cleanup();
             m_ViewModel = new StartGameCodeViewModel(SessionType);
-            foreach (var binding in m_Bindings)
-            {
-                binding.dataSource = m_ViewModel;
-            }
-            UnityEngine.Debug.Log($"[StartGameCodeElement] | attaching to the panel");
+            m_ViewModel.Changed += Render;
+            Render();
         }
 
-        private void CleanupBindings()
+        void Render()
         {
-            m_ViewModel?.Dispose();
+            m_Start.SetEnabled(m_ViewModel.CanStart);
+            m_Status.text = m_ViewModel.Status;
+        }
+
+        void Cleanup()
+        {
+            if (m_ViewModel == null) return;
+            m_ViewModel.Changed -= Render;
+            m_ViewModel.Dispose();
             m_ViewModel = null;
-
-            foreach (var binding in m_Bindings)
-            {
-                binding.dataSource = null;
-            }
-            UnityEngine.Debug.Log($"[StartGameCodeElement] | detaching from the panel");
-        }
-
-        private void StartGame()
-        {
-            UnityEngine.Debug.Log($"[StartGameCodeElement] | Starting game...");
-            NetworkRequests.StartGame = true;
         }
     }
 }

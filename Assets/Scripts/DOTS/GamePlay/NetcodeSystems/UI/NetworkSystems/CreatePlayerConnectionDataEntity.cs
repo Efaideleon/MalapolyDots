@@ -14,10 +14,16 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+            foreach (var (player, playerEntity) in SystemAPI.Query<RefRO<PlayerConnectionData>>().WithEntityAccess())
+            {
+                if (!SystemAPI.HasComponent<NetworkId>(player.ValueRO.Connection) ||
+                    SystemAPI.HasComponent<NetworkStreamRequestDisconnect>(player.ValueRO.Connection))
+                    ecb.DestroyEntity(playerEntity);
+            }
             foreach (var (_, netId, entity) in SystemAPI.Query<RefRO<NetworkStreamInGame>, RefRO<NetworkId>>().WithEntityAccess().WithNone<PlayerConnectionDataCreatedTag>())
             {
                 var playerDataEntity = ecb.CreateEntity();
-                ecb.AddComponent(playerDataEntity, new PlayerConnectionData { CharacterSelected = CharactersEnum.Default, IsLockedIn = false, OwnerNetworkId = netId.ValueRO.Value });
+                ecb.AddComponent(playerDataEntity, new PlayerConnectionData { CharacterSelected = CharactersEnum.Default, IsLockedIn = false, OwnerNetworkId = netId.ValueRO.Value, Connection = entity });
                 UnityEngine.Debug.Log($"[CreatePlayerConnectionDataEntity] | Creating Player Connection Entity");
                 ecb.AddComponent<PlayerConnectionDataCreatedTag>(entity);
             }
@@ -31,6 +37,7 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
     {
         public CharactersEnum CharacterSelected;
         public int OwnerNetworkId;
+        public Entity Connection;
         public bool IsLockedIn;
     }
 

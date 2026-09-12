@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.DataComponents;
 using TitleScreen.NetworkUI.Authoring;
 using TitleScreen.NetworkUI.Components;
 using Unity.Entities;
@@ -16,6 +17,7 @@ namespace TitleScreen.NetworkUI.Systems
 
         public void OnStartRunning(ref SystemState state)
         {
+            Cleanup(ref state);
             var uiRef = SystemAPI.ManagedAPI.GetSingleton<CreateGameUIReference>();
             var prefab = uiRef.uiDocumentGO;
 
@@ -34,16 +36,18 @@ namespace TitleScreen.NetworkUI.Systems
             var createGamePanel = new CreateGamePanel(root);
 
             // Create managed singleton component holding the panel instance.
-            state.EntityManager.CreateSingleton(new CreateGameUIPanelComponent { Panel = createGamePanel });
+            var panelEntity = state.EntityManager.CreateSingleton(new CreateGameUIPanelComponent { Panel = createGamePanel });
+            state.EntityManager.AddComponentObject(panelEntity, new GameObjectReference { Instance = uiGameObject });
         }
 
-        public void OnStopRunning(ref SystemState state)
+        public void OnStopRunning(ref SystemState state) => Cleanup(ref state);
+
+        public void OnDestroy(ref SystemState state) => Cleanup(ref state);
+
+        static void Cleanup(ref SystemState state)
         {
-            // nothing special on stop for now
+            state.EntityManager.DestroyEntity(state.GetEntityQuery(ComponentType.ReadOnly<CreateGameUIPanelComponent>()));
         }
-
-        public void OnDestroy(ref SystemState state)
-        { }
     }
 
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
@@ -52,6 +56,7 @@ namespace TitleScreen.NetworkUI.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<CreateGameUIPanelComponent>();
+            state.RequireForUpdate<GameMenuPhaseComponent>();
         }
 
         public void OnUpdate(ref SystemState state)

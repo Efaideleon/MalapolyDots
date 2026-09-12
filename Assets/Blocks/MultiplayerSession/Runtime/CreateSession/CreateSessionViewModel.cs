@@ -89,6 +89,9 @@ namespace Blocks.Sessions
 
             if (session.IsHost)
             {
+                NetworkRequests.LobbyVersion++;
+                NetworkRequests.StartGame = false;
+                NetworkRequests.ExpectedLobbyPlayers = 0;
                 NetworkRequests.StartHost = true;
             }
             UnityEngine.Debug.Log("[CreateSessionViewModel] | Session Added");

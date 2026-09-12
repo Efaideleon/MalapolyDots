@@ -1,46 +1,30 @@
-using System;
-using UnityEngine;
-using Blocks.Common;
-using Unity.Properties;
-using UnityEngine.UIElements;
 using Blocks.Sessions.Common;
-using Unity.Services.Multiplayer;
-using System.Collections.Generic;
+using Unity.Properties;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Blocks.Sessions
 {
     [UxmlElement]
-    public partial class SessionBrowserElement : ListView
+    public partial class SessionBrowserElement : VisualElement
     {
-        private const string k_JoinButtonText = "JOIN";
-        private const string k_RefreshButtonText = "REFRESH LIST";
-        private const string k_NoSessionFoundText = "No sessions found";
-
-        private const string k_SessionNameLabel = "SessionNameLabel";
-        private const string k_SessionPlayerCountLabel = "SessionPlayerCountLabel";
-
-        private int m_MaxSessionsDisplayed = 20;
-        private SessionSettings m_SessionSettings;
-        private SessionBrowserViewModel m_ViewModel;
-        private List<DataBinding> m_DataBindings;
-
-        private Button m_RefreshButton;
-        private Button m_JoinSessionButton;
+        readonly Label m_Status;
+        readonly ScrollView m_List;
+        readonly Button m_Refresh;
+        SessionSettings m_Settings;
+        SessionBrowserViewModel m_ViewModel;
+        IVisualElementScheduledItem m_Poll;
+        int m_MaxSessionsDisplayed = 20;
 
         [CreateProperty, UxmlAttribute]
         public SessionSettings SessionSettings
         {
-            get => m_SessionSettings;
+            get => m_Settings;
             set
             {
-                if (m_SessionSettings == value)
-                    return;
-
-                m_SessionSettings = value;
-                if (panel != null)
-                {
-                    UpdateBindingSources();
-                }
+                if (m_Settings == value) return;
+                m_Settings = value;
+                if (panel != null) Bind();
             }
         }
 
@@ -48,168 +32,93 @@ namespace Blocks.Sessions
         public int MaxSessionsDisplayed
         {
             get => m_MaxSessionsDisplayed;
-            set => m_MaxSessionsDisplayed = value;
+            set => m_MaxSessionsDisplayed = Mathf.Clamp(value, 1, 100);
         }
 
         public SessionBrowserElement()
         {
-            virtualizationMethod = CollectionVirtualizationMethod.FixedHeight;
-            fixedItemHeight = 56f;
-
-            // required for making each element inheriting an indexed array item for the data source path
-            // if not set, you need to specify the datasource path manually in the bindItem callback for each item
-            bindingSourceSelectionMode = BindingSourceSelectionMode.AutoAssign;
-
-            AddToClassList(BlocksTheme.ScrollView);
-            AddToClassList(BlocksTheme.SpaceBottom);
-
-            makeNoneElement = MakeNoneElement;
-            makeItem = MakeDefaultItem;
-            makeFooter =  MakeFooter;
-
-            RegisterCallback<AttachToPanelEvent>(OnAttachToPanelEvent);
-            RegisterCallback<DetachFromPanelEvent>(OnDetachFromPanelEvent);
-        }
-
-        private VisualElement MakeFooter()
-        {
-            var buttonsContainer = new VisualElement();
-            buttonsContainer.AddToClassList(BlocksTheme.ContainerHorizontal);
-            buttonsContainer.AddToClassList(BlocksTheme.ContainerAlignedRight);
-
-            m_JoinSessionButton = new Button { text = k_JoinButtonText };
-            m_JoinSessionButton.AddToClassList(BlocksTheme.Button);
-            m_JoinSessionButton.AddToClassList(BlocksTheme.SpaceRight);
-            buttonsContainer.Add(m_JoinSessionButton);
-
-            m_RefreshButton = new Button { text = k_RefreshButtonText };
-            m_RefreshButton.AddToClassList(BlocksTheme.Button);
-            buttonsContainer.Add(m_RefreshButton);
-
-            return buttonsContainer;
-        }
-
-        private void OnRefreshButtonClicked()
-        {
-            ClearSelection();
-            // fire and forget, so we don't block the UI thread
-            _ = m_ViewModel?.UpdateSessionListAsync(MaxSessionsDisplayed);
-        }
-
-        private void JoinSession()
-        {
-            if (!m_ViewModel.SelectedAndAvailable)
+            AddToClassList("open-lobbies");
+            m_Status = new Label { enableRichText = false };
+            m_Status.AddToClassList("open-lobbies-status");
+            Add(m_Status);
+            m_List = new ScrollView(ScrollViewMode.Vertical);
+            m_List.AddToClassList("open-lobbies-list");
+            Add(m_List);
+            m_Refresh = new Button(Refresh) { text = "Refresh lobbies" };
+            m_Refresh.AddToClassList("open-lobbies-refresh");
+            Add(m_Refresh);
+            RegisterCallback<AttachToPanelEvent>(_ =>
             {
-                Debug.LogError("Selected session is no longer selected.");
+                Bind();
+                m_Poll = schedule.Execute(RefreshIfVisible).Every(5000);
+            });
+            RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                m_Poll?.Pause();
+                m_Poll = null;
+                Cleanup();
+            });
+        }
+
+        void Bind()
+        {
+            Cleanup();
+            if (m_Settings == null)
+            {
+                m_Status.text = "Lobby settings are unavailable.";
+                m_Refresh.SetEnabled(false);
                 return;
             }
-
-            // fire and forget, so we don't block the UI thread
-            _ = m_ViewModel.JoinSessionAsync(SessionSettings.ToJoinSessionOptions());
+            m_ViewModel = new SessionBrowserViewModel(m_Settings.sessionType);
+            m_ViewModel.Changed += Render;
+            Render();
+            RefreshIfVisible();
         }
 
-        private void UpdateBindingSources()
+        void RefreshIfVisible()
         {
-            CleanupBindings();
+            for (VisualElement element = this; element != null; element = element.parent)
+                if (element.resolvedStyle.display == DisplayStyle.None) return;
+            Refresh();
+        }
 
-            m_ViewModel = new SessionBrowserViewModel(SessionSettings?.sessionType);
-            foreach (var dataBinding in m_DataBindings)
+        void Refresh()
+        {
+            if (m_ViewModel != null) _ = m_ViewModel.UpdateSessionListAsync(MaxSessionsDisplayed);
+        }
+
+        void Render()
+        {
+            if (m_ViewModel == null) return;
+            m_Status.text = m_ViewModel.Status;
+            m_Refresh.SetEnabled(m_ViewModel.CanRefresh);
+            m_List.Clear();
+            foreach (var session in m_ViewModel.Sessions)
             {
-                dataBinding.dataSource = m_ViewModel;
+                string id = session.Id;
+                var row = new Button(() => Join(id))
+                {
+                    text = $"{session.Name}     {session.MaxPlayers - session.AvailableSlots}/{session.MaxPlayers} players     Join",
+                    enableRichText = false
+                };
+                row.AddToClassList("open-lobby-row");
+                row.SetEnabled(m_ViewModel.CanJoin);
+                m_List.Add(row);
             }
         }
 
-        private void CleanupBindings()
+        void Join(string id)
         {
-            m_ViewModel?.Dispose();
+            if (m_ViewModel != null && m_Settings != null)
+                _ = m_ViewModel.JoinSessionAsync(id, m_Settings.ToJoinSessionOptions());
+        }
+
+        void Cleanup()
+        {
+            if (m_ViewModel == null) return;
+            m_ViewModel.Changed -= Render;
+            m_ViewModel.Dispose();
             m_ViewModel = null;
-            foreach (var dataBinding in m_DataBindings)
-            {
-                dataBinding.dataSource = null;
-            }
-        }
-
-        private void OnDetachFromPanelEvent(DetachFromPanelEvent evt)
-        {
-            CleanupBindings();
-
-            m_RefreshButton.clicked -= OnRefreshButtonClicked;
-            m_RefreshButton.ClearBinding(nameof(SessionBrowserViewModel.CanRefresh));
-            m_JoinSessionButton.clicked -= JoinSession;
-            m_JoinSessionButton.ClearBinding(nameof(enabledSelf));
-
-            ClearBindings();
-        }
-
-        private void OnAttachToPanelEvent(AttachToPanelEvent evt)
-        {
-            m_DataBindings = new List<DataBinding>();
-
-            var listBinding = new DataBinding { dataSourcePath = new PropertyPath(nameof(SessionBrowserViewModel.Sessions)), bindingMode = BindingMode.ToTarget };
-            SetBinding(new BindingId(nameof(ListView.itemsSource)), listBinding);
-            m_DataBindings.Add(listBinding);
-
-            var selectionBinding = new DataBinding { dataSourcePath = new PropertyPath(nameof(SessionBrowserViewModel.SelectedSessionIndex)), bindingMode = BindingMode.TwoWay };
-            SetBinding(new BindingId(nameof(ListView.selectedIndex)), selectionBinding);
-            m_DataBindings.Add(selectionBinding);
-
-            var joinSessionBinding = new DataBinding { dataSourcePath = new PropertyPath(nameof(SessionBrowserViewModel.SelectedAndAvailable)), bindingMode = BindingMode.ToTarget };
-
-            m_JoinSessionButton.SetBinding(new BindingId(nameof(enabledSelf)), joinSessionBinding);
-            m_DataBindings.Add(joinSessionBinding);
-            m_JoinSessionButton.clicked += JoinSession;
-
-            var refreshBinding = new DataBinding { dataSourcePath = new PropertyPath(nameof(SessionBrowserViewModel.CanRefresh)), bindingMode = BindingMode.ToTarget };
-
-            m_RefreshButton.SetBinding(new BindingId(nameof(enabledSelf)), refreshBinding);
-            m_DataBindings.Add(refreshBinding);
-            m_RefreshButton.clicked += OnRefreshButtonClicked;
-
-            UpdateBindingSources();
-        }
-
-        private static VisualElement MakeNoneElement()
-        {
-            var label = new Label(k_NoSessionFoundText);
-            label.AddToClassList(BlocksTheme.Label);
-            label.AddToClassList(BlocksTheme.SpaceLeft);
-            return label;
-        }
-
-        private static VisualElement MakeDefaultItem()
-        {
-            var container = new VisualElement();
-            container.AddToClassList(BlocksTheme.ContainerHorizontal);
-            container.AddToClassList(BlocksTheme.ScrollViewElement);
-            container.AddToClassList(BlocksTheme.ContainerSpaceBetween);
-
-            var sessionNameLabel = new Label { name = k_SessionNameLabel };
-            sessionNameLabel.AddToClassList(BlocksTheme.Label);
-            sessionNameLabel.AddToClassList(BlocksTheme.SpaceLeft);
-            container.Add(sessionNameLabel);
-
-            var db = new DataBinding
-            {
-                dataSourcePath = PropertyPath.FromName(nameof(SessionInfoViewModel.Name)),
-                bindingMode = BindingMode.ToTarget,
-                updateTrigger = BindingUpdateTrigger.OnSourceChanged
-            };
-            sessionNameLabel.SetBinding(nameof(Label.text), db);
-
-            var sessionPlayerCountLabel = new Label { name = k_SessionPlayerCountLabel };
-            sessionPlayerCountLabel.AddToClassList(BlocksTheme.Label);
-            sessionPlayerCountLabel.AddToClassList(BlocksTheme.SpaceRight);
-            container.Add(sessionPlayerCountLabel);
-
-            var sessionPlayerCountBinding = new DataBinding { bindingMode = BindingMode.ToTarget };
-
-            // register a local converter to display relevant session properties as a formatted string
-            sessionPlayerCountBinding.sourceToUiConverters
-                .AddConverter((ref SessionInfoViewModel session) => $"{session.MaxPlayers - session.AvailableSlots}/{session.MaxPlayers} Players");
-
-            sessionPlayerCountLabel.SetBinding(nameof(Label.text), sessionPlayerCountBinding);
-
-            return container;
         }
     }
 }

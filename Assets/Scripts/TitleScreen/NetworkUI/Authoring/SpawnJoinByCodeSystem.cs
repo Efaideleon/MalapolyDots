@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.DataComponents;
 using Assets.Common;
 using Assets.Common.Assets.Common;
 using TitleScreen.NetworkUI.Authoring;
@@ -17,6 +18,7 @@ namespace TitleScreen.NetworkUI.Systems
 
         public void OnStartRunning(ref SystemState state)
         {
+            Cleanup(ref state);
             var gameMenuRef = SystemAPI.ManagedAPI.GetSingleton<JoinByCodeUIReference>();
             var gameMenuGO = gameMenuRef.uiDocumentGO;
             if (gameMenuGO == null)
@@ -33,15 +35,18 @@ namespace TitleScreen.NetworkUI.Systems
 
             var root = uiDocument.rootVisualElement;
             JoinSessionByCodePanel joinSessionByCodePanel = new(root);
-            state.EntityManager.CreateSingleton(new UIPanelComponent { JoinSessionByCodePanel = joinSessionByCodePanel });
+            var panelEntity = state.EntityManager.CreateSingleton(new UIPanelComponent { JoinSessionByCodePanel = joinSessionByCodePanel });
+            state.EntityManager.AddComponentObject(panelEntity, new GameObjectReference { Instance = uiGameObject });
         }
 
-        public void OnStopRunning(ref SystemState state)
+        public void OnStopRunning(ref SystemState state) => Cleanup(ref state);
+
+        public void OnDestroy(ref SystemState state) => Cleanup(ref state);
+
+        static void Cleanup(ref SystemState state)
         {
+            state.EntityManager.DestroyEntity(state.GetEntityQuery(ComponentType.ReadOnly<UIPanelComponent>()));
         }
-
-        public void OnDestroy(ref SystemState state)
-        { }
     }
 
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
@@ -50,6 +55,7 @@ namespace TitleScreen.NetworkUI.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<UIPanelComponent>();
+            state.RequireForUpdate<GameMenuPhaseComponent>();
         }
 
         public void OnUpdate(ref SystemState state)
@@ -63,10 +69,12 @@ namespace TitleScreen.NetworkUI.Systems
                     if(!panel.IsVisible)
                     {
                         //UnityEngine.Debug.Log($"[HideJoinSessionByCodePanelSystem] | panel visibility : {panel.IsVisible}");
+                        if (SystemAPI.ManagedAPI.TryGetSingleton<GameMenuPanelsComponent>(out var menus))
+                            foreach (var menu in menus.AllPanels) menu.Hide();
                         panel.Show();
                     }
                     break;
-                case GameMenuPhase.CharacterSelect:
+                default:
                     if(panel.IsVisible)
                     {
                         //UnityEngine.Debug.Log($"[HideJoinSessionByCodePanelSystem] | panel visibility : {panel.IsVisible}");

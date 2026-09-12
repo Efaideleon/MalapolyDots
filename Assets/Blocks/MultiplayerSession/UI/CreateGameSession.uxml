@@ -1,24 +1,15 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <engine:VisualElement class="malacity-modal">
-        <engine:Label text="JOIN SESSION BY CODE" name="Label" class="malacity-header malacity-header--space-bottom"/>
-        <engine:VisualElement class="DropFieldMenu" style="flex-grow: 1; align-items: center; height: 120px; width: 100%; flex-direction: column; justify-content: space-around;">
-            <engine:DropdownField label="Number of Rounds:" name="NumOfRoundsDropdownField" choices="8,10,12" index="0" class="DropdownFieldOne dropdown" style="font-size: 32px; -unity-font-style: bold;"/>
-        </engine:VisualElement>
-        <Blocks.Sessions.CreateSessionElement class="malacity-element--space-bottom">
-            <Bindings>
-                <engine:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/>
-            </Bindings>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="lobby-card">
+        <ui:Label text="SET UP YOUR TABLE" class="lobby-section-title"/>
+        <ui:Label text="Public lobby · Up to 6 players" class="lobby-caption"/>
+        <ui:DropdownField label="Number of rounds" name="NumOfRoundsDropdownField" choices="8,10,12" index="0" class="lobby-rounds"/>
+        <ui:Label text="Lobby name" class="lobby-field-label"/>
+        <Blocks.Sessions.CreateSessionElement class="lobby-create-fields">
+            <Bindings><ui:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/></Bindings>
         </Blocks.Sessions.CreateSessionElement>
-        <Blocks.Sessions.Common.CopySessionCodeElement class="malacity-element--space-bottom">
-            <Bindings>
-                <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
-            </Bindings>
-        </Blocks.Sessions.Common.CopySessionCodeElement>
-        <Blocks.Sessions.Common.StartGameCodeElement>
-            <Bindings>
-                <engine:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
-            </Bindings>
-        </Blocks.Sessions.Common.StartGameCodeElement>
-    </engine:VisualElement>
-</engine:UXML>
+        <ui:Label text="Friends can find your lobby in Join public lobby. You can also share a code." class="lobby-help"/>
+        <Blocks.Sessions.Common.CopySessionCodeElement class="lobby-code"><Bindings><ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/></Bindings></Blocks.Sessions.Common.CopySessionCodeElement>
+        <ui:VisualElement class="lobby-divider"/>
+        <Blocks.Sessions.Common.StartGameCodeElement><Bindings><ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/></Bindings></Blocks.Sessions.Common.StartGameCodeElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -10,11 +10,11 @@ namespace TitleScreen.NetworkUI.Panels
     {
         private readonly Button HostButton;
         private readonly Button JoinButton;
-        private readonly Button PlayButton;
+        private readonly Button PublicLobbyButton;
 
         public MainMenuPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
-            PlayButton = root.Q<Button>("PlayButton") ?? throw new InvalidOperationException("PlayButton not found");
+            PublicLobbyButton = root.Q<Button>("JoinPublicLobbyButton") ?? throw new InvalidOperationException("JoinPublicLobbyButton not found");
             HostButton = root.Q<Button>("CreateGameButton") ?? throw new InvalidOperationException("CreateGameButton not found");
             JoinButton = root.Q<Button>("EnterCodeButton") ?? throw new InvalidOperationException("EnterCodeButton not found");
         }
@@ -33,10 +33,10 @@ namespace TitleScreen.NetworkUI.Panels
         {
             HostButton.clickable.clicked += HandleHostButton;
             JoinButton.clickable.clicked += HandleJoinButton;
-            PlayButton.clickable.clicked += HandlePlayButton;
+            PublicLobbyButton.clickable.clicked += HandlePublicLobbyButton;
         }
 
-        public void HandlePlayButton()
+        public void HandlePublicLobbyButton()
         {
             UIRequests.Enqueue(new UIRequest { Value = UIRequestType.PlayButton });
         }
@@ -55,7 +55,7 @@ namespace TitleScreen.NetworkUI.Panels
         {
             HostButton.clickable.clicked -= HandleHostButton;
             JoinButton.clickable.clicked -= HandleJoinButton;
-            PlayButton.clickable.clicked -= HandlePlayButton;
+            PublicLobbyButton.clickable.clicked -= HandlePublicLobbyButton;
         }
     }
 }

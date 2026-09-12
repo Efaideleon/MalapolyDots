@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using Assets.Scripts.DOTS.DataComponents;
 using Assets.Scripts.TitleScreen.NetworkUI.Panels;
 using DOTS.DataComponents;
@@ -22,6 +23,8 @@ namespace TitleScreen.NetworkUI.Systems
 
         public void OnStartRunning(ref SystemState state)
         {
+            Cleanup(ref state);
+            SystemAPI.SetSingleton(new GameMenuPhaseComponent { Value = GameMenuPhase.MainMenu });
             var gameMenuRef = SystemAPI.ManagedAPI.GetSingleton<NetworkGameMenuReference>();
             var gameMenuGO = gameMenuRef.uiDocumentGO;
             if (gameMenuGO == null)
@@ -83,32 +86,34 @@ namespace TitleScreen.NetworkUI.Systems
             foreach (var panel in panelsComponent.AllPanels)
             {
                 panel.Initialize();
+                panel.Hide();
             }
+            mainMenuPanel.Show();
         }
 
-        public void OnStopRunning(ref SystemState state)
-        {
-            if (!SystemAPI.ManagedAPI.TryGetSingleton<GameMenuPanelsComponent>(out var gameMenuPanelsComponent))
-                return;
+        public void OnStopRunning(ref SystemState state) => Cleanup(ref state);
 
-            var gameMenuPanels = gameMenuPanelsComponent.AllPanels;
-            if (gameMenuPanels != null)
+        public void OnDestroy(ref SystemState state) => Cleanup(ref state);
+
+        static void Cleanup(ref SystemState state)
+        {
+            var panelsQuery = state.GetEntityQuery(ComponentType.ReadOnly<GameMenuPanelsComponent>());
+            using (var entities = panelsQuery.ToEntityArray(Allocator.Temp))
             {
-                foreach (var panel in gameMenuPanels)
+                foreach (var entity in entities)
                 {
-                    panel.Dispose();
+                    var panels = state.EntityManager.GetComponentObject<GameMenuPanelsComponent>(entity);
+                    if (panels.AllPanels == null) continue;
+                    foreach (var panel in panels.AllPanels)
+                    {
+                        panel.Hide();
+                        panel.Dispose();
+                    }
                 }
             }
-        }
-
-        public void OnDestroy(ref SystemState state)
-        {
-
-            if (!SystemAPI.ManagedAPI.TryGetSingleton<GameMenuPanelsComponent>(out var panels))
-                return;
-
-            var query = SystemAPI.QueryBuilder().WithAll<GameMenuPanelsComponent>().Build();
-            state.EntityManager.DestroyEntity(query);
+            state.EntityManager.DestroyEntity(panelsQuery);
+            state.EntityManager.DestroyEntity(state.GetEntityQuery(ComponentType.ReadOnly<GameMenuUIRequests>()));
+            state.EntityManager.DestroyEntity(state.GetEntityQuery(ComponentType.ReadOnly<GameMenuTag>()));
         }
     }
 

@@ -1,4 +1,5 @@
 using Unity.Services.Multiplayer;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if !GAMEOBJECTS_NETCODE_2_AVAILABLE
@@ -10,9 +11,12 @@ namespace Blocks.Sessions.Common
     [CreateAssetMenu(fileName = nameof(SessionSettings), menuName = "Services/Blocks/Session/" + nameof(SessionSettings))]
     public class SessionSettings : ScriptableObject
     {
+        public const int LobbyCapacity = 6;
+        public const string PublicLobbyKind = "malapoly-public-v1";
+
         [Header("Session options")]
         [Tooltip("Maximum number of players allowed in the session.")]
-        public int maxPlayers = 5;
+        public int maxPlayers = LobbyCapacity;
         [Tooltip("The name of the created session. It can be used to display the list of existing sessions in the UI.")]
         public string sessionName = "default-session-name";
         [Tooltip("The Session Type is used to uniquely identify a type of session locally. This is used to reference a session through the Kits elements.")]
@@ -74,7 +78,14 @@ namespace Blocks.Sessions.Common
         {
             return new SessionOptions
             {
-                MaxPlayers = maxPlayers,
+                MaxPlayers = LobbyCapacity,
+                IsPrivate = false,
+                IsLocked = false,
+                Password = null,
+                SessionProperties = new Dictionary<string, Unity.Services.Multiplayer.SessionProperty>
+                {
+                    ["game"] = new Unity.Services.Multiplayer.SessionProperty(PublicLobbyKind, VisibilityPropertyOptions.Public, PropertyIndex.String1)
+                },
                 Name = sessionName,
                 Type = sessionType,
             };

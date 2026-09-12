@@ -5,54 +5,22 @@ using Unity.NetCode;
 
 namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
 {
-    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
-    public partial struct GoToCharacterSelectClientSystem : ISystem
-    {
-        public void OnCreate(ref SystemState state)
-        {
-        }
-
-        public void OnUpdate(ref SystemState state)
-        {
-            var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            if (!NetworkRequests.StartGame)
-                return;
-
-            UnityEngine.Debug.Log($"[GoToCharacterSelectNetworkSystem] | Exiting Lobby.");
-            NetworkRequests.StartGame = false;
-            var rpcEntity = ecb.CreateEntity();
-            ecb.AddComponent(rpcEntity, new GoToCharacterSelectRpc { });
-            ecb.AddComponent(rpcEntity, new SendRpcCommandRequest { });
-
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
-        }
-    }
+    public struct LobbyStartState : IComponentData { public bool Started; }
+    public struct CharacterSelectionNotified : IComponentData { }
 
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct AllGoToCharacterSelectClientSystem : ISystem
     {
-        public void OnCreate(ref SystemState state)
-        { }
+        public void OnCreate(ref SystemState state) { state.RequireForUpdate<GameMenuPhaseComponent>(); }
 
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            foreach (var (receivedRequest, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<GoToCharacterSelectRpc>().WithEntityAccess())
+            foreach (var (_, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<GoToCharacterSelectRpc>().WithEntityAccess())
             {
-                // TODO: Make sure that the client is able to move to the character select
-                if (SystemAPI.TryGetSingletonRW<GameMenuPhaseComponent>(out var gamePhase))
-                {
-                    // TODO: probably need a way to make sure that every can go to the character select from the lobby
-                    // if (gamePhase.ValueRO.Value == GameMenuPhase.Lobby)
-                    // {
-                        UnityEngine.Debug.Log($"[AllGoToCharacterSelectClientSystem] | we are in the lobby, change ui to character select");
-                        gamePhase.ValueRW.Value = GameMenuPhase.CharacterSelect;
-                    //}
-                }
+                SystemAPI.GetSingletonRW<GameMenuPhaseComponent>().ValueRW.Value = GameMenuPhase.CharacterSelect;
                 ecb.DestroyEntity(rpcEntity);
             }
-
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
@@ -61,30 +29,48 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct GoToCharacterSelectServerSystem : ISystem
     {
+        private int m_LobbyVersion;
         public void OnCreate(ref SystemState state)
         {
+            state.EntityManager.CreateSingleton(new LobbyStartState());
+            m_LobbyVersion = NetworkRequests.LobbyVersion;
         }
 
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-
-            foreach (var (receivedRequest, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<GoToCharacterSelectRpc>().WithEntityAccess())
+            if (m_LobbyVersion != NetworkRequests.LobbyVersion)
             {
-                UnityEngine.Debug.Log($"[GoToCharacterSelectServerSystem] | Server received change to character select screen");
-
-                var goToCharacterSelectRpcEntity = ecb.CreateEntity();
-                ecb.AddComponent<GoToCharacterSelectRpc>(goToCharacterSelectRpcEntity);
-                ecb.AddComponent(goToCharacterSelectRpcEntity, new SendRpcCommandRequest { TargetConnection = Entity.Null });
-
-                ecb.DestroyEntity(rpcEntity);
+                m_LobbyVersion = NetworkRequests.LobbyVersion;
+                SystemAPI.SetSingleton(new LobbyStartState());
+                foreach (var (_, connection) in SystemAPI.Query<RefRO<CharacterSelectionNotified>>().WithEntityAccess())
+                    ecb.RemoveComponent<CharacterSelectionNotified>(connection);
             }
+            // Start is a local host action, set only after the host locks the online session.
+            // Remote clients cannot request this transition with an RPC.
+            foreach (var (_, rpc) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<GoToCharacterSelectRpc>().WithEntityAccess())
+                ecb.DestroyEntity(rpc);
 
+            if (NetworkRequests.StartGame)
+            {
+                NetworkRequests.StartGame = false;
+                SystemAPI.GetSingletonRW<LobbyStartState>().ValueRW.Started = true;
+            }
+            if (SystemAPI.GetSingleton<LobbyStartState>().Started)
+            {
+                // Notify each connected participant once, including connections still completing at Start.
+                foreach (var (_, connection) in SystemAPI.Query<RefRO<NetworkId>>().WithAll<NetworkStreamInGame>().WithNone<CharacterSelectionNotified>().WithEntityAccess())
+                {
+                    var rpc = ecb.CreateEntity();
+                    ecb.AddComponent<GoToCharacterSelectRpc>(rpc);
+                    ecb.AddComponent(rpc, new SendRpcCommandRequest { TargetConnection = connection });
+                    ecb.AddComponent<CharacterSelectionNotified>(connection);
+                }
+            }
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
     }
 
-    public struct GoToCharacterSelectRpc : IRpcCommand
-    { }
+    public struct GoToCharacterSelectRpc : IRpcCommand { }
 }

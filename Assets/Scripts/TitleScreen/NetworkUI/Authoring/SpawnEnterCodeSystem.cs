@@ -1,3 +1,4 @@
+using Assets.Scripts.DOTS.DataComponents;
 // csharp
 using Assets.Common;
 using Assets.Common.Assets.Common;
@@ -19,6 +20,7 @@ namespace TitleScreen.NetworkUI.Systems
 
         public void OnStartRunning(ref SystemState state)
         {
+            Cleanup(ref state);
             var uiRef = SystemAPI.ManagedAPI.GetSingleton<EnterCodeUIReference>();
             var prefab = uiRef.uiDocumentGO;
             if (prefab == null)
@@ -36,17 +38,17 @@ namespace TitleScreen.NetworkUI.Systems
             var panel = new EnterCodePanel(root);
 
             // Create managed singleton component holding the panel instance.
-            state.EntityManager.CreateSingleton(new EnterCodeUIPanelComponent { Panel = panel });
+            var panelEntity = state.EntityManager.CreateSingleton(new EnterCodeUIPanelComponent { Panel = panel });
+            state.EntityManager.AddComponentObject(panelEntity, new GameObjectReference { Instance = uiGameObject });
         }
 
-        public void OnStopRunning(ref SystemState state)
-        {
-            // no-op
-        }
+        public void OnStopRunning(ref SystemState state) => Cleanup(ref state);
 
-        public void OnDestroy(ref SystemState state)
+        public void OnDestroy(ref SystemState state) => Cleanup(ref state);
+
+        static void Cleanup(ref SystemState state)
         {
-            // no-op
+            state.EntityManager.DestroyEntity(state.GetEntityQuery(ComponentType.ReadOnly<EnterCodeUIPanelComponent>()));
         }
     }
 
@@ -56,6 +58,7 @@ namespace TitleScreen.NetworkUI.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<EnterCodeUIPanelComponent>();
+            state.RequireForUpdate<GameMenuPhaseComponent>();
         }
 
         public void OnUpdate(ref SystemState state)
