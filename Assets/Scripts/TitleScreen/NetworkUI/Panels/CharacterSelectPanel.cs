@@ -29,6 +29,9 @@ namespace TitleScreen.NetworkUI.Panels
         private readonly Button CoffeeButton;
         private readonly Button TuctucButton;
         private readonly Button ConfirmButton;
+        private CharactersEnum? pendingCharacter;
+        private float pendingSelectionExpiresAt;
+        private const float SelectionResponseTimeout = 5f;
 
         public CharacterSelectPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
@@ -48,17 +51,11 @@ namespace TitleScreen.NetworkUI.Panels
         public override void Dispose()
         {
             UnSubscribeEvents();
+            pendingCharacter = null;
         }
 
         private void SubscribeEvents()
         {
-            AvocadoButton.RegisterCallback<PointerDownEvent>(SetAvocadoChoosingCallback);
-            BirdButton.RegisterCallback<PointerDownEvent>(SetBirdChoosingCallback);
-            CoinButton.RegisterCallback<PointerDownEvent>(SetCoinChoosingCallback);
-            LiraButton.RegisterCallback<PointerDownEvent>(SetLiraChoosingCallback);
-            CoffeeButton.RegisterCallback<PointerDownEvent>(SetCoffeeChoosingCallback);
-            TuctucButton.RegisterCallback<PointerDownEvent>(SetTuctucChoosingCallback);
-
             AvocadoButton.clickable.clicked += HandleAvocadoButton;
             BirdButton.clickable.clicked += HandleBirdButton;
             CoinButton.clickable.clicked += HandleCoinButton;
@@ -68,22 +65,8 @@ namespace TitleScreen.NetworkUI.Panels
             ConfirmButton.clickable.clicked += HandleConfirmButton;
         }
 
-        private void SetAvocadoChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, AvocadoButton);
-        private void SetBirdChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, BirdButton);
-        private void SetCoinChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, CoinButton);
-        private void SetLiraChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, LiraButton);
-        private void SetCoffeeChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, CoffeeButton);
-        private void SetTuctucChoosingCallback(PointerDownEvent evt) => SetButtonColor(ButtonState.Choosing, TuctucButton);
-
         private void UnSubscribeEvents()
         {
-            AvocadoButton.UnregisterCallback<PointerDownEvent>(SetAvocadoChoosingCallback);
-            BirdButton.UnregisterCallback<PointerDownEvent>(SetBirdChoosingCallback);
-            CoinButton.UnregisterCallback<PointerDownEvent>(SetCoinChoosingCallback);
-            LiraButton.UnregisterCallback<PointerDownEvent>(SetLiraChoosingCallback);
-            CoffeeButton.UnregisterCallback<PointerDownEvent>(SetCoffeeChoosingCallback);
-            TuctucButton.UnregisterCallback<PointerDownEvent>(SetTuctucChoosingCallback);
-
             AvocadoButton.clickable.clicked -= HandleAvocadoButton;
             BirdButton.clickable.clicked -= HandleBirdButton;
             CoinButton.clickable.clicked -= HandleCoinButton;
@@ -96,7 +79,6 @@ namespace TitleScreen.NetworkUI.Panels
         private void SetButtonColor(ButtonState state, Button button)
         {
             // Enable the class related to the state and disable the other classes.
-            // TODO: There is abug with the flickering default when setting to choosing
             System.Collections.IList list = Enum.GetValues(typeof(ButtonState));
             for (int i = 0; i < list.Count; i++)
             {
@@ -105,9 +87,21 @@ namespace TitleScreen.NetworkUI.Panels
             }
         }
 
-        public void SetDefault(CharactersEnum character) => SetCharacterState(character, ButtonState.Default);
+        public void SetDefault(CharactersEnum character)
+        {
+            if (pendingCharacter == character)
+            {
+                if (UnityEngine.Time.unscaledTime < pendingSelectionExpiresAt) return;
+                pendingCharacter = null;
+            }
+            SetCharacterState(character, ButtonState.Default);
+        }
 
-        public void SetChoosing(CharactersEnum character) => SetCharacterState(character, ButtonState.Choosing);
+        public void SetChoosing(CharactersEnum character)
+        {
+            if (pendingCharacter == character) pendingCharacter = null;
+            SetCharacterState(character, ButtonState.Choosing);
+        }
 
         private void SetCharacterState(CharactersEnum character, ButtonState state)
         {
@@ -134,39 +128,42 @@ namespace TitleScreen.NetworkUI.Panels
             }
         }
 
-        private void HandleButtonClick(UIRequestType uIRequestType)
+        private void HandleButtonClick(UIRequestType uIRequestType, CharactersEnum character)
         {
+            pendingCharacter = character;
+            pendingSelectionExpiresAt = UnityEngine.Time.unscaledTime + SelectionResponseTimeout;
+            SetCharacterState(character, ButtonState.Choosing);
             UIRequests.Enqueue(new UIRequest { Value = uIRequestType });
         }
 
         private void HandleAvocadoButton()
         {
-            HandleButtonClick(UIRequestType.AvocadoButton);
+            HandleButtonClick(UIRequestType.AvocadoButton, CharactersEnum.Avocado);
         }
 
         private void HandleBirdButton()
         {
-            HandleButtonClick(UIRequestType.BirdButtoon);
+            HandleButtonClick(UIRequestType.BirdButtoon, CharactersEnum.Bird);
         }
 
         private void HandleCoinButton()
         {
-            HandleButtonClick(UIRequestType.CoinButton);
+            HandleButtonClick(UIRequestType.CoinButton, CharactersEnum.Coin);
         }
 
         private void HandleLiraButton()
         {
-            HandleButtonClick(UIRequestType.LiraButton);
+            HandleButtonClick(UIRequestType.LiraButton, CharactersEnum.Lira);
         }
 
         private void HandleCoffeeButton()
         {
-            HandleButtonClick(UIRequestType.CoffeButton);
+            HandleButtonClick(UIRequestType.CoffeButton, CharactersEnum.Coffee);
         }
 
         private void HandleTuctucButton()
         {
-            HandleButtonClick(UIRequestType.TuctucButton);
+            HandleButtonClick(UIRequestType.TuctucButton, CharactersEnum.Tuctuc);
         }
 
         private void HandleConfirmButton()

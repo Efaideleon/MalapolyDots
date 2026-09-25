@@ -60,6 +60,7 @@ namespace Blocks.Sessions.Common.Assets.Blocks.CommonSession.Runtime.StartGameCo
                 if (m_Disposed || m_Session != session || !session.IsHost) return;
                 m_StartRequested = true;
                 NetworkRequests.ExpectedLobbyPlayers = session.Players.Count;
+                NetworkRequests.MatchRoundLimit = NetworkRequests.SelectedRoundLimit;
                 NetworkRequests.StartGame = true;
                 Status = "Choose a character. The game starts when everyone locks in.";
             }

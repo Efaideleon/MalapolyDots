@@ -174,8 +174,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.139947, y: 1.2400216, z: 4.3461866}
-  m_Center: {x: -0.06763953, y: 0.6200108, z: -0.11414623}
+  m_Size: {x: 33.13517, y: 7.43421, z: 13.1816635}
+  m_Center: {x: -11.492731, y: 2.6629863, z: 0.5822971}
 --- !u!114 &-5949135810079780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +213,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
+  SingleWorldHostInterpolationSmoothing: 1
   prefabId: eec6f6a979649416ea8ad90f0bf78bad
 --- !u!1 &7597892044790994900
 GameObject:
@@ -331,15 +332,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.1
+      value: -1.81
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.7
+      value: 5.97
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.1
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -440,28 +441,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4916955467237216323}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
---- !u!1 &3596424655011056797 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-  m_PrefabInstance: {fileID: 8421071963925554751}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4916955467237216323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3596424655011056797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!4 &4015996391169769758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}

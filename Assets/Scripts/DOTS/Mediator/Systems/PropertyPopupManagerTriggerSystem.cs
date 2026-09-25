@@ -12,6 +12,7 @@ namespace DOTS.Mediator.Systems
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PropertyPopupManagerTriggerSystem : ISystem
     {
+        private uint lastPresentedLanding;
         public ComponentLookup<GameStateComponent> gameStateLookup;
         public ComponentLookup<SpaceLandedOn> spaceLandedOnLookup;
         public ComponentLookup<PropertySpaceTag> propertySpaceLookup;
@@ -40,11 +41,12 @@ namespace DOTS.Mediator.Systems
             
 
             if (!gameStateLookup.HasComponent(gameStateEntity)) return;
-            if (!gameStateLookup.DidChange(gameStateEntity, state.LastSystemVersion)) return;
+            var landing = gameStateLookup[gameStateEntity];
+            if (!landing.HasUnseenLanding(activePlayerEntity, lastPresentedLanding)) return;
             if (!spaceLandedOnLookup.HasComponent(activePlayerEntity)) return;
 
             Entity spaceLanded = spaceLandedOnLookup[activePlayerEntity].entity;
-            if (!propertySpaceLookup.HasComponent(spaceLanded)) return;
+            if (spaceLanded != landing.LandingSpace || !propertySpaceLookup.HasComponent(spaceLanded)) return;
 
             GameState gameState = gameStateLookup[gameStateEntity].State;
             UnityEngine.Debug.Log($"[PropertyPopupManagerTriggerSystem] | running..");
@@ -63,6 +65,9 @@ namespace DOTS.Mediator.Systems
                             var clientId = SystemAPI.GetSingleton<NetworkId>();
                             var playerId = SystemAPI.GetComponent<GhostOwner>(currentActivePlayer);
                             bool isLocalPlayer = clientId.Value == playerId.NetworkId;
+
+                            if (!isLocalPlayer) return;
+                            lastPresentedLanding = landing.LandingSequence;
 
                             PropertyPopupManagerContext propertyPopupManagerContext = new()
                             {

@@ -337,7 +337,8 @@ namespace DOTS.Mediator
                     panelControllers.purchaseHousePanelController,
                     noMonopolyYetPanel,
                     panelControllers.purchasePropertyPanelController,
-                    setButtonUIFlagEvent
+                    setButtonUIFlagEvent,
+                    panelControllers.payRentPanelController
                     );
 
             panelControllers.backdropController.RegisterController(panelControllers.spaceActionsPanelController);
@@ -416,26 +417,27 @@ namespace DOTS.Mediator
         public void OnStopRunning(ref SystemState state)
         {
             var panelsController = SystemAPI.ManagedAPI.GetSingleton<PanelControllers>();
-            panelsController.purchasePropertyPanelController.Dispose();
-            panelsController.purchaseHousePanelController.Dispose();
-            panelsController.spaceActionsPanelController.Dispose();
-            panelsController.payRentPanelController.Dispose();
-            panelsController.rollPanelController.Dispose();
-            panelsController.backdropController.Dispose();
-            panelsController.statsPanelController.Dispose();
+            panelsController.purchasePropertyPanelController?.Dispose();
+            panelsController.purchaseHousePanelController?.Dispose();
+            panelsController.spaceActionsPanelController?.Dispose();
+            panelsController.payRentPanelController?.Dispose();
+            panelsController.rollPanelController?.Dispose();
+            panelsController.backdropController?.Dispose();
+            panelsController.statsPanelController?.Dispose();
 
             var foregroundContainer = SystemAPI.ManagedAPI.GetSingleton<ForegroundContainterComponent>().Value;
             var enterCallback = SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback;
             var moveCallback = SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback;
             var upCallback = SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback;
-            foregroundContainer.UnregisterCallback(enterCallback, TrickleDown.TrickleDown);
-            foregroundContainer.UnregisterCallback(moveCallback, TrickleDown.TrickleDown);
-            foregroundContainer.UnregisterCallback(upCallback, TrickleDown.TrickleDown);
+            foregroundContainer?.UnregisterCallback(enterCallback, TrickleDown.TrickleDown);
+            foregroundContainer?.UnregisterCallback(moveCallback, TrickleDown.TrickleDown);
+            foregroundContainer?.UnregisterCallback(upCallback, TrickleDown.TrickleDown);
 
             var allButtons = SystemAPI.ManagedAPI.GetSingleton<AllUIButtons>().Buttons;
             var buttonsEnterCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerEnterEventCallback>().Callback;
             var buttonsMoveCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerMoveEventCallback>().Callback;
             var buttonsUpCallback = SystemAPI.ManagedAPI.GetSingleton<ButtonsPointerUpEventCallback>().Callback;
+            if (allButtons == null) return;
             foreach (var button in allButtons)
             {
                 button.UnregisterCallback(buttonsEnterCallback);

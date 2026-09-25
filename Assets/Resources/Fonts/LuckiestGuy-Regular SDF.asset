@@ -18,7 +18,7 @@ Texture2D:
   m_MipsStripped: 0
   m_TextureFormat: 1
   m_MipCount: 1
-  m_IsReadable: 0
+  m_IsReadable: 1
   m_IsPreProcessed: 0
   m_IgnoreMipmapLimit: 1
   m_MipmapLimitGroupName: 
@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Version: 1.1.0
   m_Material: {fileID: 8989733331349410576}
   m_SourceFontFileGUID: 5c634636bb44ae34c889b73c284758c5
+  m_ShowObsoleteProperties: 0
   m_fontAssetCreationEditorSettings:
     sourceFontFileGUID: 5c634636bb44ae34c889b73c284758c5
     faceIndex: 0
@@ -73,15 +74,15 @@ MonoBehaviour:
     atlasHeight: 512
     characterSetSelectionMode: 0
     characterSequence: 32 - 126, 160, 8203, 8230, 9633
-    referencedFontAssetGUID: db41571423a08564cbb35127ffc42a57
+    referencedFontAssetGUID: 6fc596bdedf0c431788d92bdb4136c7a
     referencedTextAssetGUID: 
     fontStyle: 0
     fontStyleModifier: 0
     renderMode: 4165
-    includeFontFeatures: 1
-  m_SourceFontFile: {fileID: 0}
+    includeFontFeatures: 0
+  m_SourceFontFile: {fileID: 12800000, guid: 5c634636bb44ae34c889b73c284758c5, type: 3}
   m_SourceFontFilePath: 
-  m_AtlasPopulationMode: 0
+  m_AtlasPopulationMode: 1
   InternalDynamicOS: 0
   IsEditorFont: 0
   m_FaceInfo:
@@ -1956,7 +1957,7 @@ MonoBehaviour:
   m_AtlasTextureIndex: 0
   m_IsMultiAtlasTexturesEnabled: 1
   m_GetFontFeatures: 1
-  m_ClearDynamicDataOnBuild: 1
+  m_ClearDynamicDataOnBuild: 0
   m_AtlasWidth: 512
   m_AtlasHeight: 512
   m_AtlasPadding: 6
@@ -2582,33 +2583,33 @@ MonoBehaviour:
   m_FontFeatureTable:
     m_MultipleSubstitutionRecords: []
     m_LigatureSubstitutionRecords:
-    - m_ComponentGlyphIDs: 2d00000030000000
+    - m_ComponentGlyphIDs: 2d00000030000000u
       m_LigatureGlyphID: 159
-    - m_ComponentGlyphIDs: 2d00000033000000
+    - m_ComponentGlyphIDs: 2d00000033000000u
       m_LigatureGlyphID: 160
-    - m_ComponentGlyphIDs: 04000000650000000400000004000000
+    - m_ComponentGlyphIDs: 04000000650000000400000004000000u
       m_LigatureGlyphID: 171
-    - m_ComponentGlyphIDs: 040000009e0000000400000004000000
+    - m_ComponentGlyphIDs: 040000009e0000000400000004000000u
       m_LigatureGlyphID: 171
-    - m_ComponentGlyphIDs: 050000006500000006000000
+    - m_ComponentGlyphIDs: 050000006500000006000000u
       m_LigatureGlyphID: 165
-    - m_ComponentGlyphIDs: 050000006500000008000000
+    - m_ComponentGlyphIDs: 050000006500000008000000u
       m_LigatureGlyphID: 166
-    - m_ComponentGlyphIDs: 0500000065000000aa000000
+    - m_ComponentGlyphIDs: 0500000065000000aa000000u
       m_LigatureGlyphID: 165
-    - m_ComponentGlyphIDs: 050000009e00000006000000
+    - m_ComponentGlyphIDs: 050000009e00000006000000u
       m_LigatureGlyphID: 165
-    - m_ComponentGlyphIDs: 050000009e00000008000000
+    - m_ComponentGlyphIDs: 050000009e00000008000000u
       m_LigatureGlyphID: 166
-    - m_ComponentGlyphIDs: 050000009e000000aa000000
+    - m_ComponentGlyphIDs: 050000009e000000aa000000u
       m_LigatureGlyphID: 165
-    - m_ComponentGlyphIDs: 070000006500000008000000
+    - m_ComponentGlyphIDs: 070000006500000008000000u
       m_LigatureGlyphID: 168
-    - m_ComponentGlyphIDs: 070000009e00000008000000
+    - m_ComponentGlyphIDs: 070000009e00000008000000u
       m_LigatureGlyphID: 168
-    - m_ComponentGlyphIDs: 040000006500000004000000
+    - m_ComponentGlyphIDs: 040000006500000004000000u
       m_LigatureGlyphID: 162
-    - m_ComponentGlyphIDs: 040000009e00000004000000
+    - m_ComponentGlyphIDs: 040000009e00000004000000u
       m_LigatureGlyphID: 162
     m_GlyphPairAdjustmentRecords:
     - m_FirstAdjustmentRecord:

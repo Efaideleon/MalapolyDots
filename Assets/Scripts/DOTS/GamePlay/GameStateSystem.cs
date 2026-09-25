@@ -22,6 +22,7 @@ namespace DOTS.GamePlay
 
     [BurstCompile]
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    [UpdateAfter(typeof(SpaceDetectorSystem))]
     public partial struct GamePlaySystem : ISystem
     {
         public ComponentLookup<FinalArrived> finalArrivedLookup;
@@ -78,7 +79,12 @@ namespace DOTS.GamePlay
                 var arrived = finalArrivedLookup.GetRefRW(activePlayerEntity);
                 if (arrived.ValueRO.Value == true)
                 {
-                    SystemAPI.GetSingletonRW<GameStateComponent>().ValueRW.State = GameState.Landing;
+                    var game = SystemAPI.GetSingletonRW<GameStateComponent>();
+                    game.ValueRW.State = GameState.Landing;
+                    game.ValueRW.LandingPlayer = activePlayerEntity;
+                    game.ValueRW.LandingSpace = SystemAPI.GetComponent<SpaceLandedOn>(activePlayerEntity).entity;
+                    game.ValueRW.LandingSequence++;
+                    if (game.ValueRO.LandingSequence == 0) game.ValueRW.LandingSequence = 1;
                     arrived.ValueRW.Value = false;
                 }
             }
@@ -111,7 +117,10 @@ namespace DOTS.GamePlay
             foreach (var (money, bankrupt, owner, player) in SystemAPI.Query<RefRO<GhostMoneyComponet>, RefRW<BankruptPlayer>, RefRO<GhostOwner>>().WithEntityAccess())
             {
                 players++;
-                if (money.ValueRO.Value < 0 && !bankrupt.ValueRO.Value)
+                bool connected = false;
+                foreach (var connection in SystemAPI.Query<RefRO<NetworkId>>())
+                    if (connection.ValueRO.Value == owner.ValueRO.NetworkId) { connected = true; break; }
+                if ((money.ValueRO.Value < 0 || !connected) && !bankrupt.ValueRO.Value)
                 {
                     bankrupt.ValueRW.Value = true;
                     // Return eliminated players' properties to the bank.
@@ -130,7 +139,7 @@ namespace DOTS.GamePlay
                 }
                 if (!bankrupt.ValueRO.Value) { survivors++; winner = owner.ValueRO.NetworkId; }
             }
-            if (players >= 2 && survivors <= 1)
+            if ((players >= 2 && survivors <= 1) || (players > 0 && survivors == 0))
             {
                 game.WinnerNetworkId = survivors == 1 ? winner : 0;
                 game.State = GameState.GameOver;

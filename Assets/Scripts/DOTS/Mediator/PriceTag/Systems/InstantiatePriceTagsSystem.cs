@@ -10,40 +10,37 @@ using Unity.Transforms;
 namespace a
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateAfter(typeof(TransformSystemGroup))]
     public partial struct InstantiatePriceTagsSystem : ISystem
     {
-        private ComponentLookup<Parent> parentLookup;
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<NetworkId>();
             state.RequireForUpdate<PriceTagPivotTag>();
             state.RequireForUpdate<GameStateComponent>();
-            parentLookup = SystemAPI.GetComponentLookup<Parent>(true);
+            state.RequireForUpdate<PriceTagReference>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
             var gameState = SystemAPI.GetSingleton<GameStateComponent>();
 
-            parentLookup.Update(ref state);
             if (!gameState.AllPlacesInstantiated)
             {
-                UnityEngine.Debug.Log($"[InstantiatePriceTagsSystem] | not all places instantiated.");
                 return;
             }
 
             var priceTagPrefab = SystemAPI.GetSingleton<PriceTagReference>();
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-            foreach (var (localToWorld, priceTagPivotEntity) in SystemAPI.Query<RefRO<LocalToWorld>>().WithEntityAccess().WithAll<PriceTagPivotTag>())
+            foreach (var (localToWorld, property, priceTagPivotEntity) in SystemAPI.Query<RefRO<LocalToWorld>, RefRO<PriceTagProperty>>()
+                         .WithEntityAccess().WithAll<PriceTagPivotTag>().WithNone<PriceTagSpawned>())
             {
-                if (!parentLookup.HasComponent(priceTagPivotEntity)) continue;
-                var placeEntity = parentLookup[priceTagPivotEntity];
+                var placeEntity = property.ValueRO.Value;
 
-                //UnityEngine.Debug.Log($"[SetupLocalQuadBufferEntity] | worldTransform position: {worldTransform.ValueRO.Position}");
-                if (SystemAPI.HasComponent<SpaceIDComponent>(placeEntity.Value))
+                if (SystemAPI.HasComponent<SpaceIDComponent>(placeEntity))
                 {
-                    UnityEngine.Debug.Log($"[InstantiatePriceTagsSystem] | pricetagpivot position : {localToWorld.ValueRO.Position}");
-                    var spaceID = SystemAPI.GetComponent<SpaceIDComponent>(placeEntity.Value);
+                    var spaceID = SystemAPI.GetComponent<SpaceIDComponent>(placeEntity);
                     var priceTagInstance = ecb.Instantiate(priceTagPrefab.Entity);
                     ecb.SetComponent(priceTagInstance, new LocalTransform
                     {
@@ -52,12 +49,15 @@ namespace a
                         Scale = 1
                     });
                     ecb.SetComponent(priceTagInstance, new SpaceIDComponent { Value = spaceID.Value });
+                    ecb.AddComponent<PriceTagSpawned>(priceTagPivotEntity);
+                    UnityEngine.Debug.Log($"[PriceTag] Created tag for property ID {spaceID.Value} at {localToWorld.ValueRO.Position}.");
                 }
             }
 
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
-            state.Enabled = false;
+            // Client ghosts may arrive after the server's AllPlacesInstantiated flag.
+            // Keep accepting new pivots; the marker prevents duplicate tags.
         }
     }
 }

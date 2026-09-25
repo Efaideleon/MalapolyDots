@@ -4,6 +4,7 @@ using Unity.Entities;
 namespace DOTS.Mediator.Systems
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
+    [UpdateAfter(typeof(SpaceActionsPanelContextUpdaterSystem))]
     public partial struct SpaceActionsPanelUpdaterManagedSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

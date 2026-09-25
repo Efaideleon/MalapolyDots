@@ -18,15 +18,19 @@ namespace Assets.Scripts.DOTS.Mediator.Systems.DebugScreenSystem
             var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             foreach (var (toggleCustomRoll, _, entity) in SystemAPI.Query<RefRO<ToggleCustomRollRpc>, RefRO<ReceiveRpcCommandRequest>>().WithEntityAccess())
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 var config = SystemAPI.GetSingletonRW<RollConfig>();
                 config.ValueRW.isCustomEnabled = toggleCustomRoll.ValueRO.Value;
+#endif
                 ecb.DestroyEntity(entity);
             }
 
             foreach (var (customRoll, _, entity) in SystemAPI.Query<RefRO<CustomRollValueRpc>, RefRO<ReceiveRpcCommandRequest>>().WithEntityAccess())
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 var config = SystemAPI.GetSingletonRW<RollConfig>();
                 config.ValueRW.customRollValue = customRoll.ValueRO.Value;
+#endif
                 ecb.DestroyEntity(entity);
             }
 

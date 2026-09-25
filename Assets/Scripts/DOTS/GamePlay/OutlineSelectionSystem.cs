@@ -1,7 +1,12 @@
+using System.Collections.Generic;
 using Assets.Scripts.DOTS.Characters;
+using Assets.Scripts.DOTS.GamePlay;
 using DOTS.GameSpaces;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Graphics;
+using Unity.NetCode;
+using UnityEngine;
 
 namespace DOTS.GamePlay
 {
@@ -10,66 +15,80 @@ namespace DOTS.GamePlay
         public Entity Entity;
     }
 
+    // Every client follows the same replicated turn, regardless of local clicks or ownership.
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
-    public partial struct OutlineSelectionSystem : ISystem
+    [UpdateInGroup(typeof(PresentationSystemGroup), OrderFirst = true)]
+    public partial class OutlineSelectionSystem : SystemBase
     {
-        public void OnCreate(ref SystemState state)
+        readonly Dictionary<Entity, int> originalLayers = new();
+        readonly List<Entity> restored = new();
+        EntityQuery renderers;
+        int outlineLayer;
+
+        protected override void OnCreate()
         {
-            state.RequireForUpdate<ClickedPropertyComponent>();
-            state.RequireForUpdate<LastPropertyOutlined>();
-            state.EntityManager.CreateSingleton<LastPropertyOutlined>();
+            EntityManager.CreateSingleton<LastPropertyOutlined>();
+            outlineLayer = LayerMask.NameToLayer("Outline");
+            renderers = GetEntityQuery(new EntityQueryDesc
+            {
+                All = new[] { ComponentType.ReadOnly<RenderFilterSettings>() },
+                Any = new[] { ComponentType.ReadOnly<PropertySpaceTag>(), ComponentType.ReadOnly<PropertyLodSource>() }
+            });
         }
 
-        public void OnUpdate(ref SystemState state)
+        protected override void OnUpdate()
         {
-            foreach (var clickedProperty in
-                    SystemAPI.Query<
-                        RefRO<ClickedPropertyComponent>
-                    >()
-                    .WithChangeFilter<ClickedPropertyComponent>())
+            Entity property = Entity.Null;
+            if (outlineLayer >= 0 &&
+                !SystemAPI.QueryBuilder().WithAll<NetworkStreamInGame>().Build().IsEmptyIgnoreFilter &&
+                SystemAPI.TryGetSingleton<CurrentActivePlayer>(out var active) &&
+                SystemAPI.TryGetSingleton<GameStateComponent>(out var game) &&
+                game.State != GameState.Walking && game.State != GameState.GameOver &&
+                EntityManager.HasComponent<SpaceLandedOn>(active.Entity))
             {
-                var clickedEntity = clickedProperty.ValueRO.entity;
+                var landed = EntityManager.GetComponentData<SpaceLandedOn>(active.Entity).entity;
+                if (EntityManager.HasComponent<PropertySpaceTag>(landed)) property = landed;
+            }
 
-                var lastPropertyOutlined = SystemAPI.GetSingletonRW<LastPropertyOutlined>();
+            Dependency.Complete();
+            restored.Clear();
+            foreach (var pair in originalLayers)
+            {
+                if (property != Entity.Null && PropertyFor(pair.Key) == property) continue;
+                if (EntityManager.HasComponent<RenderFilterSettings>(pair.Key)) SetLayer(pair.Key, pair.Value);
+                restored.Add(pair.Key);
+            }
+            foreach (var entity in restored) originalLayers.Remove(entity);
 
-                // Disable the 'outline' around the property
-                if (lastPropertyOutlined.ValueRO.Entity != Entity.Null && lastPropertyOutlined.ValueRO.Entity != clickedEntity)
+            if (property != Entity.Null)
+            {
+                // Include all LODs, even when currently culled, and pick up newly streamed renderers.
+                using var entities = renderers.ToEntityArray(Allocator.Temp);
+                foreach (var entity in entities)
                 {
-                    ToggleOutline(ref state, ref lastPropertyOutlined.ValueRW.Entity, 7);
-                    lastPropertyOutlined.ValueRW.Entity = clickedEntity;
-                }
-
-                // Enable the 'outline' around the property.
-                if (clickedEntity == Entity.Null)
-                    return;
-
-                bool isAPropertyClicked = SystemAPI.HasComponent<PropertySpaceTag>(clickedEntity);
-                if (isAPropertyClicked)
-                {
-                    ToggleOutline(ref state, ref clickedEntity, 6);
-                    lastPropertyOutlined.ValueRW.Entity = clickedEntity;
+                    if (PropertyFor(entity) != property) continue;
+                    if (!originalLayers.ContainsKey(entity))
+                        originalLayers.Add(entity, EntityManager.GetSharedComponentManaged<RenderFilterSettings>(entity).Layer);
+                    SetLayer(entity, outlineLayer);
                 }
             }
+            SystemAPI.SetSingleton(new LastPropertyOutlined { Entity = property });
         }
 
-        private readonly void ToggleOutline(
-                ref SystemState state,
-                ref Entity entityToModify,
-                int layer
-        )
+        Entity PropertyFor(Entity entity)
         {
-            var oldSettings = state.EntityManager.GetSharedComponentManaged<RenderFilterSettings>(entityToModify);
-            var newSettings = oldSettings;
-            newSettings.Layer = layer;
-
-            var ecb = GetECB(ref state);
-            ecb.SetSharedComponentManaged(entityToModify, newSettings);
+            if (!EntityManager.Exists(entity)) return Entity.Null;
+            if (EntityManager.HasComponent<PropertyLodSource>(entity))
+                return EntityManager.GetComponentData<PropertyLodSource>(entity).Value;
+            return EntityManager.HasComponent<PropertySpaceTag>(entity) ? entity : Entity.Null;
         }
 
-        private readonly EntityCommandBuffer GetECB(ref SystemState state)
+        void SetLayer(Entity entity, int layer)
         {
-            var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
-            return ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
+            var settings = EntityManager.GetSharedComponentManaged<RenderFilterSettings>(entity);
+            if (settings.Layer == layer) return;
+            settings.Layer = layer;
+            EntityManager.SetSharedComponentManaged(entity, settings);
         }
     }
 }

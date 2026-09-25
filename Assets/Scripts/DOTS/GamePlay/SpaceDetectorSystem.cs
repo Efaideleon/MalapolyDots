@@ -7,6 +7,7 @@ using Unity.Entities;
 namespace DOTS.GamePlay
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    [UpdateAfter(typeof(CharacterWaypointSystem))]
     [BurstCompile]
     public partial struct SpaceDetectorSystem : ISystem
     {

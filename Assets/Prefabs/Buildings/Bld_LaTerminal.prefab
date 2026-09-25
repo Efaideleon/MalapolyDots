@@ -277,8 +277,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.7985244, y: 1.1112704, z: 3.7099273}
-  m_Center: {x: -0.036908746, y: 0.5556352, z: 0.00009548664}
+  m_Size: {x: 31.253557, y: 7.808024, z: 13.874804}
+  m_Center: {x: -13.075084, y: 2.8520725, z: 0.7948892}
 --- !u!114 &7544430498658005909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +316,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
+  SingleWorldHostInterpolationSmoothing: 1
   prefabId: 69986228f4c974c32872a396df09d2fd
 --- !u!1001 &1621649579453937709
 PrefabInstance:
@@ -376,28 +377,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4307088177930412463}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
---- !u!1 &6032000837552689807 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-  m_PrefabInstance: {fileID: 1621649579453937709}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4307088177930412463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6032000837552689807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!4 &6189993824692412172 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
@@ -417,11 +398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.4
+      value: -2.35
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.7
+      value: 6.34
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.z

@@ -72,6 +72,10 @@ namespace DOTS.Mediator.Systems.DebugScreenSystem
                 return;
             }
 
+#if !UNITY_EDITOR && !DEVELOPMENT_BUILD
+            debugScreen.style.display = DisplayStyle.None;
+            return;
+#endif
             var rollConfigQuery = SystemAPI.QueryBuilder().WithAllRW<RollConfig>().Build();
             var globalMonopolyQuery = SystemAPI.QueryBuilder().WithAllRW<GlobalMonopolyEnabled>().Build();
             var debugScreenEntity = SystemAPI.GetSingletonEntity<DebugScreenFlag>();

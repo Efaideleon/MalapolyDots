@@ -43,6 +43,7 @@ namespace DOTS.GamePlay
 
             if (moveState.ValueRO.Value != MoveState.Walking) return;
 
+            using var moneyCommands = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             var waypointsRef = SystemAPI.GetSingleton<WaypointsBlobRef>().Reference;
             var currentWaypointIndex = SystemAPI.GetComponentRW<PlayerWaypointIndex>(activePlayerEntity);
             var targetPosition = SystemAPI.GetComponentRW<TargetPosition>(activePlayerEntity);
@@ -67,7 +68,10 @@ namespace DOTS.GamePlay
                     playerBoardIndex.ValueRW.Value = (playerBoardIndex.ValueRW.Value + 1) % 40;
 
                     if (playerBoardIndex.ValueRO.Value == 0 && SystemAPI.HasComponent<GhostMoneyComponet>(activePlayerEntity))
+                    {
                         SystemAPI.GetComponentRW<GhostMoneyComponet>(activePlayerEntity).ValueRW.Value += 200;
+                        MoneyFeedback.Send(moneyCommands, state.EntityManager, activePlayerEntity, 200, MoneyChangeReason.PassGo);
+                    }
 
                     if (rollCount.ValueRO.Value == 0)
                     {
@@ -84,6 +88,7 @@ namespace DOTS.GamePlay
             }
 
             targetPosition.ValueRW.Value = target.Position;
+            moneyCommands.Playback(state.EntityManager);
         }
     }
 }

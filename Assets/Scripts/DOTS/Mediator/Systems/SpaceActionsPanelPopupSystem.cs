@@ -9,12 +9,17 @@ using Unity.NetCode;
 namespace DOTS.Mediator.Systems
 {
     public struct ShowActionsPanelBuffer : IBufferElementData
-    { }
+    {
+        public Entity Player;
+        public Entity Property;
+        public uint LandingSequence;
+    }
 
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     public partial struct SpaceActionsPanelPopupSystem : ISystem
     {
+        private uint lastPresentedLanding;
         public ComponentLookup<GameStateComponent> gameStateLookup;
         public ComponentLookup<PropertySpaceTag> propertySpaceLookup;
 
@@ -39,21 +44,20 @@ namespace DOTS.Mediator.Systems
             gameStateLookup.Update(ref state);
             propertySpaceLookup.Update(ref state);
 
-            // TODO: this should only run for the current active player.
-            var gameStateEntity = SystemAPI.GetSingletonEntity<GameStateComponent>();
-            if (gameStateLookup.HasComponent(gameStateEntity) && gameStateLookup.DidChange(gameStateEntity, state.LastSystemVersion))
+            var game = SystemAPI.GetSingleton<GameStateComponent>();
+            var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (!game.HasUnseenLanding(player, lastPresentedLanding)) return;
+
+            foreach (var (space, entity) in SystemAPI.Query<RefRO<SpaceLandedOn>>()
+                         .WithAll<ActivePlayer, GhostOwnerIsLocal>().WithEntityAccess())
             {
-                if (gameStateLookup[gameStateEntity].State == GameState.Landing)
+                if (entity != player || space.ValueRO.entity != game.LandingSpace ||
+                    !propertySpaceLookup.HasComponent(game.LandingSpace)) continue;
+                SystemAPI.GetSingletonBuffer<ShowActionsPanelBuffer>().Add(new ShowActionsPanelBuffer
                 {
-                    foreach (var spaceLandedOn in SystemAPI.Query<RefRO<SpaceLandedOn>>().WithAll<ActivePlayer, GhostOwnerIsLocal>())
-                    {
-                        if (propertySpaceLookup.HasComponent(spaceLandedOn.ValueRO.entity))
-                        {
-                            UnityEngine.Debug.Log($"[SpaceActionsPanelPopupSystem] | sending event to show the actions panel.");
-                            SystemAPI.GetSingletonBuffer<ShowActionsPanelBuffer>().Add(new ShowActionsPanelBuffer { });
-                        }
-                    }
-                }
+                    Player = player, Property = game.LandingSpace, LandingSequence = game.LandingSequence
+                });
+                lastPresentedLanding = game.LandingSequence;
             }
         }
     }

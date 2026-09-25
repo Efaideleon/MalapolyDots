@@ -1,0 +1,23 @@
+.portfolio-root { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: none; }
+.portfolio-root.is-open { display: flex; }
+.portfolio-shade { flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(4, 10, 22, 0.9); }
+.portfolio-card { width: 90%; max-width: 1250px; height: 88%; background-color: rgb(21, 35, 56); border-radius: 18px; padding: 22px; color: rgb(236, 242, 248); font-size: 22px; }
+.portfolio-heading { flex-direction: row; align-items: center; margin-bottom: 12px; }
+.portfolio-title { font-size: 30px; -unity-font-style: bold; flex-grow: 1; }
+.portfolio-cash { font-size: 26px; color: rgb(117, 230, 192); margin-right: 20px; }
+.portfolio-help { white-space: normal; color: rgb(186, 203, 224); margin-top: 8px; margin-bottom: 8px; }
+.portfolio-status { white-space: normal; color: rgb(250, 207, 109); min-height: 28px; }
+.portfolio-scroll { flex-grow: 1; }
+.portfolio-row { background-color: rgb(31, 49, 73); border-radius: 10px; padding: 14px; margin-bottom: 10px; flex-shrink: 0; }
+.portfolio-property-name { font-size: 23px; -unity-font-style: bold; white-space: normal; }
+.portfolio-details { color: rgb(194, 213, 232); white-space: normal; margin-bottom: 8px; }
+.portfolio-actions { flex-direction: row; flex-wrap: wrap; align-items: center; }
+.portfolio-card Button { min-height: 54px; padding-left: 14px; padding-right: 14px; background-color: rgb(45, 113, 105); color: white; border-width: 0; border-radius: 7px; font-size: 21px; margin: 4px; white-space: normal; }
+.portfolio-card Button:hover { background-color: rgb(57, 142, 130); }
+.portfolio-card Button:disabled { opacity: 0.4; }
+.portfolio-actions .unity-base-field { min-width: 155px; margin: 4px; }
+.portfolio-actions .unity-base-text-field__input { min-height: 36px; font-size: 22px; color: black; }
+.portfolio-offer { border-left-width: 4px; border-left-color: rgb(250, 207, 109); }
+
+.portfolio-actions .unity-base-field__label { min-width: 66px; color: rgb(194, 213, 232); }
+.portfolio-actions .unity-base-field__input { min-width: 110px; }

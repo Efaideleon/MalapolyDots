@@ -1,4 +1,5 @@
 using Assets.Scripts.DOTS.DataComponents;
+using Assets.Common;
 using TitleScreen.NetworkUI.Authoring;
 using TitleScreen.NetworkUI.Components;
 using Unity.Entities;
@@ -97,6 +98,16 @@ namespace TitleScreen.NetworkUI.Systems
         public CreateGamePanel(VisualElement root)
         {
             _root = root;
+            var rounds = root.Q<DropdownField>("NumOfRoundsDropdownField");
+            if (rounds != null)
+            {
+                rounds.SetValueWithoutNotify(NetworkRequests.SelectedRoundLimit.ToString());
+                rounds.RegisterValueChangedCallback(evt =>
+                {
+                    if (int.TryParse(evt.newValue, out var count) && (count == 8 || count == 10 || count == 12))
+                        NetworkRequests.SelectedRoundLimit = count;
+                });
+            }
             Hide();
         }
 

@@ -63,6 +63,7 @@ namespace Assets.Scripts.DOTS.Characters
     public struct BankruptPlayer : IComponentData
     {
         [GhostField] public bool Value;
+        [GhostField] public int FinalNetWorth;
     }
 
     public struct LandingPaymentResolved : IComponentData
@@ -86,6 +87,7 @@ namespace Assets.Scripts.DOTS.Characters
     [GhostComponent]
     public struct GhostChanceCardPicked : IComponentData
     {
+        [GhostField] public uint DrawSequence;
         [GhostField]
         public int id;
 
@@ -99,6 +101,7 @@ namespace Assets.Scripts.DOTS.Characters
     [GhostComponent]
     public struct GhostTreasureCardPicked : IComponentData
     {
+        [GhostField] public uint DrawSequence;
         [GhostField]
         public int id;
 

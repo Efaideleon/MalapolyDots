@@ -93,7 +93,7 @@ Texture2D:
   m_MipsStripped: 0
   m_TextureFormat: 1
   m_MipCount: 1
-  m_IsReadable: 0
+  m_IsReadable: 1
   m_IsPreProcessed: 0
   m_IgnoreMipmapLimit: 1
   m_MipmapLimitGroupName: 
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Version: 1.1.0
   m_Material: {fileID: -7417992989797582761}
   m_SourceFontFileGUID: 53eb2359e317ce54e8da06e3eb85160f
+  m_ShowObsoleteProperties: 0
   m_fontAssetCreationEditorSettings:
     sourceFontFileGUID: 53eb2359e317ce54e8da06e3eb85160f
     faceIndex: 0
@@ -148,15 +149,15 @@ MonoBehaviour:
     atlasHeight: 512
     characterSetSelectionMode: 0
     characterSequence: 32 - 126, 160, 8203, 8230, 9633
-    referencedFontAssetGUID: efbeaf3630f3c914b90728b1b0e8774d
+    referencedFontAssetGUID: d305d938ba86348cea5590d791145aea
     referencedTextAssetGUID: 
     fontStyle: 0
     fontStyleModifier: 0
     renderMode: 4134
-    includeFontFeatures: 1
-  m_SourceFontFile: {fileID: 0}
+    includeFontFeatures: 0
+  m_SourceFontFile: {fileID: 12800000, guid: 53eb2359e317ce54e8da06e3eb85160f, type: 3}
   m_SourceFontFilePath: 
-  m_AtlasPopulationMode: 0
+  m_AtlasPopulationMode: 1
   InternalDynamicOS: 0
   IsEditorFont: 0
   m_FaceInfo:
@@ -166,7 +167,7 @@ MonoBehaviour:
     m_PointSize: 54
     m_Scale: 1
     m_UnitsPerEM: 300
-    m_LineHeight: 95
+    m_LineHeight: 54.000004
     m_AscentLine: 54.000004
     m_CapLine: 45
     m_MeanLine: 45
@@ -1499,7 +1500,7 @@ MonoBehaviour:
   m_AtlasTextureIndex: 0
   m_IsMultiAtlasTexturesEnabled: 1
   m_GetFontFeatures: 1
-  m_ClearDynamicDataOnBuild: 1
+  m_ClearDynamicDataOnBuild: 0
   m_AtlasWidth: 512
   m_AtlasHeight: 512
   m_AtlasPadding: 6

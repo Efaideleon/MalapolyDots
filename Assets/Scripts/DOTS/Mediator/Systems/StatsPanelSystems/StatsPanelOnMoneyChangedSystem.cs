@@ -23,7 +23,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (name, money) in SystemAPI.Query<RefRO<NameComponent>, RefRO<GhostMoneyComponet>>()
+            foreach (var (name, money, owner) in SystemAPI.Query<RefRO<NameComponent>, RefRO<GhostMoneyComponet>, RefRO<GhostOwner>>()
 
                     .WithAll<CharacterFlag>())
             {
@@ -35,7 +35,7 @@ namespace DOTS.Mediator.Systems.StatsPanelSystems
                         Name = name.ValueRO.Value,
                         Money = money.ValueRO.Value < 0 ? "Bankrupt" :
                             (SystemAPI.TryGetSingleton<Assets.Scripts.DOTS.GamePlay.GameStateComponent>(out var game) &&
-                            game.State == DOTS.GamePlay.GameState.GameOver ? "Winner · " : "") + money.ValueRO.Value.ToString("N0")
+                            game.State == DOTS.GamePlay.GameState.GameOver && game.WinnerNetworkId == owner.ValueRO.NetworkId ? "Winner · " : "") + money.ValueRO.Value.ToString("N0")
                     };
                     statsPanel.LoadPanelData(statsPanelContext);
                 }

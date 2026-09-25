@@ -47,8 +47,9 @@ namespace DOTS.Mediator.Systems
                     SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Walking &&
                     SystemAPI.GetSingleton<GameStateComponent>().State != GameState.GameOver)
                 {
-                    context.MaxPurchasable = math.max(0, math.min(context.HousesOwned == 4 ? 1 : math.max(0, 4 - context.HousesOwned),
-                        SystemAPI.GetComponent<GhostMoneyComponet>(player).Value / context.Price));
+                    using var properties = SystemAPI.QueryBuilder().WithAll<OwnerComponent, SpaceIDComponent>().Build().ToEntityArray(Unity.Collections.Allocator.Temp);
+                    context.MaxPurchasable = AssetTradingRules.BuildingError(state.EntityManager, property, properties, true) == null &&
+                        SystemAPI.GetComponent<GhostMoneyComponet>(player).Value >= context.Price ? 1 : 0;
                 }
             }
             var current = SystemAPI.GetSingletonRW<PurhcaseHousePanelContextComponent>();

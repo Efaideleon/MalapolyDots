@@ -8,7 +8,6 @@ namespace DOTS.GamePlay.CharacterAnimationSystems2
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
-    [UpdateAfter(typeof(AnimationFrameAdvancement))]
     public partial struct FrameSamplingSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

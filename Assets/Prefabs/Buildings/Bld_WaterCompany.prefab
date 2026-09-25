@@ -277,8 +277,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6456065, y: 2.926209, z: 2.8384275}
-  m_Center: {x: 0.49020454, y: -0.0071644187, z: -0.0070412755}
+  m_Size: {x: 3.6623287, y: 5.247818, z: 5.5813446}
+  m_Center: {x: -0.7069864, y: 1.0458484, z: 0.0042096376}
 --- !u!114 &8400863610414463973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +316,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
+  SingleWorldHostInterpolationSmoothing: 1
   prefabId: 7d3d75849f8b649859e204b7f7a64047
 --- !u!1001 &4317195123943202129
 PrefabInstance:
@@ -335,7 +336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.18
+      value: 3.62
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -436,28 +437,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3842738469967147121}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
---- !u!1 &827485555416654238 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-  m_PrefabInstance: {fileID: 5642844051855952700}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3842738469967147121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 827485555416654238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!4 &948412211228355613 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}

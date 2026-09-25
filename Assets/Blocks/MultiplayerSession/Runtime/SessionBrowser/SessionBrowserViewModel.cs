@@ -59,7 +59,7 @@ namespace Blocks.Sessions
                 foreach (var session in result.Sessions)
                     if (!session.IsLocked && !session.HasPassword && session.AvailableSlots > 0)
                         Sessions.Add(new SessionInfoViewModel(session));
-                Status = Sessions.Count == 0 ? "No open lobbies. Create one or refresh." : "Click a lobby to join. No code required.";
+                Status = Sessions.Count == 0 ? "No open lobbies. Refresh, or go back to Create Game." : "Click a lobby to join. No code required.";
             }
             catch (Exception exception)
             {

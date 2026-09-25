@@ -66,7 +66,7 @@ namespace DOTS.UI.Panels.HideAndShowPanelStateMachineComponents
 
         private void SetVisibility(PanelVisibility target)
         {
-            if (CurrentStateIsAnimating() && _targetVisibility != target)
+            if (CurrentStateIsAnimating())
             {
                 _pendingVisibility = target;
             }

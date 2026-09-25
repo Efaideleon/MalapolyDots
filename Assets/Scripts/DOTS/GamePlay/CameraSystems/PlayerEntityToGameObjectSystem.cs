@@ -4,14 +4,15 @@ using DOTS.GamePlay.CameraSystems;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
+using UnityEngine;
 
 namespace DOTS.GamePlay
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial struct PlayerEntityToGameObjectSystem : ISystem
     {
-        private const float PlaceTargetHeight = 3f;
-        private const float PlaceFrontOffset = 2f;
+        private Entity trackedPlayer;
+        private UnityObjectRef<Transform> trackedTarget;
 
         public void OnCreate(ref SystemState state)
         {
@@ -21,24 +22,37 @@ namespace DOTS.GamePlay
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (transform, landingPlace) in SystemAPI.Query<RefRO<LocalTransform>, RefRO<SpaceLandedOn>>().WithAll<ActivePlayer>())
+            var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+            if (!SystemAPI.HasComponent<LocalTransform>(player) ||
+                !SystemAPI.HasComponent<SpaceLandedOn>(player) || CameraTargetHolder.Instance == null) return;
+
+            var target = CameraTargetHolder.Instance;
+            var transform = SystemAPI.GetComponent<LocalTransform>(player);
+            var landingPlace = SystemAPI.GetComponent<SpaceLandedOn>(player);
+            bool playerChanged = trackedPlayer != player || trackedTarget.Value != target;
+            trackedPlayer = player;
+            trackedTarget = target;
+            target.position = transform.Position;
+            // Keep a stable heading: character turns should not spin the camera rig.
+
+            if (SystemAPI.HasBuffer<Child>(landingPlace.entity))
             {
-                CameraTargetHolder.Instance.transform.SetPositionAndRotation(transform.ValueRO.Position, transform.ValueRO.Rotation);
+                DynamicBuffer<Child> children = SystemAPI.GetBuffer<Child>(landingPlace.entity);
 
-                if (SystemAPI.HasBuffer<Child>(landingPlace.ValueRO.entity))
+                foreach (var childEntity in children)
                 {
-                    DynamicBuffer<Child> children = SystemAPI.GetBuffer<Child>(landingPlace.ValueRO.entity);
-
-                    foreach (var childEntity in children)
+                    if (SystemAPI.HasComponent<CameraLookAtPointTag>(childEntity.Value))
                     {
-                        if (SystemAPI.HasComponent<CameraLookAtPointTag>(childEntity.Value))
-                        {
-                            var cameraLookAtPointTransform = SystemAPI.GetComponent<LocalToWorld>(childEntity.Value);
+                        var cameraLookAtPointTransform = SystemAPI.GetComponent<LocalToWorld>(childEntity.Value);
+                        if (TargetPlace.Instance != null)
                             TargetPlace.Instance.transform.SetPositionAndRotation(cameraLookAtPointTransform.Position, cameraLookAtPointTransform.Rotation);
-                        }
                     }
                 }
             }
+
+            // Reset after both shot targets are positioned, so no old-player damping survives.
+            if (playerChanged)
+                CinemachineCameraManager.Instance?.CutToPlayer();
         }
     }
 }

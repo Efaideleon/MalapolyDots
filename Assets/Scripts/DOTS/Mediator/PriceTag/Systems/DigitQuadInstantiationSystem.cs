@@ -75,7 +75,7 @@ namespace DOTS.Mediator
                 ecb.AddComponent<QuadEntitiesBufferProcessed>(priceTagEntity);
                 for (int i = 0; i < MaxQuads; i++)
                 {
-                    var pricePosition = new float3(-0.8f, 0.2f, -0.09f);
+                    var pricePosition = new float3(-0.2f, 0.2f, -0.09f);
                     var offset = i == 0 ? new float3(-SignOffset, 0, 0) : 0;
                     var quadPos = i * new float3(QuadWidth, 0, 0) + offset + pricePosition;
                     var quadScale = 0.5f;

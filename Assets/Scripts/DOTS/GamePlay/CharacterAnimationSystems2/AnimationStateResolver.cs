@@ -6,6 +6,8 @@ namespace DOTS.GamePlay.CharacterAnimationSystems2
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     [BurstCompile]
+    [UpdateAfter(typeof(ResolveDesiredAnimation))]
+    [UpdateAfter(typeof(AnimationFrameAdvancement))]
     public partial struct AnimationStateResolver : ISystem
     {
         [BurstCompile]
@@ -27,58 +29,48 @@ namespace DOTS.GamePlay.CharacterAnimationSystems2
     {
         public void Execute(in DesiredAnimation desiredAnimation, ref AnimationStateComponent animationState, in AnimationDataLibrary library)
         {
-            //UnityEngine.Debug.Log($"[AnimationStateResolver] | desiredAnimation: {desiredAnimation.Value.ToString()}");
-            var desiredAnim = desiredAnimation.Value;
-            if (desiredAnim != animationState.CurrentAnimation && desiredAnim != animationState.PendingAnimation)
+            var desired = desiredAnimation.Value;
+            if (desired == CharacterAnimationEnum.None) desired = CharacterAnimationEnum.Idle;
+            if (animationState.CurrentAnimation == CharacterAnimationEnum.None)
             {
-                animationState.PendingAnimation = desiredAnim;
+                animationState.CurrentAnimation = desired;
+                EnterPhase(ref animationState, library, AnimationPhase.Start);
             }
+            animationState.PendingAnimation = desired == animationState.CurrentAnimation ? CharacterAnimationEnum.None : desired;
 
-            ref var clip = ref library.GetClip(animationState.CurrentAnimation, animationState.Phase);
-
-            bool hasPendingAnimation = animationState.PendingAnimation != CharacterAnimationEnum.None;
-            bool isPhaseMiddle = animationState.Phase == AnimationPhase.Middle;
-            bool isClipFinished = animationState.Frame >= clip.FrameRange.End;
-
-            if (!isClipFinished)
+            // Missing entry/exit clips are transitions, never poses to sample at frame zero.
+            for (int transition = 0; transition < 6; transition++)
             {
-                // If there is a pending animation while in the middle phase, go to the end phase.
-                if (hasPendingAnimation && isPhaseMiddle)
+                ref var clip = ref library.GetClip(animationState.CurrentAnimation, animationState.Phase);
+                bool pending = animationState.PendingAnimation != CharacterAnimationEnum.None;
+                if (animationState.Phase == AnimationPhase.Middle && pending)
                 {
-                    EnterPhase(ref animationState, in library, AnimationPhase.End);
-                    return;
+                    EnterPhase(ref animationState, library, AnimationPhase.End);
+                    continue;
                 }
-            }
-            else
-            {
-                // If the animation clip reached the end, pick the next phase.
+                if (clip.HasClip && animationState.Frame < clip.FrameRange.End + 1) return;
                 switch (animationState.Phase)
                 {
                     case AnimationPhase.Start:
                         EnterPhase(ref animationState, library, AnimationPhase.Middle);
                         break;
                     case AnimationPhase.Middle:
-                        if (clip.Loops)
+                        if (clip.HasClip && clip.Loops)
                         {
-                            animationState.Frame = clip.FrameRange.Start;
+                            float length = Unity.Mathematics.math.max(1, clip.FrameRange.End - clip.FrameRange.Start + 1);
+                            animationState.Frame = clip.FrameRange.Start + (animationState.Frame - clip.FrameRange.Start) % length;
+                            return;
                         }
-                        else
-                        {
-                            EnterPhase(ref animationState, library, AnimationPhase.End);
-                        }
+                        EnterPhase(ref animationState, library, AnimationPhase.End);
                         break;
-                    case AnimationPhase.End:
-                        // If there is a pending animation, make it the current.
-                        if (hasPendingAnimation)
+                    default:
+                        if (pending)
                         {
                             animationState.CurrentAnimation = animationState.PendingAnimation;
                             animationState.PendingAnimation = CharacterAnimationEnum.None;
                             EnterPhase(ref animationState, library, AnimationPhase.Start);
                         }
-                        else
-                        {
-                            EnterPhase(ref animationState, library, AnimationPhase.Middle);
-                        }
+                        else EnterPhase(ref animationState, library, AnimationPhase.Middle);
                         break;
                 }
             }

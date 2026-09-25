@@ -52,6 +52,7 @@ namespace DOTS.GamePlay
                         int paid = Unity.Mathematics.math.min(rent, Unity.Mathematics.math.max(0, playerMoney.ValueRO.Value));
                         playerMoney.ValueRW.Value -= rent;
                         ownerMoney.ValueRW.Value += paid;
+                        MoneyFeedback.Send(ecb, state.EntityManager, activePlayerEntity, -rent, MoneyChangeReason.Rent, ownerEntity, paid);
                         SystemAPI.SetComponent(activePlayerEntity, new LandingPaymentResolved { Value = true });
                     }
                 }

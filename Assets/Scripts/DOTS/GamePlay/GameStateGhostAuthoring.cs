@@ -23,10 +23,26 @@ namespace Assets.Scripts.DOTS.GamePlay
         [GhostField]
         public GameState State;
 
+        // One server-authored event per completed move. Turn changes retain this identity.
+        [GhostField] public uint LandingSequence;
+        [GhostField] public Entity LandingPlayer;
+        [GhostField] public Entity LandingSpace;
+
+        public bool HasUnseenLanding(Entity player, uint lastPresentedSequence)
+        {
+            return State == GameState.Landing && LandingSequence != 0 &&
+                LandingSequence != lastPresentedSequence && player != Entity.Null &&
+                LandingPlayer == player && LandingSpace != Entity.Null;
+        }
+
         [GhostField]
         public bool AllPlacesInstantiated;
 
         [GhostField]
         public int WinnerNetworkId;
+
+        [GhostField] public int RoundLimit;
+        [GhostField] public int CompletedRounds;
+        [GhostField] public bool EndedByRoundLimit;
     }
 }

@@ -175,8 +175,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.3238983, y: 1.7794702, z: 3.1546378}
-  m_Center: {x: -0.467422, y: 0.8897351, z: 0.17299408}
+  m_Size: {x: 31.879848, y: 10.431823, z: 14.362898}
+  m_Center: {x: -10.672985, y: 4.7678504, z: 0.8950589}
 --- !u!114 &4490729613886963333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +214,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
+  SingleWorldHostInterpolationSmoothing: 1
   prefabId: 5749aa09d7935431887d6745a8132458
 --- !u!1 &5427718482665555314
 GameObject:
@@ -478,28 +479,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 262646140199651253}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
---- !u!1 &4764802009663427181 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-  m_PrefabInstance: {fileID: 516580593436391631}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &262646140199651253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4764802009663427181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!4 &4921665237734039534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
@@ -523,7 +504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.15
+      value: 10.2
       objectReference: {fileID: 0}
     - target: {fileID: 2876330125640871909, guid: 9b39ac8b3b2c3426788caa623bf2f3b9, type: 3}
       propertyPath: m_LocalPosition.z

@@ -3,6 +3,7 @@
         <ui:Label text="SET UP YOUR TABLE" class="lobby-section-title"/>
         <ui:Label text="Public lobby · Up to 6 players" class="lobby-caption"/>
         <ui:DropdownField label="Number of rounds" name="NumOfRoundsDropdownField" choices="8,10,12" index="0" class="lobby-rounds"/>
+        <ui:Label text="Last player standing wins, or highest net worth after the final round." class="lobby-help"/>
         <ui:Label text="Lobby name" class="lobby-field-label"/>
         <Blocks.Sessions.CreateSessionElement class="lobby-create-fields">
             <Bindings><ui:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/></Bindings>

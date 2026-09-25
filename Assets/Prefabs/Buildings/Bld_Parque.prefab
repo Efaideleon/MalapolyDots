@@ -277,8 +277,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.5933514, y: 1.5177172, z: 2.6794896}
-  m_Center: {x: -0.067697406, y: 0.7588586, z: -0.00000029802322}
+  m_Size: {x: 31.571135, y: 10.2738, z: 17.732542}
+  m_Center: {x: 8.4927, y: 4.018013, z: -2.0583436}
 --- !u!114 &440240358304819819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +316,7 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
+  SingleWorldHostInterpolationSmoothing: 1
   prefabId: 4524ad7361ae2491d9fabcdcb98aeadb
 --- !u!1001 &2330247798484617213
 PrefabInstance:
@@ -380,33 +381,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8150008077567869314}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
 --- !u!4 &7147409575777116380 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
   m_PrefabInstance: {fileID: 2330247798484617213}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7305416354895719775 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-  m_PrefabInstance: {fileID: 2330247798484617213}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8150008077567869314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7305416354895719775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
 --- !u!1001 &8124905346040211069
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -834,8 +834,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410343880}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.24860248, y: 0.3685687, z: -0.102974534, w: 0.88980347}
-  m_LocalPosition: {x: -79.07785, y: -70.55815, z: -101.44955}
+  m_LocalRotation: {x: 0.33216545, y: 0.14284739, z: -0.05096847, w: 0.93094736}
+  m_LocalPosition: {x: -69.47785, y: -70.55815, z: -101.44955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1847,8 +1847,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948719800}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2486025, y: 0.36856866, z: -0.10297451, w: 0.8898035}
-  m_LocalPosition: {x: -79.07785, y: -70.55815, z: -101.44955}
+  m_LocalRotation: {x: 0.33216542, y: 0.14284736, z: -0.050968464, w: 0.93094736}
+  m_LocalPosition: {x: -69.47785, y: -70.55815, z: -101.44955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1901,7 +1901,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: -14, y: 12, z: -14}
+  FollowOffset: {x: -4.4, y: 12, z: -14}
 --- !u!1001 &959336829
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2559,7 +2559,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.CameraSystems.CinemachineCameraManager
   followCamera: {fileID: 948719801}
   landingCamera: {fileID: 242351019}
+  landingOffset: {x: 0, y: 12, z: 16}
   landingTargetGroup: {fileID: 656527514}
+  boardHeight: 0
+  minimumCameraHeight: 3
 --- !u!4 &1134865892
 Transform:
   m_ObjectHideFlags: 0
@@ -3301,6 +3304,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4576093605997795118, guid: c3e3313da90188341af12ae7b2494dd4, type: 3}
   m_PrefabInstance: {fileID: 1376957321}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1401904321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1401904323}
+  - component: {fileID: 1401904322}
+  m_Layer: 0
+  m_Name: GameSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1401904322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401904321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f16f0676fbf7e45ac972b1410de50f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Malapoly.DOTS.Utilities::DOTS.Utilities.SetFPS
+--- !u!4 &1401904323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401904321}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1429585813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3651,7 +3698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SceneAsset: {fileID: 102900000, guid: 07fe54f6f8d584e6fb0f1c18b8402c35, type: 3}
-  _HierarchyColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   AutoLoadScene: 0
   _SceneGUID:
     Value:
@@ -3704,7 +3750,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SceneAsset: {fileID: 102900000, guid: 2ea2db369af614bc6a7eb5fd4a487e6a, type: 3}
-  _HierarchyColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   AutoLoadScene: 1
   _SceneGUID:
     Value:
@@ -3920,3 +3965,4 @@ SceneRoots:
   - {fileID: 242351020}
   - {fileID: 656527515}
   - {fileID: 1134865892}
+  - {fileID: 1401904323}

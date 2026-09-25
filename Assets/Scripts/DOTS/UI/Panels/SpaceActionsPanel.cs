@@ -37,7 +37,7 @@ namespace DOTS.UI.Panels
             {
                 Type = SpaceActionButtonsEnum.BuyHotel,
                 ContainerUXMLClassName = "buy-hotel-btn-container",
-                ButtonUXMLClassName = null
+                ButtonUXMLClassName = "buy-hotel-button"
             },
             new() 
             {
@@ -65,13 +65,36 @@ namespace DOTS.UI.Panels
     {
         public VisualElement Panel { get; private set; }
         public readonly Dictionary<SpaceActionButtonsEnum, ButtonElement> ButtonSet = new();
+        private bool _canBuyProperty;
         private bool _canBuyHouses;
         private bool _buttonsVisible;
+        private bool _canBuyHotel;
+        private bool _mustPayRent;
+
+        public void SetPropertyPurchaseAvailability(bool available)
+        {
+            _canBuyProperty = available;
+            ButtonSet[SpaceActionButtonsEnum.BuyProperty].Button.SetEnabled(_buttonsVisible && available);
+        }
 
         public void SetHousePurchaseAvailability(bool available)
         {
             _canBuyHouses = available;
             ButtonSet[SpaceActionButtonsEnum.BuyHouse].Button.SetEnabled(_buttonsVisible && _canBuyHouses);
+        }
+
+        public void SetHotelPurchaseAvailability(bool available)
+        {
+            _canBuyHotel = available;
+            ButtonSet[SpaceActionButtonsEnum.BuyHotel].Button.SetEnabled(_buttonsVisible && available);
+        }
+
+        public void SetRentPaymentAvailability(bool required)
+        {
+            _mustPayRent = required;
+            var button = ButtonSet[SpaceActionButtonsEnum.PayRent].Button;
+            button.style.display = required ? DisplayStyle.Flex : DisplayStyle.None;
+            button.SetEnabled(_buttonsVisible && required);
         }
 
         public SpaceActionsPanel(VisualElement root)
@@ -89,7 +112,10 @@ namespace DOTS.UI.Panels
                     Container = container
                 });
             }
+            SetPropertyPurchaseAvailability(false);
             SetHousePurchaseAvailability(false);
+            SetHotelPurchaseAvailability(false);
+            SetRentPaymentAvailability(false);
         }
 
         public void Show()
@@ -129,7 +155,10 @@ namespace DOTS.UI.Panels
             _buttonsVisible = state;
             foreach (var kvp in ButtonSet.Values)
                 kvp.Button?.SetEnabled(state);
+            SetPropertyPurchaseAvailability(_canBuyProperty);
             SetHousePurchaseAvailability(_canBuyHouses);
+            SetHotelPurchaseAvailability(_canBuyHotel);
+            SetRentPaymentAvailability(_mustPayRent);
         }
     }
 }

@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="MatchStatus.uss"/>
+    <ui:VisualElement name="matchStatus" class="match-status" picking-mode="Ignore">
+        <ui:Label name="turnSummary" class="match-turn" picking-mode="Ignore"/>
+        <ui:VisualElement name="results" class="match-results">
+            <ui:VisualElement class="match-results-card">
+                <ui:Label text="MALAPOLY / FINAL RESULTS" class="match-eyebrow"/>
+                <ui:Label name="resultTitle" class="match-result-title"/>
+                <ui:Label name="resultReason" class="match-reason"/>
+                <ui:VisualElement name="standings" class="match-standings"/>
+                <ui:Label text="Net worth = cash + property prices + building costs." class="match-reason"/>
+                <ui:Button name="returnToMenu" text="Return to main menu" class="match-return"/>
+                <ui:Label name="returnStatus" class="match-reason"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

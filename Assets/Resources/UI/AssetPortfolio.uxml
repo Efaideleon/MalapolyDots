@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="AssetPortfolio.uss" />
+    <ui:VisualElement class="portfolio-shade">
+        <ui:VisualElement class="portfolio-card">
+            <ui:VisualElement class="portfolio-heading">
+                <ui:Label text="BUY &amp; SELL" class="portfolio-title" />
+                <ui:Label name="cash" class="portfolio-cash" />
+                <ui:Button name="closePortfolio" text="Close" />
+            </ui:VisualElement>
+            <ui:Label name="inventorySummary" />
+            <ui:Label text="Build and sell evenly. A hotel can be exchanged for 4 houses + half its upgrade price. Clear the entire color group before selling a property to another player." class="portfolio-help" />
+            <ui:Label name="tradeStatus" class="portfolio-status" />
+            <ui:ScrollView class="portfolio-scroll">
+                <ui:VisualElement name="offers" />
+                <ui:VisualElement name="properties" />
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

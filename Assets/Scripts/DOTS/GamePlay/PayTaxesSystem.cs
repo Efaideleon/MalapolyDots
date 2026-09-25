@@ -32,6 +32,7 @@ namespace Assets.Scripts.DOTS.GamePlay
                 var space = SystemAPI.GetComponent<SpaceLandedOn>(player).entity;
                 if (!SystemAPI.HasComponent<TaxAmountComponent>(space)) continue;
                 SystemAPI.GetComponentRW<GhostMoneyComponet>(player).ValueRW.Value -= SystemAPI.GetComponent<TaxAmountComponent>(space).Value;
+                MoneyFeedback.Send(ecb, state.EntityManager, player, -SystemAPI.GetComponent<TaxAmountComponent>(space).Value, MoneyChangeReason.Tax);
                 SystemAPI.SetComponent(player, new LandingPaymentResolved { Value = true });
             }
             ecb.Playback(state.EntityManager);

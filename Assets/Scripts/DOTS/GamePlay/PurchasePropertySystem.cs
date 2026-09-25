@@ -58,6 +58,8 @@ namespace Assets.Scripts.DOTS.GamePlay
                                     {
                                         UnityEngine.Debug.Log($"[PurchasePropertySystem] | Property to buy price: {propertyPrice.Value}");
                                         playerMoney.Value -= propertyPrice.Value;
+                                        MoneyFeedback.Send(ecb, state.EntityManager, currentPlayerEntity, -propertyPrice.Value,
+                                            MoneyChangeReason.Purchase, propertyId: landedOnID);
                                         owner.ValueRW.ID = playerId;
                                         ownedByEntity.ValueRW.Entity = currentPlayerEntity;
 

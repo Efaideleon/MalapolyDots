@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 8983617506012624978}
   - component: {fileID: 6523873107228642426}
   - component: {fileID: -8481975216844293898}
+  - component: {fileID: 2081940246241653945}
   m_Layer: 7
   m_Name: Bld_AlejosStreet
   m_TagString: Untagged
@@ -191,7 +192,29 @@ MonoBehaviour:
   OptimizationMode: 0
   Importance: 1
   MaxSendRate: 0
+  SingleWorldHostInterpolationSmoothing: 1
   prefabId: c3e3313da90188341af12ae7b2494dd4
+--- !u!65 &2081940246241653945
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5061550733251942876}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.8064804, y: 7.465905, z: 7.4978027}
+  m_Center: {x: -0.19109833, y: 3.4792972, z: -0.9060364}
 --- !u!1 &7251326078879658322
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,10 +390,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4576093605997795118}
     m_Modifications:
-    - target: {fileID: 2004650527255204412, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.76
@@ -418,30 +437,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3524650684598305820}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
 --- !u!4 &2388525311117847878 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4856577104585975585, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
   m_PrefabInstance: {fileID: 7080705592583588455}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2843743092010229957 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4986814641891748514, guid: 0c84ddd366fb40e4f8778f79cf4eadcd, type: 3}
-  m_PrefabInstance: {fileID: 7080705592583588455}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3524650684598305820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2843743092010229957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d542d0da6c984fe2bb7894258ac8228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Malapoly.DOTS.GamePlay::DOTS.GamePlay.LandingPropertyIcons.LandingPropertyIconAuthoring
