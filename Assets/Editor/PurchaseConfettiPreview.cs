@@ -12,11 +12,10 @@ public static class PurchaseConfettiPreview
             Debug.LogWarning("Enter Play mode to preview purchase confetti.");
             return;
         }
-        var camera = Camera.main;
         var go = new GameObject("Purchase confetti preview");
         var effect = go.AddComponent<PurchaseConfetti>();
-        effect.Play(camera.transform.position + camera.transform.forward * 12f - camera.transform.right * 4f);
-        Object.Destroy(go, 4f);
+        effect.Play();
+        Object.Destroy(go, 6f);
         Debug.Log("Purchase confetti preview: emitted 100 pieces.");
     }
 }

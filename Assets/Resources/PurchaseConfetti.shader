@@ -2,38 +2,39 @@ Shader "Malapoly/Purchase Confetti"
 {
     Properties
     {
+        _ConfettiColor ("Confetti Color", Color) = (1, 1, 1, 1)
         _EmissionStrength ("Confetti Brightness", Range(1, 8)) = 3
     }
     SubShader
     {
-        Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Transparent" "RenderType"="Transparent" }
+        Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Overlay" "RenderType"="Transparent" }
         Pass
         {
             Tags { "LightMode"="SRPDefaultUnlit" }
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
+            ZTest Always
             Cull Off
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             CBUFFER_START(UnityPerMaterial)
+                float4 _ConfettiColor;
                 float _EmissionStrength;
             CBUFFER_END
-            struct Attributes { float4 positionOS : POSITION; half4 color : COLOR; };
-            struct Varyings { float4 positionCS : SV_POSITION; half4 color : COLOR; };
+            struct Attributes { float4 positionOS : POSITION; };
+            struct Varyings { float4 positionCS : SV_POSITION; };
             Varyings Vert(Attributes input)
             {
                 Varyings output;
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
-                output.color = input.color;
                 return output;
             }
             half4 Frag(Varyings input) : SV_Target
             {
-                // HDR emission keeps each hue bright without scene lights or shadows.
-                // Preserve alpha so the existing end-of-life fade still works.
-                return half4(input.color.rgb * _EmissionStrength, input.color.a);
+                // Each emitter has its own hue, independent of particle vertex colors and lights.
+                return half4(_ConfettiColor.rgb * _EmissionStrength, _ConfettiColor.a);
             }
             ENDHLSL
         }

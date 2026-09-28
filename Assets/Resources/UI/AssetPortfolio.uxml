@@ -8,6 +8,7 @@
                 <ui:Button name="closePortfolio" text="Close" />
             </ui:VisualElement>
             <ui:Label name="inventorySummary" />
+            <ui:Label text="Bright cards are yours. Dim cards show what remains. Scroll each color row to see every property." class="portfolio-legend" />
             <ui:Label text="Build and sell evenly. A hotel can be exchanged for 4 houses + half its upgrade price. Clear the entire color group before selling a property to another player." class="portfolio-help" />
             <ui:Label name="tradeStatus" class="portfolio-status" />
             <ui:ScrollView class="portfolio-scroll">

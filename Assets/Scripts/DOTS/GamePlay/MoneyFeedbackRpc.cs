@@ -10,22 +10,19 @@ namespace DOTS.GamePlay
     {
         public int FirstPlayerId, FirstDelta, SecondPlayerId, SecondDelta;
         public MoneyChangeReason Reason;
-        public int PropertyId;
     }
 
     public static class MoneyFeedback
     {
         public static void Send(EntityCommandBuffer commands, EntityManager entities,
-            Entity first, int firstDelta, MoneyChangeReason reason, Entity second = default, int secondDelta = 0,
-            int propertyId = -1)
+            Entity first, int firstDelta, MoneyChangeReason reason, Entity second = default, int secondDelta = 0)
         {
             if ((firstDelta == 0 && secondDelta == 0) || !entities.HasComponent<GhostOwner>(first)) return;
             var message = new MoneyFeedbackRpc
             {
                 FirstPlayerId = entities.GetComponentData<GhostOwner>(first).NetworkId,
                 FirstDelta = firstDelta,
-                Reason = reason,
-                PropertyId = propertyId
+                Reason = reason
             };
             if (second != Entity.Null && entities.HasComponent<GhostOwner>(second))
             {

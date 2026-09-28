@@ -1,10 +1,10 @@
 .portfolio-root { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: none; }
 .portfolio-root.is-open { display: flex; }
 .portfolio-shade { flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(4, 10, 22, 0.9); }
-.portfolio-card { width: 90%; max-width: 1250px; height: 88%; background-color: rgb(21, 35, 56); border-radius: 18px; padding: 22px; color: rgb(236, 242, 248); font-size: 22px; }
+.portfolio-card { width: 90%; max-width: 1250px; height: 88%; background-color: rgb(32, 62, 72); border-width: 4px; border-color: rgb(218, 176, 104); border-bottom-width: 9px; border-radius: 24px; padding: 20px; -unity-font: url("project://database/Assets/Resources/Fonts/Acme-Regular.ttf"); color: rgb(236, 242, 248); font-size: 22px; }
 .portfolio-heading { flex-direction: row; align-items: center; margin-bottom: 12px; }
-.portfolio-title { font-size: 30px; -unity-font-style: bold; flex-grow: 1; }
-.portfolio-cash { font-size: 26px; color: rgb(117, 230, 192); margin-right: 20px; }
+.portfolio-title { font-size: 32px; color: rgb(255, 223, 153); -unity-font: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular.ttf"); flex-grow: 1; }
+.portfolio-cash { font-size: 24px; color: rgb(36, 77, 47); background-color: rgb(208, 240, 151); border-radius: 14px; border-bottom-width: 4px; border-bottom-color: rgb(102, 151, 72); padding: 8px 14px; margin-right: 14px; }
 .portfolio-help { white-space: normal; color: rgb(186, 203, 224); margin-top: 8px; margin-bottom: 8px; }
 .portfolio-status { white-space: normal; color: rgb(250, 207, 109); min-height: 28px; }
 .portfolio-scroll { flex-grow: 1; }
@@ -21,3 +21,68 @@
 
 .portfolio-actions .unity-base-field__label { min-width: 66px; color: rgb(194, 213, 232); }
 .portfolio-actions .unity-base-field__input { min-width: 110px; }
+
+.portfolio-legend { white-space: normal; color: rgb(186, 203, 224); font-size: 18px; margin-top: 6px; }
+.portfolio-group { margin-bottom: 22px; flex-shrink: 0; }
+.portfolio-group-heading { flex-direction: row; align-items: center; margin-bottom: 8px; }
+.portfolio-group-name { flex-grow: 1; font-size: 25px; color: rgb(255, 237, 200); -unity-font: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular.ttf"); }
+.portfolio-group-count { font-size: 17px; color: rgb(255, 230, 172); background-color: rgb(22, 43, 51); border-radius: 12px; padding: 5px 12px; }
+.portfolio-set-banner { flex-direction: row; flex-wrap: wrap; align-items: center; flex-shrink: 0; background-color: rgb(255, 218, 111); border-width: 2px; border-bottom-width: 5px; border-color: rgb(186, 128, 40); border-radius: 12px; padding: 8px 14px; margin-bottom: 8px; }
+.portfolio-set-title { flex-grow: 1; color: rgb(75, 44, 17); font-size: 23px; white-space: normal; margin-right: 12px; -unity-font: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular.ttf"); }
+.portfolio-set-owner { color: rgb(84, 57, 24); font-size: 18px; white-space: normal; }
+.is-complete-set .portfolio-property-card { border-color: rgb(255, 211, 102); }
+.portfolio-group-strip { flex-shrink: 0; }
+.portfolio-group-strip .unity-scroll-view__content-container { flex-direction: row; align-items: flex-start; padding-bottom: 12px; padding-top: 4px; }
+.portfolio-card-frame { position: relative; width: 254px; flex-shrink: 0; margin-right: 14px; padding-right: 6px; padding-bottom: 8px; }
+.portfolio-card-shadow { position: absolute; left: 6px; right: 0; top: 8px; bottom: 0; background-color: rgba(5, 20, 26, 0.65); border-radius: 17px; }
+.portfolio-property-card { flex-shrink: 0; background-color: rgb(255, 248, 229); color: rgb(79, 53, 38); border-width: 3px; border-color: rgb(205, 170, 112); border-bottom-width: 5px; border-radius: 17px; overflow: hidden; }
+.portfolio-property-card.is-owned { border-color: rgb(239, 188, 82); }
+.portfolio-property-card.is-owned:hover { border-color: rgb(255, 218, 116); background-color: rgb(255, 252, 240); }
+.portfolio-property-card.is-unowned { background-color: rgb(196, 187, 163); border-color: rgb(151, 141, 115); }
+.portfolio-card-face { padding: 12px 14px; }
+.is-unowned .portfolio-card-face { opacity: 0.58; }
+.portfolio-property-picture { height: 140px; align-self: stretch; margin-bottom: 12px; padding: 8px; background-color: rgb(245, 229, 190); border-radius: 12px; border-width: 2px; border-color: rgb(228, 205, 159); }
+.portfolio-property-card .portfolio-property-name { font-size: 22px; min-height: 56px; color: rgb(74, 46, 34); -unity-text-align: middle-center; -unity-font: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular.ttf"); }
+.portfolio-property-card .portfolio-details { font-size: 18px; color: rgb(110, 81, 49); margin-bottom: 4px; -unity-text-align: middle-center; }
+.portfolio-ownership { font-size: 15px; -unity-font-style: bold; white-space: normal; min-height: 30px; color: rgb(43, 100, 58); background-color: rgb(211, 234, 177); border-radius: 9px; padding: 5px 8px; margin-bottom: 8px; -unity-text-align: middle-center; }
+.is-unowned .portfolio-ownership { color: rgb(75, 65, 50); background-color: rgb(173, 163, 137); }
+.portfolio-color-band { height: 25px; flex-shrink: 0; border-bottom-width: 3px; border-bottom-color: rgba(74, 46, 34, 0.2); }
+.group-1 .portfolio-color-band { background-color: rgb(232, 231, 220); }
+.group-2 .portfolio-color-band { background-color: rgb(158, 99, 62); }
+.group-3 .portfolio-color-band { background-color: rgb(108, 205, 243); }
+.group-4 .portfolio-color-band { background-color: rgb(179, 96, 204); }
+.group-5 .portfolio-color-band { background-color: rgb(255, 153, 55); }
+.group-6 .portfolio-color-band { background-color: rgb(235, 76, 82); }
+.group-7 .portfolio-color-band { background-color: rgb(246, 212, 66); }
+.group-8 .portfolio-color-band { background-color: rgb(65, 185, 116); }
+.group-9 .portfolio-color-band { background-color: rgb(72, 120, 230); }
+.group-10 .portfolio-color-band { background-color: rgb(151, 165, 183); }
+.group-11 .portfolio-color-band { background-color: rgb(95, 213, 197); }
+.is-unowned .portfolio-color-band { opacity: 0.45; }
+.portfolio-management { padding: 8px; margin: 0; background-color: rgb(247, 234, 204); border-top-width: 2px; border-top-color: rgb(226, 204, 158); color: rgb(79, 53, 38); }
+.portfolio-management > .unity-toggle { min-height: 44px; }
+.portfolio-management .unity-toggle__text { color: rgb(99, 67, 35); -unity-font-style: bold; }
+.portfolio-management .unity-foldout__content { margin-left: 0; min-width: 0; }
+.portfolio-management .portfolio-actions { flex-direction: column; flex-wrap: nowrap; align-items: stretch; flex-shrink: 0; min-width: 0; width: 100%; }
+.portfolio-management Button { width: 100%; min-width: 0; max-width: 100%; height: auto; flex-shrink: 0; white-space: normal; font-size: 17px; margin: 4px 0; padding: 7px; border-width: 2px; border-bottom-width: 5px; border-color: rgb(36, 99, 71); border-radius: 10px; background-color: rgb(76, 157, 104); color: rgb(255, 252, 226); }
+.portfolio-management Button:hover { background-color: rgb(92, 179, 115); }
+.portfolio-management Button:active { border-bottom-width: 2px; background-color: rgb(54, 132, 86); }
+.portfolio-management .portfolio-help { font-size: 16px; color: rgb(120, 91, 59); }
+.portfolio-management .unity-base-field { flex-direction: column; min-width: 0; margin: 4px 0; }
+.portfolio-management .unity-base-field__input { min-width: 0; background-color: rgb(255, 252, 239); border-width: 2px; border-color: rgb(210, 180, 128); border-radius: 7px; color: rgb(79, 53, 38); }
+.portfolio-management .unity-base-field__label { min-width: 0; margin-bottom: 4px; color: rgb(109, 79, 43); }
+
+.portfolio-card .unity-scroller { background-color: rgb(18, 38, 46); border-radius: 12px; padding: 3px; }
+.portfolio-card .unity-scroller--vertical { width: 24px; min-width: 24px; margin-left: 12px; }
+.portfolio-card .unity-scroller--horizontal { height: 22px; min-height: 22px; margin-top: 6px; }
+.portfolio-card .unity-scroller__low-button, .portfolio-card .unity-scroller__high-button { display: none; }
+.portfolio-card .unity-scroller .unity-base-slider { margin: 0; flex-grow: 1; }
+.portfolio-card .unity-scroller .unity-base-slider__tracker { background-color: rgb(12, 29, 35); border-radius: 9px; }
+.portfolio-card .unity-scroller .unity-base-slider__dragger { background-color: rgb(240, 188, 87); border-width: 2px; border-color: rgb(255, 225, 154); border-radius: 9px; }
+.portfolio-card .unity-scroller .unity-base-slider__dragger:hover { background-color: rgb(255, 215, 117); }
+.portfolio-card .unity-scroller .unity-base-slider__dragger:active { background-color: rgb(215, 154, 53); }
+.portfolio-card .unity-scroller .unity-base-slider__dragger-border { border-width: 0; background-color: transparent; }
+.portfolio-card .unity-scroller--vertical .unity-base-slider__tracker { width: 14px; }
+.portfolio-card .unity-scroller--vertical .unity-base-slider__dragger { width: 18px; min-height: 42px; }
+.portfolio-card .unity-scroller--horizontal .unity-base-slider__tracker { height: 12px; }
+.portfolio-card .unity-scroller--horizontal .unity-base-slider__dragger { height: 16px; min-width: 42px; }

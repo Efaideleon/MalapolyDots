@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using Assets.Scripts.DOTS.Characters;
 using DOTS.GamePlay.CameraSystems;
-using DOTS.DataComponents;
-using DOTS.GameSpaces;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -18,7 +15,7 @@ namespace DOTS.GamePlay
     {
         struct Shot
         {
-            public int Player, Delta, PropertyId;
+            public int Player, Delta;
             public MoneyChangeReason Reason;
             public bool FocusCamera => Reason != MoneyChangeReason.Purchase &&
                                        !(Reason == MoneyChangeReason.Building && Delta < 0);
@@ -42,8 +39,8 @@ namespace DOTS.GamePlay
                 if (inGame)
                 {
                     var rpc = message.ValueRO;
-                    Enqueue(rpc.FirstPlayerId, rpc.FirstDelta, rpc.Reason, rpc.PropertyId);
-                    Enqueue(rpc.SecondPlayerId, rpc.SecondDelta, rpc.Reason, rpc.PropertyId);
+                    Enqueue(rpc.FirstPlayerId, rpc.FirstDelta, rpc.Reason);
+                    Enqueue(rpc.SecondPlayerId, rpc.SecondDelta, rpc.Reason);
                 }
                 commands.DestroyEntity(entity);
             }
@@ -77,13 +74,11 @@ namespace DOTS.GamePlay
                 if (waiting > 1f) FinishShot();
                 return;
             }
-            if (!confettiPlayed && current.Reason == MoneyChangeReason.Purchase && current.Delta < 0 &&
-                TryGetBuildingOrigin(current.PropertyId, out var buildingOrigin))
+            if (!confettiPlayed && current.Reason == MoneyChangeReason.Purchase && current.Delta < 0)
             {
                 if (confetti == null)
                     confetti = manager.GetComponent<PurchaseConfetti>() ?? manager.gameObject.AddComponent<PurchaseConfetti>();
-                confetti.Play(buildingOrigin);
-                confettiPlayed = true;
+                confettiPlayed = confetti.Play();
             }
             if (elapsed == 0)
             {
@@ -96,41 +91,10 @@ namespace DOTS.GamePlay
             if (elapsed >= manager.MoneyShotDuration) FinishShot();
         }
 
-        // Resolve the property captured at purchase time, even if the buyer has moved on.
-        bool TryGetBuildingOrigin(int propertyId, out Vector3 origin)
-        {
-            foreach (var (id, transform, entity) in SystemAPI.Query<RefRO<SpaceIDComponent>, RefRO<LocalToWorld>>()
-                         .WithAll<PropertySpaceTag>().WithEntityAccess())
-            {
-                if (id.ValueRO.Value != propertyId) continue;
-                bool hasBounds = false;
-                Bounds bounds = default;
-                IncludeBounds(entity, ref bounds, ref hasBounds);
-                if (EntityManager.HasBuffer<LinkedEntityGroup>(entity))
-                    foreach (var child in EntityManager.GetBuffer<LinkedEntityGroup>(entity))
-                        IncludeBounds(child.Value, ref bounds, ref hasBounds);
-                origin = hasBounds
-                    ? new Vector3(bounds.center.x, bounds.max.y + 0.3f, bounds.center.z)
-                    : (Vector3)transform.ValueRO.Position + Vector3.up * 3f;
-                return true;
-            }
-            origin = default;
-            return false;
-        }
-
-        void IncludeBounds(Entity entity, ref Bounds bounds, ref bool hasBounds)
-        {
-            if (!EntityManager.HasComponent<WorldRenderBounds>(entity)) return;
-            var rendered = EntityManager.GetComponentData<WorldRenderBounds>(entity).Value;
-            var next = new Bounds((Vector3)rendered.Center, (Vector3)(rendered.Extents * 2f));
-            if (hasBounds) bounds.Encapsulate(next);
-            else { bounds = next; hasBounds = true; }
-        }
-
-        void Enqueue(int player, int delta, MoneyChangeReason reason, int propertyId)
+        void Enqueue(int player, int delta, MoneyChangeReason reason)
         {
             if (player > 0 && delta != 0)
-                shots.Enqueue(new Shot { Player = player, Delta = delta, Reason = reason, PropertyId = propertyId });
+                shots.Enqueue(new Shot { Player = player, Delta = delta, Reason = reason });
         }
 
         void FinishShot()

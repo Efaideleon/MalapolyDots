@@ -3,6 +3,7 @@ using System.Text;
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
+using DOTS.Constants;
 using DOTS.GamePlay;
 using Unity.Collections;
 using Unity.Entities;
@@ -23,6 +24,7 @@ namespace DOTS.Mediator
         EntityQuery properties, players, replies;
         readonly Dictionary<int, int> draftPrices = new();
         readonly Dictionary<int, int> draftBuyers = new();
+        readonly HashSet<int> expandedProperties = new();
         string fingerprint;
         int localId;
         bool dirtyOffers;
@@ -32,6 +34,7 @@ namespace DOTS.Mediator
             RequireForUpdate<ForegroundContainterComponent>();
             RequireForUpdate<GameScreenInitializedFlag>();
             RequireForUpdate<NetworkId>();
+            RequireForUpdate<SpriteRegistryComponent>();
             properties = GetEntityQuery(typeof(OwnerComponent), typeof(SpaceIDComponent), typeof(NameComponent));
             players = GetEntityQuery(typeof(GhostOwner), typeof(GhostMoneyComponet), typeof(BankruptPlayer), typeof(NameComponent));
             replies = GetEntityQuery(typeof(AssetTradeReplyRpc), typeof(ReceiveRpcCommandRequest));
@@ -103,25 +106,109 @@ namespace DOTS.Mediator
             signature.Append(cash).Append(bankrupt);
             foreach (var p in all)
                 signature.Append('|').Append(EntityManager.GetComponentData<SpaceIDComponent>(p).Value).Append(':')
-                    .Append(EntityManager.GetComponentData<OwnerComponent>(p).ID).Append(':').Append(Level(p));
+                    .Append(EntityManager.GetComponentData<OwnerComponent>(p).ID).Append(':').Append(Level(p))
+                    .Append(':').Append(HasCompleteSet(p));
             if (dirtyOffers) { RenderOffers(all, people); dirtyOffers = false; }
             if (fingerprint == signature.ToString()) return;
             fingerprint = signature.ToString();
             cashLabel.text = $"Cash  ${cash:N0}";
+            var sprites = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value;
             rows.Clear(); int ownedCount = 0, houses = 0, hotels = 0;
             var sorted = new List<Entity>();
-            foreach (var p in all) if (EntityManager.GetComponentData<OwnerComponent>(p).ID == localId) sorted.Add(p);
-            sorted.Sort((a,b) => EntityManager.GetComponentData<SpaceIDComponent>(a).Value.CompareTo(EntityManager.GetComponentData<SpaceIDComponent>(b).Value));
+            foreach (var p in all) sorted.Add(p);
+            sorted.Sort((a, b) =>
+            {
+                int group = GroupKey(a).CompareTo(GroupKey(b));
+                return group != 0 ? group : EntityManager.GetComponentData<SpaceIDComponent>(a).Value.CompareTo(EntityManager.GetComponentData<SpaceIDComponent>(b).Value);
+            });
+            var groupRows = new Dictionary<int, VisualElement>();
             foreach (var p in sorted)
             {
-                ownedCount++; int level = Level(p); if (level == 5) hotels++; else houses += level;
+                int key = GroupKey(p);
+                if (groupRows.ContainsKey(key)) continue;
+                int total = 0, owned = 0;
+                int setOwner = EntityManager.GetComponentData<OwnerComponent>(p).ID;
+                bool completeSet = key >= (int)PropertyColor.Brown && key <= (int)PropertyColor.Blue &&
+                    setOwner != PropertyConstants.Vacant;
+                foreach (var member in sorted)
+                    if (GroupKey(member) == key)
+                    {
+                        total++;
+                        if (EntityManager.GetComponentData<OwnerComponent>(member).ID == localId) owned++;
+                        completeSet &= HasCompleteSet(member) &&
+                            EntityManager.GetComponentData<OwnerComponent>(member).ID == setOwner;
+                    }
+                completeSet &= total >= 2;
+                var group = new VisualElement();
+                group.AddToClassList("portfolio-group");
+                group.AddToClassList("group-" + key);
+                rows.Add(group);
+                var heading = new VisualElement(); heading.AddToClassList("portfolio-group-heading"); group.Add(heading);
+                AddLabel(heading, GroupName(key), "portfolio-group-name");
+                AddLabel(heading, $"{owned} / {total} owned", "portfolio-group-count");
+                if (completeSet)
+                {
+                    group.AddToClassList("is-complete-set");
+                    var banner = new VisualElement { pickingMode = PickingMode.Ignore };
+                    banner.AddToClassList("portfolio-set-banner");
+                    AddLabel(banner, "SET COMPLETE", "portfolio-set-title");
+                    string ownerName = setOwner == localId ? "Owned by you" : "Owned by Player " + setOwner;
+                    if (setOwner != localId)
+                        foreach (var person in people)
+                            if (EntityManager.GetComponentData<GhostOwner>(person).NetworkId == setOwner)
+                                ownerName = "Owned by " + EntityManager.GetComponentData<NameComponent>(person).Value.ToString();
+                    AddLabel(banner, ownerName, "portfolio-set-owner");
+                    group.Add(banner);
+                }
+                var strip = new ScrollView(ScrollViewMode.Horizontal) { verticalScrollerVisibility = ScrollerVisibility.Hidden };
+                strip.AddToClassList("portfolio-group-strip");
+                group.Add(strip);
+                groupRows.Add(key, strip);
+            }
+            foreach (var p in sorted)
+            {
+                int ownerId = EntityManager.GetComponentData<OwnerComponent>(p).ID;
+                bool isOwned = ownerId == localId;
+                int level = Level(p);
+                if (isOwned) { ownedCount++; if (level == 5) hotels++; else houses += level; }
                 int propertyId = EntityManager.GetComponentData<SpaceIDComponent>(p).Value;
                 int cost = EntityManager.HasComponent<HousePriceComponent>(p) ? EntityManager.GetComponentData<HousePriceComponent>(p).Value : 0;
                 int value = EntityManager.HasComponent<GhostPriceComponent>(p) ? EntityManager.GetComponentData<GhostPriceComponent>(p).Value : 0;
-                var row = new VisualElement(); row.AddToClassList("portfolio-row"); rows.Add(row);
-                AddLabel(row, EntityManager.GetComponentData<NameComponent>(p).Value.ToString(), "portfolio-property-name");
-                string color = EntityManager.HasComponent<ColorCodeComponent>(p) ? EntityManager.GetComponentData<ColorCodeComponent>(p).Value.ToString() : "Property";
-                AddLabel(row, $"{color} · Deed value ${value:N0} · {(level == 5 ? "1 hotel" : level + " houses")}", "portfolio-details");
+                var card = new VisualElement { name = "property-card-" + propertyId };
+                card.AddToClassList("portfolio-property-card");
+                card.AddToClassList(isOwned ? "is-owned" : "is-unowned");
+                var frame = new VisualElement(); frame.AddToClassList("portfolio-card-frame");
+                var shadow = new VisualElement { pickingMode = PickingMode.Ignore };
+                shadow.AddToClassList("portfolio-card-shadow");
+                frame.Add(shadow); frame.Add(card);
+                groupRows[GroupKey(p)].Add(frame);
+                var band = new VisualElement(); band.AddToClassList("portfolio-color-band"); card.Add(band);
+                var face = new VisualElement(); face.AddToClassList("portfolio-card-face"); card.Add(face);
+                var propertyName = EntityManager.GetComponentData<NameComponent>(p).Value;
+                var picture = new Image { scaleMode = ScaleMode.ScaleToFit, pickingMode = PickingMode.Ignore };
+                picture.AddToClassList("portfolio-property-picture");
+                if (sprites != null && sprites.TryGetValue(propertyName, out var sprite)) picture.sprite = sprite;
+                face.Add(picture);
+                if (picture.sprite == null) AddLabel(face, "Picture unavailable", "portfolio-help");
+                AddLabel(face, propertyName.ToString(), "portfolio-property-name");
+                string ownership = isOwned ? "OWNED BY YOU" : "NOT OWNED";
+                if (!isOwned && ownerId != PropertyConstants.Vacant)
+                {
+                    ownership = "Player " + ownerId + " owns this";
+                    foreach (var person in people)
+                        if (EntityManager.GetComponentData<GhostOwner>(person).NetworkId == ownerId)
+                            ownership = EntityManager.GetComponentData<NameComponent>(person).Value.ToString() + " owns this";
+                }
+                AddLabel(face, ownership, "portfolio-ownership");
+                AddLabel(face, $"Deed value ${value:N0}", "portfolio-details");
+                if (!isOwned) continue;
+                AddLabel(face, level == 5 ? "1 hotel" : level + " houses", "portfolio-details");
+                var row = new Foldout { text = "Manage property", value = expandedProperties.Contains(propertyId) };
+                row.AddToClassList("portfolio-management"); card.Add(row);
+                row.RegisterValueChangedCallback(evt =>
+                {
+                    if (evt.newValue) expandedProperties.Add(propertyId); else expandedProperties.Remove(propertyId);
+                });
                 var actions = new VisualElement(); actions.AddToClassList("portfolio-actions"); row.Add(actions);
                 if (cost > 0)
                 {
@@ -160,9 +247,24 @@ namespace DOTS.Mediator
                     price.RegisterValueChangedCallback(evt => { draftPrices[propertyId] = evt.newValue; offer.SetEnabled(!bankrupt && evt.newValue > 0); });
                 }
             }
-            summary.text = $"{ownedCount} properties   ·   {houses} houses   ·   {hotels} hotels";
+            summary.text = $"{ownedCount} / {sorted.Count} properties owned   ·   {houses} houses   ·   {hotels} hotels";
             if (ownedCount == 0) AddLabel(rows, "You do not own any properties yet. Buy an unowned property when you land on it.", "portfolio-help");
         }
+        bool HasCompleteSet(Entity property) => EntityManager.HasComponent<MonopolyFlagComponent>(property) &&
+            EntityManager.GetComponentData<MonopolyFlagComponent>(property).Value;
+        int GroupKey(Entity property)
+        {
+            var color = EntityManager.HasComponent<ColorCodeComponent>(property)
+                ? EntityManager.GetComponentData<ColorCodeComponent>(property).Value : PropertyColor.None;
+            if (color != PropertyColor.None) return (int)color;
+            return EntityManager.HasComponent<PropertyRentKindComponent>(property) &&
+                   EntityManager.GetComponentData<PropertyRentKindComponent>(property).Value == PropertyRentKind.Utility ? 11 : 10;
+        }
+        static string GroupName(int key) => key switch
+        {
+            3 => "Light blue", 10 => "Transport", 11 => "Utilities",
+            _ => ((PropertyColor)key).ToString()
+        };
         int Level(Entity property) => EntityManager.HasComponent<HouseCount>(property) ? EntityManager.GetComponentData<HouseCount>(property).Value : 0;
         void RenderOffers(NativeArray<Entity> all, NativeArray<Entity> people)
         {
@@ -198,7 +300,7 @@ namespace DOTS.Mediator
             if (launch != null) launch.clicked -= Open;
             root?.RemoveFromHierarchy(); root = null; launch = null; fingerprint = null;
         }
-        protected override void OnStopRunning() { Cleanup(); pending.Clear(); offers.Clear(); draftPrices.Clear(); draftBuyers.Clear(); }
+        protected override void OnStopRunning() { Cleanup(); pending.Clear(); offers.Clear(); draftPrices.Clear(); draftBuyers.Clear(); expandedProperties.Clear(); }
         protected override void OnDestroy() => Cleanup();
     }
 }
