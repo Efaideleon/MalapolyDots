@@ -135,6 +135,9 @@ namespace DOTS.GamePlay
                             id = chance.actionData[j].id,
                             msg = chance.actionData[j].msg,
                             amount = chance.actionData[j].amount,
+                            effect = chance.actionData[j].effect,
+                            hotelAmount = chance.actionData[j].hotelAmount,
+                            targetBoardIndex = chance.actionData[j].targetBoardIndex,
                         });
                     }
                 }

@@ -250,7 +250,7 @@ public class EconomyRulesTests
     }
 
     [Test]
-    public void NegativeCashEliminatesPlayerAndLastSolventPlayerWins()
+    public void DeclaringBankruptcyEliminatesPlayerAndLastRemainingPlayerWins()
     {
         using var world = new World("Bankruptcy tests");
         var manager = world.EntityManager;
@@ -259,9 +259,12 @@ public class EconomyRulesTests
         var debtor = manager.CreateEntity(typeof(GhostMoneyComponet), typeof(BankruptPlayer), typeof(GhostOwner));
         manager.SetComponentData(debtor, new GhostMoneyComponet { Value = -1 });
         manager.SetComponentData(debtor, new GhostOwner { NetworkId = 1 });
+        manager.SetComponentData(debtor, new BankruptPlayer { Declared = true });
         var survivor = manager.CreateEntity(typeof(GhostMoneyComponet), typeof(BankruptPlayer), typeof(GhostOwner));
         manager.SetComponentData(survivor, new GhostMoneyComponet { Value = 0 });
         manager.SetComponentData(survivor, new GhostOwner { NetworkId = 2 });
+        var connection = manager.CreateEntity(typeof(NetworkId));
+        manager.SetComponentData(connection, new NetworkId { Value = 2 });
         var property = manager.CreateEntity(typeof(OwnerComponent), typeof(OwnerByEntityComponent), typeof(HouseCount), typeof(GhostRentComponent));
         manager.SetComponentData(property, new OwnerComponent { ID = 1 });
         manager.SetComponentData(property, new OwnerByEntityComponent { Entity = debtor });

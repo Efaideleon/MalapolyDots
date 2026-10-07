@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/SoloMode.uss" />
+    <ui:VisualElement class="game-ui solo-setup-screen">
+        <ui:VisualElement class="game-panel solo-setup-card">
+            <ui:Label text="SOLO ADVENTURE" class="game-heading" />
+            <ui:Label text="Take on the city, one deal at a time." class="solo-description" />
+            <ui:DropdownField name="AiOpponents" label="AI opponents" choices="1,2,3,4,5" index="2" class="game-dropdown" />
+            <ui:DropdownField name="SoloRounds" label="Rounds" choices="8,10,12" index="0" class="game-dropdown" />
+            <ui:Label text="Choose your token next. AI players buy, build, trade, and recover from debt. Pause whenever you need a break." class="solo-description" />
+            <ui:Label name="SoloStatus" class="solo-description" />
+            <ui:Button name="StartSoloButton" text="Let's play!" class="game-button-gold" />
+            <ui:Button name="SoloBackButton" text="Back to main menu" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

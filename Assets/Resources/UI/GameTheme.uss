@@ -1,0 +1,102 @@
+:root {
+    --game-panel: rgb(17, 67, 76);
+    --game-surface: rgb(26, 103, 111);
+    --game-ink: rgb(79, 53, 38);
+    --game-text: rgb(255, 249, 224);
+    --game-gold: rgb(255, 211, 92);
+    --game-gold-shadow: rgb(170, 111, 35);
+    --game-mint: rgb(62, 188, 142);
+    --game-mint-shadow: rgb(16, 103, 77);
+}
+.game-ui {
+    color: var(--game-text); font-size: 26px;
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=545e42076256d47e68fbb6af37b1afdc&type=2");
+}
+.game-ui Label { font-size: 26px; color: var(--game-text); -unity-font-style: normal; -unity-text-outline-width: 0; white-space: normal; }
+.game-ui .game-heading, .game-ui .title_label {
+    color: var(--game-gold); font-size: 42px; -unity-text-align: middle-center; white-space: normal;
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular%20SDF.asset?fileID=11400000&guid=6fc596bdedf0c431788d92bdb4136c7a&type=2");
+}
+.game-ui .game-details { font-size: 34px; color: rgb(186, 243, 154); -unity-text-align: middle-center; }
+.game-panel, .game-ui .malacity-modal {
+    background-color: var(--game-panel); background-image: none;
+    border-width: 4px; border-color: var(--game-gold); border-bottom-width: 9px; border-bottom-color: var(--game-gold-shadow);
+    border-radius: 26px; padding: 18px;
+}
+.game-menu { background-color: rgba(5, 19, 33, 0.84); }
+.game-ui .panel-1-inner, .game-ui .panel-1-inner-2 {
+    background-color: transparent; background-image: none; border-width: 0; padding: 8px;
+}
+.game-ui .panel-text-1 { font-size: 34px; color: var(--game-text); -unity-text-outline-width: 0; }
+.game-ui .game-surface { background-color: var(--game-surface); border-width: 2px; border-color: rgb(68, 158, 160); border-radius: 16px; padding: 12px; }
+.game-ui Button {
+    background-image: none; background-color: var(--game-mint); color: rgb(9, 60, 49);
+    border-width: 3px; border-color: rgb(143, 243, 185); border-bottom-width: 7px; border-bottom-color: var(--game-mint-shadow);
+    border-radius: 14px; min-height: 58px; padding: 8px 16px; font-size: 28px; white-space: normal;
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=545e42076256d47e68fbb6af37b1afdc&type=2");
+    -unity-font-style: normal; -unity-text-outline-width: 0; transition-duration: 0.12s;
+}
+.game-ui Button Label { color: rgb(9, 60, 49); font-size: 28px; -unity-text-outline-width: 0; -unity-font-style: normal; -unity-text-align: middle-center; }
+.game-ui Button Label, .game-ui Button:hover Label, .game-ui Button:active Label { background-color: transparent; background-image: none; }
+.game-ui .game-button-gold Label { color: rgb(88, 48, 23); }
+.game-ui .game-button-danger Label { color: rgb(90, 35, 29); }
+.game-ui Button:hover:enabled { background-color: rgb(109, 223, 163); border-top-color: rgb(220, 255, 207); translate: 0 -2px; }
+.game-ui Button:active:enabled { background-color: rgb(41, 161, 120); border-bottom-width: 3px; translate: 0 2px; }
+.game-ui Button:focus { border-color: rgb(255, 240, 163); }
+.game-ui Button:disabled { opacity: 0.45; }
+.game-ui .game-button-gold, .game-ui .close-button {
+    background-color: rgb(255, 205, 100); color: rgb(88, 48, 23); border-color: rgb(255, 239, 164); border-bottom-color: rgb(184, 116, 37);
+}
+.game-ui .game-button-gold:hover:enabled, .game-ui .close-button:hover:enabled { background-color: rgb(255, 228, 140); }
+.game-ui .game-button-gold:active:enabled, .game-ui .close-button:active:enabled { background-color: rgb(239, 184, 76); }
+.game-ui .game-button-danger { background-color: rgb(244, 143, 119); color: rgb(90, 35, 29); border-color: rgb(255, 204, 162); border-bottom-color: rgb(151, 64, 48); }
+.game-ui .game-button-danger:hover:enabled { background-color: rgb(255, 171, 143); }
+.game-ui .game-button-danger:active:enabled { background-color: rgb(224, 114, 96); }
+.game-ui .dbr-btn, .game-ui .dbr-btn-with-icons, .game-ui .confirm-btn-container {
+    background-image: none; background-color: transparent; border-width: 0; padding: 0;
+}
+.game-ui .dbr-btn-picked { background-color: rgb(255, 211, 92); border-width: 3px; border-color: rgb(255, 238, 163); border-radius: 17px; }
+.game-ui #blurred-shadow, .game-ui #blur-shadow, .game-ui #blulred-shadow, .game-ui #sharp-shadow, .game-ui #gradient-border, .game-ui #Shadow, .game-ui #shadow, .game-ui #highlight { display: none; }
+.game-ui #gradient-border-label-container, .game-ui #label-container, .game-ui #Border { background-image: none; background-color: transparent; border-width: 0; padding: 0; justify-content: center; align-items: center; }
+.game-ui .number-display { background-color: rgb(255, 241, 189); border-color: rgb(211, 171, 98); border-radius: 18px; }
+.game-ui .number-display Label { color: var(--game-ink); font-size: 64px; -unity-text-align: middle-center; }
+.game-ui .unity-base-field__label { color: var(--game-text); font-size: 25px; }
+.game-ui .unity-base-text-field__input, .game-ui .unity-base-popup-field__input {
+    background-color: rgb(255, 249, 224); color: var(--game-ink); border-width: 2px; border-color: rgb(211, 171, 98); border-radius: 10px; font-size: 26px;
+}
+.game-ui .unity-base-popup-field__text { color: var(--game-ink); font-size: 26px; }
+.game-ui .unity-base-popup-field__arrow { -unity-background-image-tint-color: rgb(96, 61, 27); }
+.game-ui.player-panel { width: 300px; height: 130px; flex-direction: row; align-items: center; justify-content: space-between; padding: 8px; margin: 0 10px; background-color: var(--game-panel); border-width: 3px; border-color: rgb(68, 158, 160); border-bottom-width: 6px; border-bottom-color: rgb(8, 47, 60); border-radius: 20px; }
+.game-ui.current-player-panel { height: 320px; flex-direction: column; border-color: var(--game-gold); background-color: rgb(26, 103, 111); justify-content: center; }
+.game-ui .player-picture { width: 96px; height: 96px; flex-shrink: 0; border-radius: 16px; background-color: rgb(255, 241, 189); }
+.game-ui.current-player-panel .player-picture { width: 180px; height: 180px; margin-bottom: 10px; }
+.default-uxml { position: absolute; transition-duration: 0.3s; transition-timing-function: ease-in-out; }
+.game-ui .player-name { color: var(--game-text); font-size: 28px; }
+.game-ui .player-money { color: rgb(186, 243, 154); font-size: 30px; }
+.game-screen-layout { flex-grow: 1; position: relative; }
+.game-ui .game-roll { width: 320px; }
+.game-ui #roll-text-button-container { width: auto; height: auto; background-color: transparent; border-width: 0; padding: 12px; }
+.game-ui .game-roll-number { width: 100%; height: 128px; justify-content: center; align-items: center; margin-bottom: 12px; }
+.game-ui #roll-button { align-self: stretch; width: auto; }
+.game-ui .game-end-turn { width: 230px; min-height: 68px; }
+.game-ui #player-name { color: var(--game-text); font-size: 28px; margin-top: 4px; -unity-text-outline-width: 0; }
+.game-ui #player-money { color: rgb(186, 243, 154); background-color: transparent; font-size: 30px; margin-top: 4px; -unity-text-outline-width: 0; }
+.game-ui .DropFieldMenu { align-items: center; justify-content: center; }
+.game-ui .game-dropdown { margin: 8px; align-items: center; }
+.game-ui .game-dropdown > .unity-base-field__label { min-width: 240px; }
+.game-ui .game-dropdown .unity-base-popup-field__input { width: 120px; min-height: 48px; }
+.game-ui #purchase-property-container { max-width: 620px; }
+.game-ui #property-image { background-color: rgb(255, 241, 189); border-radius: 16px; }
+.game-ui #price-label { color: rgb(186, 243, 154); font-size: 40px; }
+.game-ui #roll-amount-label { color: var(--game-ink); font-size: 64px; }
+.game-ui .game-inset { background-color: var(--game-surface); border-radius: 14px; padding: 12px; }
+.game-dice-result, .game-money-feedback {
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&guid=545e42076256d47e68fbb6af37b1afdc&type=2");
+    background-color: rgba(17, 67, 76, 0.96); color: var(--game-text); border-width: 3px; border-color: var(--game-gold);
+    border-bottom-width: 6px; border-bottom-color: var(--game-gold-shadow); border-radius: 18px; -unity-text-align: middle-center; white-space: normal;
+}
+.game-dice-result { font-size: 38px; -unity-font-definition: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular%20SDF.asset?fileID=11400000&guid=6fc596bdedf0c431788d92bdb4136c7a&type=2"); }
+.game-money-feedback { font-size: 27px; }
+.game-money-feedback.is-gain { color: rgb(186, 243, 154); }
+.game-money-feedback.is-loss { color: rgb(255, 175, 145); }
+#Backdrop, #Backdrop:hover, #Backdrop:active, #Backdrop:focus { background-color: transparent; background-image: none; border-width: 0; }

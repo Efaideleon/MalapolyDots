@@ -1,53 +1,55 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels"/>
-    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <engine:VisualElement name="purchase-property-container" class="panel-simple-1" style="height: 619px; width: 369px; background-color: rgb(231, 202, 167); align-items: center; justify-content: flex-start; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-width: -36px; border-right-width: -36px; border-bottom-width: -36px; border-left-width: -36px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
-        <engine:VisualElement style="align-items: center; justify-content: flex-end; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 35px; border-top-right-radius: 35px; border-bottom-right-radius: 35px; border-bottom-left-radius: 35px; height: 100%; width: 100%; overflow: hidden;">
-            <engine:VisualElement name="property-image" style="background-image: url(&quot;project://database/Assets/Textures/Properties%20Images/sheet.png?fileID=1018475718&amp;guid=c3d33d6d837f66441855a95861a8b69d&amp;type=3#Mercado&quot;); background-size: 340px 340px; width: 340px; height: 340px; border-top-left-radius: 25px; border-top-right-radius: 25px; top: 0; position: absolute;">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels" />
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameLayouts.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
+    <ui:VisualElement name="purchase-property-container" class="panel-simple-1 game-ui game-panel layout-purchase-property-panel-purchase-property-container-4">
+        <ui:VisualElement class="layout-purchase-property-panel-visualelement5-5">
+            <ui:VisualElement name="property-image" class="layout-purchase-property-panel-property-image-6">
                 <Bindings>
-                    <engine:DataBinding property="style.backgroundImage" data-source-path="Image" data-source="project://database/Assets/UI/ScriptableObjects/PurchasePropertyPanel.asset?fileID=11400000&amp;guid=f8911d1b7c1d84b528f777896164f866&amp;type=2#PurchasePropertyPanel" binding-mode="ToTarget"/>
+                    <ui:DataBinding property="style.backgroundImage" data-source-path="Image" data-source="project://database/Assets/UI/ScriptableObjects/PurchasePropertyPanel.asset?fileID=11400000&amp;guid=f8911d1b7c1d84b528f777896164f866&amp;type=2#PurchasePropertyPanel" binding-mode="ToTarget" />
                 </Bindings>
-            </engine:VisualElement>
-            <engine:VisualElement style="width: 100%; border-top-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); align-items: center; height: 249px; padding-top: 10px;">
-                <engine:VisualElement name="name-label-container" style="justify-content: center; align-self: auto; flex-shrink: 1; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); -unity-font-style: bold; -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(254, 184, 35); font-size: 18px;">
-                    <engine:Label text="Name Of Property" name="name-label" style="font-size: 36%; -unity-font-style: bold; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+            </ui:VisualElement>
+            <ui:VisualElement class="layout-purchase-property-panel-visualelement9-9">
+                <ui:VisualElement name="name-label-container" class="layout-purchase-property-panel-name-label-container-10">
+                    <ui:Label text="Name Of Property" name="name-label" class="game-heading layout-purchase-property-panel-name-label-11">
                         <Bindings>
-                            <engine:DataBinding property="text" data-source-path="NameLabel" data-source="project://database/Assets/UI/ScriptableObjects/PurchasePropertyPanel.asset?fileID=11400000&amp;guid=f8911d1b7c1d84b528f777896164f866&amp;type=2#PurchasePropertyPanel" binding-mode="ToTarget"/>
+                            <ui:DataBinding property="text" data-source-path="NameLabel" data-source="project://database/Assets/UI/ScriptableObjects/PurchasePropertyPanel.asset?fileID=11400000&amp;guid=f8911d1b7c1d84b528f777896164f866&amp;type=2#PurchasePropertyPanel" binding-mode="ToTarget" />
                         </Bindings>
-                    </engine:Label>
-                </engine:VisualElement>
-                <engine:VisualElement name="price-container" style="justify-content: center; align-self: center; flex-shrink: 1; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); font-size: 24px; color: rgb(84, 255, 114); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 2px;">
-                    <engine:Label text="price" name="price-label" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 48px; color: rgb(88, 234, 113);">
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement name="price-container" class="layout-purchase-property-panel-price-container-14">
+                    <ui:Label text="price" name="price-label" class="game-details layout-purchase-property-panel-price-label-15">
                         <Bindings>
-                            <engine:DataBinding property="text" data-source-path="PriceLabel" data-source="project://database/Assets/UI/ScriptableObjects/PurchasePropertyPanel.asset?fileID=11400000&amp;guid=f8911d1b7c1d84b528f777896164f866&amp;type=2#PurchasePropertyPanel" binding-mode="ToTarget"/>
+                            <ui:DataBinding property="text" data-source-path="PriceLabel" data-source="project://database/Assets/UI/ScriptableObjects/PurchasePropertyPanel.asset?fileID=11400000&amp;guid=f8911d1b7c1d84b528f777896164f866&amp;type=2#PurchasePropertyPanel" binding-mode="ToTarget" />
                         </Bindings>
-                    </engine:Label>
-                </engine:VisualElement>
-                <engine:VisualElement name="purchase-buttons" style="flex-direction: column; justify-content: center; align-self: auto; font-size: 22px; align-content: flex-start; align-items: center; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); -unity-font-style: bold; -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(0, 0, 0);">
-                    <engine:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
-                        <engine:Button text="8" name="purchase-button" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                            <engine:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
-                            <engine:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                                <engine:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                                <engine:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                                    <engine:Label text="Purchase" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                        </engine:Button>
-                    </engine:VisualElement>
-                    <engine:VisualElement name="decline-btn-container" class="dbr-btn dbr-btn-red" style="flex-grow: 0;">
-                        <engine:Button text="8" name="decline-button" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                            <engine:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%;"/>
-                            <engine:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                                <engine:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                                <engine:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                                    <engine:Label text="Decline" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                        </engine:Button>
-                    </engine:VisualElement>
-                </engine:VisualElement>
-            </engine:VisualElement>
-        </engine:VisualElement>
-    </engine:VisualElement>
-</engine:UXML>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement name="purchase-buttons" class="layout-purchase-property-panel-purchase-buttons-18">
+                    <ui:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue layout-purchase-property-panel-purchase-btn-container-19">
+                        <ui:Button name="purchase-button" class="button layout-purchase-property-panel-purchase-button-20">
+                            <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-purchase-property-panel-blurred-shadow-21" />
+                            <ui:VisualElement name="gradient-border-label-container" class="layout-purchase-property-panel-gradient-border-label-container-22">
+                                <ui:VisualElement name="gradient-border" class="layout-purchase-property-panel-gradient-border-23" />
+                                <ui:VisualElement name="label-container" class="dbr-btn layout-purchase-property-panel-label-container-24">
+                                    <ui:Label text="Purchase" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:Button>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="decline-btn-container" class="dbr-btn dbr-btn-red layout-purchase-property-panel-decline-btn-container-26">
+                        <ui:Button name="decline-button" class="button game-button-danger layout-purchase-property-panel-decline-button-27">
+                            <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-purchase-property-panel-blurred-shadow-28" />
+                            <ui:VisualElement name="gradient-border-label-container" class="layout-purchase-property-panel-gradient-border-label-container-29">
+                                <ui:VisualElement name="gradient-border" class="layout-purchase-property-panel-gradient-border-30" />
+                                <ui:VisualElement name="label-container" class="dbr-btn layout-purchase-property-panel-label-container-31">
+                                    <ui:Label text="Decline" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:Button>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

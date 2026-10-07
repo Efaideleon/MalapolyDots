@@ -27,15 +27,23 @@ namespace DOTS.GamePlay
             NetworkRequests.MenuReturnStatus = "Leaving the table…";
             try
             {
-                if (NetworkRequests.LeaveOnlineSession != null)
-                    await NetworkRequests.LeaveOnlineSession();
+                SoloPauseController.ResumeCurrent();
+                if (!SoloSession.Active && NetworkRequests.LeaveOnlineSession != null)
+                {
+                    var leave = NetworkRequests.LeaveOnlineSession();
+                    if (await System.Threading.Tasks.Task.WhenAny(leave, System.Threading.Tasks.Task.Delay(10000)) == leave)
+                        await leave;
+                    else
+                    {
+                        Debug.LogWarning("The online session did not respond. Returning to the main menu.");
+                        _ = leave.ContinueWith(task => Debug.LogWarning(task.Exception),
+                            System.Threading.Tasks.TaskContinuationOptions.OnlyOnFaulted);
+                    }
+                }
             }
             catch (Exception error)
             {
                 Debug.LogWarning($"Leaving online session failed: {error.Message}");
-                NetworkRequests.MenuReturnStatus = "Could not leave the online session. Check your connection and try again.";
-                restarting = false;
-                return;
             }
             try
             {
@@ -43,6 +51,7 @@ namespace DOTS.GamePlay
                 NetworkRequests.StartHost = NetworkRequests.StartClient = NetworkRequests.StartGame = false;
                 NetworkRequests.ExpectedLobbyPlayers = 0;
                 NetworkRequests.GoBackToMainMenu = false;
+                SoloSession.Reset();
                 World.DisposeAllWorlds();
                 DefaultWorldInitialization.Initialize("Default World");
                 var load = SceneManager.LoadSceneAsync(scene);

@@ -1,13 +1,70 @@
 .match-status { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
-.match-turn { align-self: center; margin-top: 16px; padding: 12px 24px; border-radius: 12px; background-color: rgba(17, 38, 62, 0.92); color: rgb(255, 248, 226); font-size: 24px; white-space: normal; }
-.match-results { display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(9, 22, 37, 0.90); align-items: center; justify-content: center; }
+.match-turn {
+    position: absolute; left: 24px; bottom: 24px; width: 480px; max-width: 26%; padding: 12px 20px;
+    border-width: 3px; border-color: rgb(68, 158, 160); border-bottom-width: 6px; border-bottom-color: rgb(8, 47, 60);
+    border-radius: 20px; background-color: rgba(17, 67, 76, 0.96); transition-duration: 0.2s;
+}
+.match-turn.is-local-turn { border-color: var(--game-gold); border-bottom-color: var(--game-gold-shadow); }
+.match-turn.is-debt { border-color: rgb(255, 175, 145); border-bottom-color: rgb(151, 64, 48); }
+.match-turn.is-hidden { display: none; }
+.match-turn-heading { flex-direction: row; align-items: center; justify-content: space-between; }
+.game-ui .match-turn-title { color: var(--game-gold); font-size: 28px; flex-grow: 1; margin-right: 12px; }
+.game-ui .match-round-label { color: rgb(199, 232, 219); font-size: 21px; flex-shrink: 0; }
+.game-ui .match-turn-hint { color: var(--game-text); font-size: 22px; margin-top: 4px; }
+.game-ui .match-property-tap-hint { display: none; color: rgb(217, 251, 255); font-size: 21px; margin-top: 8px; }
+.game-ui .match-property-tap-hint.is-visible { display: flex; }
+.match-round-progress { flex-direction: row; margin-top: 10px; }
+.match-round-step { flex-grow: 1; height: 6px; margin-right: 4px; border-radius: 3px; background-color: rgb(36, 99, 108); }
+.match-round-step.is-complete { background-color: var(--game-mint); }
+.match-round-step.is-current { background-color: var(--game-gold); }
+.match-results {
+    display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+    background-color: rgba(5, 19, 33, 0.88); align-items: center; justify-content: center; padding: 24px;
+}
 .match-results.is-visible { display: flex; }
-.match-results-card { width: 760px; max-width: 94%; padding: 32px; border-radius: 24px; border-width: 2px; border-color: rgb(82, 124, 150); background-color: rgb(28, 55, 79); }
-.match-results-card Label { white-space: normal; color: rgb(237, 242, 242); font-size: 23px; }
-.match-results-card .match-eyebrow { font-size: 19px; color: rgb(242, 196, 106); }
-.match-results-card .match-result-title { font-size: 44px; -unity-font-style: bold; margin: 10px 0; }
-.match-results-card .match-reason { color: rgb(184, 205, 221); font-size: 20px; margin: 8px 0; }
-.match-standings { margin: 16px 0; padding: 12px; background-color: rgb(17, 38, 62); border-radius: 12px; }
-.match-standing { padding: 8px; }
-.match-return { min-height: 60px; margin-top: 16px; background-color: rgb(34, 113, 127); color: white; border-width: 1px; border-color: rgb(79, 151, 166); border-radius: 10px; font-size: 24px; }
-.match-return:hover { background-color: rgb(43, 138, 151); }
+.match-results-card {
+    width: 800px; max-width: 94%; max-height: 96%; padding: 28px;
+    border-radius: 28px; border-width: 4px; border-color: var(--game-gold); border-bottom-width: 10px;
+    border-bottom-color: var(--game-gold-shadow); background-color: var(--game-panel);
+}
+.match-results-card Label { white-space: normal; color: var(--game-text); font-size: 26px; }
+.match-results-card .match-eyebrow { font-size: 19px; color: rgb(161, 239, 216); letter-spacing: 1px; }
+.match-results-card .match-result-title {
+    font-size: 48px; color: var(--game-gold); margin: 10px 0; flex-shrink: 0;
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular%20SDF.asset?fileID=11400000&guid=6fc596bdedf0c431788d92bdb4136c7a&type=2");
+}
+.match-results-card .match-reason { color: rgb(199, 232, 219); font-size: 23px; margin: 6px 0; flex-shrink: 0; }
+.match-standings-heading { flex-direction: row; justify-content: space-between; margin-top: 20px; margin-bottom: 8px; flex-shrink: 0; }
+.match-standings { max-height: 420px; min-height: 100px; flex-shrink: 1; }
+.match-standings .unity-scroller { width: 24px; min-width: 24px; margin-left: 8px; padding: 3px; background-color: rgb(9, 43, 54); border-radius: 12px; }
+.match-standings .unity-scroller__low-button, .match-standings .unity-scroller__high-button { display: none; }
+.match-standings .unity-base-slider { margin: 0; flex-grow: 1; width: 18px; min-width: 18px; border-width: 0; padding: 0; }
+.match-standings .unity-base-slider__tracker { width: 14px; background-color: rgb(5, 32, 43); border-radius: 9px; }
+.match-standings .unity-base-slider__dragger { width: 18px; min-width: 18px; min-height: 40px; background-color: var(--game-gold); border-width: 2px; border-color: rgb(255, 238, 153); border-radius: 9px; }
+.match-standings .unity-base-slider__dragger:hover { background-color: rgb(255, 229, 129); }
+.match-standings .unity-base-slider__dragger:active { background-color: rgb(230, 164, 47); }
+.match-standings .unity-base-slider__dragger-border { border-width: 0; background-color: transparent; }
+.match-standing {
+    flex-direction: row; align-items: center; padding: 12px; margin-bottom: 8px; min-height: 92px;
+    background-color: rgb(10, 47, 59); border-width: 2px; border-color: rgb(36, 99, 108); border-radius: 16px; flex-shrink: 0;
+}
+.match-standing.is-winner { background-color: rgb(32, 103, 93); border-color: var(--game-gold); }
+.match-standing.is-local { border-left-width: 6px; border-left-color: var(--game-mint); }
+.match-standing.is-bankrupt { opacity: 0.6; }
+.match-results-card .match-rank {
+    width: 50px; height: 50px; flex-shrink: 0; margin-right: 14px; border-radius: 14px;
+    background-color: rgb(36, 99, 108); color: var(--game-text); font-size: 30px; -unity-text-align: middle-center;
+}
+.match-standing.is-winner .match-rank { background-color: var(--game-gold); color: var(--game-ink); }
+.match-standing-player { flex-grow: 1; flex-shrink: 1; margin-right: 16px; }
+.match-results-card .match-player-name { font-size: 28px; }
+.match-results-card .match-player-badge { font-size: 17px; color: rgb(161, 239, 216); margin-top: 2px; }
+.match-results-card .match-player-worth { color: rgb(186, 243, 154); font-size: 32px; flex-shrink: 0; -unity-text-align: middle-right; }
+.match-standing.is-bankrupt .match-player-worth { color: rgb(255, 175, 145); font-size: 23px; }
+.match-results-card .match-worth-note { color: rgb(199, 232, 219); font-size: 19px; margin: 8px 0; flex-shrink: 0; }
+.match-results-card .match-return { margin-top: 12px; flex-shrink: 0; border-color: rgb(143, 243, 185); border-bottom-color: var(--game-mint-shadow); }
+.match-results-card .match-return:focus { border-color: var(--game-gold); border-bottom-color: var(--game-gold-shadow); }
+.match-results-card #returnStatus { font-size: 20px; }
+.match-results-card.is-disconnected #standingsHeader,
+.match-results-card.is-disconnected #standings,
+.match-results-card.is-disconnected #worthNote { display: none; }

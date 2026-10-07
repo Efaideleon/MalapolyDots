@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Assets.Common;
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
@@ -19,6 +20,10 @@ namespace DOTS.Mediator
         VisualElement root, rows, offerRows;
         Button launch;
         Label cashLabel, summary, status;
+        Label debtHelp;
+        VisualElement bankruptcyConfirmation;
+        Button declareBankruptcy, confirmBankruptcy;
+        bool wasInDebt;
         readonly Queue<AssetTradeRpc> pending = new();
         readonly Dictionary<int, AssetTradeReplyRpc> offers = new();
         EntityQuery properties, players, replies;
@@ -59,6 +64,17 @@ namespace DOTS.Mediator
                 root = asset.CloneTree(); root.AddToClassList("portfolio-root"); foreground.Add(root);
                 rows = root.Q("properties"); offerRows = root.Q("offers"); cashLabel = root.Q<Label>("cash");
                 summary = root.Q<Label>("inventorySummary"); status = root.Q<Label>("tradeStatus");
+                debtHelp = root.Q<Label>("debtHelp");
+                bankruptcyConfirmation = root.Q("bankruptcyConfirmation");
+                declareBankruptcy = root.Q<Button>("declareBankruptcy");
+                confirmBankruptcy = root.Q<Button>("confirmBankruptcy");
+                declareBankruptcy.clicked += () => bankruptcyConfirmation.AddToClassList("is-visible");
+                root.Q<Button>("cancelBankruptcy").clicked += () => bankruptcyConfirmation.RemoveFromClassList("is-visible");
+                confirmBankruptcy.clicked += () =>
+                {
+                    bankruptcyConfirmation.RemoveFromClassList("is-visible");
+                    Send(new AssetTradeRpc { Action = AssetAction.DeclareBankruptcy });
+                };
                 root.Q<Button>("closePortfolio").clicked += () => root.RemoveFromClassList("is-open");
                 var documentRoot = foreground;
                 while (documentRoot.parent != null) documentRoot = documentRoot.parent;
@@ -88,6 +104,19 @@ namespace DOTS.Mediator
             var game = SystemAPI.GetSingleton<GameStateComponent>();
             if (game.State == GameState.GameOver) { root.RemoveFromClassList("is-open"); launch?.SetEnabled(false); return; }
             launch?.SetEnabled(true);
+            bool inDebt = false, localEliminated = true;
+            foreach (var (owner, money, bankruptcy) in SystemAPI.Query<RefRO<GhostOwner>, RefRO<GhostMoneyComponet>, RefRO<BankruptPlayer>>())
+                if (owner.ValueRO.NetworkId == localId)
+                {
+                    localEliminated = bankruptcy.ValueRO.Value;
+                    inDebt = !localEliminated && money.ValueRO.Value < 0;
+                    if (inDebt) debtHelp.text = $"Raise ${-(long)money.ValueRO.Value:N0} to cover your debt. Sell buildings, sell cleared deeds to the bank, or trade with another player. Cover the debt to continue.";
+                }
+            root.EnableInClassList("is-in-debt", inDebt);
+            declareBankruptcy.SetEnabled(!localEliminated && game.State != GameState.Walking);
+            confirmBankruptcy.SetEnabled(!localEliminated && game.State != GameState.Walking);
+            if (inDebt && !wasInDebt) Open();
+            wasInDebt = inDebt;
             if (!root.ClassListContains("is-open")) return;
             using var all = properties.ToEntityArray(Allocator.Temp);
             using var people = players.ToEntityArray(Allocator.Temp);
@@ -99,7 +128,7 @@ namespace DOTS.Mediator
                 int id = EntityManager.GetComponentData<GhostOwner>(person).NetworkId;
                 bool eliminated = EntityManager.GetComponentData<BankruptPlayer>(person).Value;
                 if (id == localId) { cash = EntityManager.GetComponentData<GhostMoneyComponet>(person).Value; bankrupt = eliminated; }
-                else if (!eliminated) buyers.Add((id, EntityManager.GetComponentData<NameComponent>(person).Value.ToString()));
+                else if (!eliminated) buyers.Add((id, EntityManager.GetComponentData<NameComponent>(person).Value.ToString() + (SoloSession.IsAiId(id) ? " (AI)" : "")));
                 signature.Append(id).Append(eliminated);
             }
             buyers.Sort((a,b) => a.id.CompareTo(b.id));
@@ -111,7 +140,7 @@ namespace DOTS.Mediator
             if (dirtyOffers) { RenderOffers(all, people); dirtyOffers = false; }
             if (fingerprint == signature.ToString()) return;
             fingerprint = signature.ToString();
-            cashLabel.text = $"Cash  ${cash:N0}";
+            cashLabel.text = bankrupt ? "Bankrupt" : cash < 0 ? $"Debt  ${-(long)cash:N0}" : $"Cash  ${cash:N0}";
             var sprites = SystemAPI.ManagedAPI.GetSingleton<SpriteRegistryComponent>().Value;
             rows.Clear(); int ownedCount = 0, houses = 0, hotels = 0;
             var sorted = new List<Entity>();
@@ -233,8 +262,17 @@ namespace DOTS.Mediator
                 }
                 if (AssetTradingRules.HasBuildings(EntityManager, p, all))
                     AddLabel(row, "Property sale locked: sell every building in this color group first.", "portfolio-help");
-                else if (buyers.Count == 0) AddLabel(row, "No other players available to buy this property.", "portfolio-help");
                 else
+                {
+                    if (value > 1)
+                    {
+                        var bankSale = AddButton(actions, $"Sell deed to bank · +${value / 2:N0}", () => Send(new AssetTradeRpc { Action = AssetAction.SellPropertyToBank, PropertyId = propertyId }));
+                        bankSale.AddToClassList("portfolio-bank-sale"); bankSale.SetEnabled(!bankrupt);
+                        bankSale.tooltip = "Returns this deed to the bank for half its purchase price.";
+                    }
+                    if (buyers.Count == 0) AddLabel(row, "No other players available. You can still sell this deed to the bank.", "portfolio-help");
+                }
+                if (!AssetTradingRules.HasBuildings(EntityManager, p, all) && buyers.Count > 0)
                 {
                     var trade = new VisualElement(); trade.AddToClassList("portfolio-actions"); row.Add(trade);
                     var names = buyers.ConvertAll(b => b.name + " (Player " + b.id + ")");
@@ -248,7 +286,7 @@ namespace DOTS.Mediator
                 }
             }
             summary.text = $"{ownedCount} / {sorted.Count} properties owned   ·   {houses} houses   ·   {hotels} hotels";
-            if (ownedCount == 0) AddLabel(rows, "You do not own any properties yet. Buy an unowned property when you land on it.", "portfolio-help");
+            if (ownedCount == 0) AddLabel(rows, inDebt ? "You have no properties to sell. If you cannot raise the money, choose Declare bankruptcy below." : "You do not own any properties yet. Buy an unowned property when you land on it.", "portfolio-help");
         }
         bool HasCompleteSet(Entity property) => EntityManager.HasComponent<MonopolyFlagComponent>(property) &&
             EntityManager.GetComponentData<MonopolyFlagComponent>(property).Value;
@@ -299,6 +337,7 @@ namespace DOTS.Mediator
         {
             if (launch != null) launch.clicked -= Open;
             root?.RemoveFromHierarchy(); root = null; launch = null; fingerprint = null;
+            wasInDebt = false;
         }
         protected override void OnStopRunning() { Cleanup(); pending.Clear(); offers.Clear(); draftPrices.Clear(); draftBuyers.Clear(); expandedProperties.Clear(); }
         protected override void OnDestroy() => Cleanup();

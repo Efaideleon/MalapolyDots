@@ -30,8 +30,7 @@ namespace DOTS.GamePlay
                 var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
                 ecb.DestroyEntity(entity);
                 var connection = request.ValueRO.SourceConnection;
-                if (!SystemAPI.HasComponent<GhostOwner>(activePlayerEntity) || !SystemAPI.HasComponent<NetworkId>(connection) ||
-                    SystemAPI.GetComponent<GhostOwner>(activePlayerEntity).NetworkId != SystemAPI.GetComponent<NetworkId>(connection).Value ||
+                if (!GameplayActionSource.Owns(state.EntityManager, entity, connection, activePlayerEntity) ||
                     !SystemAPI.HasComponent<LandingPaymentResolved>(activePlayerEntity) ||
                     SystemAPI.GetComponent<LandingPaymentResolved>(activePlayerEntity).Value ||
                     SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Landing) continue;
@@ -52,6 +51,13 @@ namespace DOTS.GamePlay
                         int paid = Unity.Mathematics.math.min(rent, Unity.Mathematics.math.max(0, playerMoney.ValueRO.Value));
                         playerMoney.ValueRW.Value -= rent;
                         ownerMoney.ValueRW.Value += paid;
+                        if (paid < rent && SystemAPI.HasComponent<BankruptPlayer>(activePlayerEntity))
+                        {
+                            var bankruptcy = SystemAPI.GetComponentRW<BankruptPlayer>(activePlayerEntity);
+                            bankruptcy.ValueRW.UnpaidRent = rent - paid;
+                            bankruptcy.ValueRW.CreditorNetworkId = SystemAPI.HasComponent<GhostOwner>(ownerEntity)
+                                ? SystemAPI.GetComponent<GhostOwner>(ownerEntity).NetworkId : 0;
+                        }
                         MoneyFeedback.Send(ecb, state.EntityManager, activePlayerEntity, -rent, MoneyChangeReason.Rent, ownerEntity, paid);
                         SystemAPI.SetComponent(activePlayerEntity, new LandingPaymentResolved { Value = true });
                     }

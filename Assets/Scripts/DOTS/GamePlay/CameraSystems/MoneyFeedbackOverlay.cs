@@ -41,16 +41,9 @@ namespace DOTS.GamePlay.CameraSystems
                 label.style.position = Position.Absolute;
                 label.style.width = 240;
                 label.style.height = 76;
-                label.style.fontSize = 27;
-                var font = Resources.Load<UnityEngine.TextCore.Text.FontAsset>("Fonts/Acme-Regular SDF");
-                if (font != null) label.style.unityFontDefinition = FontDefinition.FromSDFFont(font);
-                else label.style.unityFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                label.style.unityFontStyleAndWeight = FontStyle.Bold;
-                label.style.unityTextAlign = TextAnchor.MiddleCenter;
-                label.style.whiteSpace = WhiteSpace.Normal;
-                label.style.backgroundColor = new Color(0.035f, 0.05f, 0.08f, 0.94f);
-                label.style.borderTopLeftRadius = label.style.borderTopRightRadius = 16;
-                label.style.borderBottomLeftRadius = label.style.borderBottomRightRadius = 16;
+                var theme = Resources.Load<StyleSheet>("UI/GameTheme");
+                if (theme != null && !root.styleSheets.Contains(theme)) root.styleSheets.Add(theme);
+                label.AddToClassList("game-money-feedback");
                 root.Add(label);
             }
             if (root.panel == null || root.contentRect.width <= 0 || root.contentRect.height <= 0)
@@ -66,7 +59,8 @@ namespace DOTS.GamePlay.CameraSystems
                 _ => "PURCHASE"
             };
             label.text = (delta > 0 ? "+$" : "−$") + System.Math.Abs((long)delta).ToString("N0") + "\n" + caption;
-            label.style.color = delta > 0 ? new Color(0.45f, 1f, 0.64f) : new Color(1f, 0.48f, 0.46f);
+            label.EnableInClassList("is-gain", delta > 0);
+            label.EnableInClassList("is-loss", delta <= 0);
             label.style.display = DisplayStyle.Flex;
             label.style.opacity = 1;
             label.BringToFront();

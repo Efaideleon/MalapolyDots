@@ -11,12 +11,14 @@ namespace TitleScreen.NetworkUI.Panels
         private readonly Button HostButton;
         private readonly Button JoinButton;
         private readonly Button PublicLobbyButton;
+        private readonly Button SoloButton;
 
         public MainMenuPanel(VisualElement root, Queue<UIRequest> requests) : base(root, requests)
         {
             PublicLobbyButton = root.Q<Button>("JoinPublicLobbyButton") ?? throw new InvalidOperationException("JoinPublicLobbyButton not found");
             HostButton = root.Q<Button>("CreateGameButton") ?? throw new InvalidOperationException("CreateGameButton not found");
             JoinButton = root.Q<Button>("EnterCodeButton") ?? throw new InvalidOperationException("EnterCodeButton not found");
+            SoloButton = root.Q<Button>("SoloGameButton") ?? throw new InvalidOperationException("SoloGameButton not found");
         }
 
         public override void Initialize()
@@ -34,12 +36,15 @@ namespace TitleScreen.NetworkUI.Panels
             HostButton.clickable.clicked += HandleHostButton;
             JoinButton.clickable.clicked += HandleJoinButton;
             PublicLobbyButton.clickable.clicked += HandlePublicLobbyButton;
+            SoloButton.clicked += HandleSoloButton;
         }
 
         public void HandlePublicLobbyButton()
         {
             UIRequests.Enqueue(new UIRequest { Value = UIRequestType.PlayButton });
         }
+
+        void HandleSoloButton() => UIRequests.Enqueue(new UIRequest { Value = UIRequestType.MainMenuSolo });
 
         public void HandleHostButton()
         {
@@ -56,6 +61,7 @@ namespace TitleScreen.NetworkUI.Panels
             HostButton.clickable.clicked -= HandleHostButton;
             JoinButton.clickable.clicked -= HandleJoinButton;
             PublicLobbyButton.clickable.clicked -= HandlePublicLobbyButton;
+            SoloButton.clicked -= HandleSoloButton;
         }
     }
 }

@@ -40,13 +40,13 @@ namespace Assets.Scripts.DOTS.GamePlay
                 var active = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
                 var connection = rpc.ValueRO.SourceConnection;
                 if (SystemAPI.GetSingleton<GameStateComponent>().State == GameState.GameOver ||
-                    !SystemAPI.HasComponent<NetworkId>(connection) || !SystemAPI.HasComponent<GhostOwner>(active) ||
-                    SystemAPI.GetComponent<NetworkId>(connection).Value != SystemAPI.GetComponent<GhostOwner>(active).NetworkId)
+                    !GameplayActionSource.Owns(state.EntityManager, rpcEntity, connection, active))
                 {
                     ecb.DestroyEntity(rpcEntity);
                     continue;
                 }
                 var turnState = SystemAPI.GetSingleton<GameStateComponent>().State;
+                if (BankruptcyRules.HasDebt(state.EntityManager)) { ecb.DestroyEntity(rpcEntity); continue; }
                 if (turnState == GameState.Walking || (turnState == GameState.Rolling &&
                     (!SystemAPI.HasComponent<JailState>(active) || !SystemAPI.GetComponent<JailState>(active).InJail)))
                 {
@@ -121,6 +121,7 @@ namespace Assets.Scripts.DOTS.GamePlay
                     SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
 
                     SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
+                    ChanceCardRules.UseJailFreeCard(state.EntityManager, entity);
                     activePlayer.ValueRW = true;
                 }
                 else

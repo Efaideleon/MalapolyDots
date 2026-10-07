@@ -45,7 +45,8 @@ namespace DOTS.Mediator.Systems.ChangeTurnPanelSystems
             var playerMoveState = playerMovementStateLookup[activePlayerEntity];
 
             var isRollVisible = rollPanel.IsVisible;
-            var shouldTurnBeVisible = (!SystemAPI.TryGetSingleton<GameStateComponent>(out var game) || game.State != DOTS.GamePlay.GameState.GameOver) && !(playerMoveState.Value == MoveState.Walking) && !isRollVisible && isLocalPlayer;
+            var shouldTurnBeVisible = (!SystemAPI.TryGetSingleton<GameStateComponent>(out var game) || game.State != DOTS.GamePlay.GameState.GameOver) &&
+                !DOTS.GamePlay.BankruptcyRules.HasDebt(state.EntityManager) && !(playerMoveState.Value == MoveState.Walking) && !isRollVisible && isLocalPlayer;
 
             if (shouldTurnBeVisible && turnPanel.IsVisible)
             {

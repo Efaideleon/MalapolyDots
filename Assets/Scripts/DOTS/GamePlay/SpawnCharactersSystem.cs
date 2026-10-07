@@ -42,6 +42,8 @@ namespace DOTS.Characters.CharacterSpawner
 
             ecbParallel.SetComponent(sort_key, instance, new GhostOwner { NetworkId = characterToSpawn.OwnerNetworkId });
             ecbParallel.SetComponent(sort_key, instance, new PlayerID { Value = sort_key });
+            if (characterToSpawn.OwnerNetworkId >= Assets.Common.SoloSession.FirstAiId)
+                ecbParallel.AddComponent(sort_key, instance, new DOTS.GamePlay.AiOpponent { ObservedState = -1 });
         }
     }
 

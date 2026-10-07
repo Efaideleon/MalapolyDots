@@ -448,32 +448,178 @@
                 {
                     "id": 0,
                     "msg": "Bank dividend",
-                    "amount": 50
+                    "amount": 50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 1,
                     "msg": "Building loan matures",
-                    "amount": 150
+                    "amount": 150,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 2,
                     "msg": "Speeding fine",
-                    "amount": -15
+                    "amount": -15,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 3,
                     "msg": "School fees",
-                    "amount": -50
+                    "amount": -50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 4,
-                    "msg": "Property maintenance",
-                    "amount": -100
+                    "msg": "Repairs: Q25 per house, Q100 per hotel.",
+                    "amount": 25,
+                    "effect": 1,
+                    "hotelAmount": 100,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 5,
                     "msg": "Competition prize",
-                    "amount": 50
+                    "amount": 50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 6,
+                    "msg": "Market day! Your stall sells out.",
+                    "amount": 100,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 7,
+                    "msg": "Festival raffle winner!",
+                    "amount": 75,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 8,
+                    "msg": "Lost wallet. Replace your documents.",
+                    "amount": -25,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 9,
+                    "msg": "Clinic bill. Get well soon!",
+                    "amount": -75,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 10,
+                    "msg": "Tax refund. A lucky surprise!",
+                    "amount": 100,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 11,
+                    "msg": "Host a fiesta! Pay each other player Q50.",
+                    "amount": 50,
+                    "effect": 3,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 12,
+                    "msg": "Birthday! Collect Q25 from each other player.",
+                    "amount": 25,
+                    "effect": 4,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 13,
+                    "msg": "Business boom! Collect Q25 per property you own.",
+                    "amount": 25,
+                    "effect": 2,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 14,
+                    "msg": "Storm repairs: Q40 per house, Q115 per hotel.",
+                    "amount": 40,
+                    "effect": 1,
+                    "hotelAmount": 115,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 15,
+                    "msg": "Advance to GO. Collect Q200 when you pass.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 16,
+                    "msg": "Take a break! Advance to Free Parking.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 20
+                },
+                {
+                    "id": 17,
+                    "msg": "Catch the bus! Advance to Starbus.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 23
+                },
+                {
+                    "id": 18,
+                    "msg": "Coffee time! Advance to Bon Cafe.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 39
+                },
+                {
+                    "id": 19,
+                    "msg": "Go to jail. Do not collect Q200.",
+                    "amount": 0,
+                    "effect": 6,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 20,
+                    "msg": "Jail free pass! Used on your next turn in jail.",
+                    "amount": 0,
+                    "effect": 7,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 21,
+                    "msg": "Road trip! Advance to the next transport property.",
+                    "amount": 0,
+                    "effect": 8,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 }
             ]
         },
@@ -485,32 +631,178 @@
                 {
                     "id": 0,
                     "msg": "Bank dividend",
-                    "amount": 50
+                    "amount": 50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 1,
                     "msg": "Building loan matures",
-                    "amount": 150
+                    "amount": 150,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 2,
                     "msg": "Speeding fine",
-                    "amount": -15
+                    "amount": -15,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 3,
                     "msg": "School fees",
-                    "amount": -50
+                    "amount": -50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 4,
-                    "msg": "Property maintenance",
-                    "amount": -100
+                    "msg": "Repairs: Q25 per house, Q100 per hotel.",
+                    "amount": 25,
+                    "effect": 1,
+                    "hotelAmount": 100,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 5,
                     "msg": "Competition prize",
-                    "amount": 50
+                    "amount": 50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 6,
+                    "msg": "Market day! Your stall sells out.",
+                    "amount": 100,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 7,
+                    "msg": "Festival raffle winner!",
+                    "amount": 75,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 8,
+                    "msg": "Lost wallet. Replace your documents.",
+                    "amount": -25,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 9,
+                    "msg": "Clinic bill. Get well soon!",
+                    "amount": -75,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 10,
+                    "msg": "Tax refund. A lucky surprise!",
+                    "amount": 100,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 11,
+                    "msg": "Host a fiesta! Pay each other player Q50.",
+                    "amount": 50,
+                    "effect": 3,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 12,
+                    "msg": "Birthday! Collect Q25 from each other player.",
+                    "amount": 25,
+                    "effect": 4,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 13,
+                    "msg": "Business boom! Collect Q25 per property you own.",
+                    "amount": 25,
+                    "effect": 2,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 14,
+                    "msg": "Storm repairs: Q40 per house, Q115 per hotel.",
+                    "amount": 40,
+                    "effect": 1,
+                    "hotelAmount": 115,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 15,
+                    "msg": "Advance to GO. Collect Q200 when you pass.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 16,
+                    "msg": "Take a break! Advance to Free Parking.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 20
+                },
+                {
+                    "id": 17,
+                    "msg": "Catch the bus! Advance to Starbus.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 23
+                },
+                {
+                    "id": 18,
+                    "msg": "Coffee time! Advance to Bon Cafe.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 39
+                },
+                {
+                    "id": 19,
+                    "msg": "Go to jail. Do not collect Q200.",
+                    "amount": 0,
+                    "effect": 6,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 20,
+                    "msg": "Jail free pass! Used on your next turn in jail.",
+                    "amount": 0,
+                    "effect": 7,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 21,
+                    "msg": "Road trip! Advance to the next transport property.",
+                    "amount": 0,
+                    "effect": 8,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 }
             ]
         },
@@ -522,32 +814,178 @@
                 {
                     "id": 0,
                     "msg": "Bank dividend",
-                    "amount": 50
+                    "amount": 50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 1,
                     "msg": "Building loan matures",
-                    "amount": 150
+                    "amount": 150,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 2,
                     "msg": "Speeding fine",
-                    "amount": -15
+                    "amount": -15,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 3,
                     "msg": "School fees",
-                    "amount": -50
+                    "amount": -50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 4,
-                    "msg": "Property maintenance",
-                    "amount": -100
+                    "msg": "Repairs: Q25 per house, Q100 per hotel.",
+                    "amount": 25,
+                    "effect": 1,
+                    "hotelAmount": 100,
+                    "targetBoardIndex": 0
                 },
                 {
                     "id": 5,
                     "msg": "Competition prize",
-                    "amount": 50
+                    "amount": 50,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 6,
+                    "msg": "Market day! Your stall sells out.",
+                    "amount": 100,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 7,
+                    "msg": "Festival raffle winner!",
+                    "amount": 75,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 8,
+                    "msg": "Lost wallet. Replace your documents.",
+                    "amount": -25,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 9,
+                    "msg": "Clinic bill. Get well soon!",
+                    "amount": -75,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 10,
+                    "msg": "Tax refund. A lucky surprise!",
+                    "amount": 100,
+                    "effect": 0,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 11,
+                    "msg": "Host a fiesta! Pay each other player Q50.",
+                    "amount": 50,
+                    "effect": 3,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 12,
+                    "msg": "Birthday! Collect Q25 from each other player.",
+                    "amount": 25,
+                    "effect": 4,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 13,
+                    "msg": "Business boom! Collect Q25 per property you own.",
+                    "amount": 25,
+                    "effect": 2,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 14,
+                    "msg": "Storm repairs: Q40 per house, Q115 per hotel.",
+                    "amount": 40,
+                    "effect": 1,
+                    "hotelAmount": 115,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 15,
+                    "msg": "Advance to GO. Collect Q200 when you pass.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 16,
+                    "msg": "Take a break! Advance to Free Parking.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 20
+                },
+                {
+                    "id": 17,
+                    "msg": "Catch the bus! Advance to Starbus.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 23
+                },
+                {
+                    "id": 18,
+                    "msg": "Coffee time! Advance to Bon Cafe.",
+                    "amount": 0,
+                    "effect": 5,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 39
+                },
+                {
+                    "id": 19,
+                    "msg": "Go to jail. Do not collect Q200.",
+                    "amount": 0,
+                    "effect": 6,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 20,
+                    "msg": "Jail free pass! Used on your next turn in jail.",
+                    "amount": 0,
+                    "effect": 7,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
+                },
+                {
+                    "id": 21,
+                    "msg": "Road trip! Advance to the next transport property.",
+                    "amount": 0,
+                    "effect": 8,
+                    "hotelAmount": 0,
+                    "targetBoardIndex": 0
                 }
             ]
         }

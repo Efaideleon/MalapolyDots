@@ -13,6 +13,15 @@ namespace DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
 
         public void OnUpdate(ref SystemState state)
         {
+            foreach (var evt in SystemAPI.Query<RefRO<MainMenuSoloClickEvent>>())
+            {
+                SystemAPI.SetSingleton(new GameMenuPhaseComponent { Value = GameMenuPhase.SoloSetup });
+                if (SystemAPI.ManagedAPI.TryGetSingleton<TitleScreen.NetworkUI.Systems.GameMenuPanelsComponent>(out var panels))
+                {
+                    foreach (var panel in panels.AllPanels) panel.Hide();
+                    panels.PanelLookup[GameMenuPhase.SoloSetup].Show();
+                }
+            }
             foreach (var evt in SystemAPI.Query<RefRO<PlayButtonClickEvent>>())
             {
                 SystemAPI.GetSingletonRW<GameMenuPhaseComponent>().ValueRW.Value = GameMenuPhase.JoinSession;

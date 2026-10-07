@@ -1,0 +1,16 @@
+.solo-setup-screen { flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(5, 19, 33, 0.92); }
+.solo-setup-container { display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.solo-setup-card { width: 720px; max-width: 94%; padding: 30px; }
+.game-ui .solo-description { font-size: 24px; margin: 12px 0; white-space: normal; }
+.solo-setup-card Button { margin-top: 12px; }
+.solo-main-button { width: 340px; height: 60px; margin-bottom: 8px; align-self: center; }
+.solo-controls { display: none; }
+.solo-document-root { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.solo-pause-layer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.solo-pause-modal { display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; align-items: center; justify-content: center; background-color: rgba(5, 19, 33, 0.9); }
+.solo-pause-modal.is-visible { display: flex; }
+.solo-pause-card { width: 640px; max-width: 94%; padding: 32px; }
+.solo-pause-card Button { margin-top: 14px; }
+.solo-pause-card Button, .solo-controls Button { -unity-text-align: middle-center; }
+.solo-exit-confirmation { display: none; }
+.solo-exit-confirmation.is-visible { display: flex; }

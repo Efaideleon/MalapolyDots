@@ -20,6 +20,7 @@ namespace DOTS.GamePlay
         private Mesh crownMesh;
         private Material material;
         private MaterialPropertyBlock properties;
+        private readonly MonopolyPropertyGlow glow = new MonopolyPropertyGlow();
         private static readonly int GroupTint = Shader.PropertyToID("_GroupColor");
 
         protected override void OnCreate()
@@ -37,9 +38,10 @@ namespace DOTS.GamePlay
             var camera = Camera.main;
             if (camera == null) return;
 
-            foreach (var (monopoly, color, bounds, transform) in
+            foreach (var (monopoly, color, bounds, transform, id, houses) in
                      SystemAPI.Query<RefRO<MonopolyFlagComponent>, RefRO<ColorCodeComponent>,
-                         RefRO<RenderBounds>, RefRO<LocalToWorld>>().WithAll<PropertySpaceTag>())
+                         RefRO<RenderBounds>, RefRO<LocalToWorld>, RefRO<SpaceIDComponent>,
+                         RefRO<HouseCount>>().WithAll<PropertySpaceTag>())
             {
                 if (!monopoly.ValueRO.Value || color.ValueRO.Value < PropertyColor.Brown ||
                     color.ValueRO.Value > PropertyColor.Blue)
@@ -52,6 +54,9 @@ namespace DOTS.GamePlay
                 float3 extents = math.abs(matrix.c0.xyz) * localBounds.Extents.x +
                                  math.abs(matrix.c1.xyz) * localBounds.Extents.y +
                                  math.abs(matrix.c2.xyz) * localBounds.Extents.z;
+                var groupColor = GroupColor(color.ValueRO.Value);
+                glow.Draw(id.ValueRO.Value, houses.ValueRO.Value, (Matrix4x4)matrix,
+                    groupColor, UnityEngine.Time.unscaledTime, camera);
                 var roof = new Vector3(center.x, center.y + extents.y, center.z);
                 float depth = Vector3.Dot(roof - camera.transform.position, camera.transform.forward);
                 if (depth <= camera.nearClipPlane) continue;
@@ -61,7 +66,7 @@ namespace DOTS.GamePlay
                 float size = viewHeight * 42f / Mathf.Max(1, camera.pixelHeight);
                 float bob = Mathf.Sin(UnityEngine.Time.unscaledTime * 2f) * size * 0.07f;
                 var position = roof + Vector3.up * (size * 0.75f + 0.35f + bob);
-                properties.SetColor(GroupTint, GroupColor(color.ValueRO.Value));
+                properties.SetColor(GroupTint, groupColor);
                 Graphics.DrawMesh(crownMesh, Matrix4x4.TRS(position, camera.transform.rotation,
                     Vector3.one * size), material, 0, camera, 0, properties,
                     ShadowCastingMode.Off, false, null, LightProbeUsage.Off);
@@ -117,7 +122,7 @@ namespace DOTS.GamePlay
             }
         }
 
-        private static Color GroupColor(PropertyColor color)
+        public static Color GroupColor(PropertyColor color)
         {
             switch (color)
             {
@@ -135,6 +140,7 @@ namespace DOTS.GamePlay
 
         protected override void OnDestroy()
         {
+            glow.Dispose();
             if (material != null) Object.Destroy(material);
             if (crownMesh != null) Object.Destroy(crownMesh);
         }

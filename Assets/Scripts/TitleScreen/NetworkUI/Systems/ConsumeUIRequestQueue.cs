@@ -33,6 +33,9 @@ namespace TitleScreen.NetworkUI.Systems
                     case UIRequestType.MainMenuJoin:
                         ecb.AddComponent<MainMenuJoinClickEvent>(entity);
                         break;
+                    case UIRequestType.MainMenuSolo:
+                        ecb.AddComponent<MainMenuSoloClickEvent>(entity);
+                        break;
                     case UIRequestType.HostSetupHost:
                         ecb.AddComponent<HostSetupHostClickEvent>(entity);
                         break;

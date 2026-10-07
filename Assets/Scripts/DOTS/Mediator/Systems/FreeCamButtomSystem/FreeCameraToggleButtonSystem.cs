@@ -46,7 +46,7 @@ namespace DOTS.Mediator.Systems.FreeCamButtomSystem
             var button = botPanelRoot.Q<Button>("FreeCameraButton");
             if (button == null)
             {
-                Debug.LogWarning($"[FreeCameraButtonSystem] | FreeCameraButton is missing. [{nameof(FreeCameraToggleButtonSystem)}]");
+                // Camera controls are optional on the game screen.
                 return;
             }
 
@@ -73,7 +73,12 @@ namespace DOTS.Mediator.Systems.FreeCamButtomSystem
         {
             var entity = SystemAPI.GetSingletonEntity<FreeCameraButtonTag>();
             var buttonData = SystemAPI.ManagedAPI.GetComponent<ButtonManagedData>(entity);
-            buttonData.Button.clickable.clicked -= buttonData.Callback;
+            if (buttonData.Button != null)
+            {
+                buttonData.Button.clickable.clicked -= buttonData.Callback;
+                buttonData.Button = null;
+                buttonData.Callback = null;
+            }
         }
     }
 }

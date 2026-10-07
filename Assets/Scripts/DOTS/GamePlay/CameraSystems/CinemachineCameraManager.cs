@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Assets.Common;
 using Unity.Cinemachine;
 using Unity.Cinemachine.TargetTracking;
 using UnityEngine;
@@ -30,6 +32,9 @@ namespace DOTS.GamePlay.CameraSystems
         private float savedVerticalAxis;
         private bool hasSavedFollowAxes;
         private int restoreFollowAxesFrames;
+        private BoardCameraInput boardInput;
+        private bool reducedMotion;
+        private readonly Dictionary<CinemachineBrain, float> originalBlendTimes = new();
 
         [Header("Money Feedback")]
         [SerializeField, Min(0.2f)] private float moneyShotDuration = 1.1f;
@@ -43,6 +48,7 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void ShowMoneyShot(Vector3 playerPosition)
         {
+            if (GamePreferences.Current.ReducedCameraMotion) return;
             if (moneyCamera == null)
             {
                 var shot = new GameObject("Money transaction camera");
@@ -111,7 +117,33 @@ namespace DOTS.GamePlay.CameraSystems
             ConfigureCamera(followCamera);
             ConfigureLandingCamera(landingCamera);
             ConfigureCamera(landingCamera);
+            boardInput = gameObject.AddComponent<BoardCameraInput>();
+            boardInput.Initialize(followCamera, landingCamera);
+            GamePreferences.Changed += ApplyMotionPreference;
+            ApplyMotionPreference();
             SwitchToFollowCamera();
+        }
+
+        private void ApplyMotionPreference()
+        {
+            bool reduce = GamePreferences.Current.ReducedCameraMotion;
+            for (int i = 0; i < CinemachineBrain.ActiveBrainCount; i++)
+            {
+                var brain = CinemachineBrain.GetActiveBrain(i);
+                if (followCamera == null || !brain.IsValidChannel(followCamera)) continue;
+                if (!originalBlendTimes.ContainsKey(brain)) originalBlendTimes.Add(brain, brain.DefaultBlend.Time);
+                brain.DefaultBlend.Time = reduce ? 0f : originalBlendTimes[brain];
+            }
+            if (reducedMotion == reduce) return;
+            reducedMotion = reduce;
+            if (reduce) { EndMoneyShot(); CutToPlayer(); }
+        }
+
+        public void ResetPlayerView()
+        {
+            boardInput?.ResetView();
+            hasSavedFollowAxes = false;
+            CutToPlayer();
         }
 
         private void ConfigureLandingCamera(CinemachineCamera camera)
@@ -166,11 +198,15 @@ namespace DOTS.GamePlay.CameraSystems
 
         private void OnDestroy()
         {
+            GamePreferences.Changed -= ApplyMotionPreference;
+            foreach (var pair in originalBlendTimes)
+                if (pair.Key != null) pair.Key.DefaultBlend.Time = pair.Value;
             if (Instance == this) Instance = null;
         }
 
         private void LateUpdate()
         {
+            if (originalBlendTimes.Count < CinemachineBrain.ActiveBrainCount) ApplyMotionPreference();
             if (restoreFollowAxesFrames <= 0)
             {
                 return;
@@ -191,6 +227,7 @@ namespace DOTS.GamePlay.CameraSystems
 
         public void SwitchToLandingCamera(Transform playerTransform, Transform placeFrontTransform)
         {
+            if (GamePreferences.Current.ReducedCameraMotion) { SwitchToFollowCamera(); return; }
             if (followCamera == null || landingCamera == null) return;
             SaveFollowAxes();
             // if (landingTargetGroup != null)

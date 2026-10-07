@@ -14,5 +14,9 @@ namespace DOTS.GameData.PlacesData
         public int id;
         public string msg;
         public int amount;
+        public DOTS.DataComponents.ChanceEffect effect;
+        public int hotelAmount;
+        // Travel destinations use the runtime board's zero-based indices.
+        public int targetBoardIndex;
     }
 }

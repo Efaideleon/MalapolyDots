@@ -30,6 +30,11 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.Gameplay
                 if (!player.ValueRO.IsLockedIn || player.ValueRO.CharacterSelected == CharactersEnum.Default) return;
             }
             if (players < 1 || players > 6 || players != NetworkRequests.ExpectedLobbyPlayers) return;
+            if (SoloSession.Active)
+            {
+                foreach (var player in SystemAPI.Query<RefRO<PlayerConnectionData>>())
+                    if (!global::DOTS.GamePlay.SoloOpponentSetup.Prepare(state.EntityManager, player.ValueRO.OwnerNetworkId, player.ValueRO.CharacterSelected)) return;
+            }
             if (!SystemAPI.HasSingleton<GameMenuToGameSceneTag>())
                 SystemAPI.GetSingletonRW<GamePhaseGhostComponent>().ValueRW.GamePhase = GamePhase.Game;
         }

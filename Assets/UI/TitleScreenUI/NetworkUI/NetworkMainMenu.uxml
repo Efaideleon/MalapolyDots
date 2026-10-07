@@ -1,38 +1,42 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels"/>
-    <ui:VisualElement name="VisualElement" style="flex-grow: 1; justify-content: center; align-self: center; width: 100%; height: 100%; align-items: center; background-color: rgba(92, 96, 178, 0); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; background-image: url(&quot;project://database/Assets/Textures/NPR_TEXTURES_MALAPOLY/gamethumbnail.png?fileID=2800000&amp;guid=d764a0a130869b84b8369ed9c70da8c6&amp;type=3#gamethumbnail&quot;); -unity-background-scale-mode: scale-and-crop;">
-        <ui:VisualElement style="flex-grow: 0; width: 450px; height: 315px; justify-content: center; background-color: rgb(63, 79, 217); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-left-color: rgb(146, 188, 255); border-right-color: rgb(146, 188, 255); border-top-color: rgb(146, 188, 255); border-bottom-color: rgb(146, 188, 255);">
-            <ui:VisualElement name="LogoImage" style="flex-grow: 0; width: 512px; height: 512px; position: absolute; align-self: center; top: -446px; background-image: url(&quot;project://database/Assets/Textures/malalogo.png?fileID=21300000&amp;guid=1b1e92cfa30e65d44b0f7434984cfd7a&amp;type=3#malalogo&quot;); background-color: rgba(255, 157, 0, 0); background-size: 512px 512px; background-position-x: center;"/>
-            <ui:VisualElement name="play-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0; background-color: rgba(0, 0, 255, 0); display: flex;">
-                <ui:Button text="" name="JoinPublicLobbyButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 340px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                    <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
-                    <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                        <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                        <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                            <ui:Label text="Join public lobby" name="Label" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameLayouts.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/SoloMode.uss" />
+    <ui:VisualElement name="VisualElement" class="game-ui game-menu layout-network-main-menu-visual-element-4">
+        <ui:VisualElement class="layout-network-main-menu-visualelement5-5">
+            <ui:VisualElement name="LogoImage" class="layout-network-main-menu-logo-image-6" />
+            <ui:Button name="SoloGameButton" text="Play solo" class="game-button-gold solo-main-button" />
+            <ui:VisualElement name="play-btn-container" class="dbr-btn dbr-btn-blue layout-network-main-menu-play-btn-container-7">
+                <ui:Button text="" name="JoinPublicLobbyButton" class="button layout-network-main-menu-join-public-lobby-button-8">
+                    <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-network-main-menu-blurred-shadow-9" />
+                    <ui:VisualElement name="gradient-border-label-container" class="layout-network-main-menu-gradient-border-label-container-10">
+                        <ui:VisualElement name="gradient-border" class="layout-network-main-menu-gradient-border-11" />
+                        <ui:VisualElement name="label-container" class="dbr-btn layout-network-main-menu-label-container-12">
+                            <ui:Label text="Join public lobby" name="Label" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="purchase-btn-container" enabled="true" class="dbr-btn dbr-btn-blue" style="flex-grow: 0; display: flex; background-color: rgba(0, 0, 255, 0);">
-                <ui:Button text="8" name="CreateGameButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 340px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                    <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
-                    <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                        <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                        <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                            <ui:Label text="Create Game" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+            <ui:VisualElement name="purchase-btn-container" enabled="true" class="dbr-btn dbr-btn-blue layout-network-main-menu-purchase-btn-container-14">
+                <ui:Button name="CreateGameButton" class="button layout-network-main-menu-create-game-button-15">
+                    <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-network-main-menu-blurred-shadow-16" />
+                    <ui:VisualElement name="gradient-border-label-container" class="layout-network-main-menu-gradient-border-label-container-17">
+                        <ui:VisualElement name="gradient-border" class="layout-network-main-menu-gradient-border-18" />
+                        <ui:VisualElement name="label-container" class="dbr-btn layout-network-main-menu-label-container-19">
+                            <ui:Label text="Create Game" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="purchase-btn-container" enabled="true" class="dbr-btn dbr-btn-blue" style="flex-grow: 0; display: flex; background-color: rgba(0, 0, 255, 0);">
-                <ui:Button text="8" name="EnterCodeButton" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 340px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                    <ui:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
-                    <ui:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                        <ui:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                        <ui:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                            <ui:Label text="Enter Code" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
+            <ui:VisualElement name="purchase-btn-container" enabled="true" class="dbr-btn dbr-btn-blue layout-network-main-menu-purchase-btn-container-21">
+                <ui:Button name="EnterCodeButton" class="button layout-network-main-menu-enter-code-button-22">
+                    <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-network-main-menu-blurred-shadow-23" />
+                    <ui:VisualElement name="gradient-border-label-container" class="layout-network-main-menu-gradient-border-label-container-24">
+                        <ui:VisualElement name="gradient-border" class="layout-network-main-menu-gradient-border-25" />
+                        <ui:VisualElement name="label-container" class="dbr-btn layout-network-main-menu-label-container-26">
+                            <ui:Label text="Enter Code" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:Button>

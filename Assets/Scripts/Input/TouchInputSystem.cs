@@ -75,9 +75,14 @@ namespace Input
                 : source is Pointer pointer
                     ? pointer.position.ReadValue()
                     : positionAction.ReadValue<Vector2>();
+            int fingers = 0;
+            if (Touchscreen.current != null)
+                foreach (var finger in Touchscreen.current.touches)
+                    if (finger.press.isPressed) fingers++;
+            if (fingers > 1) pressBeganOnUI = true;
             if (pressAction.WasPressedThisFrame())
             {
-                pressBeganOnUI = IsOverUI(position);
+                pressBeganOnUI = fingers > 1 || IsOverUI(position);
                 SystemAPI.GetSingletonRW<IsTouchingUIElement>().ValueRW.Value = pressBeganOnUI;
                 if (camera == null)
                     Debug.LogWarning("[PropertyTap] Tap received, but no MainCamera is available for raycasting.");
@@ -158,7 +163,7 @@ namespace Input
             InputActions.Value.Touch.Disable();
         }
 
-        private static bool IsOverUI(Vector2 screenPosition)
+        public static bool IsOverUI(Vector2 screenPosition)
         {
             // UI Toolkit uses top-left screen coordinates; Input System uses bottom-left.
             var uiPosition = new Vector2(screenPosition.x, Screen.height - screenPosition.y);

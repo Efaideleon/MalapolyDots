@@ -9,7 +9,7 @@ using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
-    public enum AssetAction : byte { SellBuilding, BuyBuilding, Offer, Accept, Decline, Cancel, SellGroupBuildings }
+    public enum AssetAction : byte { SellBuilding, BuyBuilding, Offer, Accept, Decline, Cancel, SellGroupBuildings, SellPropertyToBank, DeclareBankruptcy }
     public struct AssetTradeRpc : IRpcCommand
     {
         public AssetAction Action;
@@ -88,9 +88,14 @@ namespace DOTS.GamePlay
         Entity Player(int id)
         {
             using var all = players.ToEntityArray(Allocator.Temp);
-            foreach (var e in all) if (EntityManager.GetComponentData<GhostOwner>(e).NetworkId == id && !EntityManager.GetComponentData<BankruptPlayer>(e).Value) return e;
+            foreach (var e in all)
+            {
+                var bankruptcy = EntityManager.GetComponentData<BankruptPlayer>(e);
+                if (EntityManager.GetComponentData<GhostOwner>(e).NetworkId == id && !bankruptcy.Value && !bankruptcy.Declared) return e;
+            }
             return Entity.Null;
         }
+        bool ParticipantAvailable(int id) => Connection(id) != Entity.Null || EntityManager.HasComponent<AiOpponent>(Player(id));
         Entity Property(int id, NativeArray<Entity> all)
         {
             foreach (var e in all) if (EntityManager.GetComponentData<SpaceIDComponent>(e).Value == id) return e;
@@ -98,6 +103,16 @@ namespace DOTS.GamePlay
         }
         void Reply(int id, string message, Offer offer = null, bool open = false)
         {
+            var player = Player(id);
+            if (EntityManager.HasComponent<AiOpponent>(player))
+            {
+                if (open && offer != null && offer.Buyer == id)
+                {
+                    var inbox = EntityManager.CreateEntity();
+                    EntityManager.AddComponentData(inbox, new AiTradeOffer { Buyer = player, OfferId = offer.Id, PropertyId = offer.Property, Price = offer.Price });
+                }
+                return;
+            }
             var connection = Connection(id);
             if (connection == Entity.Null) return;
             var e = EntityManager.CreateEntity();
@@ -121,7 +136,7 @@ namespace DOTS.GamePlay
                 var property = Property(offer.Property, all);
                 if (game.State == GameState.GameOver || SystemAPI.Time.ElapsedTime >= offer.Expires ||
                     Player(offer.Seller) == Entity.Null || Player(offer.Buyer) == Entity.Null ||
-                    Connection(offer.Seller) == Entity.Null || Connection(offer.Buyer) == Entity.Null || property == Entity.Null ||
+                    !ParticipantAvailable(offer.Seller) || !ParticipantAvailable(offer.Buyer) || property == Entity.Null ||
                     EntityManager.GetComponentData<OwnerComponent>(property).ID != offer.Seller || AssetTradingRules.HasBuildings(EntityManager, property, all))
                     Close(offer, "Offer expired or the property is no longer available.");
             }
@@ -130,11 +145,21 @@ namespace DOTS.GamePlay
             {
                 var rpc = EntityManager.GetComponentData<AssetTradeRpc>(entity);
                 var source = EntityManager.GetComponentData<ReceiveRpcCommandRequest>(entity).SourceConnection;
+                int id = GameplayActionSource.PlayerId(EntityManager, entity, source);
                 EntityManager.DestroyEntity(entity);
-                if (!EntityManager.HasComponent<NetworkId>(source)) continue;
-                int id = EntityManager.GetComponentData<NetworkId>(source).Value;
+                if (id == 0) continue;
                 var player = Player(id);
                 if (player == Entity.Null || !game.AllPlacesInstantiated || game.State == GameState.GameOver) { Reply(id, "Trading is unavailable."); continue; }
+                if (rpc.Action == AssetAction.DeclareBankruptcy)
+                {
+                    if (game.State == GameState.Walking) { Reply(id, "Wait for the current move to finish before declaring bankruptcy."); continue; }
+                    var bankruptcy = EntityManager.GetComponentData<BankruptPlayer>(player);
+                    bankruptcy.Declared = true;
+                    EntityManager.SetComponentData(player, bankruptcy);
+                    Reply(id, "Bankruptcy declared. You can spectate the rest of the match.");
+                    continue;
+                }
+                if (EntityManager.GetComponentData<BankruptPlayer>(player).Declared) { Reply(id, "You have declared bankruptcy."); continue; }
                 if (rpc.Action == AssetAction.Cancel || rpc.Action == AssetAction.Decline || rpc.Action == AssetAction.Accept)
                 {
                     if (!offers.TryGetValue(rpc.OfferId, out var offer)) { Reply(id, "This offer is no longer available."); continue; }
@@ -160,9 +185,24 @@ namespace DOTS.GamePlay
                 }
                 var owned = Property(rpc.PropertyId, all);
                 if (owned == Entity.Null || EntityManager.GetComponentData<OwnerComponent>(owned).ID != id) { Reply(id, "You do not own this property."); continue; }
-                if (rpc.Action == AssetAction.Offer)
+                if (rpc.Action == AssetAction.SellPropertyToBank)
                 {
-                    if (rpc.BuyerId == id || Player(rpc.BuyerId) == Entity.Null || Connection(rpc.BuyerId) == Entity.Null || rpc.Price <= 0) { Reply(id, "Choose another player and enter a positive price."); continue; }
+                    if (AssetTradingRules.HasBuildings(EntityManager, owned, all)) { Reply(id, "Sell all buildings in this color group before selling the deed."); continue; }
+                    int refund = EntityManager.HasComponent<GhostPriceComponent>(owned) ? EntityManager.GetComponentData<GhostPriceComponent>(owned).Value / 2 : 0;
+                    var cash = EntityManager.GetComponentData<GhostMoneyComponet>(player);
+                    if (refund <= 0 || (long)cash.Value + refund > int.MaxValue) { Reply(id, "This deed cannot be sold to the bank."); continue; }
+                    cash.Value += refund;
+                    EntityManager.SetComponentData(player, cash);
+                    EntityManager.SetComponentData(owned, new OwnerComponent { ID = DOTS.Constants.PropertyConstants.Vacant });
+                    EntityManager.SetComponentData(owned, new OwnerByEntityComponent { Entity = Entity.Null });
+                    if (EntityManager.HasComponent<MonopolyFlagComponent>(owned)) EntityManager.SetComponentData(owned, new MonopolyFlagComponent());
+                    if (EntityManager.HasComponent<GhostRentComponent>(owned)) EntityManager.SetComponentData(owned, new GhostRentComponent());
+                    MoneyFeedback.Send(moneyCommands, EntityManager, player, refund, MoneyChangeReason.Trade);
+                    Reply(id, "Deed sold to the bank for half its purchase price.");
+                }
+                else if (rpc.Action == AssetAction.Offer)
+                {
+                    if (rpc.BuyerId == id || Player(rpc.BuyerId) == Entity.Null || !ParticipantAvailable(rpc.BuyerId) || rpc.Price <= 0) { Reply(id, "Choose another player and enter a positive price."); continue; }
                     if (AssetTradingRules.HasBuildings(EntityManager, owned, all)) { Reply(id, "Sell all buildings in this color group before offering the property."); continue; }
                     foreach (var old in new List<Offer>(offers.Values)) if (old.Seller == id) Close(old, "Offer replaced by a new offer.");
                     var offer = new Offer { Id = ++nextId, Property = rpc.PropertyId, Seller = id, Buyer = rpc.BuyerId, Price = rpc.Price, Expires = SystemAPI.Time.ElapsedTime + 120 };
@@ -200,7 +240,7 @@ namespace DOTS.GamePlay
                     int cost = EntityManager.GetComponentData<HousePriceComponent>(owned).Value;
                     var cash = EntityManager.GetComponentData<GhostMoneyComponet>(player);
                     long balance = (long)cash.Value + (buying ? -cost : cost / 2);
-                    if (balance < 0 || balance > int.MaxValue) { Reply(id, "There is not enough cash for this purchase."); continue; }
+                    if ((buying && balance < 0) || balance < int.MinValue || balance > int.MaxValue) { Reply(id, "There is not enough cash for this purchase."); continue; }
                     var level = EntityManager.GetComponentData<HouseCount>(owned);
                     level.Value += buying ? 1 : -1;
                     cash.Value = (int)balance;

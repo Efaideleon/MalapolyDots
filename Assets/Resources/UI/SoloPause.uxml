@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="GameTheme.uss" />
+    <ui:Style src="SoloMode.uss" />
+    <ui:VisualElement class="game-ui solo-pause-layer" picking-mode="Ignore">
+        <ui:VisualElement class="solo-controls" picking-mode="Ignore">
+            <ui:Button name="PauseSoloButton" text="Pause  II" class="game-button-gold" />
+        </ui:VisualElement>
+        <ui:VisualElement name="PauseModal" class="solo-pause-modal">
+            <ui:VisualElement class="game-panel solo-pause-card">
+                <ui:Label text="TAKE A BREATHER" class="game-heading" />
+                <ui:Label text="Your solo game is paused. The board and AI players will wait for you." class="solo-description" />
+                <ui:Button name="ResumeSoloButton" text="Resume game" class="game-button-gold" />
+                <ui:Button name="LeaveSoloButton" text="Return to main menu" />
+                <ui:VisualElement name="SoloExitConfirmation" class="solo-exit-confirmation">
+                    <ui:Label text="Leave this match? Your current game will be lost." class="solo-description" />
+                    <ui:Button name="ConfirmLeaveSoloButton" text="Leave match" class="game-button-danger" />
+                    <ui:Button name="CancelLeaveSoloButton" text="Keep playing" />
+                </ui:VisualElement>
+                <ui:Label text="Esc to pause or resume" class="solo-description" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

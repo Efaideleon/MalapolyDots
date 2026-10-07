@@ -43,6 +43,8 @@ namespace DOTS.GamePlay
         public void OnUpdate(ref SystemState state)
         {
             if (SystemAPI.GetSingleton<GameStateComponent>().State == GameState.GameOver) return;
+            foreach (var (money, bankruptcy) in SystemAPI.Query<RefRO<GhostMoneyComponet>, RefRO<BankruptPlayer>>())
+                if (!bankruptcy.ValueRO.Value && money.ValueRO.Value < 0) return;
             finalArrivedLookup.Update(ref state);
             var activePlayerEntity = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             if (activePlayerEntity == null)
@@ -94,12 +96,12 @@ namespace DOTS.GamePlay
 
 namespace DOTS.GamePlay
 {
-    // This game has no mortgages or liquidation: inability to pay cash ends a player's game.
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     [UpdateAfter(typeof(PayRentSystem))]
     [UpdateAfter(typeof(Assets.Scripts.DOTS.GamePlay.PayTaxesSystem))]
     [UpdateAfter(typeof(TreasureSystem))]
     [UpdateAfter(typeof(PickRandomChanceCardSystem))]
+    [UpdateAfter(typeof(AssetTradingSystem))]
     [UpdateBefore(typeof(Assets.Scripts.DOTS.GamePlay.ChangeTurnSystem))]
     public partial struct BankruptcySystem : ISystem
     {
@@ -113,16 +115,39 @@ namespace DOTS.GamePlay
         {
             var game = SystemAPI.GetSingleton<GameStateComponent>();
             if (!game.AllPlacesInstantiated || game.State == GameState.GameOver) return;
+            using var feedback = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
             int players = 0, survivors = 0, winner = 0;
             foreach (var (money, bankrupt, owner, player) in SystemAPI.Query<RefRO<GhostMoneyComponet>, RefRW<BankruptPlayer>, RefRO<GhostOwner>>().WithEntityAccess())
             {
                 players++;
-                bool connected = false;
+                bool connected = SystemAPI.HasComponent<AiOpponent>(player);
                 foreach (var connection in SystemAPI.Query<RefRO<NetworkId>>())
                     if (connection.ValueRO.Value == owner.ValueRO.NetworkId) { connected = true; break; }
-                if ((money.ValueRO.Value < 0 || !connected) && !bankrupt.ValueRO.Value)
+                if (!bankrupt.ValueRO.Value && connected && !bankrupt.ValueRO.Declared && bankrupt.ValueRO.UnpaidRent > 0)
+                {
+                    int paid = (int)System.Math.Min(bankrupt.ValueRO.UnpaidRent,
+                        System.Math.Max(0L, (long)bankrupt.ValueRO.UnpaidRent + money.ValueRO.Value));
+                    if (paid > 0)
+                    {
+                        foreach (var (creditor, creditorStatus, creditorEntity) in SystemAPI.Query<RefRO<GhostOwner>, RefRO<BankruptPlayer>>().WithEntityAccess())
+                        {
+                            if (creditor.ValueRO.NetworkId != bankrupt.ValueRO.CreditorNetworkId || creditorStatus.ValueRO.Value || creditorStatus.ValueRO.Declared ||
+                                !SystemAPI.HasComponent<GhostMoneyComponet>(creditorEntity)) continue;
+                            var balance = SystemAPI.GetComponent<GhostMoneyComponet>(creditorEntity);
+                            balance.Value = (int)System.Math.Min(int.MaxValue, (long)balance.Value + paid);
+                            SystemAPI.SetComponent(creditorEntity, balance);
+                            MoneyFeedback.Send(feedback, state.EntityManager, creditorEntity, paid, MoneyChangeReason.Rent);
+                            break;
+                        }
+                        bankrupt.ValueRW.UnpaidRent -= paid;
+                        if (bankrupt.ValueRO.UnpaidRent == 0) bankrupt.ValueRW.CreditorNetworkId = 0;
+                    }
+                }
+                if ((!connected || bankrupt.ValueRO.Declared) && !bankrupt.ValueRO.Value)
                 {
                     bankrupt.ValueRW.Value = true;
+                    bankrupt.ValueRW.UnpaidRent = 0;
+                    bankrupt.ValueRW.CreditorNetworkId = 0;
                     // Return eliminated players' properties to the bank.
                     foreach (var (propertyOwner, ownerEntity, property) in SystemAPI.Query<RefRW<DOTS.DataComponents.OwnerComponent>, RefRW<DOTS.DataComponents.OwnerByEntityComponent>>().WithEntityAccess())
                     {
@@ -139,6 +164,7 @@ namespace DOTS.GamePlay
                 }
                 if (!bankrupt.ValueRO.Value) { survivors++; winner = owner.ValueRO.NetworkId; }
             }
+            feedback.Playback(state.EntityManager);
             if ((players >= 2 && survivors <= 1) || (players > 0 && survivors == 0))
             {
                 game.WinnerNetworkId = survivors == 1 ? winner : 0;

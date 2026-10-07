@@ -30,6 +30,9 @@ namespace DOTS.Utilities
         public int id;
         public string msg;
         public int amount;
+        public DOTS.DataComponents.ChanceEffect effect;
+        public int hotelAmount;
+        public int targetBoardIndex;
     }
 
     [System.Serializable]

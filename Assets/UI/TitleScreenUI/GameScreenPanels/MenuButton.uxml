@@ -1,14 +1,16 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <engine:VisualElement name="2-players-button-container" class="dbr-btn dbr-btn-yellow" style="flex-grow: 0;">
-        <engine:Button text="" name="buySellButton" class="button" style="margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; width: 170px; height: 170px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-            <engine:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; display: flex; -unity-background-image-tint-color: rgb(255, 255, 255); overflow: visible; visibility: visible; width: 120%;"/>
-            <engine:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                <engine:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                <engine:VisualElement name="label-container" style="flex-grow: 1;">
-                    <engine:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Textures/buy_sell_button.png?fileID=21300000&amp;guid=4e9bb7bbf70d44449af27d26b47b1cca&amp;type=3#buy_sell_button&quot;); -unity-background-scale-mode: scale-to-fit;"/>
-                </engine:VisualElement>
-            </engine:VisualElement>
-        </engine:Button>
-    </engine:VisualElement>
-</engine:UXML>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameLayouts.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
+    <ui:VisualElement name="2-players-button-container" class="dbr-btn dbr-btn-yellow game-ui layout-menu-button-2-players-button-container-3">
+        <ui:Button text="" name="buySellButton" class="button game-button-gold layout-menu-button-buy-sell-button-4">
+            <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-menu-button-blurred-shadow-5" />
+            <ui:VisualElement name="gradient-border-label-container" class="layout-menu-button-gradient-border-label-container-6">
+                <ui:VisualElement name="gradient-border" class="layout-menu-button-gradient-border-7" />
+                <ui:VisualElement name="label-container" class="layout-menu-button-label-container-8">
+                    <ui:VisualElement class="layout-menu-button-visualelement9-9" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

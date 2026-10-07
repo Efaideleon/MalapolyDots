@@ -23,7 +23,8 @@ namespace DOTS.GameSpaces
                 var buffer = AddBuffer<ChanceActionDataBuffer>(entity);
                 foreach (var data in authoring.Data.chancesActionData)
                 {
-                    buffer.Add(new ChanceActionDataBuffer { id = data.id, msg = data.msg, amount = data.amount });
+                    buffer.Add(new ChanceActionDataBuffer { id = data.id, msg = data.msg, amount = data.amount,
+                        effect = data.effect, hotelAmount = data.hotelAmount, targetBoardIndex = data.targetBoardIndex });
                 }
             }
         }
@@ -37,5 +38,8 @@ namespace DOTS.GameSpaces
         public int id;
         public FixedString64Bytes msg;
         public int amount;
+        public ChanceEffect effect;
+        public int hotelAmount;
+        public int targetBoardIndex;
     }
 }

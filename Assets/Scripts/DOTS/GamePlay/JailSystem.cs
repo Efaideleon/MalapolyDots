@@ -32,9 +32,7 @@ namespace DOTS.GamePlay
                 ecb.DestroyEntity(rpcEntity);
                 var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
                 var connection = request.ValueRO.SourceConnection;
-                if (!SystemAPI.HasComponent<GhostOwner>(player) ||
-                    !SystemAPI.HasComponent<NetworkId>(connection) ||
-                    SystemAPI.GetComponent<GhostOwner>(player).NetworkId != SystemAPI.GetComponent<NetworkId>(connection).Value ||
+                if (!GameplayActionSource.Owns(state.EntityManager, rpcEntity, connection, player) ||
                     SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Landing ||
                     !SystemAPI.HasComponent<GoToJailTag>(SystemAPI.GetComponent<SpaceLandedOn>(player).entity))
                 {
@@ -82,6 +80,8 @@ namespace DOTS.GamePlay
                     var turnRequest = ecb.CreateEntity();
                     ecb.AddComponent<ChangeTurnRpc>(turnRequest);
                     ecb.AddComponent(turnRequest, request.ValueRO);
+                    if (SystemAPI.HasComponent<AiActionRequest>(rpcEntity))
+                        ecb.AddComponent(turnRequest, SystemAPI.GetComponent<AiActionRequest>(rpcEntity));
                     break;
                 }
             }

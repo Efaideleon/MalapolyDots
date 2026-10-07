@@ -69,18 +69,21 @@ namespace TitleScreen.NetworkUI.Systems
             JoinSetupPanel joinSetupPanel = new(gameMenuRoot.Q<VisualElement>("JoinSetup"), uiRequestsComponet.Queue);
             LobbyPanel lobbyPanel = new(gameMenuRoot.Q<VisualElement>("Lobby"), uiRequestsComponet.Queue);
             CharacterSelectPanel characterSelectPanel = new(gameMenuRoot.Q<VisualElement>("CharacterSelect"), uiRequestsComponet.Queue);
+            SoloSetupPanel soloSetupPanel = new(gameMenuRoot.Q<VisualElement>("SoloSetup"), uiRequestsComponet.Queue);
 
             panelsComponent.AllPanels.Add(mainMenuPanel);
             panelsComponent.AllPanels.Add(hostSetupPanel);
             panelsComponent.AllPanels.Add(joinSetupPanel);
             panelsComponent.AllPanels.Add(lobbyPanel);
             panelsComponent.AllPanels.Add(characterSelectPanel);
+            panelsComponent.AllPanels.Add(soloSetupPanel);
 
             panelsComponent.PanelLookup[GameMenuPhase.MainMenu] = mainMenuPanel;
             panelsComponent.PanelLookup[GameMenuPhase.HostSetup] = hostSetupPanel;
             panelsComponent.PanelLookup[GameMenuPhase.JoinSetup] = joinSetupPanel;
             panelsComponent.PanelLookup[GameMenuPhase.Lobby] = lobbyPanel;
             panelsComponent.PanelLookup[GameMenuPhase.CharacterSelect] = characterSelectPanel;
+            panelsComponent.PanelLookup[GameMenuPhase.SoloSetup] = soloSetupPanel;
 
             // Panel initialization
             foreach (var panel in panelsComponent.AllPanels)
@@ -133,7 +136,8 @@ namespace TitleScreen.NetworkUI.Systems
         TuctucButton,
         CharacterSelectConfirmButton,
         ExitConnection,
-        BackToMainMenu
+        BackToMainMenu,
+        MainMenuSolo
     }
 
     public struct UIRequest

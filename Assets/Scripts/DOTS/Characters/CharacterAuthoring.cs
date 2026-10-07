@@ -64,6 +64,9 @@ namespace Assets.Scripts.DOTS.Characters
     {
         [GhostField] public bool Value;
         [GhostField] public int FinalNetWorth;
+        [GhostField] public int UnpaidRent;
+        [GhostField] public int CreditorNetworkId;
+        public bool Declared;
     }
 
     public struct LandingPaymentResolved : IComponentData
@@ -96,6 +99,7 @@ namespace Assets.Scripts.DOTS.Characters
 
         [GhostField]
         public int amount;
+        [GhostField] public global::DOTS.DataComponents.ChanceEffect effect;
     }
 
     [GhostComponent]

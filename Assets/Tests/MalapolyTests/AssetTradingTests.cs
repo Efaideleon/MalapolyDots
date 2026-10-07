@@ -1,6 +1,7 @@
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using DOTS.DataComponents;
+using DOTS.Constants;
 using DOTS.GamePlay;
 using NUnit.Framework;
 using Unity.Collections;
@@ -140,4 +141,53 @@ public class AssetTradingTests
         using var messages = em.CreateEntityQuery(typeof(MoneyFeedbackRpc));
         Assert.AreEqual(0, messages.CalculateEntityCount());
     }
+    [Test] public void PartialHouseSaleCanReduceDebtWithoutClearingIt()
+    {
+        em.SetComponentData(seller, new GhostMoneyComponet { Value = -100 });
+        Buildings(2, 1); Send(AssetAction.SellBuilding, connection1);
+        Assert.AreEqual(-75, Cash(seller)); Assert.AreEqual(1, Level(first));
+        Assert.IsFalse(em.GetComponentData<BankruptPlayer>(seller).Value);
+    }
+    [Test] public void BankBuysClearedDeedAtHalfPriceAndCannotPayTwice()
+    {
+        em.AddComponentData(first, new GhostPriceComponent { Value = 200 });
+        em.SetComponentData(seller, new GhostMoneyComponet { Value = -75 });
+        Send(AssetAction.SellPropertyToBank, connection1);
+        Send(AssetAction.SellPropertyToBank, connection1);
+        Assert.AreEqual(25, Cash(seller));
+        Assert.AreEqual(PropertyConstants.Vacant, em.GetComponentData<OwnerComponent>(first).ID);
+        Assert.AreEqual(Entity.Null, em.GetComponentData<OwnerByEntityComponent>(first).Entity);
+    }
+    [Test] public void BankSaleRequiresClearingWholeColorGroup()
+    {
+        em.AddComponentData(first, new GhostPriceComponent { Value = 200 });
+        Buildings(0, 1); Send(AssetAction.SellPropertyToBank, connection1);
+        Assert.AreEqual(100, Cash(seller)); Assert.AreEqual(1, em.GetComponentData<OwnerComponent>(first).ID);
+    }
+    [Test] public void AnotherPlayerCannotSellYourDeedToTheBank()
+    {
+        em.AddComponentData(first, new GhostPriceComponent { Value = 200 });
+        Send(AssetAction.SellPropertyToBank, connection2);
+        Assert.AreEqual(500, Cash(buyer)); Assert.AreEqual(1, em.GetComponentData<OwnerComponent>(first).ID);
+    }
+    [Test] public void BankruptcyRequestOnlyAffectsItsAuthenticatedSender()
+    {
+        Send(AssetAction.DeclareBankruptcy, connection2);
+        Assert.IsTrue(em.GetComponentData<BankruptPlayer>(buyer).Declared);
+        Assert.IsFalse(em.GetComponentData<BankruptPlayer>(seller).Declared);
+    }
+    [Test] public void UnauthenticatedBankruptcyRequestIsIgnored()
+    {
+        var unverified = em.CreateEntity(); Send(AssetAction.DeclareBankruptcy, unverified);
+        Assert.IsFalse(em.GetComponentData<BankruptPlayer>(seller).Declared);
+        Assert.IsFalse(em.GetComponentData<BankruptPlayer>(buyer).Declared);
+    }
+    [Test] public void PlayerWhoDeclaredBankruptcyCannotCompleteAnOffer()
+    {
+        Send(AssetAction.Offer, connection1);
+        Send(AssetAction.DeclareBankruptcy, connection1);
+        Send(AssetAction.Accept, connection2);
+        Assert.AreEqual(500, Cash(buyer)); Assert.AreEqual(1, em.GetComponentData<OwnerComponent>(first).ID);
+    }
+
 }

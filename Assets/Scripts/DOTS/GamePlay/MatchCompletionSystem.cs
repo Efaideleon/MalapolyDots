@@ -33,6 +33,7 @@ namespace DOTS.GamePlay
             var game = SystemAPI.GetSingleton<GameStateComponent>();
             var previous = game;
             if (!game.AllPlacesInstantiated) return;
+            if (game.State != GameState.GameOver && BankruptcyRules.HasDebt(state.EntityManager)) return;
             if (game.RoundLimit == 0) game.RoundLimit = MatchRules.RoundLimit(NetworkRequests.MatchRoundLimit);
             game.CompletedRounds = SystemAPI.GetSingleton<CurrentRound>().Value;
             bool finish = game.State != GameState.GameOver && game.CompletedRounds >= game.RoundLimit;

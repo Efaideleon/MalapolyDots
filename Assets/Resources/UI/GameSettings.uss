@@ -1,0 +1,43 @@
+.settings-document, .settings-root, .settings-safe-region { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.settings-toolbar { position: absolute; bottom: 16px; right: 16px; }
+.game-ui .settings-launch { width: 64px; height: 64px; min-height: 64px; margin: 0; padding: 8px; align-items: center; justify-content: center; }
+.settings-bolt-icon { width: 36px; height: 36px; flex-shrink: 0; background-size: contain; background-image: url("project://database/Assets/Resources/UI/SettingsBolt.svg"); }
+.settings-shade { display: none; position: absolute; top: 0; bottom: 0; left: 0; right: 0; padding: 16px; align-items: center; justify-content: center; background-color: rgba(5, 19, 33, 0.94); }
+.settings-shade.is-visible { display: flex; }
+.settings-card { width: 760px; max-width: 100%; height: 100%; padding: 20px; }
+.settings-header { flex-direction: row; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.settings-header .game-heading { font-size: 38px; flex-shrink: 1; margin-right: 12px; }
+.game-ui .settings-header Button { min-width: 130px; }
+.settings-card Button, .settings-confirm-card Button { min-height: 88px; flex-shrink: 0; margin: 8px 0; }
+.settings-scroll { flex-grow: 1; flex-shrink: 1; min-height: 0; }
+.settings-scroll .unity-scroll-view__content-container { padding-right: 12px; }
+.settings-scroll .unity-scroller { width: 18px; margin-left: 10px; }
+.settings-scroll .unity-scroller__low-button, .settings-scroll .unity-scroller__high-button { display: none; }
+.settings-scroll .unity-scroller__slider { background-color: rgb(8, 42, 51); border-radius: 9px; }
+.settings-scroll .unity-scroller .unity-base-slider__tracker { background-color: transparent; border-width: 0; }
+.settings-scroll .unity-scroller .unity-base-slider__dragger { background-color: var(--game-gold); border-color: rgb(255, 243, 189); border-radius: 7px; }
+.settings-scroll .unity-scroller .unity-base-slider__dragger-border { display: none; }
+.game-ui .settings-description { font-size: 25px; margin: 8px 0; white-space: normal; flex-shrink: 0; }
+.game-ui .settings-section { color: var(--game-gold); font-size: 27px; margin: 16px 0 8px; flex-shrink: 0; }
+.settings-slider-heading { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 8px; flex-shrink: 0; }
+.settings-slider-heading > Label { flex-shrink: 1; }
+.game-ui .settings-value { color: rgb(186, 243, 154); -unity-text-align: middle-right; min-width: 90px; margin-left: 12px; flex-shrink: 0; }
+.settings-slider { min-height: 70px; margin: 0 8px 6px; flex-shrink: 0; }
+.settings-slider .unity-base-slider__drag-container { min-height: 70px; }
+.settings-slider .unity-base-slider__tracker { height: 10px; background-color: rgb(8, 42, 51); border-radius: 5px; }
+.settings-slider .unity-base-slider__dragger { width: 38px; height: 38px; margin-top: -14px; background-color: var(--game-gold); border-width: 3px; border-color: rgb(255, 243, 189); border-radius: 19px; }
+.settings-slider .unity-base-slider__dragger-border { display: none; }
+.settings-toggle { flex-direction: row; min-height: 88px; align-items: center; margin: 0; flex-shrink: 0; }
+.settings-toggle > .unity-base-field__label { flex-grow: 1; flex-shrink: 1; font-size: 26px; white-space: normal; }
+.settings-toggle > .unity-base-field__input { flex-grow: 0; min-width: 58px; justify-content: flex-end; }
+.settings-toggle .unity-toggle__checkmark { width: 44px; height: 44px; background-color: rgb(8, 42, 51); border-width: 3px; border-color: rgb(68, 158, 160); border-radius: 9px; -unity-background-image-tint-color: rgb(9, 60, 49); }
+.settings-toggle:checked .unity-toggle__checkmark { background-color: var(--game-gold); border-color: rgb(255, 243, 189); }
+.settings-rules { margin: 12px 0; padding: 10px; background-color: var(--game-surface); border-radius: 12px; flex-shrink: 0; }
+.settings-rules > .unity-toggle { min-height: 74px; }
+.settings-rules .unity-toggle__text { font-size: 28px; color: var(--game-gold); }
+.settings-rules .unity-toggle__checkmark { -unity-background-image-tint-color: var(--game-gold); }
+.game-ui .settings-tip { color: rgb(186, 243, 154); }
+.game-ui .settings-footer { font-size: 22px; margin-bottom: 0; }
+.settings-quit { display: none; }
+.settings-quit.is-visible { display: flex; }
+.settings-confirm-card { width: 620px; max-width: 100%; padding: 24px; }

@@ -1,71 +1,73 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/GameMenu.uss?fileID=7433441132597879392&amp;guid=6125d87360e995e42bfbe6acbcb8c146&amp;type=3#GameMenu" />
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
-    <engine:VisualElement name="charachter-select-container" style="justify-content: center; align-items: center; flex-direction: column; font-size: 40px; border-top-width: 15px; border-right-width: 15px; border-bottom-width: 15px; border-left-width: 15px; border-left-color: rgb(224, 46, 254); border-right-color: rgb(224, 46, 254); border-top-color: rgb(224, 46, 254); border-bottom-color: rgb(224, 46, 254); border-top-left-radius: 8%; border-top-right-radius: 8%; border-bottom-right-radius: 8%; border-bottom-left-radius: 8%; background-color: rgb(100, 47, 225); width: 850px; height: 850px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
-        <engine:VisualElement name="character-select-text-container" style="flex-direction: column; justify-content: center; align-self: center; font-size: 70px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;); color: rgb(255, 255, 255); margin-top: 0; margin-bottom: 10px; margin-right: 0; margin-left: 0;">
-            <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; justify-content: center;">
-                <engine:Label text="Player" style="margin-right: 18px;" />
-                <engine:Label text="0" name="player-number-label" />
-            </engine:VisualElement>
-            <engine:Label text="Choose Your Character" />
-        </engine:VisualElement>
-        <engine:VisualElement name="charachter-select-panel-container" class="medium-panel" style="height: 420px; width: 620px; background-color: rgba(196, 29, 33, 0); flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; align-self: auto; align-content: center; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
-            <engine:VisualElement name="char-one-btn-container" class="char-picked-btn-container char-not-picked-btn-container char-disabled-btn-container">
-                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
-                <engine:Button name="character-one-button" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
-                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
-                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=1715131784&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#Avocado&quot;); -unity-background-scale-mode: scale-to-fit;" />
-                </engine:Button>
-            </engine:VisualElement>
-            <engine:VisualElement name="char-two-btn-container" class="char-disabled-btn-container char-picked-btn-container char-not-picked-btn-container">
-                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
-                <engine:Button name="character-two-button" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
-                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
-                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-852667285&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#Bird&quot;); -unity-background-scale-mode: scale-to-fit;" />
-                </engine:Button>
-            </engine:VisualElement>
-            <engine:VisualElement name="char-three-btn-container" class="char-not-picked-btn-container char-disabled-btn-container char-picked-btn-container">
-                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
-                <engine:Button name="character-three-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
-                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
-                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-421262002&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#Coin&quot;); -unity-background-scale-mode: scale-to-fit;" />
-                </engine:Button>
-            </engine:VisualElement>
-            <engine:VisualElement name="char-four-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
-                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
-                <engine:Button name="character-four-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
-                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
-                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-719649009&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#Lira&quot;); -unity-background-scale-mode: scale-to-fit;" />
-                </engine:Button>
-            </engine:VisualElement>
-            <engine:VisualElement name="char-five-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
-                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
-                <engine:Button name="character-five-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
-                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
-                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-779662232&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#Mug&quot;); -unity-background-scale-mode: scale-to-fit;" />
-                </engine:Button>
-            </engine:VisualElement>
-            <engine:VisualElement name="char-six-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
-                <engine:VisualElement name="blur-shadow" class="blur-shadow" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.59); border-right-color: rgba(0, 0, 0, 0.59); border-top-color: rgba(0, 0, 0, 0.59); border-bottom-color: rgba(0, 0, 0, 0.59); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; -unity-background-scale-mode: stretch-to-fill; background-position-y: center 0; background-position-x: center 0; background-repeat: no-repeat no-repeat;" />
-                <engine:Button name="character-six-button" class="button-player-choose" style="font-size: 40px; color: rgb(0, 0, 0); overflow: hidden;">
-                    <engine:VisualElement name="highlight" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; top: 0;" />
-                    <engine:VisualElement name="shadow" style="flex-grow: 1; position: absolute; width: 100%; height: 50%; bottom: 0;" />
-                    <engine:Label name="btn-label" style="background-image: url(&quot;project://database/Assets/Textures/char_spritessheet.png?fileID=-1236027490&amp;guid=531c3bc93b25c054ca00423d0021aaa8&amp;type=3#TucTuc&quot;); -unity-background-scale-mode: scale-to-fit;" />
-                </engine:Button>
-            </engine:VisualElement>
-        </engine:VisualElement>
-        <engine:VisualElement name="confirm-btn-container" class="confirm-btn-container" style="flex-grow: 0;">
-            <engine:VisualElement name="blur-shadow" style="flex-grow: 1;" />
-            <engine:Button text="8" name="character-confirm-button" class="button confirm-button" style="margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; width: 300px; height: 90px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; overflow: hidden; background-color: rgba(18, 96, 177, 0); border-top-width: 5px; border-right-width: 5px; border-left-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
-                <engine:VisualElement name="highlight" style="flex-grow: 1;" />
-                <engine:VisualElement name="shadow" style="position: absolute; width: 100%; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;" />
-                <engine:Label text="Confirm" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 48px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);" />
-            </engine:Button>
-        </engine:VisualElement>
-    </engine:VisualElement>
-</engine:UXML>
+    <ui:Style src="project://database/Assets/Resources/UI/GameLayouts.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
+    <ui:VisualElement name="charachter-select-container" class="game-ui layout-character-select-screen-charachter-select-container-4">
+        <ui:VisualElement name="character-select-text-container" class="layout-character-select-screen-character-select-text-container-5">
+            <ui:VisualElement name="VisualElement" class="layout-character-select-screen-visual-element-6">
+                <ui:Label text="Player" class="layout-character-select-screen-label7-7" />
+                <ui:Label text="0" name="player-number-label" />
+            </ui:VisualElement>
+            <ui:Label text="Choose Your Character" />
+        </ui:VisualElement>
+        <ui:VisualElement name="charachter-select-panel-container" class="medium-panel layout-character-select-screen-charachter-select-panel-container-10">
+            <ui:VisualElement name="char-one-btn-container" class="char-picked-btn-container char-not-picked-btn-container char-disabled-btn-container">
+                <ui:VisualElement name="blur-shadow" class="blur-shadow layout-character-select-screen-blur-shadow-12" />
+                <ui:Button name="character-one-button" class="layout-character-select-screen-character-one-button-13">
+                    <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-14" />
+                    <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-15" />
+                    <ui:Label name="btn-label" class="layout-character-select-screen-btn-label-16" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="char-two-btn-container" class="char-disabled-btn-container char-picked-btn-container char-not-picked-btn-container">
+                <ui:VisualElement name="blur-shadow" class="blur-shadow layout-character-select-screen-blur-shadow-18" />
+                <ui:Button name="character-two-button" class="layout-character-select-screen-character-two-button-19">
+                    <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-20" />
+                    <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-21" />
+                    <ui:Label name="btn-label" class="layout-character-select-screen-btn-label-22" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="char-three-btn-container" class="char-not-picked-btn-container char-disabled-btn-container char-picked-btn-container">
+                <ui:VisualElement name="blur-shadow" class="blur-shadow layout-character-select-screen-blur-shadow-24" />
+                <ui:Button name="character-three-button" class="button-player-choose layout-character-select-screen-character-three-button-25">
+                    <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-26" />
+                    <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-27" />
+                    <ui:Label name="btn-label" class="layout-character-select-screen-btn-label-28" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="char-four-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
+                <ui:VisualElement name="blur-shadow" class="blur-shadow layout-character-select-screen-blur-shadow-30" />
+                <ui:Button name="character-four-button" class="button-player-choose layout-character-select-screen-character-four-button-31">
+                    <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-32" />
+                    <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-33" />
+                    <ui:Label name="btn-label" class="layout-character-select-screen-btn-label-34" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="char-five-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
+                <ui:VisualElement name="blur-shadow" class="blur-shadow layout-character-select-screen-blur-shadow-36" />
+                <ui:Button name="character-five-button" class="button-player-choose layout-character-select-screen-character-five-button-37">
+                    <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-38" />
+                    <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-39" />
+                    <ui:Label name="btn-label" class="layout-character-select-screen-btn-label-40" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="char-six-btn-container" class="char-not-picked-btn-container char-picked-btn-container char-disabled-btn-container">
+                <ui:VisualElement name="blur-shadow" class="blur-shadow layout-character-select-screen-blur-shadow-42" />
+                <ui:Button name="character-six-button" class="button-player-choose layout-character-select-screen-character-six-button-43">
+                    <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-44" />
+                    <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-45" />
+                    <ui:Label name="btn-label" class="layout-character-select-screen-btn-label-46" />
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="confirm-btn-container" class="confirm-btn-container layout-character-select-screen-confirm-btn-container-47">
+            <ui:VisualElement name="blur-shadow" class="layout-character-select-screen-blur-shadow-48" />
+            <ui:Button name="character-confirm-button" class="button confirm-button layout-character-select-screen-character-confirm-button-49">
+                <ui:VisualElement name="highlight" class="layout-character-select-screen-highlight-50" />
+                <ui:VisualElement name="shadow" class="layout-character-select-screen-shadow-51" />
+                <ui:Label text="Confirm" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

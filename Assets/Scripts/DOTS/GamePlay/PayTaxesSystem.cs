@@ -25,8 +25,7 @@ namespace Assets.Scripts.DOTS.GamePlay
                 var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
                 var connection = request.ValueRO.SourceConnection;
                 if (SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Landing ||
-                    !SystemAPI.HasComponent<GhostOwner>(player) || !SystemAPI.HasComponent<NetworkId>(connection) ||
-                    SystemAPI.GetComponent<GhostOwner>(player).NetworkId != SystemAPI.GetComponent<NetworkId>(connection).Value ||
+                    !GameplayActionSource.Owns(state.EntityManager, entity, connection, player) ||
                     !SystemAPI.HasComponent<LandingPaymentResolved>(player) ||
                     SystemAPI.GetComponent<LandingPaymentResolved>(player).Value) continue;
                 var space = SystemAPI.GetComponent<SpaceLandedOn>(player).entity;

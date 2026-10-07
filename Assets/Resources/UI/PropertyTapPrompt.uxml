@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="GameTheme.uss" />
+    <ui:Style src="PropertyTapPrompt.uss" />
+    <ui:VisualElement name="propertyTapLayer" class="property-tap-layer game-ui" picking-mode="Ignore">
+        <ui:VisualElement name="propertyTapPrompt" class="property-tap-prompt is-hidden" picking-mode="Ignore">
+            <ui:VisualElement name="propertyTapHand" class="property-tap-hand" picking-mode="Ignore" />
+            <ui:Label text="Tap for actions" class="property-tap-caption" picking-mode="Ignore" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

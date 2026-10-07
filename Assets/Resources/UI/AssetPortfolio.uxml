@@ -1,20 +1,43 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="GameTheme.uss" />
     <ui:Style src="AssetPortfolio.uss" />
     <ui:VisualElement class="portfolio-shade">
         <ui:VisualElement class="portfolio-card">
             <ui:VisualElement class="portfolio-heading">
-                <ui:Label text="BUY &amp; SELL" class="portfolio-title" />
+                <ui:Label text="$" class="portfolio-coin" picking-mode="Ignore" />
+                <ui:VisualElement class="portfolio-heading-copy">
+                    <ui:Label text="BUILD YOUR EMPIRE" class="portfolio-kicker" />
+                    <ui:Label text="BUY &amp; SELL" class="portfolio-title" />
+                </ui:VisualElement>
                 <ui:Label name="cash" class="portfolio-cash" />
-                <ui:Button name="closePortfolio" text="Close" />
+                <ui:Button name="closePortfolio" text="Close" class="portfolio-close" />
             </ui:VisualElement>
-            <ui:Label name="inventorySummary" />
-            <ui:Label text="Bright cards are yours. Dim cards show what remains. Scroll each color row to see every property." class="portfolio-legend" />
-            <ui:Label text="Build and sell evenly. A hotel can be exchanged for 4 houses + half its upgrade price. Clear the entire color group before selling a property to another player." class="portfolio-help" />
+            <ui:Label name="inventorySummary" class="portfolio-summary" />
+            <ui:VisualElement class="portfolio-debt-banner">
+                <ui:Label text="STAY IN THE GAME!" class="portfolio-debt-title" />
+                <ui:Label name="debtHelp" class="portfolio-debt-help" />
+            </ui:VisualElement>
+            <ui:Label text="Your cards shine! Scroll each color row, then open Manage property to build or trade." class="portfolio-legend" />
             <ui:Label name="tradeStatus" class="portfolio-status" />
             <ui:ScrollView class="portfolio-scroll">
+                <ui:Foldout text="How to play" value="false" class="portfolio-rules">
+                    <ui:Label text="Bright cards are yours. Dim cards belong to the bank or another player. Complete a color set to start building!" class="portfolio-help" />
+                    <ui:Label text="Build and sell evenly. A hotel can be exchanged for 4 houses + half its upgrade price. Clear the entire color group before selling a property to another player." class="portfolio-help" />
+                </ui:Foldout>
                 <ui:VisualElement name="offers" />
                 <ui:VisualElement name="properties" />
             </ui:ScrollView>
+            <ui:VisualElement class="portfolio-footer">
+                <ui:Label text="Need to leave the match? Declare bankruptcy to spectate." class="portfolio-footer-help" />
+                <ui:Button name="declareBankruptcy" text="Declare bankruptcy" class="portfolio-bankruptcy-button" />
+            </ui:VisualElement>
+            <ui:VisualElement name="bankruptcyConfirmation" class="portfolio-bankruptcy-confirmation">
+                <ui:Label text="Declare bankruptcy? Your properties return to the bank and you will spectate. This cannot be undone." class="portfolio-help" />
+                <ui:VisualElement class="portfolio-actions">
+                    <ui:Button name="cancelBankruptcy" text="Keep playing" />
+                    <ui:Button name="confirmBankruptcy" text="Yes, declare bankruptcy" class="portfolio-bankruptcy-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,0 +1,65 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="GameTheme.uss" />
+    <ui:Style src="GameSettings.uss" />
+    <ui:VisualElement class="game-ui settings-root" picking-mode="Ignore">
+        <ui:VisualElement name="safeRegion" class="settings-safe-region" picking-mode="Ignore">
+            <ui:VisualElement name="settingsToolbar" class="settings-toolbar" picking-mode="Ignore">
+                <ui:Button name="openSettings" tooltip="Settings" class="settings-launch game-button-gold">
+                    <ui:VisualElement class="settings-bolt-icon" picking-mode="Ignore" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="settingsShade" class="settings-shade">
+                <ui:VisualElement class="game-panel settings-card">
+                    <ui:VisualElement class="settings-header">
+                        <ui:Label text="SETTINGS" class="game-heading" />
+                        <ui:Button name="closeSettings" text="Done" class="game-button-gold" />
+                    </ui:VisualElement>
+                    <ui:Label name="playStatus" class="settings-description" />
+                    <ui:ScrollView name="settingsScroll" class="settings-scroll" horizontal-scroller-visibility="Hidden">
+                        <ui:Label text="SOUND" class="settings-section" />
+                        <ui:Toggle name="muteAudio" label="Mute all sound" class="settings-toggle" />
+                        <ui:VisualElement class="settings-slider-heading">
+                            <ui:Label text="Master volume" />
+                            <ui:Label name="volumeValue" class="settings-value" />
+                        </ui:VisualElement>
+                        <ui:Slider name="audioVolume" low-value="0" high-value="1" class="settings-slider" />
+                        <ui:Label text="CAMERA" class="settings-section" />
+                        <ui:VisualElement class="settings-slider-heading">
+                            <ui:Label text="Rotation sensitivity" />
+                            <ui:Label name="cameraValue" class="settings-value" />
+                        </ui:VisualElement>
+                        <ui:Slider name="cameraSensitivity" low-value="0.25" high-value="2.5" class="settings-slider" />
+                        <ui:VisualElement class="settings-slider-heading">
+                            <ui:Label text="Zoom sensitivity" />
+                            <ui:Label name="zoomValue" class="settings-value" />
+                        </ui:VisualElement>
+                        <ui:Slider name="zoomSensitivity" low-value="0.25" high-value="2.5" class="settings-slider" />
+                        <ui:Toggle name="invertCamera" label="Invert vertical camera movement" class="settings-toggle" />
+                        <ui:Toggle name="reduceMotion" label="Reduce camera motion" class="settings-toggle" />
+                        <ui:Label text="Reduced motion skips cinematic closeups and camera blends." class="settings-description" />
+                        <ui:Label name="cameraInstructions" class="settings-description settings-tip" />
+                        <ui:Button name="resetCamera" text="Reset camera view" />
+                        <ui:Foldout text="How to play" value="false" class="settings-rules">
+                            <ui:Label text="Roll, resolve the space you land on, then end your turn. Tap your current property to open its actions." class="settings-description" />
+                            <ui:Label text="Buy properties and complete color sets to build. Build and sell evenly across a set. Open Buy &amp; Sell to manage your properties and trade." class="settings-description" />
+                            <ui:Label text="If you owe more money than you have, sell buildings or properties, or trade to cover the debt. You can declare bankruptcy to spectate." class="settings-description" />
+                            <ui:Label text="The last player standing wins. If the round limit is reached, the player with the highest net worth wins; equal leaders share a draw." class="settings-description" />
+                        </ui:Foldout>
+                        <ui:Button name="resetSettings" text="Restore default settings" />
+                    </ui:ScrollView>
+                    <ui:Button name="quitMatch" text="Quit match" class="game-button-danger settings-quit" />
+                    <ui:Label text="Changes apply immediately and are saved on this device." class="settings-description settings-footer" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="quitShade" class="settings-shade settings-confirmation">
+                <ui:VisualElement class="game-panel settings-confirm-card">
+                    <ui:Label text="LEAVE THIS TABLE?" class="game-heading" />
+                    <ui:Label name="quitWarning" class="settings-description" />
+                    <ui:Label name="quitStatus" class="settings-description" />
+                    <ui:Button name="cancelQuit" text="Keep playing" class="game-button-gold" />
+                    <ui:Button name="confirmQuit" text="Quit to main menu" class="game-button-danger" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

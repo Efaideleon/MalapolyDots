@@ -14,6 +14,9 @@ namespace TitleScreen.NetworkUI.Components
     public struct MainMenuJoinClickEvent : IComponentData
     { }
 
+    public struct MainMenuSoloClickEvent : IComponentData
+    { }
+
     public struct HostSetupHostClickEvent : IComponentData
     { }
 
@@ -64,6 +67,7 @@ namespace TitleScreen.NetworkUI.Components
         HostSetup,
         JoinSetup,
         Lobby,
-        CharacterSelect
+        CharacterSelect,
+        SoloSetup
     }
 }

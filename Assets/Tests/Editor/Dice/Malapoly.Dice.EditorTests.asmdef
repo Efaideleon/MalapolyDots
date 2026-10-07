@@ -1,0 +1,13 @@
+{
+    "name": "Malapoly.Dice.EditorTests",
+    "references": [
+        "UnityEngine.TestRunner", "UnityEditor.TestRunner",
+        "Unity.Entities", "Unity.Collections", "Unity.NetCode", "Unity.Mathematics",
+        "Malapoly.DOTS.GamePlay", "Malapoly.DOTS.Characters", "Malapoly.DOTS.Mediator"
+    ],
+    "includePlatforms": ["Editor"],
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"]
+}

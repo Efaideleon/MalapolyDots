@@ -29,8 +29,7 @@ namespace Assets.Scripts.DOTS.GamePlay
                 if (currentPlayerEntity != Entity.Null)
                 {
                     var playerId = SystemAPI.GetComponent<GhostOwner>(currentPlayerEntity).NetworkId;
-                    var clientId = SystemAPI.GetComponent<NetworkId>(rpc.ValueRO.SourceConnection).Value;
-                    bool isLocalClient = playerId == clientId;
+                    bool isLocalClient = GameplayActionSource.Owns(state.EntityManager, entity, rpc.ValueRO.SourceConnection, currentPlayerEntity);
                     if (isLocalClient)
                     {
                         var landOnProperty = SystemAPI.GetComponent<SpaceLandedOn>(currentPlayerEntity);

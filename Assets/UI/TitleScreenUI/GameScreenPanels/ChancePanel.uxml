@@ -1,22 +1,24 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons"/>
-    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels"/>
-    <engine:VisualElement name="outer-border" class="panel-1-outer">
-        <engine:VisualElement name="Inner-border" class="panel-1-inner" style="flex-grow: 1; width: 100%; height: 100%;">
-            <engine:VisualElement name="inner-border-2" class="panel-1-inner-2" style="background-repeat: repeat repeat; align-items: center;">
-                <engine:Label text="Text goes here" name="chance-panel-label" class="panel-text-1" style="margin-top: 20px; white-space: normal;"/>
-                <engine:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue" style="flex-grow: 0;">
-                    <engine:Button text="8" name="chance-panel-button" class="button" style="margin-top: 0; margin-right: 0; margin-bottom: 5px; margin-left: 0; width: 260px; height: 60px; font-size: 24px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                        <engine:VisualElement name="blurred-shadow" class="dbr-btn" style="flex-grow: 1; width: 110%; visibility: visible;"/>
-                        <engine:VisualElement name="gradient-border-label-container" style="flex-grow: 1;">
-                            <engine:VisualElement name="gradient-border" style="position: absolute; width: 100%;"/>
-                            <engine:VisualElement name="label-container" class="dbr-btn" style="flex-grow: 1;">
-                                <engine:Label text="Ok" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 32px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Acme-Regular%20SDF.asset?fileID=11400000&amp;guid=0dfd64f2e492cfc4193cd44aea9cbebb&amp;type=2#Acme-Regular SDF&quot;);"/>
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-                    </engine:Button>
-                </engine:VisualElement>
-            </engine:VisualElement>
-        </engine:VisualElement>
-    </engine:VisualElement>
-</engine:UXML>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
+    <Style src="project://database/Assets/UI/USS/Panels.uss?fileID=7433441132597879392&amp;guid=82881574d3c529345996d02a565e6c15&amp;type=3#Panels" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameLayouts.uss" />
+    <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
+    <ui:VisualElement name="outer-border" class="panel-1-outer game-ui game-panel">
+        <ui:VisualElement name="Inner-border" class="panel-1-inner layout-chance-panel-inner-border-5">
+            <ui:VisualElement name="inner-border-2" class="panel-1-inner-2 layout-chance-panel-inner-border-2-6">
+                <ui:Label text="Text goes here" name="chance-panel-label" class="panel-text-1 layout-chance-panel-chance-panel-label-7" />
+                <ui:VisualElement name="purchase-btn-container" class="dbr-btn dbr-btn-blue layout-chance-panel-purchase-btn-container-8">
+                    <ui:Button name="chance-panel-button" class="button layout-chance-panel-chance-panel-button-9">
+                        <ui:VisualElement name="blurred-shadow" class="dbr-btn layout-chance-panel-blurred-shadow-10" />
+                        <ui:VisualElement name="gradient-border-label-container" class="layout-chance-panel-gradient-border-label-container-11">
+                            <ui:VisualElement name="gradient-border" class="layout-chance-panel-gradient-border-12" />
+                            <ui:VisualElement name="label-container" class="dbr-btn layout-chance-panel-label-container-13">
+                                <ui:Label text="Ok" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

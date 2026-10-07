@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: coin_mat
-  m_Shader: {fileID: -6465566751694194690, guid: 0d9f85f7a1fc1f449a6686e35eb97982, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: f769145d7ef034e55a424dd7dc81a5fd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -53,6 +53,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _4_vat_image:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CoinVAT_f90ce56359ae404f8a7ebc0ed5b56536_openVATnrml_3347946277_Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -138,7 +142,7 @@ Material:
     - _blink345: 0
     - _current_frame: 0
     - _dither_size: 0
-    - _frame: 0
+    - _frame: 41
     - _frames: 82
     - _speed: 1
     - _total_frames: 82
@@ -154,6 +158,6 @@ Material:
     - _4_max_values: {r: 0, g: 0, b: 0, a: 0}
     - _4_min_values: {r: 0, g: 0, b: 0, a: 0}
     - _max: {r: 1.5, g: 0.8, b: 1.4, a: 0}
-    - _min: {r: 1.5, g: -0.8, b: -1.4, a: 0}
+    - _min: {r: -1.5, g: -0.8, b: -1.4, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -16,6 +16,9 @@ namespace DOTS.Utilities.ChancesBlob
         public int id;
         public FixedString64Bytes msg;
         public int amount;
+        public DOTS.DataComponents.ChanceEffect effect;
+        public int hotelAmount;
+        public int targetBoardIndex;
     }
 
     public struct ChancesDataBlob

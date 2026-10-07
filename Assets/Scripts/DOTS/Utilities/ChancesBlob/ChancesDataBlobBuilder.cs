@@ -30,6 +30,9 @@ namespace DOTS.Utilities.ChancesBlob
                                 chanceActionBuilder[j].id = chance.chanceActionData[j].id;
                                 chanceActionBuilder[j].msg = chance.chanceActionData[j].msg;
                                 chanceActionBuilder[j].amount = chance.chanceActionData[j].amount;
+                                chanceActionBuilder[j].effect = chance.chanceActionData[j].effect;
+                                chanceActionBuilder[j].hotelAmount = chance.chanceActionData[j].hotelAmount;
+                                chanceActionBuilder[j].targetBoardIndex = chance.chanceActionData[j].targetBoardIndex;
                             }
                         }
                     });
