@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="GameTheme.uss" />
+    <ui:Style src="Minimap.uss" />
+    <ui:VisualElement class="game-ui minimap-layer" picking-mode="Ignore">
+        <ui:VisualElement name="minimapDock" class="minimap-dock">
+            <ui:VisualElement class="minimap-header">
+                <ui:Label text="MAP" class="minimap-title" />
+                <ui:Label name="minimapZoomLevel" text="1.0×" class="minimap-zoom-level" />
+                <ui:Button name="expandMinimap" text="Expand" tooltip="Open a larger map" />
+                <ui:Button name="toggleMinimap" text="Hide" tooltip="Hide minimap" />
+            </ui:VisualElement>
+            <ui:VisualElement name="minimapBody" class="minimap-body">
+                <ui:VisualElement name="minimapViewport" class="minimap-viewport" tooltip="Drag to pan. Scroll or pinch to zoom.">
+                    <ui:VisualElement name="minimapImage" class="minimap-image" picking-mode="Ignore" />
+                    <ui:VisualElement name="minimapMarkers" class="minimap-markers" picking-mode="Ignore" />
+                </ui:VisualElement>
+                <ui:VisualElement class="minimap-controls">
+                    <ui:Button name="minimapZoomOut" text="−" tooltip="Zoom out" class="minimap-zoom-button" />
+                    <ui:Button name="minimapZoomIn" text="+" tooltip="Zoom in" class="minimap-zoom-button" />
+                    <ui:Button name="minimapFit" text="Full map" tooltip="Show the entire map" />
+                    <ui:Button name="minimapLocate" text="Find me" tooltip="Center on your player" class="game-button-gold" />
+                </ui:VisualElement>
+                <ui:VisualElement name="minimapLegend" class="minimap-legend" />
+                <ui:Label text="Drag to pan · Scroll or pinch to zoom" class="minimap-tip" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

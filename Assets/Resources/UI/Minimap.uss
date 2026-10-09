@@ -1,0 +1,60 @@
+.minimap-layer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.minimap-layer.is-expanded { background-color: rgba(5, 19, 33, 0.72); }
+.minimap-dock {
+    position: absolute; left: 24px; bottom: 190px; width: 430px; max-width: 46%; height: 500px; max-height: 40%;
+    padding: 12px; background-color: rgba(17, 67, 76, 0.97); border-width: 3px; border-color: rgb(68, 158, 160);
+    border-bottom-width: 6px; border-bottom-color: rgb(8, 47, 60); border-radius: 20px;
+}
+.minimap-header { flex-direction: row; align-items: center; flex-shrink: 0; }
+.game-ui .minimap-title { font-size: 25px; color: var(--game-gold); flex-grow: 1; }
+.game-ui .minimap-zoom-level { font-size: 20px; margin-right: 10px; }
+.game-ui .minimap-header Button { min-height: 40px; height: 40px; padding: 2px 12px; font-size: 20px; margin: 0; border-bottom-width: 4px; border-radius: 10px; }
+.minimap-body { flex-grow: 1; min-height: 0; }
+.minimap-viewport {
+    position: relative; flex-grow: 1; min-height: 120px; margin-top: 10px; overflow: hidden;
+    background-color: rgb(20, 39, 47); border-radius: 12px;
+}
+.minimap-image { position: absolute; left: 0; top: 0; transform-origin: 0 0; -unity-background-scale-mode: stretch-to-fill; }
+.minimap-markers { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+.minimap-marker { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.minimap-marker.is-outside { display: none; }
+.game-ui .minimap-pin {
+    position: absolute; left: 0; top: 0; width: 32px; height: 32px; margin: 0;
+    border-radius: 16px; border-width: 3px; border-color: rgb(255, 249, 224); color: rgb(5, 25, 36);
+    font-size: 21px; -unity-font-style: bold; -unity-text-align: middle-center;
+}
+.game-ui .minimap-pin.is-current { border-color: var(--game-gold); }
+.game-ui .minimap-pin.is-you { border-color: rgb(143, 255, 190); border-width: 4px; }
+.minimap-anchor { display: none; position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 4px; border-width: 1px; border-color: rgb(255, 249, 224); }
+.is-clustered > .minimap-anchor { display: flex; }
+.minimap-controls { flex-direction: row; margin-top: 8px; flex-shrink: 0; }
+.game-ui .minimap-controls Button { min-height: 48px; height: 48px; padding: 2px 6px; font-size: 20px; margin: 0 4px 0 0; border-bottom-width: 4px; border-radius: 10px; flex-grow: 1; }
+.game-ui .minimap-controls .minimap-zoom-button { width: 46px; flex-grow: 0; font-size: 28px; }
+.minimap-legend { flex-direction: row; flex-wrap: wrap; margin-top: 6px; flex-shrink: 0; }
+.game-ui .minimap-player {
+    width: 49%; min-height: 34px; height: 34px; padding: 0 4px 0 33px; margin: 2px 1% 0 0;
+    border-width: 0; border-left-width: 4px; border-radius: 6px; background-color: rgb(10, 47, 59);
+    color: var(--game-text); font-size: 18px; -unity-text-align: middle-left; white-space: nowrap; overflow: hidden;
+}
+.game-ui .minimap-player.is-you { background-color: rgb(26, 103, 111); }
+.game-ui .minimap-player:hover:enabled { background-color: rgb(32, 93, 103); translate: 0 0; }
+.minimap-portrait { position: absolute; left: 4px; top: 3px; width: 26px; height: 26px; -unity-background-scale-mode: scale-to-fit; }
+.game-ui .minimap-tip { font-size: 17px; color: rgb(185, 224, 219); margin: 6px 0 0; flex-shrink: 0; }
+.minimap-color-0 > .minimap-pin, .minimap-color-0 > .minimap-anchor { background-color: rgb(102, 225, 174); }
+.minimap-color-1 > .minimap-pin, .minimap-color-1 > .minimap-anchor { background-color: rgb(116, 206, 255); }
+.minimap-color-2 > .minimap-pin, .minimap-color-2 > .minimap-anchor { background-color: rgb(255, 155, 192); }
+.minimap-color-3 > .minimap-pin, .minimap-color-3 > .minimap-anchor { background-color: rgb(255, 211, 92); }
+.minimap-color-4 > .minimap-pin, .minimap-color-4 > .minimap-anchor { background-color: rgb(187, 166, 255); }
+.minimap-color-5 > .minimap-pin, .minimap-color-5 > .minimap-anchor { background-color: rgb(255, 172, 113); }
+.game-ui .minimap-player.minimap-color-0 { border-left-color: rgb(102, 225, 174); }
+.game-ui .minimap-player.minimap-color-1 { border-left-color: rgb(116, 206, 255); }
+.game-ui .minimap-player.minimap-color-2 { border-left-color: rgb(255, 155, 192); }
+.game-ui .minimap-player.minimap-color-3 { border-left-color: rgb(255, 211, 92); }
+.game-ui .minimap-player.minimap-color-4 { border-left-color: rgb(187, 166, 255); }
+.game-ui .minimap-player.minimap-color-5 { border-left-color: rgb(255, 172, 113); }
+.minimap-dock.is-collapsed { height: auto; }
+.is-collapsed > .minimap-body { display: none; }
+.is-expanded .minimap-dock { top: 7%; right: 6%; bottom: 7%; left: 6%; width: auto; height: auto; max-width: none; max-height: none; }
+.is-small .minimap-dock { left: 12px; bottom: 170px; width: 360px; height: 440px; max-width: 52%; max-height: 48%; }
+.is-small .minimap-dock.is-collapsed { height: auto; }
+.is-small.is-expanded .minimap-dock { top: 5%; right: 5%; bottom: 5%; left: 5%; width: auto; height: auto; max-width: none; max-height: none; }
