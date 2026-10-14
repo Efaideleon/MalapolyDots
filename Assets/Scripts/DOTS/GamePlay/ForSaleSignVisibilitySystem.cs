@@ -45,19 +45,32 @@ namespace DOTS.GamePlay
                     ref ClientVisibleState clientVisibility,
                     in ForSaleSignTag _)
             {
+                const float speed = 0.7f;
+                float scaleY = postTransformMatrix.Value.c1.y;
+
                 if (visibleState.Value == VisibleState.Hiding && clientVisibility.State != VisibleState.Hidden)
                 {
-                    UnityEngine.Debug.Log($"[ForSaleSignVisibilitySystem] | hiding forsale sign.");
-                    float speed = 0.7f;
-                    var newY = math.max(0f, postTransformMatrix.Value.c1.y - dt * speed);
-                    var newScale = new float3(1, newY, 1);
-                    postTransformMatrix.Value = float4x4.Scale(newScale);
+                    scaleY = math.max(0f, scaleY - dt * speed);
+                    postTransformMatrix.Value = float4x4.Scale(new float3(1, scaleY, 1));
+                    if (scaleY <= 0.01f)
+                    {
+                        clientVisibility.State = VisibleState.Hidden;
+                        ecb.AddComponent<DisableRendering>(entityIndexInQuery, entity);
+                    }
                 }
-
-                if (math.length(postTransformMatrix.Value.c1.y) <= 0.01f)
+                else if (visibleState.Value == VisibleState.Visible && clientVisibility.State != VisibleState.Visible)
                 {
-                    clientVisibility.State = VisibleState.Hidden;
-                    ecb.AddComponent<DisableRendering>(entityIndexInQuery, entity);
+                    if (clientVisibility.State == VisibleState.Hidden)
+                        ecb.RemoveComponent<DisableRendering>(entityIndexInQuery, entity);
+
+                    clientVisibility.State = VisibleState.Showing;
+                    scaleY = math.min(1f, scaleY + dt * speed);
+                    postTransformMatrix.Value = float4x4.Scale(new float3(1, scaleY, 1));
+                    if (scaleY >= 0.99f)
+                    {
+                        postTransformMatrix.Value = float4x4.Scale(new float3(1, 1, 1));
+                        clientVisibility.State = VisibleState.Visible;
+                    }
                 }
             }
         }

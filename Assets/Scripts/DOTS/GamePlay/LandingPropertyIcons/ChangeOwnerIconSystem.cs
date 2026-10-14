@@ -1,4 +1,5 @@
 using Assets.Scripts.DOTS.Characters;
+using Assets.Scripts.DOTS.DataComponents;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
 using Unity.Burst;
@@ -40,21 +41,20 @@ namespace DOTS.GamePlay.LandingPropertyIcons
 
             var characterToIcon = SystemAPI.GetSingleton<CharacterNametoIconUVMapBlobReference>();
 
-            foreach (var (owner, _, entity) in SystemAPI.Query<RefRO<OwnerByEntityComponent>, RefRO<PropertySpaceTag>>().WithEntityAccess().WithChangeFilter<OwnerComponent>())
+            foreach (var (owner, _, entity) in SystemAPI.Query<RefRO<OwnerByEntityComponent>, RefRO<PropertySpaceTag>>().WithEntityAccess().WithChangeFilter<OwnerByEntityComponent>())
             {
-                if (owner.ValueRO.Entity != Entity.Null)
+                var icon = CharactersEnum.Default;
+                if (owner.ValueRO.Entity != Entity.Null && characterEnumLookup.HasComponent(owner.ValueRO.Entity))
                 {
-                    var linkedEntities = linkedEntityGroupLookup[entity];
-                    foreach (var linkedEntity in linkedEntities)
-                    {
-                        if (ownerIconsLookup.HasComponent(linkedEntity.Value))
-                        {
-                            var characterEnum = characterEnumLookup[owner.ValueRO.Entity].Value;
-                            var uvOffset = characterToIcon.Reference.Value.array[(int)characterEnum];
-                            var ownerIconEntity = linkedEntity.Value;
-                            uvOffsetOverrideLookup.GetRefRW(ownerIconEntity).ValueRW.Value = uvOffset;
-                        }
-                    }
+                    icon = characterEnumLookup[owner.ValueRO.Entity].Value;
+                }
+
+                var uvOffset = characterToIcon.Reference.Value.array[(int)icon];
+                var linkedEntities = linkedEntityGroupLookup[entity];
+                foreach (var linkedEntity in linkedEntities)
+                {
+                    if (!ownerIconsLookup.HasComponent(linkedEntity.Value)) continue;
+                    uvOffsetOverrideLookup.GetRefRW(linkedEntity.Value).ValueRW.Value = uvOffset;
                 }
             }
         }

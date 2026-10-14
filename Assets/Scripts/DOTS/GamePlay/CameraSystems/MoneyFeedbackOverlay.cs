@@ -15,7 +15,7 @@ namespace DOTS.GamePlay.CameraSystems
         float progress;
         bool visible;
 
-        public bool Show(int delta, MoneyChangeReason reason)
+        public void Warmup()
         {
             if (document == null)
             {
@@ -46,6 +46,14 @@ namespace DOTS.GamePlay.CameraSystems
                 label.AddToClassList("game-money-feedback");
                 root.Add(label);
             }
+            label.style.display = DisplayStyle.None;
+            visible = false;
+        }
+
+        public bool Show(int delta, MoneyChangeReason reason)
+        {
+            Warmup();
+            var root = document.rootVisualElement;
             if (root.panel == null || root.contentRect.width <= 0 || root.contentRect.height <= 0)
                 return false;
             string caption = reason switch

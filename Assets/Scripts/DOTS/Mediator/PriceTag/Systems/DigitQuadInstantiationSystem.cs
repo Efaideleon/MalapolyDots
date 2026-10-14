@@ -22,8 +22,8 @@ namespace DOTS.Mediator
     {
         private ComponentLookup<Parent> parentLookup;
         private const int MAX_NUMBER_OF_QUADS = 8;
-        private const float QUAD_WIDTH = 0.3f;
-        private const float Q_SIGN_OFFSET = 0.2f;
+        private const float QUAD_WIDTH = 0.39f;
+        private const float Q_SIGN_OFFSET = 0.26f;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -78,7 +78,7 @@ namespace DOTS.Mediator
                     var pricePosition = new float3(-0.2f, 0.2f, -0.09f);
                     var offset = i == 0 ? new float3(-SignOffset, 0, 0) : 0;
                     var quadPos = i * new float3(QuadWidth, 0, 0) + offset + pricePosition;
-                    var quadScale = 0.5f;
+                    var quadScale = 0.65f;
 
                     LocalTransform quadTransform = LocalTransform.FromPositionRotationScale(quadPos, quaternion.identity, quadScale);
 

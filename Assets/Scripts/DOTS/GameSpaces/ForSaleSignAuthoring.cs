@@ -25,6 +25,7 @@ namespace Malapoly.DOTS.GameSpaces
         Visible,
         Hiding,
         Hidden,
+        Showing,
     }
 
     public struct ClientVisibleState : IComponentData

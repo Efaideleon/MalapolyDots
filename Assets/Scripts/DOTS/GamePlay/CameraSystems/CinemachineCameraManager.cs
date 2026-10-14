@@ -40,8 +40,11 @@ namespace DOTS.GamePlay.CameraSystems
         [SerializeField, Min(0.2f)] private float moneyShotDuration = 1.1f;
         [SerializeField, Min(0.5f)] private float moneyHeadHeight = 3f;
         [SerializeField] private Vector3 moneyShotOffset = new Vector3(0f, 7f, 11f);
+        [SerializeField, Min(0.01f)] private float moneyShotFollowSmoothTime = 0.08f;
         private CinemachineCamera moneyCamera;
         private Vector3 moneyViewOffset;
+        private Vector3 moneyShotPositionVelocity;
+        private bool snapMoneyShotPosition;
         public float MoneyShotDuration => moneyShotDuration;
         public float MoneyHeadHeight => moneyHeadHeight;
         public bool IsShowingMoney { get; private set; }
@@ -49,20 +52,7 @@ namespace DOTS.GamePlay.CameraSystems
         public void ShowMoneyShot(Vector3 playerPosition)
         {
             if (GamePreferences.Current.ReducedCameraMotion) return;
-            if (moneyCamera == null)
-            {
-                var shot = new GameObject("Money transaction camera");
-                shot.transform.SetParent(transform, false);
-                moneyCamera = shot.AddComponent<CinemachineCamera>();
-                if (followCamera != null)
-                {
-                    moneyCamera.Lens = followCamera.Lens;
-                    moneyCamera.OutputChannel = followCamera.OutputChannel;
-                }
-                moneyCamera.Lens.OrthographicSize = 7f;
-                moneyCamera.Lens.FieldOfView = 45f;
-                ConfigureCamera(moneyCamera);
-            }
+            EnsureMoneyCamera();
             if (!IsShowingMoney)
             {
                 var view = Camera.main;
@@ -70,38 +60,70 @@ namespace DOTS.GamePlay.CameraSystems
                 moneyViewOffset = Quaternion.Euler(0f, heading, 0f) * new Vector3(moneyShotOffset.x, moneyShotOffset.y, -moneyShotOffset.z);
             }
             IsShowingMoney = true;
+            moneyShotPositionVelocity = Vector3.zero;
+            snapMoneyShotPosition = true;
             moneyCamera.Priority.Value = 100;
             UpdateMoneyShot(playerPosition);
             moneyCamera.PreviousStateIsValid = false;
-            ResetMoneyBrain();
         }
+
+        private void EnsureMoneyCamera()
+        {
+            if (moneyCamera != null) return;
+
+            var shot = new GameObject("Money transaction camera");
+            shot.transform.SetParent(transform, false);
+            moneyCamera = shot.AddComponent<CinemachineCamera>();
+            if (followCamera != null)
+            {
+                moneyCamera.Lens = followCamera.Lens;
+                moneyCamera.OutputChannel = followCamera.OutputChannel;
+            }
+            moneyCamera.Lens.OrthographicSize = 7f;
+            moneyCamera.Lens.FieldOfView = 45f;
+            moneyCamera.Priority.Value = -100;
+            ConfigureCamera(moneyCamera);
+        }
+
+        public void WarmupMoneyShotCamera() => EnsureMoneyCamera();
 
         public void UpdateMoneyShot(Vector3 playerPosition)
         {
             if (!IsShowingMoney || moneyCamera == null) return;
             var focus = playerPosition + Vector3.up * (moneyHeadHeight * 0.5f);
-            var position = focus + moneyViewOffset;
-            position.y = Mathf.Max(position.y, boardHeight + minimumCameraHeight);
-            moneyCamera.transform.SetPositionAndRotation(position, Quaternion.LookRotation(focus - position));
+            var targetPosition = focus + moneyViewOffset;
+            targetPosition.y = Mathf.Max(targetPosition.y, boardHeight + minimumCameraHeight);
+            var targetRotation = Quaternion.LookRotation(focus - targetPosition);
+
+            // Player positions can receive small corrections while moving over the
+            // network. Filtering those corrections keeps the money shot from
+            // inheriting their jitter. Snap once when the shot begins so there is
+            // no initial drift from the camera's previous position.
+            if (snapMoneyShotPosition)
+            {
+                moneyCamera.transform.SetPositionAndRotation(targetPosition, targetRotation);
+                moneyShotPositionVelocity = Vector3.zero;
+                snapMoneyShotPosition = false;
+                return;
+            }
+
+            float deltaTime = Time.unscaledDeltaTime;
+            var position = Vector3.SmoothDamp(moneyCamera.transform.position, targetPosition,
+                ref moneyShotPositionVelocity, moneyShotFollowSmoothTime, Mathf.Infinity, deltaTime);
+            float rotationBlend = 1f - Mathf.Exp(-deltaTime / moneyShotFollowSmoothTime);
+            var rotation = Quaternion.Slerp(moneyCamera.transform.rotation, targetRotation, rotationBlend);
+            moneyCamera.transform.SetPositionAndRotation(position, rotation);
         }
 
         public void EndMoneyShot()
         {
             if (!IsShowingMoney) return;
             IsShowingMoney = false;
+            snapMoneyShotPosition = false;
+            moneyShotPositionVelocity = Vector3.zero;
             if (moneyCamera != null) moneyCamera.Priority.Value = -100;
             if (followCamera != null) followCamera.PreviousStateIsValid = false;
             if (landingCamera != null) landingCamera.PreviousStateIsValid = false;
-            ResetMoneyBrain();
-        }
-
-        private void ResetMoneyBrain()
-        {
-            for (int i = 0; i < CinemachineBrain.ActiveBrainCount; i++)
-            {
-                var brain = CinemachineBrain.GetActiveBrain(i);
-                if (moneyCamera != null && brain.IsValidChannel(moneyCamera)) brain.ResetState();
-            }
         }
 
         private void Awake()

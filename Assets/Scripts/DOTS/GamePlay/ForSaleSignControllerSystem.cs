@@ -35,15 +35,15 @@ namespace DOTS.GamePlay
             {
                 bool purchased = owner.ValueRO.ID != PropertyConstants.Vacant;
 
-                if (purchased)
-                {
-                    // The ForSaleComponent points to the child forsale sign entity.
-                    // Should i make it a ghost component?
-                    // or there a method to reference child entity better now?
-                    var forSaleSignEntity = forSaleComponent.ValueRW.entity;
-                    ref var visibleStateCompRW = ref SystemAPI.GetComponentRW<VisibleStateComponent>(forSaleSignEntity).ValueRW;
-                    visibleStateCompRW.Value = VisibleState.Hiding;
-                }
+                // The ForSaleComponent points to the child sign entity. Ownership
+                // changes in both directions: hide the sign when bought and restore
+                // it after the deed returns to the bank.
+                var forSaleSignEntity = forSaleComponent.ValueRO.entity;
+                if (forSaleSignEntity == Entity.Null ||
+                    !SystemAPI.HasComponent<VisibleStateComponent>(forSaleSignEntity)) continue;
+
+                ref var visibleState = ref SystemAPI.GetComponentRW<VisibleStateComponent>(forSaleSignEntity).ValueRW;
+                visibleState.Value = purchased ? VisibleState.Hiding : VisibleState.Visible;
             }
         }
     }

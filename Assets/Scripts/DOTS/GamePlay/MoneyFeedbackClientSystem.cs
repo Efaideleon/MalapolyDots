@@ -49,7 +49,12 @@ namespace DOTS.GamePlay
             var manager = CinemachineCameraManager.Instance;
             if (manager == null) { Clear(); return; }
             cameraManager = manager;
-            if (overlay == null) overlay = manager.GetComponent<MoneyFeedbackOverlay>() ?? manager.gameObject.AddComponent<MoneyFeedbackOverlay>();
+            if (overlay == null)
+            {
+                overlay = manager.GetComponent<MoneyFeedbackOverlay>() ?? manager.gameObject.AddComponent<MoneyFeedbackOverlay>();
+                overlay.Warmup();
+                manager.WarmupMoneyShotCamera();
+            }
 
             if (!presenting)
             {
