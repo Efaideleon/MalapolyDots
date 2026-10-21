@@ -25,6 +25,9 @@ public static class PropertyColliderRepair
                 size.x = Mathf.Max(2f, size.x + 1f);
                 size.z = Mathf.Max(2f, size.z + 1f);
                 size.y = Mathf.Max(1f, size.y + 0.5f);
+                size.x *= 0.9f;
+                size.z *= 0.9f;
+                size.y *= 0.75f;
                 var box = root.GetComponent<BoxCollider>();
                 if (box == null) box = root.AddComponent<BoxCollider>();
                 box.center = bounds.center;

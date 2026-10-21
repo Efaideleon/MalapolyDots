@@ -27,7 +27,11 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
                     var characterSelectPanel = panelLookup[GameMenuPhase.CharacterSelect] as CharacterSelectPanel;
                     var character = prepickedCharacter.ValueRO.Character;
 
-                    if (prepickedCharacter.ValueRO.PrePicked)
+                    if (prepickedCharacter.ValueRO.PrePicked && prepickedCharacter.ValueRO.IsLockedIn)
+                    {
+                        characterSelectPanel.SetLockedIn(character);
+                    }
+                    else if (prepickedCharacter.ValueRO.PrePicked)
                     {
                         characterSelectPanel.SetChoosing(character);
                     }

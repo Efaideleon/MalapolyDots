@@ -14,6 +14,7 @@ namespace DOTS.UI.Controllers
         public bool CanBuyHouse;
         public bool CanBuyHotel;
         public bool MustPayRent;
+        public bool RentAlreadyPaid;
     }
 
     public class SpaceActionsPanelController : IPanelController
@@ -106,7 +107,7 @@ namespace DOTS.UI.Controllers
             SpaceActionsPanel.SetPropertyPurchaseAvailability(Context.CanBuyProperty);
             SpaceActionsPanel.SetHousePurchaseAvailability(Context.CanBuyHouse);
             SpaceActionsPanel.SetHotelPurchaseAvailability(Context.CanBuyHotel);
-            SpaceActionsPanel.SetRentPaymentAvailability(Context.MustPayRent);
+            SpaceActionsPanel.SetRentPaymentAvailability(Context.MustPayRent, Context.RentAlreadyPaid);
         }
 
         private void HandleBuyHouseButtonClick()

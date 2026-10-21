@@ -53,6 +53,7 @@ namespace Assets.Scripts.DOTS.Characters
                 AddComponent<GhostChanceCardPicked>(authoringEntity);
                 AddComponent<GhostTreasureCardPicked>(authoringEntity);
                 AddComponent<JailState>(authoringEntity);
+                AddComponent<PlayerCardInventory>(authoringEntity);
                 AddComponent<LandingPaymentResolved>(authoringEntity);
                 AddComponent<BankruptPlayer>(authoringEntity);
             }
@@ -64,6 +65,9 @@ namespace Assets.Scripts.DOTS.Characters
     {
         [GhostField] public bool Value;
         [GhostField] public int FinalNetWorth;
+        [GhostField] public int FinalCashWorth;
+        [GhostField] public int FinalPropertyWorth;
+        [GhostField] public int FinalBuildingWorth;
         [GhostField] public int UnpaidRent;
         [GhostField] public int CreditorNetworkId;
         public bool Declared;

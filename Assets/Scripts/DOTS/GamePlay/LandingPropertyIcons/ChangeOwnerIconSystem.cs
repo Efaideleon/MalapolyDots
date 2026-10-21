@@ -43,7 +43,7 @@ namespace DOTS.GamePlay.LandingPropertyIcons
 
             foreach (var (owner, _, entity) in SystemAPI.Query<RefRO<OwnerByEntityComponent>, RefRO<PropertySpaceTag>>().WithEntityAccess().WithChangeFilter<OwnerByEntityComponent>())
             {
-                var icon = CharactersEnum.Default;
+                var icon = Assets.Scripts.DOTS.DataComponents.CharactersEnum.Default;
                 if (owner.ValueRO.Entity != Entity.Null && characterEnumLookup.HasComponent(owner.ValueRO.Entity))
                 {
                     icon = characterEnumLookup[owner.ValueRO.Entity].Value;

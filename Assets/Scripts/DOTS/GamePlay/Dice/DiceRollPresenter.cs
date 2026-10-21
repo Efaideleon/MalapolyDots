@@ -11,7 +11,7 @@ namespace DOTS.GamePlay
         public bool FollowCamera = true;
         public Camera PresentationCamera;
         [Tooltip("World-space height of the board's flat floor.")]
-        public float FloorHeight;
+        public float FloorHeight = .5083485f;
         [Min(.1f)] public float FloorDieSize = 2f;
         [Range(1, 6)] public int PreviewFirst = 3;
         [Range(1, 6)] public int PreviewSecond = 5;
@@ -50,6 +50,7 @@ namespace DOTS.GamePlay
         void PlaceOnFloor()
         {
             floorPosition = new Vector3(transform.position.x, FloorHeight, transform.position.z);
+            floorPosition.y = FindSurfaceHeight(floorPosition) + .01f;
             floorRotation = Quaternion.identity;
             floorScale = FollowCamera ? FloorDieSize : 1;
             var camera = View;
@@ -58,17 +59,34 @@ namespace DOTS.GamePlay
                 // Capture a fixed patch of floor once; camera motion cannot drag the rolling dice.
                 var ray = camera.ViewportPointToRay(new Vector3(.5f, .38f, 0));
                 var floor = new Plane(Vector3.up, Vector3.up * FloorHeight);
-                if (floor.Raycast(ray, out float distance)) floorPosition = ray.GetPoint(distance);
+                if (floor.Raycast(ray, out float distance))
+                {
+                    floorPosition = ray.GetPoint(distance);
+                    floorPosition.y = FindSurfaceHeight(floorPosition) + .01f;
+                }
                 else
                 {
                     var forward = Vector3.ProjectOnPlane(camera.transform.forward, Vector3.up).normalized;
                     floorPosition = camera.transform.position + forward * 12;
-                    floorPosition.y = FloorHeight;
+                    floorPosition.y = FindSurfaceHeight(floorPosition) + .01f;
                 }
                 floorRotation = Quaternion.Euler(0, camera.transform.eulerAngles.y, 0);
             }
             transform.SetPositionAndRotation(floorPosition, floorRotation);
             transform.localScale = Vector3.one * floorScale;
+        }
+
+        float FindSurfaceHeight(Vector3 position)
+        {
+            var ray = new Ray(new Vector3(position.x, FloorHeight + 100f, position.z), Vector3.down);
+            var hits = Physics.RaycastAll(ray, 200f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            float surfaceHeight = FloorHeight;
+            foreach (var hit in hits)
+            {
+                if (hit.collider == null || hit.collider.transform.IsChildOf(transform)) continue;
+                if (hit.point.y > surfaceHeight) surfaceHeight = hit.point.y;
+            }
+            return surfaceHeight;
         }
 
         void LateUpdate()

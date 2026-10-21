@@ -23,19 +23,19 @@
 }
 .match-results.is-visible { display: flex; }
 .match-results-card {
-    width: 800px; max-width: 94%; max-height: 96%; padding: 28px;
+    width: 1728px; max-width: 98%; max-height: 98%; padding: 48px;
     border-radius: 28px; border-width: 4px; border-color: var(--game-gold); border-bottom-width: 10px;
     border-bottom-color: var(--game-gold-shadow); background-color: var(--game-panel);
 }
-.match-results-card Label { white-space: normal; color: var(--game-text); font-size: 26px; }
-.match-results-card .match-eyebrow { font-size: 19px; color: rgb(161, 239, 216); letter-spacing: 1px; }
+.match-results-card Label { white-space: normal; color: var(--game-text); font-size: 44px; }
+.match-results-card .match-eyebrow { font-size: 33px; color: rgb(161, 239, 216); letter-spacing: 1px; }
 .match-results-card .match-result-title {
-    font-size: 48px; color: var(--game-gold); margin: 10px 0; flex-shrink: 0;
+    font-size: 81px; color: var(--game-gold); margin: 10px 0; flex-shrink: 0;
     -unity-font-definition: url("project://database/Assets/Resources/Fonts/LuckiestGuy-Regular%20SDF.asset?fileID=11400000&guid=6fc596bdedf0c431788d92bdb4136c7a&type=2");
 }
-.match-results-card .match-reason { color: rgb(199, 232, 219); font-size: 23px; margin: 6px 0; flex-shrink: 0; }
+.match-results-card .match-reason { color: rgb(199, 232, 219); font-size: 39px; margin: 6px 0; flex-shrink: 0; }
 .match-standings-heading { flex-direction: row; justify-content: space-between; margin-top: 20px; margin-bottom: 8px; flex-shrink: 0; }
-.match-standings { max-height: 420px; min-height: 100px; flex-shrink: 1; }
+.match-standings { max-height: 560px; min-height: 100px; flex-shrink: 1; }
 .match-standings .unity-scroller { width: 24px; min-width: 24px; margin-left: 8px; padding: 3px; background-color: rgb(9, 43, 54); border-radius: 12px; }
 .match-standings .unity-scroller__low-button, .match-standings .unity-scroller__high-button { display: none; }
 .match-standings .unity-base-slider { margin: 0; flex-grow: 1; width: 18px; min-width: 18px; border-width: 0; padding: 0; }
@@ -45,26 +45,64 @@
 .match-standings .unity-base-slider__dragger:active { background-color: rgb(230, 164, 47); }
 .match-standings .unity-base-slider__dragger-border { border-width: 0; background-color: transparent; }
 .match-standing {
-    flex-direction: row; align-items: center; padding: 12px; margin-bottom: 8px; min-height: 92px;
+    flex-direction: column; align-items: stretch; padding: 14px; margin-bottom: 10px; min-height: 92px;
     background-color: rgb(10, 47, 59); border-width: 2px; border-color: rgb(36, 99, 108); border-radius: 16px; flex-shrink: 0;
 }
 .match-standing.is-winner { background-color: rgb(32, 103, 93); border-color: var(--game-gold); }
 .match-standing.is-local { border-left-width: 6px; border-left-color: var(--game-mint); }
 .match-standing.is-bankrupt { opacity: 0.6; }
+.match-standing-header { flex-direction: row; align-items: center; }
 .match-results-card .match-rank {
-    width: 50px; height: 50px; flex-shrink: 0; margin-right: 14px; border-radius: 14px;
-    background-color: rgb(36, 99, 108); color: var(--game-text); font-size: 30px; -unity-text-align: middle-center;
+    width: 66px; height: 66px; flex-shrink: 0; margin-right: 18px; border-radius: 18px;
+    background-color: rgb(36, 99, 108); color: var(--game-text); font-size: 51px; -unity-text-align: middle-center;
 }
 .match-standing.is-winner .match-rank { background-color: var(--game-gold); color: var(--game-ink); }
-.match-standing-player { flex-grow: 1; flex-shrink: 1; margin-right: 16px; }
-.match-results-card .match-player-name { font-size: 28px; }
-.match-results-card .match-player-badge { font-size: 17px; color: rgb(161, 239, 216); margin-top: 2px; }
-.match-results-card .match-player-worth { color: rgb(186, 243, 154); font-size: 32px; flex-shrink: 0; -unity-text-align: middle-right; }
-.match-standing.is-bankrupt .match-player-worth { color: rgb(255, 175, 145); font-size: 23px; }
-.match-results-card .match-worth-note { color: rgb(199, 232, 219); font-size: 19px; margin: 8px 0; flex-shrink: 0; }
+.match-standing-player { flex-direction: column; flex-grow: 1; flex-shrink: 1; margin-right: 16px; }
+.match-results-card .match-player-name { font-size: 47px; }
+.match-results-card .match-player-badge { font-size: 29px; color: rgb(161, 239, 216); margin-top: 2px; }
+.match-results-card .match-player-worth { color: rgb(186, 243, 154); font-size: 55px; min-width: 150px; flex-shrink: 0; -unity-text-align: middle-right; }
+.match-standing.is-bankrupt .match-player-worth { color: rgb(255, 175, 145); font-size: 39px; }
+.match-worth-breakdown { flex-direction: row; flex-wrap: wrap; margin-top: 12px; }
+.match-worth-stat { flex-direction: row; align-items: center; flex-grow: 1; min-width: 165px; margin-right: 8px; margin-bottom: 6px; padding: 9px; border-width: 2px; border-radius: 12px; }
+.match-worth-stat-cash { background-color: rgba(255, 211, 92, 0.13); border-color: rgb(170, 130, 55); }
+.match-worth-stat-property { background-color: rgba(94, 176, 210, 0.13); border-color: rgb(54, 126, 158); }
+.match-worth-stat-building { background-color: rgba(62, 188, 142, 0.13); border-color: rgb(36, 132, 99); }
+.match-results-card .match-worth-stat-icon { width: 44px; height: 44px; flex-shrink: 0; margin-right: 8px; border-width: 2px; border-radius: 22px; background-color: rgb(255, 211, 92); color: rgb(79, 53, 38); font-size: 33px; -unity-font-style: bold; -unity-text-align: middle-center; }
+.match-worth-stat-property .match-worth-stat-icon { background-color: rgb(127, 208, 239); }
+.match-worth-stat-building .match-worth-stat-icon { background-color: rgb(105, 213, 159); }
+.match-worth-stat-text { flex-direction: column; min-width: 0; }
+.match-results-card .match-worth-stat-label { color: rgb(199, 232, 219); font-size: 26px; white-space: nowrap; }
+.match-results-card .match-worth-stat-value { color: var(--game-text); font-size: 38px; -unity-font-style: bold; white-space: nowrap; }
+.match-property-portfolio { margin-top: 12px; padding: 10px; background-color: rgba(5, 32, 43, 0.7); border-width: 1px; border-color: rgb(36, 99, 108); border-radius: 12px; }
+.match-property-portfolio-heading { flex-direction: row; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.match-results-card .match-property-portfolio-title { color: rgb(161, 239, 216); font-size: 27px; letter-spacing: 1px; }
+.match-results-card .match-property-portfolio-count { color: var(--game-gold); font-size: 27px; -unity-font-style: bold; }
+.match-property-tiles { flex-direction: row; flex-wrap: wrap; margin-left: -4px; margin-right: -4px; }
+.match-deed-card { flex-direction: column; flex-basis: 48%; flex-grow: 1; min-width: 240px; margin: 4px; padding: 8px 10px; background-color: rgb(17, 67, 76); border-width: 1px; border-color: rgb(49, 117, 125); border-radius: 10px; }
+.match-deed-color-band { height: 7px; margin-bottom: 6px; border-radius: 4px; background-color: rgb(115, 145, 151); }
+.match-deed-color-brown { background-color: rgb(137, 84, 52); }
+.match-deed-color-light-blue { background-color: rgb(103, 205, 229); }
+.match-deed-color-purple { background-color: rgb(152, 88, 188); }
+.match-deed-color-orange { background-color: rgb(239, 142, 54); }
+.match-deed-color-red { background-color: rgb(219, 75, 67); }
+.match-deed-color-yellow { background-color: rgb(234, 204, 61); }
+.match-deed-color-green { background-color: rgb(71, 164, 83); }
+.match-deed-color-blue { background-color: rgb(64, 110, 202); }
+.match-deed-color-white { background-color: rgb(230, 235, 224); }
+.match-deed-color-none { background-color: rgb(115, 145, 151); }
+.match-deed-heading { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+.match-results-card .match-deed-name { flex-grow: 1; margin-right: 8px; color: var(--game-text); font-size: 30px; }
+.match-results-card .match-deed-price { flex-shrink: 0; color: rgb(186, 243, 154); font-size: 30px; -unity-font-style: bold; }
+.match-deed-buildings { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 5px; }
+.match-results-card .match-deed-building-label { color: rgb(199, 232, 219); font-size: 23px; }
+.match-building-pips { flex-direction: row; align-items: center; }
+.match-building-pip { width: 9px; height: 9px; margin-left: 3px; border-radius: 3px; background-color: rgb(48, 86, 88); }
+.match-building-pip.is-built { background-color: var(--game-gold); border-width: 1px; border-color: rgb(255, 244, 192); }
+.match-results-card .match-empty-portfolio, .match-results-card .match-bankrupt-note { color: rgb(199, 232, 219); font-size: 30px; margin-top: 8px; }
+.match-results-card .match-worth-note { color: rgb(199, 232, 219); font-size: 30px; margin: 8px 0; padding: 8px 10px; background-color: rgba(62, 188, 142, 0.1); border-left-width: 4px; border-left-color: var(--game-mint); flex-shrink: 0; }
 .match-results-card .match-return { margin-top: 12px; flex-shrink: 0; border-color: rgb(143, 243, 185); border-bottom-color: var(--game-mint-shadow); }
 .match-results-card .match-return:focus { border-color: var(--game-gold); border-bottom-color: var(--game-gold-shadow); }
-.match-results-card #returnStatus { font-size: 20px; }
+.match-results-card #returnStatus { font-size: 34px; }
 .match-results-card.is-disconnected #standingsHeader,
 .match-results-card.is-disconnected #standings,
 .match-results-card.is-disconnected #worthNote { display: none; }

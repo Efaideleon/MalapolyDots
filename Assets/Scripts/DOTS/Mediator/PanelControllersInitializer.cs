@@ -184,21 +184,18 @@ namespace DOTS.Mediator
             var buttonDirtyFlagQuery = SystemAPI.QueryBuilder().WithAllRW<UIButtonDirtyFlag>().Build();
             SystemAPI.ManagedAPI.GetSingleton<PointerEnterEventCallback>().Callback = (PointerEnterEvent evt) =>
             {
-                evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
                 Debug.Log("[PanelControllersInitializer] | Clicked on UIToolkit Element");
             };
 
             SystemAPI.ManagedAPI.GetSingleton<PointerMoveEventCallback>().Callback = (PointerMoveEvent evt) =>
             {
-                evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
                 Debug.Log("[PanelControllersInitializer] | Moving on UIToolkit Element");
             };
 
             SystemAPI.ManagedAPI.GetSingleton<PointerUpEventCallback>().Callback = (PointerUpEvent evt) =>
             {
-                evt.StopImmediatePropagation();
                 buttonDirtyFlagQuery.GetSingletonRW<UIButtonDirtyFlag>().ValueRW.Value = true;
                 Debug.Log("[PanelControllersInitializer] | Lifting click on UIToolkit Element");
             };

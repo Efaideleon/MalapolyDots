@@ -12,6 +12,7 @@ namespace DOTS.GamePlay
         Rolling,
         Walking,
         Landing,
+        CardAwaitingAcceptance,
         GameOver,
     }
 

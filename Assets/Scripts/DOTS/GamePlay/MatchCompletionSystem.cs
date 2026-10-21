@@ -47,16 +47,23 @@ namespace DOTS.GamePlay
             bool tied = false;
             foreach (var (money, result, owner, player) in SystemAPI.Query<RefRO<GhostMoneyComponet>, RefRW<BankruptPlayer>, RefRO<GhostOwner>>().WithEntityAccess())
             {
-                int worth = System.Math.Max(0, money.ValueRO.Value);
+                int cashWorth = result.ValueRO.Value ? 0 : System.Math.Max(0, money.ValueRO.Value);
+                int propertyWorth = 0;
+                int buildingWorth = 0;
                 if (!result.ValueRO.Value)
                     foreach (var (propertyOwner, price, property) in SystemAPI.Query<RefRO<OwnerByEntityComponent>, RefRO<GhostPriceComponent>>().WithEntityAccess())
                     {
                         if (propertyOwner.ValueRO.Entity != player) continue;
                         int houses = SystemAPI.HasComponent<HouseCount>(property) ? SystemAPI.GetComponent<HouseCount>(property).Value : 0;
                         int cost = SystemAPI.HasComponent<HousePriceComponent>(property) ? SystemAPI.GetComponent<HousePriceComponent>(property).Value : 0;
-                        worth += MatchRules.PropertyValue(price.ValueRO.Value, cost, houses);
+                        propertyWorth += System.Math.Max(0, price.ValueRO.Value);
+                        buildingWorth += System.Math.Max(0, cost) * System.Math.Max(0, System.Math.Min(5, houses));
                     }
-                result.ValueRW.FinalNetWorth = result.ValueRO.Value ? 0 : worth;
+                int worth = cashWorth + propertyWorth + buildingWorth;
+                result.ValueRW.FinalCashWorth = cashWorth;
+                result.ValueRW.FinalPropertyWorth = propertyWorth;
+                result.ValueRW.FinalBuildingWorth = buildingWorth;
+                result.ValueRW.FinalNetWorth = worth;
                 if (result.ValueRO.Value) continue;
                 if (worth > best) { best = worth; winner = owner.ValueRO.NetworkId; tied = false; }
                 else if (worth == best) tied = true;

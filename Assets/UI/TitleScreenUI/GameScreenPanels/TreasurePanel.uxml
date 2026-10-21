@@ -2,9 +2,9 @@
     <Style src="project://database/Assets/UI/USS/Buttons.uss?fileID=7433441132597879392&amp;guid=89f667ab09eb1cf4aa47c69a79f2e072&amp;type=3#Buttons" />
     <ui:Style src="project://database/Assets/Resources/UI/GameLayouts.uss" />
     <ui:Style src="project://database/Assets/Resources/UI/GameTheme.uss" />
-    <ui:VisualElement name="treasure-display-container" class="game-ui layout-treasure-panel-treasure-display-container-3">
+    <ui:VisualElement name="treasure-display-container" class="game-ui game-panel layout-treasure-panel-treasure-display-container-3">
         <ui:VisualElement name="treasure-image" class="layout-treasure-panel-treasure-image-4" />
-        <ui:VisualElement name="treasure-display-panel" class="game-panel layout-treasure-panel-treasure-display-panel-5">
+        <ui:VisualElement name="treasure-display-panel" class="layout-treasure-panel-treasure-display-panel-5">
             <ui:Label text="" name="treasure-panel-label" data-source="project://database/Assets/UI/ScriptableObjects/TreasurePanel.asset?fileID=11400000&amp;guid=44651d841d37c4d338475eb233c7d334&amp;type=2#TreasurePanel" class="layout-treasure-panel-treasure-panel-label-6" />
             <ui:Label text="" name="treasure-panel-amount" data-source="project://database/Assets/UI/ScriptableObjects/TreasurePanel.asset?fileID=11400000&amp;guid=44651d841d37c4d338475eb233c7d334&amp;type=2#TreasurePanel" class="game-details layout-treasure-panel-treasure-panel-amount-7" />
         </ui:VisualElement>

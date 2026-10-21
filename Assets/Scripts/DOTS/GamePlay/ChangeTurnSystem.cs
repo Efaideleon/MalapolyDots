@@ -46,6 +46,12 @@ namespace Assets.Scripts.DOTS.GamePlay
                     continue;
                 }
                 var turnState = SystemAPI.GetSingleton<GameStateComponent>().State;
+                if (SystemAPI.HasComponent<PlayerCardInventory>(active) &&
+                    SystemAPI.GetComponent<PlayerCardInventory>(active).HasPendingChoice)
+                {
+                    ecb.DestroyEntity(rpcEntity);
+                    continue;
+                }
                 if (BankruptcyRules.HasDebt(state.EntityManager)) { ecb.DestroyEntity(rpcEntity); continue; }
                 if (turnState == GameState.Walking || (turnState == GameState.Rolling &&
                     (!SystemAPI.HasComponent<JailState>(active) || !SystemAPI.GetComponent<JailState>(active).InJail)))
@@ -121,7 +127,8 @@ namespace Assets.Scripts.DOTS.GamePlay
                     SystemAPI.GetSingletonRW<CurrentPlayerComponent>().ValueRW.entity = entity;
 
                     SystemAPI.GetSingletonRW<CurrentActivePlayer>().ValueRW.Entity = entity;
-                    ChanceCardRules.UseJailFreeCard(state.EntityManager, entity);
+                    if (SystemAPI.HasComponent<AiOpponent>(entity))
+                        ChanceCardRules.UseJailFreeCard(state.EntityManager, entity);
                     activePlayer.ValueRW = true;
                 }
                 else

@@ -54,7 +54,6 @@ namespace DOTS.Mediator.Systems
 
                 // The place where the player lands on.
                 Entity placeEntity = spaceLandedOn.ValueRO.entity;
-                UnityEngine.Debug.Log($"[ShowPanelsManagedSystem] | placeEntity : {placeEntity}");
 
                 // The place type where the player is at.
                 if (!spaceTypeLookup.HasComponent(placeEntity)) return;

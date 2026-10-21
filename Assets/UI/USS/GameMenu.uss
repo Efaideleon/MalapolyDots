@@ -70,28 +70,24 @@ button {
     border-bottom-left-radius: 20px;
 }
 
-.char-picked-btn-container Label {
+.char-picked-btn-container Button > .character-sprite {
     margin: 0;
     width: 100%;
     height: 92%;
     border-radius: 15px;
-    border-top-width: 1px;
-    background-color: rgb(244, 117, 229);
-    border-bottom-color: rgb(243, 148, 255);
-    border-bottom-width: 1px;
-    border-top-color: rgb(191, 81, 255);
+    background-color: rgba(244, 117, 229, 0.35);
 }
 
 .char-picked-btn-container #highlight {
-    background-color: rgb(252, 161, 255);
+    background-color: rgba(252, 161, 255, 0.35);
 }
 
 .char-picked-btn-container #shadow {
     background-color: rgb(186, 0, 179);
 }
 
-.char-picked-btn-container Button:hover Label {
-    background-color: rgb(244, 117, 229);
+.char-picked-btn-container Button:hover > .character-sprite {
+    background-color: rgba(244, 117, 229, 0.45);
 }
 
 .char-disabled-btn-container {
@@ -193,27 +189,19 @@ button {
     border-bottom-left-radius: 20px;
 }
 
-.char-not-picked-btn-container Button:active {
-    scale: 0.9;
-}
-
-.char-not-picked-btn-container Label {
+.char-not-picked-btn-container Button > .character-sprite {
     background-color: rgb(255, 204, 1);
-    margin: 0;
-    width: 100%;
-    height: 92%;
-    border-radius: 15px;
     border-bottom-width: 1px;
     border-top-width: 1px;
     border-bottom-color: rgb(255, 236, 59);
     border-top-color: rgb(255, 255, 0);
 }
 
-.char-not-picked-btn-container Button:hover Label {
+.char-not-picked-btn-container Button:hover > .character-sprite {
     background-color: rgb(255, 255, 0);
 }
 
-.char-not-picked-btn-container Button:active Label {
+.char-not-picked-btn-container Button:active > .character-sprite {
     background-color: rgb(184, 88, 243);
     border-color: rgb(184, 88, 243);
 }
@@ -240,6 +228,89 @@ button {
     border-radius: 25px;
     border-width: 5px;
     border-color: rgb(215, 75, 231);
+}
+
+.char-picked-btn-container Button,
+.char-locked-in-btn-container Button,
+.char-not-picked-btn-container Button {
+    position: relative;
+}
+
+.character-sprite {
+    position: absolute;
+    top: 4%;
+    left: 0;
+    margin: 0;
+    width: 100%;
+    height: 92%;
+    border-radius: 15px;
+}
+
+.char-locked-in-btn-container {
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-menu .char-locked-in-btn-container Button {
+    background-color: rgba(62, 188, 142, 0.35);
+    border-color: rgb(0, 0, 0);
+    border-width: 5px;
+    width: 180px;
+    height: 180px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.char-locked-in-btn-container Button > .character-sprite {
+    background-color: rgba(62, 188, 142, 0.35);
+}
+
+.game-menu .char-locked-in-btn-container Button:disabled {
+    opacity: 1;
+}
+
+.game-menu .char-not-picked-btn-container,
+.game-menu .char-picked-btn-container,
+.game-menu .char-locked-in-btn-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    min-width: 180px;
+    min-height: 180px;
+    max-width: 180px;
+    max-height: 180px;
+    margin: 10px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.game-menu .char-not-picked-btn-container Button,
+.game-menu .char-picked-btn-container Button,
+.game-menu .char-locked-in-btn-container Button {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.game-menu .char-not-picked-btn-container Button,
+.game-menu .char-picked-btn-container Button,
+.game-menu .char-locked-in-btn-container Button {
+    width: 180px;
+    height: 180px;
+    min-width: 180px;
+    min-height: 180px;
+    max-width: 180px;
+    max-height: 180px;
+    margin: 0;
+    padding: 0;
+    border-width: 5px;
+    border-radius: 20px;
+    flex-shrink: 0;
 }
 
 .blur-shadow {

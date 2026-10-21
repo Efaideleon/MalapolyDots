@@ -21,7 +21,7 @@
                     <ui:Label text="NET WORTH" class="match-eyebrow"/>
                 </ui:VisualElement>
                 <ui:ScrollView name="standings" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" class="match-standings"/>
-                <ui:Label name="worthNote" text="Net worth includes cash, properties, and buildings." class="match-worth-note"/>
+                <ui:Label name="worthNote" text="Negative cash counts as $0. Each deed adds its printed value; each house or hotel adds house cost, up to 5 buildings per deed. Bankrupt players score $0." class="match-worth-note"/>
                 <ui:Button name="returnToMenu" text="Return to main menu" class="match-return"/>
                 <ui:Label name="returnStatus" class="match-reason"/>
             </ui:VisualElement>

@@ -68,6 +68,13 @@ namespace DOTS.GamePlay
             if (BankruptcyRules.HasDebt(EntityManager)) return;
             var active = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
             if (!EntityManager.HasComponent<AiOpponent>(active)) return;
+            // AI players acknowledge movement cards automatically.
+            if (game.State == GameState.CardAwaitingAcceptance)
+            {
+                game.State = GameState.Walking;
+                SystemAPI.SetSingleton(game);
+                return;
+            }
             var status = EntityManager.GetComponentData<BankruptPlayer>(active);
             if (status.Value || status.Declared) return;
             var ai = EntityManager.GetComponentData<AiOpponent>(active);

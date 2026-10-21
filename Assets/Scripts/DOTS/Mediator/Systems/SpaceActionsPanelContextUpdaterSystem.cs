@@ -69,12 +69,21 @@ namespace DOTS.Mediator.Systems
                     SystemAPI.GetComponent<SpaceLandedOn>(player).entity == property &&
                     SystemAPI.HasComponent<LandingPaymentResolved>(player) &&
                     !SystemAPI.GetComponent<LandingPaymentResolved>(player).Value;
+                context.RentAlreadyPaid = ownerId > 0 && ownerId != localId &&
+                    SystemAPI.GetComponent<GhostOwner>(player).NetworkId == localId &&
+                    SystemAPI.GetSingleton<GameStateComponent>().State == GameState.Landing &&
+                    SystemAPI.HasComponent<SpaceLandedOn>(player) &&
+                    SystemAPI.GetComponent<SpaceLandedOn>(player).entity == property &&
+                    SystemAPI.HasComponent<LandingPaymentResolved>(player) &&
+                    SystemAPI.GetComponent<LandingPaymentResolved>(player).Value;
 
             }
             var current = SystemAPI.GetSingletonRW<SpaceActionsPanelContextComponent>();
             if (current.ValueRO.Value.IsPlayerOwner != context.IsPlayerOwner || current.ValueRO.Value.HasMonopoly != context.HasMonopoly ||
                 current.ValueRO.Value.CanBuyHouse != context.CanBuyHouse || current.ValueRO.Value.CanBuyHotel != context.CanBuyHotel ||
-                current.ValueRO.Value.MustPayRent != context.MustPayRent || current.ValueRO.Value.CanBuyProperty != context.CanBuyProperty)
+                current.ValueRO.Value.MustPayRent != context.MustPayRent ||
+                current.ValueRO.Value.RentAlreadyPaid != context.RentAlreadyPaid ||
+                current.ValueRO.Value.CanBuyProperty != context.CanBuyProperty)
                 current.ValueRW.Value = context;
         }
     }

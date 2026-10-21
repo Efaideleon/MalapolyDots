@@ -18,6 +18,7 @@ namespace DOTS.GamePlay
             public int Player, Delta;
             public MoneyChangeReason Reason;
             public bool FocusCamera => Reason != MoneyChangeReason.Purchase &&
+                                       Reason != MoneyChangeReason.PassGo &&
                                        !(Reason == MoneyChangeReason.Building && Delta < 0);
         }
         readonly Queue<Shot> shots = new();

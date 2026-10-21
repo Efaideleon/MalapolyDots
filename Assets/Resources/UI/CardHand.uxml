@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="GameTheme.uss" />
+    <ui:Style src="CardHand.uss" />
+    <ui:VisualElement name="cardHandRoot" class="card-hand-overlay" picking-mode="Ignore">
+        <ui:Button name="cardsButton" class="cards-trigger">
+            <ui:VisualElement class="cards-trigger-stack" picking-mode="Ignore">
+                <ui:VisualElement class="cards-stack-back" picking-mode="Ignore" />
+                <ui:VisualElement class="cards-stack-front" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:Label text="CARD HAND" class="cards-trigger-title" picking-mode="Ignore" />
+            <ui:Label name="cardsCount" text="0 / 4" class="cards-trigger-count" picking-mode="Ignore" />
+        </ui:Button>
+        <ui:VisualElement name="cardsModalShade" class="cards-modal-shade" />
+        <ui:VisualElement name="cardsPanel" class="cards-panel" focusable="true">
+            <ui:VisualElement class="cards-panel-header">
+                <ui:Label text="YOUR CARD HAND" class="cards-panel-title" />
+                <ui:Label name="cardsPanelCount" text="0 / 4 CARDS" class="cards-panel-count" />
+                <ui:Button name="closeCardsButton" text="X" class="cards-close" />
+            </ui:VisualElement>
+            <ui:VisualElement name="cardsList" class="cards-list" />
+            <ui:Button name="discardNewCard" text="DISCARD THE NEW CARD" class="cards-discard-new" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

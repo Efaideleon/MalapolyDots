@@ -10,7 +10,8 @@ namespace TitleScreen.NetworkUI.Panels
     {
         Default,
         Choosing,
-        Unavailable
+        Unavailable,
+        LockedIn
     }
 
     public class CharacterSelectPanel : NetworkPanelBase
@@ -20,6 +21,7 @@ namespace TitleScreen.NetworkUI.Panels
             { ButtonState.Default, "char-not-picked-btn-container" },
             { ButtonState.Unavailable, "char-disabled-btn-container" },
             { ButtonState.Choosing, "char-picked-btn-container" },
+            { ButtonState.LockedIn, "char-locked-in-btn-container" },
         };
 
         private readonly Button AvocadoButton;
@@ -29,6 +31,7 @@ namespace TitleScreen.NetworkUI.Panels
         private readonly Button CoffeeButton;
         private readonly Button TuctucButton;
         private readonly Button ConfirmButton;
+        private readonly HashSet<CharactersEnum> lockedInCharacters = new();
         private CharactersEnum? pendingCharacter;
         private float pendingSelectionExpiresAt;
         private const float SelectionResponseTimeout = 5f;
@@ -89,6 +92,7 @@ namespace TitleScreen.NetworkUI.Panels
 
         public void SetDefault(CharactersEnum character)
         {
+            lockedInCharacters.Remove(character);
             if (pendingCharacter == character)
             {
                 if (UnityEngine.Time.unscaledTime < pendingSelectionExpiresAt) return;
@@ -99,8 +103,16 @@ namespace TitleScreen.NetworkUI.Panels
 
         public void SetChoosing(CharactersEnum character)
         {
+            if (lockedInCharacters.Contains(character)) return;
             if (pendingCharacter == character) pendingCharacter = null;
             SetCharacterState(character, ButtonState.Choosing);
+        }
+
+        public void SetLockedIn(CharactersEnum character)
+        {
+            lockedInCharacters.Add(character);
+            if (pendingCharacter == character) pendingCharacter = null;
+            SetCharacterState(character, ButtonState.LockedIn);
         }
 
         private void SetCharacterState(CharactersEnum character, ButtonState state)
@@ -130,6 +142,7 @@ namespace TitleScreen.NetworkUI.Panels
 
         private void HandleButtonClick(UIRequestType uIRequestType, CharactersEnum character)
         {
+            if (lockedInCharacters.Contains(character)) return;
             pendingCharacter = character;
             pendingSelectionExpiresAt = UnityEngine.Time.unscaledTime + SelectionResponseTimeout;
             SetCharacterState(character, ButtonState.Choosing);

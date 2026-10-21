@@ -27,6 +27,25 @@ namespace DOTS.GamePlay
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Allocator.Temp);
+            foreach (var (request, _, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>, RefRO<JailRpc>>().WithEntityAccess())
+            {
+                ecb.DestroyEntity(rpcEntity);
+                var player = SystemAPI.GetSingleton<CurrentActivePlayer>().Entity;
+                var connection = request.ValueRO.SourceConnection;
+                if (!GameplayActionSource.Owns(state.EntityManager, rpcEntity, connection, player) ||
+                    SystemAPI.GetSingleton<GameStateComponent>().State != GameState.Landing ||
+                    !SystemAPI.HasComponent<SpaceLandedOn>(player))
+                    continue;
+
+                var landedSpace = SystemAPI.GetComponent<SpaceLandedOn>(player).entity;
+                if (!SystemAPI.HasComponent<JailSpaceTag>(landedSpace)) continue;
+
+                var jailState = SystemAPI.GetComponentRW<JailState>(player);
+                jailState.ValueRW.InJail = true;
+                jailState.ValueRW.TurnsInJail = 2;
+                jailState.ValueRW.DoublesRollAttempts = 0;
+            }
+
             foreach (var (request, _, rpcEntity) in SystemAPI.Query<RefRO<ReceiveRpcCommandRequest>, RefRO<GoToJailRpc>>().WithEntityAccess())
             {
                 ecb.DestroyEntity(rpcEntity);

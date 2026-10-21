@@ -16,98 +16,22 @@ namespace DOTS.GamePlay
         public static int Apply(EntityManager manager, EntityCommandBuffer feedback,
             Entity player, ChanceActionDataBuffer card)
         {
+            // Chance draws now award cards only. Keep this guard at the rules layer
+            // so legacy or newly authored cash/movement cards cannot change state.
+            if (card.effect != ChanceEffect.JailFreeCard) return 0;
+
             switch (card.effect)
             {
-                case ChanceEffect.BuildingRepairs:
-                case ChanceEffect.PropertyIncome:
-                    int total = 0;
-                    using (var query = manager.CreateEntityQuery(typeof(OwnerByEntityComponent)))
-                    using (var deeds = query.ToEntityArray(Allocator.Temp))
-                        foreach (var deed in deeds)
-                        {
-                            if (manager.GetComponentData<OwnerByEntityComponent>(deed).Entity != player) continue;
-                            if (card.effect == ChanceEffect.PropertyIncome) { total += card.amount; continue; }
-                            int buildings = manager.HasComponent<HouseCount>(deed) ? manager.GetComponentData<HouseCount>(deed).Value : 0;
-                            total -= buildings >= 5 ? card.hotelAmount : card.amount * buildings;
-                        }
-                    return ChangeMoney(manager, feedback, player, total);
-
-                case ChanceEffect.PayEachPlayer:
-                case ChanceEffect.CollectFromEachPlayer:
-                    int transferTotal = 0;
-                    using (var query = manager.CreateEntityQuery(typeof(GhostMoneyComponet), typeof(BankruptPlayer)))
-                    using (var players = query.ToEntityArray(Allocator.Temp))
-                        foreach (var other in players)
-                        {
-                            var status = manager.GetComponentData<BankruptPlayer>(other);
-                            if (other == player || status.Value || status.Declared) continue;
-                            int delta = card.effect == ChanceEffect.PayEachPlayer ? -card.amount : card.amount;
-                            ChangeMoney(manager, feedback, other, -delta);
-                            transferTotal += delta;
-                        }
-                    // Negative balances enter the existing recovery flow, including
-                    // opponents charged outside their turn. No one is eliminated here.
-                    return ChangeMoney(manager, feedback, player, transferTotal);
-
-                case ChanceEffect.AdvanceToSpace:
-                    Advance(manager, player, card.targetBoardIndex);
-                    return 0;
-
-                case ChanceEffect.AdvanceToTransport:
-                    int nearest = -1, distance = 40;
-                    using (var query = manager.CreateEntityQuery(typeof(BoardIndexComponent), typeof(PropertyRentKindComponent)))
-                    using (var deeds = query.ToEntityArray(Allocator.Temp))
-                        foreach (var deed in deeds)
-                        {
-                            if (manager.GetComponentData<PropertyRentKindComponent>(deed).Value != PropertyRentKind.Transport) continue;
-                            int index = manager.GetComponentData<BoardIndexComponent>(deed).Value;
-                            int moves = ForwardDistance(manager.GetComponentData<PlayerBoardIndex>(player).Value, index);
-                            if (moves > 0 && moves < distance) { distance = moves; nearest = index; }
-                        }
-                    if (nearest >= 0) Advance(manager, player, nearest);
-                    return 0;
-
-                case ChanceEffect.GoToJail:
-                    SendToJail(manager, player);
-                    return 0;
-
                 case ChanceEffect.JailFreeCard:
-                    var jail = manager.GetComponentData<JailState>(player);
-                    jail.HasGetOutOfJailFreeCard = true;
-                    manager.SetComponentData(player, jail);
+                    CardInventoryRules.Receive(manager, player, PlayerCardType.GetOutOfJailFree);
                     return 0;
 
                 default:
-                    return ChangeMoney(manager, feedback, player, card.amount);
+                    return 0;
             }
         }
 
-        static int ChangeMoney(EntityManager manager, EntityCommandBuffer feedback, Entity player, int amount)
-        {
-            var money = manager.GetComponentData<GhostMoneyComponet>(player);
-            money.Value += amount;
-            manager.SetComponentData(player, money);
-            MoneyFeedback.Send(feedback, manager, player, amount, MoneyChangeReason.Card);
-            return amount;
-        }
-
         public static int ForwardDistance(int from, int to) => (to - from + 40) % 40;
-
-        static void Advance(EntityManager manager, Entity player, int destination)
-        {
-            if (destination < 0 || destination >= 40) return;
-            int moves = ForwardDistance(manager.GetComponentData<PlayerBoardIndex>(player).Value, destination);
-            if (moves == 0) return;
-            manager.SetComponentData(player, new RemainingMoves { Value = moves });
-            manager.SetComponentData(player, new FinalArrived());
-            manager.SetComponentData(player, new ReachedTargetPosition());
-            manager.SetComponentData(player, new LandingPaymentResolved());
-            // Normal walking pays GO once and resolves purchase/rent/tax at the destination.
-            using var query = manager.CreateEntityQuery(typeof(GameStateComponent));
-            var game = query.GetSingleton<GameStateComponent>();
-            game.State = GameState.Walking;
-            query.SetSingleton(game);
-        }
 
         public static bool SendToJail(EntityManager manager, Entity player)
         {
@@ -154,6 +78,14 @@ namespace DOTS.GamePlay
             if (!manager.HasComponent<JailState>(player)) return false;
             var jail = manager.GetComponentData<JailState>(player);
             if (!jail.InJail || !jail.HasGetOutOfJailFreeCard) return false;
+            if (manager.HasComponent<PlayerCardInventory>(player))
+            {
+                var inventory = manager.GetComponentData<PlayerCardInventory>(player);
+                for (byte slot = 0; slot < inventory.Count; slot++)
+                    if (CardInventoryRules.GetCard(inventory, slot) == PlayerCardType.GetOutOfJailFree)
+                        return CardInventoryRules.Use(manager, player, slot);
+                return false;
+            }
             jail.HasGetOutOfJailFreeCard = false;
             jail.InJail = false;
             jail.TurnsInJail = jail.DoublesRollAttempts = 0;

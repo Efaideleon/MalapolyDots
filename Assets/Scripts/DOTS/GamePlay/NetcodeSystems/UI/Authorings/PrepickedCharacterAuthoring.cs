@@ -41,5 +41,8 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.Authorings
 
         [GhostField]
         public bool PrePicked;
+
+        [GhostField]
+        public bool IsLockedIn;
     }
 }

@@ -26,12 +26,14 @@ namespace Assets.Scripts.DOTS.GamePlay.NetcodeSystems.UI.NetworkSystems
                     {
                         prepickedCharacter.ValueRW.OwnerNetworkId = default;
                         prepickedCharacter.ValueRW.PrePicked = false;
+                        prepickedCharacter.ValueRW.IsLockedIn = false;
                     } 
                     // if this is the character we picked, then mark it as taken.
                     if (playerConnectionData.ValueRO.CharacterSelected == prepickedCharacter.ValueRO.Character)
                     {
                         prepickedCharacter.ValueRW.OwnerNetworkId = playerConnectionData.ValueRO.OwnerNetworkId;
                         prepickedCharacter.ValueRW.PrePicked = true;
+                        prepickedCharacter.ValueRW.IsLockedIn = playerConnectionData.ValueRO.IsLockedIn;
                     }
                 }
             }

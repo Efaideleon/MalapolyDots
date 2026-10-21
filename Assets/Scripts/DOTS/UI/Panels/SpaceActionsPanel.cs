@@ -70,6 +70,7 @@ namespace DOTS.UI.Panels
         private bool _buttonsVisible;
         private bool _canBuyHotel;
         private bool _mustPayRent;
+        private bool _rentAlreadyPaid;
 
         public void SetPropertyPurchaseAvailability(bool available)
         {
@@ -89,11 +90,13 @@ namespace DOTS.UI.Panels
             ButtonSet[SpaceActionButtonsEnum.BuyHotel].Button.SetEnabled(_buttonsVisible && available);
         }
 
-        public void SetRentPaymentAvailability(bool required)
+        public void SetRentPaymentAvailability(bool required, bool alreadyPaid = false)
         {
             _mustPayRent = required;
+            _rentAlreadyPaid = alreadyPaid;
             var button = ButtonSet[SpaceActionButtonsEnum.PayRent].Button;
-            button.style.display = required ? DisplayStyle.Flex : DisplayStyle.None;
+            button.text = alreadyPaid ? "Rent Paid" : "Pay Rent";
+            button.style.display = required || alreadyPaid ? DisplayStyle.Flex : DisplayStyle.None;
             button.SetEnabled(_buttonsVisible && required);
         }
 
@@ -158,7 +161,7 @@ namespace DOTS.UI.Panels
             SetPropertyPurchaseAvailability(_canBuyProperty);
             SetHousePurchaseAvailability(_canBuyHouses);
             SetHotelPurchaseAvailability(_canBuyHotel);
-            SetRentPaymentAvailability(_mustPayRent);
+            SetRentPaymentAvailability(_mustPayRent, _rentAlreadyPaid);
         }
     }
 }

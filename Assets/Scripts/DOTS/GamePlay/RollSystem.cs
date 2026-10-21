@@ -80,6 +80,7 @@ namespace DOTS.GamePlay
                 // Consume every request, including duplicates and unauthorized requests.
                 ecb.DestroyEntity(entity);
                 if (hasDebt || pending.Active || game.State != GameState.Rolling ||
+                    (SystemAPI.HasComponent<JailState>(activePlayer) && SystemAPI.GetComponent<JailState>(activePlayer).InJail) ||
                     !SystemAPI.HasComponent<GhostOwner>(activePlayer) ||
                     !SystemAPI.HasComponent<RemainingMoves>(activePlayer) ||
                     !GameplayActionSource.Owns(state.EntityManager, entity, rpc.ValueRO.SourceConnection, activePlayer)) continue;
