@@ -1,6 +1,9 @@
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using Assets.Scripts.DOTS.Mediator;
+using DOTS.Constants;
+using DOTS.DataComponents;
+using DOTS.GameSpaces;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
@@ -10,12 +13,14 @@ namespace DOTS.GamePlay
     public enum PlayerCardType : byte
     {
         None = 0,
-        GetOutOfJailFree = 1
+        GetOutOfJailFree = 1,
+        Monopoly = 2
     }
 
     public struct UsePlayerCardRpc : IRpcCommand
     {
         public byte Slot;
+        public int Color;
     }
 
     public struct ResolveCardOverflowRpc : IRpcCommand
@@ -138,6 +143,38 @@ namespace DOTS.GamePlay
             return true;
         }
 
+        public static bool UseMonopoly(EntityManager manager, Entity player, byte slot,
+            PropertyColor color, EntityCommandBuffer feedback)
+        {
+            if (!manager.HasComponent<PlayerCardInventory>(player)) return false;
+            var inventory = manager.GetComponentData<PlayerCardInventory>(player);
+            if (inventory.HasPendingChoice || slot >= inventory.Count ||
+                GetCard(inventory, slot) != PlayerCardType.Monopoly ||
+                !ChanceCardRules.TryGetMonopolyPurchaseCost(manager, player, color, out var cost)) return false;
+
+            int ownerId = manager.GetComponentData<GhostOwner>(player).NetworkId;
+            var money = manager.GetComponentData<GhostMoneyComponet>(player);
+            money.Value -= cost;
+            manager.SetComponentData(player, money);
+
+            using var query = manager.CreateEntityQuery(typeof(PropertySpaceTag), typeof(ColorCodeComponent),
+                typeof(OwnerComponent), typeof(OwnerByEntityComponent));
+            using var properties = query.ToEntityArray(Allocator.Temp);
+            foreach (var property in properties)
+            {
+                if (manager.GetComponentData<ColorCodeComponent>(property).Value != color ||
+                    manager.GetComponentData<OwnerComponent>(property).ID != PropertyConstants.Vacant) continue;
+                manager.SetComponentData(property, new OwnerComponent { ID = ownerId });
+                manager.SetComponentData(property, new OwnerByEntityComponent { Entity = player });
+            }
+
+            RemoveAt(ref inventory, slot);
+            manager.SetComponentData(player, inventory);
+            SyncLegacyJailFlag(manager, player, inventory);
+            MoneyFeedback.Send(feedback, manager, player, -cost, MoneyChangeReason.Purchase);
+            return true;
+        }
+
         static void RemoveAt(ref PlayerCardInventory inventory, int slot)
         {
             for (int i = slot; i < inventory.Count - 1; i++)
@@ -184,7 +221,14 @@ namespace DOTS.GamePlay
                 var connection = request.ValueRO.SourceConnection;
                 byte slot = SystemAPI.GetComponent<UsePlayerCardRpc>(entity).Slot;
                 if (GameplayActionSource.Owns(manager, entity, connection, active) && game.State == GameState.Rolling)
-                    CardInventoryRules.Use(manager, active, slot);
+                {
+                    int color = SystemAPI.GetComponent<UsePlayerCardRpc>(entity).Color;
+                    if (manager.HasComponent<PlayerCardInventory>(active) && slot < manager.GetComponentData<PlayerCardInventory>(active).Count &&
+                        CardInventoryRules.GetCard(manager.GetComponentData<PlayerCardInventory>(active), slot) == PlayerCardType.Monopoly)
+                        CardInventoryRules.UseMonopoly(manager, active, slot, (PropertyColor)color, ecb);
+                    else
+                        CardInventoryRules.Use(manager, active, slot);
+                }
                 ecb.DestroyEntity(entity);
             }
 

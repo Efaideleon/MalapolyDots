@@ -26,6 +26,12 @@
 .cards-close { position: absolute; top: 0; right: 0; width: 84px; height: 84px; padding: 0; color: rgb(255, 232, 195); font-size: 42px; border-width: 3px; border-color: rgb(93, 142, 143); border-radius: 18px; background-color: rgb(31, 76, 82); }
 .cards-close.is-hidden { display: none; }
 .cards-list { align-self: center; flex-direction: row; align-items: flex-end; justify-content: center; width: 100%; height: 420px; padding: 0 20px 12px; overflow: visible; }
+.monopoly-choice-panel { display: none; position: absolute; top: 50%; left: 50%; translate: -50% -50%; align-self: center; align-items: center; width: 90%; max-width: 900px; padding: 22px; border-width: 3px; border-color: rgb(255, 213, 103); border-radius: 18px; background-color: rgb(31, 76, 82); }
+.monopoly-choice-panel.is-visible { display: flex; }
+.monopoly-choice-title { margin-bottom: 12px; color: rgb(255, 224, 143); font-size: 28px; -unity-font-style: bold; }
+.monopoly-choice-list { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+.monopoly-choice-button { min-width: 170px; min-height: 58px; margin: 5px; color: rgb(255, 246, 213); font-size: 21px; -unity-font-style: bold; border-width: 2px; border-color: rgb(255, 213, 103); border-radius: 12px; background-color: rgb(48, 96, 100); }
+.monopoly-choice-cancel { min-width: 130px; min-height: 48px; margin-top: 12px; color: rgb(255, 232, 195); font-size: 19px; border-radius: 10px; background-color: rgb(74, 72, 67); }
 .inventory-card {
     flex-shrink: 0; width: 300px; height: 380px; margin-right: -95px; padding: 0;
     border-width: 0; border-radius: 0; background-image: none; background-color: rgba(0, 0, 0, 0);

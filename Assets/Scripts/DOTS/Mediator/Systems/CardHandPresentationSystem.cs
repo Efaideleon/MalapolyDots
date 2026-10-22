@@ -1,11 +1,13 @@
 using Assets.Common;
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
+using DOTS.DataComponents;
 using DOTS.GamePlay;
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
 
 namespace DOTS.Mediator
 {
@@ -15,10 +17,21 @@ namespace DOTS.Mediator
     public partial class CardHandPresentationSystem : SystemBase
     {
         VisualElement root, overlay, cardsPanel, cardsList, modalShade;
+        VisualElement monopolyChoicePanel, monopolyChoiceList;
         Button cardsButton, closeButton, discardNewButton, firstCardButton;
+        Button cancelMonopolyChoice;
         Label cardsCount, panelCount;
         bool inventoryOpen, wasPendingChoice, wasPanelOpen;
         string displayedHand = string.Empty;
+        string renderedMonopolyChoices = string.Empty;
+        int selectedMonopolySlot = -1;
+        List<MonopolyOption> currentMonopolyOptions = new List<MonopolyOption>();
+
+        struct MonopolyOption
+        {
+            public PropertyColor Color;
+            public int Cost;
+        }
 
         protected override void OnCreate()
         {
@@ -54,12 +67,16 @@ namespace DOTS.Mediator
                 cardsButton = root.Q<Button>("cardsButton");
                 cardsPanel = root.Q("cardsPanel");
                 cardsList = root.Q<VisualElement>("cardsList");
+                monopolyChoicePanel = root.Q<VisualElement>("monopolyChoicePanel");
+                monopolyChoiceList = root.Q<VisualElement>("monopolyChoiceList");
+                cancelMonopolyChoice = root.Q<Button>("cancelMonopolyChoice");
                 cardsCount = root.Q<Label>("cardsCount");
                 panelCount = root.Q<Label>("cardsPanelCount");
                 discardNewButton = root.Q<Button>("discardNewCard");
                 closeButton = root.Q<Button>("closeCardsButton");
                 cardsButton.RegisterCallback<MouseUpEvent>(HandleCardsButtonMouseUp, TrickleDown.TrickleDown);
                 closeButton.clicked += () => SetInventoryOpen(false);
+                cancelMonopolyChoice.clicked += HideMonopolyChoice;
                 discardNewButton.clicked += () => SendOverflowChoice(CardInventoryRules.DiscardNewCard);
                 displayedHand = string.Empty;
                 wasPendingChoice = false;
@@ -91,6 +108,11 @@ namespace DOTS.Mediator
             bool isEliminated = EntityManager.HasComponent<BankruptPlayer>(localPlayer) &&
                 EntityManager.GetComponentData<BankruptPlayer>(localPlayer).Value;
             canUseJailCard &= !isEliminated;
+            var monopolyOptions = isLocalTurn && game.State == GameState.Rolling && !inventory.HasPendingChoice && !isEliminated
+                ? GetAvailableMonopolyOptions(localPlayer)
+                : new List<MonopolyOption>();
+            bool canUseMonopolyCard = monopolyOptions.Count > 0;
+            currentMonopolyOptions = monopolyOptions;
 
             cardsCount.text = $"{inventory.Count} / {CardInventoryRules.Capacity}";
             panelCount.text = $"{inventory.Count} / {CardInventoryRules.Capacity} CARDS";
@@ -107,12 +129,13 @@ namespace DOTS.Mediator
             if (shouldShowCardsPanel) root.BringToFront();
             discardNewButton.EnableInClassList("is-visible", inventory.HasPendingChoice);
 
-            string signature = BuildSignature(inventory, canUseJailCard, isLocalTurn, isInJail, game.State);
+            string signature = BuildSignature(inventory, canUseJailCard, canUseMonopolyCard, isLocalTurn, isInJail, game.State, monopolyOptions);
             if (signature != displayedHand)
             {
                 displayedHand = signature;
-                RenderCards(inventory, canUseJailCard, isLocalTurn, isInJail);
+                RenderCards(inventory, canUseJailCard, canUseMonopolyCard, isLocalTurn, isInJail);
             }
+            if (selectedMonopolySlot >= 0) RenderMonopolyChoices((byte)selectedMonopolySlot, monopolyOptions);
             if (focusCardChoice) firstCardButton?.Focus();
             else if (focusPanel) cardsPanel.Focus();
         }
@@ -131,16 +154,29 @@ namespace DOTS.Mediator
             return false;
         }
 
-        static string BuildSignature(PlayerCardInventory hand, bool canUse, bool isLocalTurn, bool inJail, GameState state)
+        static string BuildSignature(PlayerCardInventory hand, bool canUseJail, bool canUseMonopoly,
+            bool isLocalTurn, bool inJail, GameState state, List<MonopolyOption> options)
         {
             var signature = new System.Text.StringBuilder(64);
             signature.Append(hand.Count).Append('|').Append(hand.HasPendingChoice).Append('|').Append(hand.PendingCard)
-                .Append('|').Append(canUse).Append('|').Append(isLocalTurn).Append('|').Append(inJail).Append('|').Append((int)state);
+                .Append('|').Append(canUseJail).Append('|').Append(canUseMonopoly).Append('|')
+                .Append(isLocalTurn).Append('|').Append(inJail).Append('|').Append((int)state);
             for (int i = 0; i < hand.Count; i++) signature.Append('|').Append((byte)CardInventoryRules.GetCard(hand, i));
+            foreach (var option in options) signature.Append('|').Append((int)option.Color).Append(':').Append(option.Cost);
             return signature.ToString();
         }
 
-        void RenderCards(PlayerCardInventory hand, bool canUseJailCard, bool isLocalTurn, bool isInJail)
+        List<MonopolyOption> GetAvailableMonopolyOptions(Entity player)
+        {
+            var options = new List<MonopolyOption>();
+            for (var color = PropertyColor.Brown; color <= PropertyColor.Blue; color++)
+                if (ChanceCardRules.TryGetMonopolyPurchaseCost(EntityManager, player, color, out var cost))
+                    options.Add(new MonopolyOption { Color = color, Cost = cost });
+            return options;
+        }
+
+        void RenderCards(PlayerCardInventory hand, bool canUseJailCard, bool canUseMonopolyCard,
+            bool isLocalTurn, bool isInJail)
         {
             firstCardButton = null;
             cardsList.Clear();
@@ -156,11 +192,12 @@ namespace DOTS.Mediator
             {
                 int slot = i;
                 var cardType = CardInventoryRules.GetCard(hand, slot);
-                bool canUse = canUseJailCard && cardType == PlayerCardType.GetOutOfJailFree;
+                bool canUse = cardType == PlayerCardType.GetOutOfJailFree ? canUseJailCard :
+                    cardType == PlayerCardType.Monopoly && canUseMonopolyCard;
                 var card = new Button();
                 card.AddToClassList("inventory-card");
                 card.AddToClassList($"inventory-card-fan-{i}");
-                card.clicked += () => HandleCardClick(card, (byte)slot, hand.HasPendingChoice, canUse);
+                card.clicked += () => HandleCardClick(card, (byte)slot, hand.HasPendingChoice, canUse, cardType);
                 if (firstCardButton == null) firstCardButton = card;
                 var face = new VisualElement();
                 face.AddToClassList("inventory-card-visual");
@@ -171,13 +208,15 @@ namespace DOTS.Mediator
                 face.Add(topline);
                 face.Add(StyledLabel(CardTitle(cardType), "inventory-card-title"));
                 face.Add(StyledLabel(CardDescription(cardType), "inventory-card-description"));
-                face.Add(StyledLabel(hand.HasPendingChoice ? "CLICK TO DISCARD" : canUse ? "CLICK TO PLAY" : CardCondition(cardType), "inventory-card-condition"));
+                face.Add(StyledLabel(hand.HasPendingChoice ? "CLICK TO DISCARD" : canUse ?
+                    cardType == PlayerCardType.Monopoly ? "CLICK TO CHOOSE A SET" : "CLICK TO PLAY" : CardCondition(cardType),
+                    "inventory-card-condition"));
                 card.Add(face);
                 cardsList.Add(card);
             }
         }
 
-        void HandleCardClick(Button card, byte slot, bool pendingChoice, bool canUse)
+        void HandleCardClick(Button card, byte slot, bool pendingChoice, bool canUse, PlayerCardType cardType)
         {
             if (card.ClassListContains("is-playing")) return;
 
@@ -189,13 +228,52 @@ namespace DOTS.Mediator
 
             if (canUse)
             {
+                if (cardType == PlayerCardType.Monopoly)
+                {
+                    selectedMonopolySlot = slot;
+                    RenderMonopolyChoices(slot, currentMonopolyOptions);
+                    return;
+                }
                 card.AddToClassList("is-playing");
-                root.schedule.Execute(() => SendUseRequest(slot)).ExecuteLater(240);
+                root.schedule.Execute(() => SendUseRequest(slot, -1)).ExecuteLater(240);
                 return;
             }
 
             // Cards that cannot be played in the current state are informational only.
             // Leave the hand and its visual state unchanged when one is clicked.
+        }
+
+        void RenderMonopolyChoices(byte slot, List<MonopolyOption> options)
+        {
+            if (monopolyChoiceList == null || monopolyChoicePanel == null) return;
+            var signature = new System.Text.StringBuilder().Append(slot);
+            foreach (var option in options) signature.Append('|').Append((int)option.Color).Append(':').Append(option.Cost);
+            string nextSignature = signature.ToString();
+            if (nextSignature == renderedMonopolyChoices) return;
+            renderedMonopolyChoices = nextSignature;
+            monopolyChoiceList.Clear();
+            foreach (var option in options)
+            {
+                int color = (int)option.Color;
+                int capturedSlot = slot;
+                var button = new Button { text = $"{option.Color} · Q{option.Cost:N0}" };
+                button.AddToClassList("monopoly-choice-button");
+                button.clicked += () =>
+                {
+                    HideMonopolyChoice();
+                    SendUseRequest((byte)capturedSlot, color);
+                };
+                monopolyChoiceList.Add(button);
+            }
+            monopolyChoicePanel.EnableInClassList("is-visible", options.Count > 0);
+            if (options.Count == 0) selectedMonopolySlot = -1;
+        }
+
+        void HideMonopolyChoice()
+        {
+            selectedMonopolySlot = -1;
+            renderedMonopolyChoices = string.Empty;
+            monopolyChoicePanel?.RemoveFromClassList("is-visible");
         }
 
         void SetInventoryOpen(bool open)
@@ -220,6 +298,7 @@ namespace DOTS.Mediator
             }
             else
             {
+                HideMonopolyChoice();
                 overlay.RemoveFromClassList("is-open");
                 cardsPanel.style.display = DisplayStyle.None;
             }
@@ -231,10 +310,10 @@ namespace DOTS.Mediator
             SetInventoryOpen(true);
         }
 
-        void SendUseRequest(byte slot)
+        void SendUseRequest(byte slot, int color)
         {
             var request = EntityManager.CreateEntity();
-            EntityManager.AddComponentData(request, new UsePlayerCardRpc { Slot = slot });
+            EntityManager.AddComponentData(request, new UsePlayerCardRpc { Slot = slot, Color = color });
             EntityManager.AddComponentData(request, new SendRpcCommandRequest());
         }
 
@@ -247,6 +326,7 @@ namespace DOTS.Mediator
 
         static string UseButtonText(PlayerCardType card, bool canUse, bool isLocalTurn, bool isInJail)
         {
+            if (card == PlayerCardType.Monopoly) return canUse ? "CHOOSE A SET" : "USE WHEN A SET IS AVAILABLE";
             if (card != PlayerCardType.GetOutOfJailFree) return "EFFECT NOT READY";
             if (canUse) return "USE CARD";
             if (!isInJail) return "USE WHEN IN JAIL";
@@ -256,18 +336,21 @@ namespace DOTS.Mediator
         static string CardTitle(PlayerCardType card) => card switch
         {
             PlayerCardType.GetOutOfJailFree => "GET OUT OF JAIL FREE",
+            PlayerCardType.Monopoly => "MONOPOLY",
             _ => "MYSTERY CARD"
         };
 
         static string CardDescription(PlayerCardType card) => card switch
         {
             PlayerCardType.GetOutOfJailFree => "Keep this pass in your hand. Play it to leave Jail without spending a turn or rolling for doubles.",
+            PlayerCardType.Monopoly => "Keep this card. Play it on your turn to buy the remaining deeds in an eligible color set.",
             _ => "This card's effect is not available yet."
         };
 
         static string CardCondition(PlayerCardType card) => card switch
         {
             PlayerCardType.GetOutOfJailFree => "PLAYABLE WHILE YOU ARE IN JAIL",
+            PlayerCardType.Monopoly => "PLAYABLE ON YOUR TURN WHEN YOU CAN AFFORD A SET",
             _ => "NOT CURRENTLY PLAYABLE"
         };
 

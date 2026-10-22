@@ -13,7 +13,8 @@ namespace DOTS.DataComponents
         AdvanceToSpace,
         GoToJail,
         JailFreeCard,
-        AdvanceToTransport
+        AdvanceToTransport,
+        MonopolyCard
     }
 
     // TODO: this might be ghost component or do we send it to the client as an rpc?

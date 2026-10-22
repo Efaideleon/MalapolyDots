@@ -18,6 +18,11 @@
                 <ui:Button name="closeCardsButton" text="X" class="cards-close" />
             </ui:VisualElement>
             <ui:VisualElement name="cardsList" class="cards-list" />
+            <ui:VisualElement name="monopolyChoicePanel" class="monopoly-choice-panel">
+                <ui:Label text="CHOOSE A PROPERTY SET" class="monopoly-choice-title" />
+                <ui:VisualElement name="monopolyChoiceList" class="monopoly-choice-list" />
+                <ui:Button name="cancelMonopolyChoice" text="CANCEL" class="monopoly-choice-cancel" />
+            </ui:VisualElement>
             <ui:Button name="discardNewCard" text="DISCARD THE NEW CARD" class="cards-discard-new" />
         </ui:VisualElement>
     </ui:VisualElement>

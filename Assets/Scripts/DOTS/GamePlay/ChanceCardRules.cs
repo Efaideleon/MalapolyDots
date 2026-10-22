@@ -3,14 +3,49 @@ using Assets.Scripts.DOTS.GamePlay;
 using DOTS.Characters.CharacterSpawner;
 using DOTS.DataComponents;
 using DOTS.GameSpaces;
+using DOTS.Constants;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
+using Unity.NetCode;
 
 namespace DOTS.GamePlay
 {
     public static class ChanceCardRules
     {
+        // A set may be selected when every deed is either vacant or already owned
+        // by this player, at least one deed remains vacant, and the player can pay.
+        public static bool TryGetMonopolyPurchaseCost(EntityManager manager, Entity player,
+            PropertyColor color, out int cost)
+        {
+            cost = 0;
+            if (color < PropertyColor.Brown || color > PropertyColor.Blue ||
+                !manager.Exists(player) || !manager.HasComponent<GhostMoneyComponet>(player) ||
+                !manager.HasComponent<GhostOwner>(player)) return false;
+
+            int ownerId = manager.GetComponentData<GhostOwner>(player).NetworkId;
+            int propertyCount = 0;
+            int vacantCount = 0;
+            using var query = manager.CreateEntityQuery(typeof(PropertySpaceTag), typeof(ColorCodeComponent),
+                typeof(OwnerComponent), typeof(GhostPriceComponent));
+            using var properties = query.ToEntityArray(Allocator.Temp);
+            foreach (var property in properties)
+            {
+                if (manager.GetComponentData<ColorCodeComponent>(property).Value != color) continue;
+                propertyCount++;
+                int owner = manager.GetComponentData<OwnerComponent>(property).ID;
+                if (owner == PropertyConstants.Vacant)
+                {
+                    vacantCount++;
+                    cost += manager.GetComponentData<GhostPriceComponent>(property).Value;
+                }
+                else if (owner != ownerId) return false;
+            }
+
+            if (propertyCount < 2 || vacantCount == 0 || cost <= 0) return false;
+            return manager.GetComponentData<GhostMoneyComponet>(player).Value >= cost;
+        }
+
         // Effects happen once on the server. Replicate the actual cash change,
         // including variable repair and transfer costs, for the card's result.
         public static int Apply(EntityManager manager, EntityCommandBuffer feedback,
@@ -18,12 +53,15 @@ namespace DOTS.GamePlay
         {
             // Chance draws now award cards only. Keep this guard at the rules layer
             // so legacy or newly authored cash/movement cards cannot change state.
-            if (card.effect != ChanceEffect.JailFreeCard) return 0;
+            if (card.effect != ChanceEffect.JailFreeCard && card.effect != ChanceEffect.MonopolyCard) return 0;
 
             switch (card.effect)
             {
                 case ChanceEffect.JailFreeCard:
                     CardInventoryRules.Receive(manager, player, PlayerCardType.GetOutOfJailFree);
+                    return 0;
+                case ChanceEffect.MonopolyCard:
+                    CardInventoryRules.Receive(manager, player, PlayerCardType.Monopoly);
                     return 0;
 
                 default:

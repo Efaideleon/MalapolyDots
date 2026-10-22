@@ -1,6 +1,7 @@
 using Assets.Scripts.DOTS.Characters;
 using Assets.Scripts.DOTS.GamePlay;
 using DOTS.GamePlay.CameraSystems;
+using DOTS.GameSpaces;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -45,7 +46,18 @@ namespace DOTS.GamePlay
                     {
                         var cameraLookAtPointTransform = SystemAPI.GetComponent<LocalToWorld>(childEntity.Value);
                         if (TargetPlace.Instance != null)
-                            TargetPlace.Instance.transform.SetPositionAndRotation(cameraLookAtPointTransform.Position, cameraLookAtPointTransform.Rotation);
+                        {
+                            var rotation = cameraLookAtPointTransform.Rotation;
+                            if (SystemAPI.HasComponent<ChanceSpaceTag>(landingPlace.entity))
+                            {
+                                // ChanceSpace's root spins for its visual effect. Keep the
+                                // landing camera aligned to the look-at point's authored
+                                // orientation instead of inheriting that animated rotation.
+                                rotation = SystemAPI.GetComponent<LocalTransform>(childEntity.Value).Rotation;
+                            }
+
+                            TargetPlace.Instance.transform.SetPositionAndRotation(cameraLookAtPointTransform.Position, rotation);
+                        }
                     }
                 }
             }

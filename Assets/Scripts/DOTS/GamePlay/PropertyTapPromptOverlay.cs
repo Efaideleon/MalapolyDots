@@ -33,8 +33,6 @@ namespace DOTS.GamePlay
 
         void LateUpdate()
         {
-            SetHandCursor(hovered && !SoloSession.Paused && Application.isFocused &&
-                UnityEngine.InputSystem.Mouse.current != null && UnityEngine.Cursor.lockState == CursorLockMode.None);
             var camera = Camera.main;
             bool visible = showPrompt && !SoloSession.Paused && root?.panel != null && camera != null;
             if (visible)
@@ -54,6 +52,10 @@ namespace DOTS.GamePlay
                 visible = x > 8 && y > 8 && x + width < root.contentRect.width - 8 && y + height < root.contentRect.height - 8;
                 if (visible) { prompt.style.left = x; prompt.style.top = y; }
             }
+            var mouse = UnityEngine.InputSystem.Mouse.current;
+            bool pointerOverUI = mouse != null && global::Input.TouchInputSystem.IsOverUI(mouse.position.ReadValue());
+            SetHandCursor(visible && hovered && !pointerOverUI && !SoloSession.Paused && Application.isFocused &&
+                mouse != null && UnityEngine.Cursor.lockState == CursorLockMode.None);
             prompt?.EnableInClassList("is-hidden", !visible);
         }
 
@@ -70,6 +72,11 @@ namespace DOTS.GamePlay
             showPrompt = hovered = false;
             prompt?.AddToClassList("is-hidden");
             SetHandCursor(false);
+        }
+
+        void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus) SetHandCursor(false);
         }
 
         void OnDisable() => Hide();
